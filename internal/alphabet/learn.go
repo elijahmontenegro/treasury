@@ -145,12 +145,15 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	}
 	bits := opt.Encoder.Bits()
 	unionCode := map[int]bitcode.Code{}
-	unionBox := func(g int) (image.Rectangle, bool) {
-		a, c := b.Glyphs[g], b.Glyphs[g+1]
-		if a.Row != c.Row || b.Gap[g+1] > 0.3 {
-			return image.Rectangle{}, false
+	unionBox := func(g, k int) (image.Rectangle, bool) {
+		box := b.Glyphs[g].Box
+		for i := g + 1; i < g+k; i++ {
+			if b.Glyphs[i].Row != b.Glyphs[g].Row || b.Gap[i] > 0.3 {
+				return image.Rectangle{}, false
+			}
+			box = box.Union(b.Glyphs[i].Box)
 		}
-		return a.Box.Union(c.Box), true
+		return box, true
 	}
 
 	var centroids map[Key]bitcode.Code
@@ -168,8 +171,8 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	pr.pair = func(g, c int) float64 {
 		return priorCost(feats[g], widths[g], mergedPrior(priors[c], priors[c+1]))
 	}
-	pr.union = func(g, c int) float64 {
-		box, ok := unionBox(g)
+	unionCost := func(g, k, c int) float64 {
+		box, ok := unionBox(g, k)
 		if !ok {
 			return math.NaN()
 		}
@@ -182,13 +185,16 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 		if !ok {
 			return 0.5*pc + 0.6
 		}
-		code, ok := unionCode[g]
+		key := g*4 + k
+		code, ok := unionCode[key]
 		if !ok {
 			code = b.enc.Encode(Frame(b.bin, box, b.Glyphs[g].Baseline, b.XHeight))
-			unionCode[g] = code
+			unionCode[key] = code
 		}
 		return 0.5*pc + 4*encoder.NormalizedDistance(code, cen, bits)
 	}
+	pr.union = func(g, c int) float64 { return unionCost(g, 2, c) }
+	pr.union3 = func(g, c int) float64 { return unionCost(g, 3, c) }
 
 	band := max(opt.MinBand, int(opt.BandFrac*float64(m)))
 	var path, prev Path
@@ -318,9 +324,14 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 					}
 				}
 			}
-		case Split:
-			a.Assign[st.Glyph] = []int{st.Char}
-			a.Assign[st.Glyph+1] = []int{st.Char}
+		case Split, Split3:
+			k := 2
+			if st.Kind == Split3 {
+				k = 3
+			}
+			for i := range k {
+				a.Assign[st.Glyph+i] = []int{st.Char}
+			}
 			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
 			a.Penalized++
 		case Insert:

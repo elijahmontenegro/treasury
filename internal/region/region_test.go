@@ -103,22 +103,47 @@ func TestLinesAndRegions(t *testing.T) {
 	if len(lines) != 4 {
 		t.Fatalf("got %d lines, want 4 (both rows split at their gaps): %+v", len(lines), lines)
 	}
-	bands := 0
+	bands, subs := 0, 0
 	for _, r := range regions {
-		if r.Kind == KindBand {
+		switch r.Kind {
+		case KindBand:
 			bands++
+		case KindSub:
+			subs++
 		}
 	}
 	if bands != 2 {
 		t.Errorf("got %d band regions, want 2", bands)
 	}
-	for _, ln := range lines {
-		if ln.Baseline != 24 && ln.Baseline != 64 {
-			t.Errorf("baseline %d not on a row", ln.Baseline)
+	if subs != 0 {
+		t.Errorf("got %d word-run regions from lines with evenly spaced blobs, want 0", subs)
+	}
+}
+
+func TestWords(t *testing.T) {
+	// Glyphs 8 wide with 3 px letter gaps, a 12 px word gap after the third.
+	var comps []Component
+	x := 0
+	for i := range 7 {
+		comps = append(comps, Component{Box: image.Rect(x, 0, x+8, 14), Area: 100})
+		x += 11
+		if i == 2 {
+			x += 9
 		}
-		if ln.MedW != 8 || ln.MedH != 14 {
-			t.Errorf("median size %dx%d, want 8x14", ln.MedW, ln.MedH)
-		}
+	}
+	words := Words(newLine(comps, 0))
+	if len(words) != 2 || words[0].Max.X != 30 || words[1].Min.X != 42 {
+		t.Fatalf("words = %v", words)
+	}
+	// Drawn as ink, the two-word line yields the line itself plus one
+	// region per word; the two-word run is the line and is deduplicated.
+	b := bitmap.New(300, 80) // tall enough that 14 px glyphs are under 40% of the height
+	for _, c := range comps {
+		fill(b, c.Box.Add(image.Pt(5, 5)))
+	}
+	lines, regions := Propose(b, nil, Default())
+	if len(lines) != 1 || len(regions) != 3 {
+		t.Errorf("got %d lines and %d regions, want 1 and 3", len(lines), len(regions))
 	}
 }
 

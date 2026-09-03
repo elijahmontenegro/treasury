@@ -7,6 +7,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -25,6 +26,7 @@ import (
 	"treasury/internal/region"
 	"treasury/internal/render"
 	"treasury/ttb"
+	"treasury/verify"
 )
 
 func main() {
@@ -36,24 +38,83 @@ func main() {
 		fmt.Fprintln(os.Stderr, "usage: decode [-ttb expected.json | -ref text] [-debug dir] image")
 		os.Exit(2)
 	}
-	var spans []alphabet.Span
+	var err error
 	if *ttbFile != "" {
-		var exp ttb.Expected
-		b, err := os.ReadFile(*ttbFile)
-		if err == nil {
-			err = json.Unmarshal(b, &exp)
-		}
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "decode:", err)
-			os.Exit(1)
-		}
-		*ref = ttb.Statute
-		spans = []alphabet.Span{{Start: 0, End: ttb.HeaderLen}}
+		err = runEngine(flag.Arg(0), *ttbFile, *debug)
+	} else {
+		err = run(flag.Arg(0), *ref, nil, *debug)
 	}
-	if err := run(flag.Arg(0), *ref, spans, *debug); err != nil {
+	if err != nil {
 		fmt.Fprintln(os.Stderr, "decode:", err)
 		os.Exit(1)
 	}
+}
+
+// runEngine verifies a label application end to end and prints the result.
+func runEngine(path, ttbFile, debug string) error {
+	var exp ttb.Expected
+	b, err := os.ReadFile(ttbFile)
+	if err == nil {
+		err = json.Unmarshal(b, &exp)
+	}
+	if err != nil {
+		return err
+	}
+	img, err := load(path)
+	if err != nil {
+		return err
+	}
+	eng, err := verify.New(verify.Options{})
+	if err != nil {
+		return err
+	}
+	refs, claims := ttb.Inputs(exp)
+	res, err := eng.Verify(context.Background(), img, refs, claims)
+	if err != nil {
+		return err
+	}
+	enc := json.NewEncoder(os.Stdout)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(res); err != nil {
+		return err
+	}
+	if debug == "" {
+		return nil
+	}
+	for _, v := range res.Claims {
+		if v.Evidence == nil {
+			continue
+		}
+		if v.Evidence.Crop != nil {
+			if err := bitmap.WritePNG(filepath.Join(debug, "claims", v.Claim+"_region.png"), v.Evidence.Crop); err != nil {
+				return err
+			}
+		}
+		if p := v.Evidence.Codeword; p.Bin != nil {
+			if err := bitmap.WritePNG(filepath.Join(debug, "claims", v.Claim+"_codeword.png"), p.Bin.ToGray()); err != nil {
+				return err
+			}
+			if p.Gray != nil {
+				if err := bitmap.WritePNG(filepath.Join(debug, "claims", v.Claim+"_codeword_gray.png"), p.Gray); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func load(path string) (image.Image, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	img, _, err := image.Decode(f)
+	if err != nil {
+		return nil, fmt.Errorf("decode %s: %w", path, err)
+	}
+	return img, nil
 }
 
 type summary struct {
@@ -91,14 +152,9 @@ type alphaSummary struct {
 }
 
 func run(path, ref string, spans []alphabet.Span, debug string) error {
-	f, err := os.Open(path)
+	img, err := load(path)
 	if err != nil {
 		return err
-	}
-	defer f.Close()
-	img, _, err := image.Decode(f)
-	if err != nil {
-		return fmt.Errorf("decode %s: %w", path, err)
 	}
 	pre, err := preprocess.Run(img, preprocess.Default())
 	if err != nil {
@@ -250,6 +306,8 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 			kind[st.Glyph] = st.Kind
 		case alphabet.Split:
 			kind[st.Glyph], kind[st.Glyph+1] = st.Kind, st.Kind
+		case alphabet.Split3:
+			kind[st.Glyph], kind[st.Glyph+1], kind[st.Glyph+2] = st.Kind, st.Kind, st.Kind
 		}
 	}
 	for gi, gl := range a.Block.Glyphs {
@@ -257,7 +315,7 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 		switch kind[gi] {
 		case alphabet.Match:
 			c = color.RGBA{G: 170, A: 255}
-		case alphabet.Merge, alphabet.Split:
+		case alphabet.Merge, alphabet.Split, alphabet.Split3:
 			c = color.RGBA{R: 230, G: 140, A: 255}
 		}
 		rect(out, gl.Box.Inset(-1), c)

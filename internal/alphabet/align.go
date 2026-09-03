@@ -10,6 +10,7 @@ const (
 	Match       // one glyph, one character
 	Merge       // one glyph, two characters printed touching
 	Split       // two glyphs, one character printed broken
+	Split3      // three glyphs, one character (a percent sign, a broken glyph with a dot)
 	Insert      // a glyph the reference does not explain
 	Delete      // a character with no glyph
 	Space       // a space character consumed at a gap
@@ -23,6 +24,8 @@ func (k Kind) String() string {
 		return "merge"
 	case Split:
 		return "split"
+	case Split3:
+		return "split3"
 	case Insert:
 		return "insert"
 	case Delete:
@@ -72,6 +75,7 @@ type problem struct {
 	shape  func(g, c int) float64 // glyph g as char c
 	pair   func(g, c int) float64 // glyph g as chars c and c+1 touching
 	union  func(g, c int) float64 // glyphs g and g+1 as char c; NaN when not allowed
+	union3 func(g, c int) float64 // glyphs g, g+1, g+2 as char c; NaN when not allowed; may be nil
 	pen    Penalties
 }
 
@@ -158,6 +162,11 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 					relax(c+1, g+2, cur, p.pen.Split+u, join, Split)
 				}
 			}
+			if g+2 < m && p.union3 != nil {
+				if u := p.union3(g, c); !math.IsNaN(u) {
+					relax(c+1, g+3, cur, p.pen.Split+0.5+u, join, Split3)
+				}
+			}
 		}
 	}
 	if !valid(n, m) || math.IsInf(dp[idx(n, m)], 1) {
@@ -181,6 +190,9 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 		case Split:
 			c, g = c-1, g-2
 			path = append(path, Step{Split, g, c, sc})
+		case Split3:
+			c, g = c-1, g-3
+			path = append(path, Step{Split3, g, c, sc})
 		case Insert:
 			g--
 			path = append(path, Step{Insert, g, c, sc})

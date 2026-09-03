@@ -26,6 +26,9 @@ type Glyph struct {
 	Derived  bool            // cut out of a merged pair rather than a component of its own
 }
 
+// Encoder is the glyph encoder the block's codes were made with.
+func (b *Block) Encoder() encoder.Encoder { return b.enc }
+
 // glyphAt builds a Glyph for a box inside the block.
 func (b *Block) glyphAt(box image.Rectangle, row, baseline int, gray *image.Gray) Glyph {
 	return Glyph{

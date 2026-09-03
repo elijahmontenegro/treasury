@@ -56,7 +56,7 @@ func bar(x0, x1 int) (*bitmap.Bitmap, *image.Gray) {
 
 func TestHashDeterministicAndDistinct(t *testing.T) {
 	h := Line()
-	if h.Bits() != 2048 || Glyph().Bits() != 256 {
+	if h.Bits() != 2048 || Glyph().Bits() != 1792 {
 		t.Fatalf("bits: line %d glyph %d", h.Bits(), Glyph().Bits())
 	}
 	lb, lg := bar(0, 20)
@@ -89,6 +89,27 @@ func TestHashDeterministicAndDistinct(t *testing.T) {
 	}
 	if n := popRange(c3, 1024, 2048); n < 8 || n > 32 {
 		t.Errorf("right bar dHash bits = %d, want one edge per bar row", n)
+	}
+}
+
+func TestThermometerLevels(t *testing.T) {
+	h := Hash{W: 2, H: 1, Levels: 2}
+	b := bitmap.New(4, 4)
+	// Left cell fully inked, right cell one third inked (coverage 0.33).
+	for y := range 4 {
+		b.Set(0, y, 1)
+		b.Set(1, y, 1)
+		if y < 3 {
+			b.Set(2, y, 1)
+		}
+	}
+	// coverage: left = 1.0 → levels 0.25 and 0.75 set; right = 3/8 → only 0.25 set
+	c := h.Encode(Patch{Bin: b})
+	if !c.Get(0) || !c.Get(1) || !c.Get(2) || c.Get(3) {
+		t.Errorf("thermometer bits = %v %v %v %v", c.Get(0), c.Get(1), c.Get(2), c.Get(3))
+	}
+	if h.Name() != "hash-2x1x2" || h.Bits() != 4 {
+		t.Errorf("name %q bits %d", h.Name(), h.Bits())
 	}
 }
 

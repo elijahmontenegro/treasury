@@ -52,8 +52,9 @@ func (k Kind) String() string {
 type Region struct {
 	Box   image.Rectangle
 	Kind  Kind
-	Line  int     // index into the lines slice; -1 for bands
-	Glare float64 // fraction of the box under the glare mask
+	Line  int         // index into the lines slice; -1 for bands
+	Comps []Component // the components inside the box, left to right
+	Glare float64     // fraction of the box under the glare mask
 }
 
 // Params are the proposal knobs; Default matches the spec.
@@ -63,15 +64,17 @@ type Params struct {
 	MaxHeightFrac float64 // components taller than this fraction of the image are art or borders
 	VCenterFrac   float64 // same band when vertical centres differ by less than this × median height
 	HGapFrac      float64 // same line when the gap is less than this × global median width
-	SubGapFrac    float64 // sub-region split at gaps above this × the line's median width
+	MaxWords      int     // longest run of words emitted as a sub-region
 	Pad           int     // region padding in px
 }
 
 // Default returns the spec's parameters, except MinHeight: the spec's 6 px
 // discards periods, colons, and the dots of i at body sizes, and the
-// reference alignment needs them. MinArea still removes specks.
+// reference alignment needs them. MinArea still removes specks. The spec's
+// sub-regions at 2.5 glyph widths never isolate a value inside a sentence;
+// word runs do, and include that case.
 func Default() Params {
-	return Params{MinArea: 8, MinHeight: 3, MaxHeightFrac: 0.4, VCenterFrac: 0.6, HGapFrac: 1.5, SubGapFrac: 2.5, Pad: 4}
+	return Params{MinArea: 8, MinHeight: 3, MaxHeightFrac: 0.4, VCenterFrac: 0.6, HGapFrac: 1.5, MaxWords: 5, Pad: 4}
 }
 
 // Propose runs components → filter → dot merging → lines → regions.
@@ -341,54 +344,88 @@ func newLine(comps []Component, band int) Line {
 }
 
 // Regions emits every line, every band that is not identical to one line,
-// and the pieces of lines split at gaps wider than SubGapFrac × the line's
-// median width. Boxes are padded and deduplicated.
+// and every run of up to MaxWords consecutive words inside a line, so a
+// claim printed inside a longer line has a region of its own. Words are
+// separated at gaps clearly wider than the line's letter gaps. Boxes are
+// padded and deduplicated.
 func Regions(lines []Line, bands []image.Rectangle, bounds image.Rectangle, glare *bitmap.Bitmap, p Params) []Region {
 	seen := map[image.Rectangle]bool{}
 	var out []Region
-	add := func(box image.Rectangle, kind Kind, line int) {
+	add := func(box image.Rectangle, kind Kind, line int, comps []Component) {
+		tight := box
 		box = box.Inset(-p.Pad).Intersect(bounds)
 		if box.Empty() || seen[box] {
 			return
 		}
 		seen[box] = true
 		r := Region{Box: box, Kind: kind, Line: line}
+		for _, c := range comps {
+			if c.Box.In(tight) {
+				r.Comps = append(r.Comps, c)
+			}
+		}
+		sort.Slice(r.Comps, func(a, b int) bool { return r.Comps[a].Box.Min.X < r.Comps[b].Box.Min.X })
 		if glare != nil {
 			r.Glare = float64(glare.CountIn(box)) / float64(box.Dx()*box.Dy())
 		}
 		out = append(out, r)
 	}
 	for i, ln := range lines {
-		add(ln.Box, KindLine, i)
+		add(ln.Box, KindLine, i, ln.Comps)
 	}
-	for _, b := range bands {
-		add(b, KindBand, -1)
-	}
-	for i, ln := range lines {
-		thr := p.SubGapFrac * float64(ln.MedW)
-		start, maxX := 0, ln.Comps[0].Box.Max.X
-		var parts []image.Rectangle
-		for j := 1; j <= len(ln.Comps); j++ {
-			if j < len(ln.Comps) && float64(ln.Comps[j].Box.Min.X-maxX) <= thr {
-				maxX = max(maxX, ln.Comps[j].Box.Max.X)
-				continue
-			}
-			box := ln.Comps[start].Box
-			for _, c := range ln.Comps[start:j] {
-				box = box.Union(c.Box)
-			}
-			parts = append(parts, box)
-			if j < len(ln.Comps) {
-				start, maxX = j, ln.Comps[j].Box.Max.X
+	for bi, b := range bands {
+		var comps []Component
+		for _, ln := range lines {
+			if ln.Band == bi {
+				comps = append(comps, ln.Comps...)
 			}
 		}
-		if len(parts) > 1 {
-			for _, b := range parts {
-				add(b, KindSub, i)
+		add(b, KindBand, -1, comps)
+	}
+	for i, ln := range lines {
+		words := Words(ln)
+		if len(words) < 2 {
+			continue
+		}
+		for n := 1; n <= min(p.MaxWords, len(words)-1); n++ {
+			for start := 0; start+n <= len(words); start++ {
+				box := words[start]
+				for _, w := range words[start+1 : start+n] {
+					box = box.Union(w)
+				}
+				add(box, KindSub, i, ln.Comps)
 			}
 		}
 	}
 	return out
+}
+
+// Words splits a line into word boxes at gaps wider than twice the median
+// letter gap and at least three tenths of the median glyph height.
+func Words(ln Line) []image.Rectangle {
+	if len(ln.Comps) == 0 {
+		return nil
+	}
+	gaps := make([]int, 0, len(ln.Comps))
+	maxX := ln.Comps[0].Box.Max.X
+	for _, c := range ln.Comps[1:] {
+		gaps = append(gaps, max(0, c.Box.Min.X-maxX))
+		maxX = max(maxX, c.Box.Max.X)
+	}
+	thr := max(2*median(gaps)+1, int(0.3*float64(ln.MedH)))
+	var words []image.Rectangle
+	cur := ln.Comps[0].Box
+	maxX = cur.Max.X
+	for _, c := range ln.Comps[1:] {
+		if c.Box.Min.X-maxX > thr {
+			words = append(words, cur)
+			cur = c.Box
+		} else {
+			cur = cur.Union(c.Box)
+		}
+		maxX = max(maxX, c.Box.Max.X)
+	}
+	return append(words, cur)
 }
 
 func cy(c Component) float64 { return float64(c.Box.Min.Y+c.Box.Max.Y) / 2 }
