@@ -1,0 +1,12 @@
+{
+  "beverage": "spirits",
+  "brand": "OLD TOM DISTILLERY",
+  "class": "Kentucky Straight Bourbon Whiskey",
+  "producer": [
+    "Distilled and Bottled by Old Tom Distillery",
+    "Louisville, Kentucky 40202"
+  ],
+  "origin": "Product of USA",
+  "abv": 45,
+  "net_ml": 750
+}

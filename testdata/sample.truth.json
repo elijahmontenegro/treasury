@@ -1,0 +1,8855 @@
+{
+  "w": 1200,
+  "h": 1600,
+  "angle_deg": 0,
+  "glyphs": [
+    {
+      "char": "O",
+      "box": {
+        "Min": {
+          "X": 138,
+          "Y": 117
+        },
+        "Max": {
+          "X": 198,
+          "Y": 182
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 207,
+          "Y": 119
+        },
+        "Max": {
+          "X": 251,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 258,
+          "Y": 119
+        },
+        "Max": {
+          "X": 310,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "T",
+      "box": {
+        "Min": {
+          "X": 337,
+          "Y": 119
+        },
+        "Max": {
+          "X": 386,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "O",
+      "box": {
+        "Min": {
+          "X": 390,
+          "Y": 117
+        },
+        "Max": {
+          "X": 450,
+          "Y": 182
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "M",
+      "box": {
+        "Min": {
+          "X": 459,
+          "Y": 119
+        },
+        "Max": {
+          "X": 516,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 552,
+          "Y": 119
+        },
+        "Max": {
+          "X": 603,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "I",
+      "box": {
+        "Min": {
+          "X": 610,
+          "Y": 119
+        },
+        "Max": {
+          "X": 641,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 648,
+          "Y": 117
+        },
+        "Max": {
+          "X": 698,
+          "Y": 182
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "T",
+      "box": {
+        "Min": {
+          "X": 702,
+          "Y": 119
+        },
+        "Max": {
+          "X": 751,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "I",
+      "box": {
+        "Min": {
+          "X": 755,
+          "Y": 119
+        },
+        "Max": {
+          "X": 786,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 796,
+          "Y": 119
+        },
+        "Max": {
+          "X": 841,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 848,
+          "Y": 119
+        },
+        "Max": {
+          "X": 892,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 899,
+          "Y": 119
+        },
+        "Max": {
+          "X": 946,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "R",
+      "box": {
+        "Min": {
+          "X": 955,
+          "Y": 119
+        },
+        "Max": {
+          "X": 1009,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "Y",
+      "box": {
+        "Min": {
+          "X": 1010,
+          "Y": 119
+        },
+        "Max": {
+          "X": 1064,
+          "Y": 180
+        }
+      },
+      "claim": "brand",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 474,
+          "Y": 243
+        },
+        "Max": {
+          "X": 496,
+          "Y": 271
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "M",
+      "box": {
+        "Min": {
+          "X": 499,
+          "Y": 243
+        },
+        "Max": {
+          "X": 525,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 527,
+          "Y": 243
+        },
+        "Max": {
+          "X": 552,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 554,
+          "Y": 243
+        },
+        "Max": {
+          "X": 573,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 575,
+          "Y": 243
+        },
+        "Max": {
+          "X": 594,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "B",
+      "box": {
+        "Min": {
+          "X": 606,
+          "Y": 243
+        },
+        "Max": {
+          "X": 628,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 629,
+          "Y": 243
+        },
+        "Max": {
+          "X": 654,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "T",
+      "box": {
+        "Min": {
+          "X": 654,
+          "Y": 243
+        },
+        "Max": {
+          "X": 676,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "C",
+      "box": {
+        "Min": {
+          "X": 677,
+          "Y": 243
+        },
+        "Max": {
+          "X": 701,
+          "Y": 271
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "H",
+      "box": {
+        "Min": {
+          "X": 704,
+          "Y": 243
+        },
+        "Max": {
+          "X": 725,
+          "Y": 270
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "K",
+      "box": {
+        "Min": {
+          "X": 252,
+          "Y": 318
+        },
+        "Max": {
+          "X": 277,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 279,
+          "Y": 326
+        },
+        "Max": {
+          "X": 300,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 305,
+          "Y": 326
+        },
+        "Max": {
+          "X": 324,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 326,
+          "Y": 321
+        },
+        "Max": {
+          "X": 339,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 341,
+          "Y": 326
+        },
+        "Max": {
+          "X": 360,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 365,
+          "Y": 326
+        },
+        "Max": {
+          "X": 384,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 388,
+          "Y": 316
+        },
+        "Max": {
+          "X": 407,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 407,
+          "Y": 326
+        },
+        "Max": {
+          "X": 429,
+          "Y": 359
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 443,
+          "Y": 317
+        },
+        "Max": {
+          "X": 469,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 471,
+          "Y": 321
+        },
+        "Max": {
+          "X": 484,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 486,
+          "Y": 326
+        },
+        "Max": {
+          "X": 498,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 499,
+          "Y": 326
+        },
+        "Max": {
+          "X": 522,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 525,
+          "Y": 317
+        },
+        "Max": {
+          "X": 531,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 535,
+          "Y": 326
+        },
+        "Max": {
+          "X": 555,
+          "Y": 360
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 560,
+          "Y": 316
+        },
+        "Max": {
+          "X": 580,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 582,
+          "Y": 321
+        },
+        "Max": {
+          "X": 595,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "B",
+      "box": {
+        "Min": {
+          "X": 610,
+          "Y": 318
+        },
+        "Max": {
+          "X": 634,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 637,
+          "Y": 326
+        },
+        "Max": {
+          "X": 659,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 663,
+          "Y": 326
+        },
+        "Max": {
+          "X": 682,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 688,
+          "Y": 326
+        },
+        "Max": {
+          "X": 700,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 703,
+          "Y": 316
+        },
+        "Max": {
+          "X": 723,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 726,
+          "Y": 326
+        },
+        "Max": {
+          "X": 747,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 751,
+          "Y": 326
+        },
+        "Max": {
+          "X": 771,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "W",
+      "box": {
+        "Min": {
+          "X": 785,
+          "Y": 318
+        },
+        "Max": {
+          "X": 827,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 830,
+          "Y": 316
+        },
+        "Max": {
+          "X": 849,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 854,
+          "Y": 317
+        },
+        "Max": {
+          "X": 860,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 864,
+          "Y": 326
+        },
+        "Max": {
+          "X": 882,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 887,
+          "Y": 316
+        },
+        "Max": {
+          "X": 906,
+          "Y": 350
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 908,
+          "Y": 326
+        },
+        "Max": {
+          "X": 929,
+          "Y": 351
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 931,
+          "Y": 326
+        },
+        "Max": {
+          "X": 953,
+          "Y": 359
+        }
+      },
+      "claim": "class",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 483,
+          "Y": 396
+        },
+        "Max": {
+          "X": 504,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "G",
+      "box": {
+        "Min": {
+          "X": 505,
+          "Y": 396
+        },
+        "Max": {
+          "X": 527,
+          "Y": 421
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 532,
+          "Y": 396
+        },
+        "Max": {
+          "X": 550,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 553,
+          "Y": 396
+        },
+        "Max": {
+          "X": 573,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "8",
+      "box": {
+        "Min": {
+          "X": 584,
+          "Y": 396
+        },
+        "Max": {
+          "X": 600,
+          "Y": 421
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "Y",
+      "box": {
+        "Min": {
+          "X": 609,
+          "Y": 396
+        },
+        "Max": {
+          "X": 631,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 633,
+          "Y": 396
+        },
+        "Max": {
+          "X": 652,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 652,
+          "Y": 396
+        },
+        "Max": {
+          "X": 673,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "R",
+      "box": {
+        "Min": {
+          "X": 675,
+          "Y": 396
+        },
+        "Max": {
+          "X": 696,
+          "Y": 420
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 698,
+          "Y": 396
+        },
+        "Max": {
+          "X": 716,
+          "Y": 421
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "B",
+      "box": {
+        "Min": {
+          "X": 445,
+          "Y": 459
+        },
+        "Max": {
+          "X": 460,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 462,
+          "Y": 464
+        },
+        "Max": {
+          "X": 477,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 477,
+          "Y": 461
+        },
+        "Max": {
+          "X": 486,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 486,
+          "Y": 464
+        },
+        "Max": {
+          "X": 498,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 501,
+          "Y": 458
+        },
+        "Max": {
+          "X": 513,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "N",
+      "box": {
+        "Min": {
+          "X": 524,
+          "Y": 459
+        },
+        "Max": {
+          "X": 541,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 543,
+          "Y": 464
+        },
+        "Max": {
+          "X": 558,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 561,
+          "Y": 476
+        },
+        "Max": {
+          "X": 565,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "1",
+      "box": {
+        "Min": {
+          "X": 577,
+          "Y": 459
+        },
+        "Max": {
+          "X": 590,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "2",
+      "box": {
+        "Min": {
+          "X": 591,
+          "Y": 459
+        },
+        "Max": {
+          "X": 604,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "-",
+      "box": {
+        "Min": {
+          "X": 615,
+          "Y": 470
+        },
+        "Max": {
+          "X": 629,
+          "Y": 473
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 640,
+          "Y": 459
+        },
+        "Max": {
+          "X": 656,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 658,
+          "Y": 464
+        },
+        "Max": {
+          "X": 670,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 671,
+          "Y": 461
+        },
+        "Max": {
+          "X": 679,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 681,
+          "Y": 476
+        },
+        "Max": {
+          "X": 685,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "1",
+      "box": {
+        "Min": {
+          "X": 698,
+          "Y": 459
+        },
+        "Max": {
+          "X": 710,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "8",
+      "box": {
+        "Min": {
+          "X": 712,
+          "Y": 459
+        },
+        "Max": {
+          "X": 726,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "8",
+      "box": {
+        "Min": {
+          "X": 727,
+          "Y": 459
+        },
+        "Max": {
+          "X": 742,
+          "Y": 481
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "7",
+      "box": {
+        "Min": {
+          "X": 743,
+          "Y": 459
+        },
+        "Max": {
+          "X": 757,
+          "Y": 480
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 277,
+          "Y": 541
+        },
+        "Max": {
+          "X": 293,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 295,
+          "Y": 540
+        },
+        "Max": {
+          "X": 299,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 301,
+          "Y": 545
+        },
+        "Max": {
+          "X": 312,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 313,
+          "Y": 543
+        },
+        "Max": {
+          "X": 321,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 322,
+          "Y": 540
+        },
+        "Max": {
+          "X": 326,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 328,
+          "Y": 539
+        },
+        "Max": {
+          "X": 334,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 335,
+          "Y": 539
+        },
+        "Max": {
+          "X": 341,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 341,
+          "Y": 545
+        },
+        "Max": {
+          "X": 354,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 356,
+          "Y": 539
+        },
+        "Max": {
+          "X": 368,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 377,
+          "Y": 539
+        },
+        "Max": {
+          "X": 385,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 386,
+          "Y": 545
+        },
+        "Max": {
+          "X": 393,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 393,
+          "Y": 545
+        },
+        "Max": {
+          "X": 407,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 409,
+          "Y": 545
+        },
+        "Max": {
+          "X": 428,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 437,
+          "Y": 545
+        },
+        "Max": {
+          "X": 449,
+          "Y": 566
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 452,
+          "Y": 545
+        },
+        "Max": {
+          "X": 460,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 460,
+          "Y": 545
+        },
+        "Max": {
+          "X": 474,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 475,
+          "Y": 540
+        },
+        "Max": {
+          "X": 479,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 482,
+          "Y": 545
+        },
+        "Max": {
+          "X": 493,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 503,
+          "Y": 545
+        },
+        "Max": {
+          "X": 516,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 518,
+          "Y": 545
+        },
+        "Max": {
+          "X": 529,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 531,
+          "Y": 539
+        },
+        "Max": {
+          "X": 544,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 553,
+          "Y": 545
+        },
+        "Max": {
+          "X": 567,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 568,
+          "Y": 545
+        },
+        "Max": {
+          "X": 580,
+          "Y": 566
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 582,
+          "Y": 545
+        },
+        "Max": {
+          "X": 595,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 596,
+          "Y": 539
+        },
+        "Max": {
+          "X": 609,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 619,
+          "Y": 540
+        },
+        "Max": {
+          "X": 622,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 625,
+          "Y": 545
+        },
+        "Max": {
+          "X": 637,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 647,
+          "Y": 545
+        },
+        "Max": {
+          "X": 659,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 661,
+          "Y": 545
+        },
+        "Max": {
+          "X": 673,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "w",
+      "box": {
+        "Min": {
+          "X": 674,
+          "Y": 546
+        },
+        "Max": {
+          "X": 693,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 701,
+          "Y": 545
+        },
+        "Max": {
+          "X": 713,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 715,
+          "Y": 539
+        },
+        "Max": {
+          "X": 727,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 729,
+          "Y": 545
+        },
+        "Max": {
+          "X": 742,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 744,
+          "Y": 545
+        },
+        "Max": {
+          "X": 751,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 752,
+          "Y": 545
+        },
+        "Max": {
+          "X": 760,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 760,
+          "Y": 545
+        },
+        "Max": {
+          "X": 773,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 775,
+          "Y": 539
+        },
+        "Max": {
+          "X": 787,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 796,
+          "Y": 545
+        },
+        "Max": {
+          "X": 810,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 811,
+          "Y": 545
+        },
+        "Max": {
+          "X": 825,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 826,
+          "Y": 539
+        },
+        "Max": {
+          "X": 838,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 846,
+          "Y": 539
+        },
+        "Max": {
+          "X": 859,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 860,
+          "Y": 545
+        },
+        "Max": {
+          "X": 874,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 875,
+          "Y": 545
+        },
+        "Max": {
+          "X": 883,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 884,
+          "Y": 545
+        },
+        "Max": {
+          "X": 891,
+          "Y": 560
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 892,
+          "Y": 545
+        },
+        "Max": {
+          "X": 905,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 907,
+          "Y": 539
+        },
+        "Max": {
+          "X": 913,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 913,
+          "Y": 545
+        },
+        "Max": {
+          "X": 925,
+          "Y": 561
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "4",
+      "box": {
+        "Min": {
+          "X": 120,
+          "Y": 615
+        },
+        "Max": {
+          "X": 138,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "5",
+      "box": {
+        "Min": {
+          "X": 141,
+          "Y": 615
+        },
+        "Max": {
+          "X": 155,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "%",
+      "box": {
+        "Min": {
+          "X": 159,
+          "Y": 615
+        },
+        "Max": {
+          "X": 187,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 197,
+          "Y": 615
+        },
+        "Max": {
+          "X": 220,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 222,
+          "Y": 613
+        },
+        "Max": {
+          "X": 229,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 230,
+          "Y": 621
+        },
+        "Max": {
+          "X": 245,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 249,
+          "Y": 635
+        },
+        "Max": {
+          "X": 254,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "/",
+      "box": {
+        "Min": {
+          "X": 257,
+          "Y": 615
+        },
+        "Max": {
+          "X": 267,
+          "Y": 643
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "V",
+      "box": {
+        "Min": {
+          "X": 267,
+          "Y": 615
+        },
+        "Max": {
+          "X": 289,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 290,
+          "Y": 621
+        },
+        "Max": {
+          "X": 307,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 310,
+          "Y": 613
+        },
+        "Max": {
+          "X": 317,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 320,
+          "Y": 635
+        },
+        "Max": {
+          "X": 325,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "(",
+      "box": {
+        "Min": {
+          "X": 339,
+          "Y": 613
+        },
+        "Max": {
+          "X": 348,
+          "Y": 645
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "9",
+      "box": {
+        "Min": {
+          "X": 350,
+          "Y": 614
+        },
+        "Max": {
+          "X": 366,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "0",
+      "box": {
+        "Min": {
+          "X": 368,
+          "Y": 614
+        },
+        "Max": {
+          "X": 386,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "P",
+      "box": {
+        "Min": {
+          "X": 398,
+          "Y": 615
+        },
+        "Max": {
+          "X": 418,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 421,
+          "Y": 621
+        },
+        "Max": {
+          "X": 430,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 431,
+          "Y": 621
+        },
+        "Max": {
+          "X": 448,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 450,
+          "Y": 621
+        },
+        "Max": {
+          "X": 467,
+          "Y": 641
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 468,
+          "Y": 613
+        },
+        "Max": {
+          "X": 479,
+          "Y": 640
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ")",
+      "box": {
+        "Min": {
+          "X": 478,
+          "Y": 613
+        },
+        "Max": {
+          "X": 487,
+          "Y": 645
+        }
+      },
+      "claim": "abv",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "7",
+      "box": {
+        "Min": {
+          "X": 902,
+          "Y": 615
+        },
+        "Max": {
+          "X": 919,
+          "Y": 640
+        }
+      },
+      "claim": "net",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "5",
+      "box": {
+        "Min": {
+          "X": 921,
+          "Y": 615
+        },
+        "Max": {
+          "X": 935,
+          "Y": 641
+        }
+      },
+      "claim": "net",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "0",
+      "box": {
+        "Min": {
+          "X": 939,
+          "Y": 614
+        },
+        "Max": {
+          "X": 956,
+          "Y": 641
+        }
+      },
+      "claim": "net",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 968,
+          "Y": 621
+        },
+        "Max": {
+          "X": 993,
+          "Y": 640
+        }
+      },
+      "claim": "net",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 997,
+          "Y": 615
+        },
+        "Max": {
+          "X": 1013,
+          "Y": 640
+        }
+      },
+      "claim": "net",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 340,
+          "Y": 699
+        },
+        "Max": {
+          "X": 357,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 360,
+          "Y": 699
+        },
+        "Max": {
+          "X": 364,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 366,
+          "Y": 704
+        },
+        "Max": {
+          "X": 378,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 379,
+          "Y": 701
+        },
+        "Max": {
+          "X": 388,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 389,
+          "Y": 699
+        },
+        "Max": {
+          "X": 392,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 396,
+          "Y": 698
+        },
+        "Max": {
+          "X": 402,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 403,
+          "Y": 698
+        },
+        "Max": {
+          "X": 409,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 410,
+          "Y": 704
+        },
+        "Max": {
+          "X": 423,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 425,
+          "Y": 698
+        },
+        "Max": {
+          "X": 438,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 449,
+          "Y": 704
+        },
+        "Max": {
+          "X": 463,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 465,
+          "Y": 704
+        },
+        "Max": {
+          "X": 478,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 480,
+          "Y": 698
+        },
+        "Max": {
+          "X": 493,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "B",
+      "box": {
+        "Min": {
+          "X": 504,
+          "Y": 699
+        },
+        "Max": {
+          "X": 520,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 522,
+          "Y": 704
+        },
+        "Max": {
+          "X": 536,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 537,
+          "Y": 701
+        },
+        "Max": {
+          "X": 545,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 544,
+          "Y": 701
+        },
+        "Max": {
+          "X": 553,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 554,
+          "Y": 698
+        },
+        "Max": {
+          "X": 560,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 561,
+          "Y": 704
+        },
+        "Max": {
+          "X": 574,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 576,
+          "Y": 698
+        },
+        "Max": {
+          "X": 590,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 601,
+          "Y": 698
+        },
+        "Max": {
+          "X": 614,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 614,
+          "Y": 705
+        },
+        "Max": {
+          "X": 629,
+          "Y": 726
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "O",
+      "box": {
+        "Min": {
+          "X": 637,
+          "Y": 699
+        },
+        "Max": {
+          "X": 657,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 660,
+          "Y": 698
+        },
+        "Max": {
+          "X": 666,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 666,
+          "Y": 698
+        },
+        "Max": {
+          "X": 680,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "T",
+      "box": {
+        "Min": {
+          "X": 689,
+          "Y": 699
+        },
+        "Max": {
+          "X": 706,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 707,
+          "Y": 704
+        },
+        "Max": {
+          "X": 721,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 723,
+          "Y": 704
+        },
+        "Max": {
+          "X": 744,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "D",
+      "box": {
+        "Min": {
+          "X": 754,
+          "Y": 699
+        },
+        "Max": {
+          "X": 772,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 774,
+          "Y": 699
+        },
+        "Max": {
+          "X": 778,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 781,
+          "Y": 704
+        },
+        "Max": {
+          "X": 793,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 794,
+          "Y": 701
+        },
+        "Max": {
+          "X": 802,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 803,
+          "Y": 699
+        },
+        "Max": {
+          "X": 807,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 810,
+          "Y": 698
+        },
+        "Max": {
+          "X": 816,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 818,
+          "Y": 698
+        },
+        "Max": {
+          "X": 824,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 824,
+          "Y": 704
+        },
+        "Max": {
+          "X": 838,
+          "Y": 721
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 841,
+          "Y": 704
+        },
+        "Max": {
+          "X": 849,
+          "Y": 720
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 848,
+          "Y": 705
+        },
+        "Max": {
+          "X": 863,
+          "Y": 726
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "L",
+      "box": {
+        "Min": {
+          "X": 434,
+          "Y": 739
+        },
+        "Max": {
+          "X": 448,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 448,
+          "Y": 744
+        },
+        "Max": {
+          "X": 462,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 465,
+          "Y": 745
+        },
+        "Max": {
+          "X": 477,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 480,
+          "Y": 739
+        },
+        "Max": {
+          "X": 484,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 487,
+          "Y": 744
+        },
+        "Max": {
+          "X": 499,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "v",
+      "box": {
+        "Min": {
+          "X": 499,
+          "Y": 745
+        },
+        "Max": {
+          "X": 514,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 515,
+          "Y": 739
+        },
+        "Max": {
+          "X": 519,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 522,
+          "Y": 738
+        },
+        "Max": {
+          "X": 528,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 530,
+          "Y": 738
+        },
+        "Max": {
+          "X": 536,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 536,
+          "Y": 744
+        },
+        "Max": {
+          "X": 550,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ",",
+      "box": {
+        "Min": {
+          "X": 553,
+          "Y": 756
+        },
+        "Max": {
+          "X": 558,
+          "Y": 765
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "K",
+      "box": {
+        "Min": {
+          "X": 570,
+          "Y": 739
+        },
+        "Max": {
+          "X": 586,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 587,
+          "Y": 744
+        },
+        "Max": {
+          "X": 601,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 604,
+          "Y": 744
+        },
+        "Max": {
+          "X": 616,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 617,
+          "Y": 741
+        },
+        "Max": {
+          "X": 626,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 627,
+          "Y": 745
+        },
+        "Max": {
+          "X": 639,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 642,
+          "Y": 744
+        },
+        "Max": {
+          "X": 654,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 657,
+          "Y": 738
+        },
+        "Max": {
+          "X": 669,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 669,
+          "Y": 745
+        },
+        "Max": {
+          "X": 683,
+          "Y": 766
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "4",
+      "box": {
+        "Min": {
+          "X": 691,
+          "Y": 739
+        },
+        "Max": {
+          "X": 706,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "0",
+      "box": {
+        "Min": {
+          "X": 707,
+          "Y": 739
+        },
+        "Max": {
+          "X": 721,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "2",
+      "box": {
+        "Min": {
+          "X": 723,
+          "Y": 739
+        },
+        "Max": {
+          "X": 735,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "0",
+      "box": {
+        "Min": {
+          "X": 738,
+          "Y": 739
+        },
+        "Max": {
+          "X": 753,
+          "Y": 761
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "2",
+      "box": {
+        "Min": {
+          "X": 754,
+          "Y": 739
+        },
+        "Max": {
+          "X": 767,
+          "Y": 760
+        }
+      },
+      "claim": "producer",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "P",
+      "box": {
+        "Min": {
+          "X": 505,
+          "Y": 779
+        },
+        "Max": {
+          "X": 521,
+          "Y": 800
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 523,
+          "Y": 784
+        },
+        "Max": {
+          "X": 531,
+          "Y": 800
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 532,
+          "Y": 784
+        },
+        "Max": {
+          "X": 546,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 547,
+          "Y": 778
+        },
+        "Max": {
+          "X": 561,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 564,
+          "Y": 785
+        },
+        "Max": {
+          "X": 576,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 578,
+          "Y": 784
+        },
+        "Max": {
+          "X": 591,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 592,
+          "Y": 781
+        },
+        "Max": {
+          "X": 600,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 608,
+          "Y": 784
+        },
+        "Max": {
+          "X": 622,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 623,
+          "Y": 778
+        },
+        "Max": {
+          "X": 632,
+          "Y": 800
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "U",
+      "box": {
+        "Min": {
+          "X": 640,
+          "Y": 779
+        },
+        "Max": {
+          "X": 657,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 660,
+          "Y": 779
+        },
+        "Max": {
+          "X": 676,
+          "Y": 801
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 677,
+          "Y": 779
+        },
+        "Max": {
+          "X": 696,
+          "Y": 800
+        }
+      },
+      "claim": "origin",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "H",
+      "box": {
+        "Min": {
+          "X": 410,
+          "Y": 881
+        },
+        "Max": {
+          "X": 429,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 428,
+          "Y": 885
+        },
+        "Max": {
+          "X": 443,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 443,
+          "Y": 885
+        },
+        "Max": {
+          "X": 458,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 458,
+          "Y": 879
+        },
+        "Max": {
+          "X": 474,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 473,
+          "Y": 885
+        },
+        "Max": {
+          "X": 486,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 486,
+          "Y": 885
+        },
+        "Max": {
+          "X": 496,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 495,
+          "Y": 885
+        },
+        "Max": {
+          "X": 509,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 510,
+          "Y": 879
+        },
+        "Max": {
+          "X": 521,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 517,
+          "Y": 883
+        },
+        "Max": {
+          "X": 527,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 525,
+          "Y": 885
+        },
+        "Max": {
+          "X": 540,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 539,
+          "Y": 879
+        },
+        "Max": {
+          "X": 555,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 562,
+          "Y": 880
+        },
+        "Max": {
+          "X": 569,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 568,
+          "Y": 885
+        },
+        "Max": {
+          "X": 583,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 591,
+          "Y": 879
+        },
+        "Max": {
+          "X": 598,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 598,
+          "Y": 880
+        },
+        "Max": {
+          "X": 605,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 604,
+          "Y": 885
+        },
+        "Max": {
+          "X": 626,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 626,
+          "Y": 880
+        },
+        "Max": {
+          "X": 634,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 633,
+          "Y": 883
+        },
+        "Max": {
+          "X": 642,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 640,
+          "Y": 885
+        },
+        "Max": {
+          "X": 655,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 655,
+          "Y": 879
+        },
+        "Max": {
+          "X": 671,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "q",
+      "box": {
+        "Min": {
+          "X": 677,
+          "Y": 885
+        },
+        "Max": {
+          "X": 691,
+          "Y": 906
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 692,
+          "Y": 886
+        },
+        "Max": {
+          "X": 706,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 706,
+          "Y": 885
+        },
+        "Max": {
+          "X": 721,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 721,
+          "Y": 885
+        },
+        "Max": {
+          "X": 736,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 736,
+          "Y": 883
+        },
+        "Max": {
+          "X": 745,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 744,
+          "Y": 880
+        },
+        "Max": {
+          "X": 751,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 750,
+          "Y": 883
+        },
+        "Max": {
+          "X": 760,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 758,
+          "Y": 880
+        },
+        "Max": {
+          "X": 765,
+          "Y": 900
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 765,
+          "Y": 885
+        },
+        "Max": {
+          "X": 779,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 779,
+          "Y": 885
+        },
+        "Max": {
+          "X": 792,
+          "Y": 901
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "P",
+      "box": {
+        "Min": {
+          "X": 455,
+          "Y": 1281
+        },
+        "Max": {
+          "X": 470,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 472,
+          "Y": 1279
+        },
+        "Max": {
+          "X": 477,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 478,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 491,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 492,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 506,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 507,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 518,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 520,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 533,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 541,
+          "Y": 1279
+        },
+        "Max": {
+          "X": 554,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 557,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 564,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 565,
+          "Y": 1280
+        },
+        "Max": {
+          "X": 569,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 572,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 584,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 586,
+          "Y": 1279
+        },
+        "Max": {
+          "X": 598,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 607,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 614,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 614,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 627,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 629,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 640,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 643,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 655,
+          "Y": 1306
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 656,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 669,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 672,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 683,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 686,
+          "Y": 1285
+        },
+        "Max": {
+          "X": 697,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 699,
+          "Y": 1280
+        },
+        "Max": {
+          "X": 703,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 705,
+          "Y": 1279
+        },
+        "Max": {
+          "X": 718,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 720,
+          "Y": 1279
+        },
+        "Max": {
+          "X": 726,
+          "Y": 1301
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 725,
+          "Y": 1286
+        },
+        "Max": {
+          "X": 739,
+          "Y": 1306
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 740,
+          "Y": 1296
+        },
+        "Max": {
+          "X": 745,
+          "Y": 1300
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "w",
+      "box": {
+        "Min": {
+          "X": 452,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 468,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "w",
+      "box": {
+        "Min": {
+          "X": 468,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 484,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "w",
+      "box": {
+        "Min": {
+          "X": 483,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 500,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 501,
+          "Y": 1377
+        },
+        "Max": {
+          "X": 505,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 507,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 518,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 520,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 525,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 525,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 536,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 537,
+          "Y": 1365
+        },
+        "Max": {
+          "X": 544,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 544,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 555,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 557,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 573,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 574,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 585,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 587,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 590,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 592,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 602,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 602,
+          "Y": 1365
+        },
+        "Max": {
+          "X": 609,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 610,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 613,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 615,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 620,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 621,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 626,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 626,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 637,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 639,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 646,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 645,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 657,
+          "Y": 1385
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 658,
+          "Y": 1377
+        },
+        "Max": {
+          "X": 662,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 664,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 675,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "x",
+      "box": {
+        "Min": {
+          "X": 675,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 687,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 687,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 699,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 700,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 716,
+          "Y": 1380
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 718,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 729,
+          "Y": 1385
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 731,
+          "Y": 1363
+        },
+        "Max": {
+          "X": 736,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 736,
+          "Y": 1368
+        },
+        "Max": {
+          "X": 747,
+          "Y": 1381
+        }
+      },
+      "claim": "",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "G",
+      "box": {
+        "Min": {
+          "X": 120,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 137,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "O",
+      "box": {
+        "Min": {
+          "X": 139,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 157,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "V",
+      "box": {
+        "Min": {
+          "X": 157,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 174,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 175,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 189,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "R",
+      "box": {
+        "Min": {
+          "X": 191,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 207,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "N",
+      "box": {
+        "Min": {
+          "X": 208,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 223,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "M",
+      "box": {
+        "Min": {
+          "X": 226,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 243,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "E",
+      "box": {
+        "Min": {
+          "X": 246,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 260,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "N",
+      "box": {
+        "Min": {
+          "X": 262,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 276,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "T",
+      "box": {
+        "Min": {
+          "X": 277,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 292,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "W",
+      "box": {
+        "Min": {
+          "X": 300,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 323,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 322,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 340,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "R",
+      "box": {
+        "Min": {
+          "X": 342,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 358,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "N",
+      "box": {
+        "Min": {
+          "X": 359,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 373,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "I",
+      "box": {
+        "Min": {
+          "X": 375,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 385,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "N",
+      "box": {
+        "Min": {
+          "X": 387,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 401,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "G",
+      "box": {
+        "Min": {
+          "X": 403,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 420,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": ":",
+      "box": {
+        "Min": {
+          "X": 424,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 428,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": true,
+      "line": 0
+    },
+    {
+      "char": "(",
+      "box": {
+        "Min": {
+          "X": 438,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 445,
+          "Y": 1024
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "1",
+      "box": {
+        "Min": {
+          "X": 447,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 458,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ")",
+      "box": {
+        "Min": {
+          "X": 459,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 465,
+          "Y": 1024
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "A",
+      "box": {
+        "Min": {
+          "X": 474,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 490,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 491,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 501,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 503,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 513,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 515,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 527,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 529,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 536,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 536,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 547,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 550,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 553,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 556,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 567,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 569,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 580,
+          "Y": 1025
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 589,
+          "Y": 1004
+        },
+        "Max": {
+          "X": 596,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 596,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 609,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 617,
+          "Y": 1004
+        },
+        "Max": {
+          "X": 624,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 625,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 636,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 638,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 650,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "S",
+      "box": {
+        "Min": {
+          "X": 659,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 673,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 675,
+          "Y": 1007
+        },
+        "Max": {
+          "X": 686,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 689,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 696,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 696,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 707,
+          "Y": 1025
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 709,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 721,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 723,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 735,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 737,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 748,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "G",
+      "box": {
+        "Min": {
+          "X": 757,
+          "Y": 1002
+        },
+        "Max": {
+          "X": 773,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 775,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 787,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 789,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 800,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 802,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 814,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 816,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 823,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 823,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 836,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 837,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 843,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": ",",
+      "box": {
+        "Min": {
+          "X": 844,
+          "Y": 1017
+        },
+        "Max": {
+          "X": 848,
+          "Y": 1025
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "w",
+      "box": {
+        "Min": {
+          "X": 858,
+          "Y": 1007
+        },
+        "Max": {
+          "X": 876,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 876,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 888,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 890,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 907,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 909,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 921,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 923,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 934,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 944,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 954,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 956,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 967,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 969,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 981,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 983,
+          "Y": 1007
+        },
+        "Max": {
+          "X": 994,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 996,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 1002,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 1002,
+          "Y": 1001
+        },
+        "Max": {
+          "X": 1013,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 1023,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 1034,
+          "Y": 1020
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 1036,
+          "Y": 1006
+        },
+        "Max": {
+          "X": 1048,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 1048,
+          "Y": 1004
+        },
+        "Max": {
+          "X": 1056,
+          "Y": 1021
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 0
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 121,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 132,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 135,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 142,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 143,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 146,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 149,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 159,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 162,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 173,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 181,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 193,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 195,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 200,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 200,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 211,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 212,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 225,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 226,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 237,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 239,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 251,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 253,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 258,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 259,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 263,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 265,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 275,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 285,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 297,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 298,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 310,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "v",
+      "box": {
+        "Min": {
+          "X": 310,
+          "Y": 1039
+        },
+        "Max": {
+          "X": 323,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 323,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 335,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 337,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 344,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 345,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 357,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 358,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 369,
+          "Y": 1057
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 371,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 383,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 385,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 395,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 405,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 416,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 419,
+          "Y": 1039
+        },
+        "Max": {
+          "X": 429,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 432,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 439,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 440,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 443,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 446,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 457,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 459,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 470,
+          "Y": 1057
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 480,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 492,
+          "Y": 1057
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 494,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 501,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 501,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 513,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 514,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 526,
+          "Y": 1057
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 528,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 539,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 541,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 554,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 555,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 566,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 568,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 578,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 579,
+          "Y": 1039
+        },
+        "Max": {
+          "X": 591,
+          "Y": 1057
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 600,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 612,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 613,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 625,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 626,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 637,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 638,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 651,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 652,
+          "Y": 1039
+        },
+        "Max": {
+          "X": 663,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 665,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 676,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 677,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 689,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 698,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 710,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 710,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 718,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 725,
+          "Y": 1036
+        },
+        "Max": {
+          "X": 732,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 733,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 744,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 746,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 758,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 767,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 774,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 775,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 779,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 781,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 791,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "k",
+      "box": {
+        "Min": {
+          "X": 793,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 804,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 812,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 824,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 824,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 832,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 840,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 852,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 854,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 857,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 860,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 867,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 866,
+          "Y": 1036
+        },
+        "Max": {
+          "X": 874,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 874,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 885,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 895,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 906,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 908,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 920,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 921,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 929,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 928,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 940,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 941,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 952,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 953,
+          "Y": 1036
+        },
+        "Max": {
+          "X": 960,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 960,
+          "Y": 1038
+        },
+        "Max": {
+          "X": 971,
+          "Y": 1053
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 973,
+          "Y": 1048
+        },
+        "Max": {
+          "X": 977,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "(",
+      "box": {
+        "Min": {
+          "X": 988,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 995,
+          "Y": 1056
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "2",
+      "box": {
+        "Min": {
+          "X": 996,
+          "Y": 1034
+        },
+        "Max": {
+          "X": 1007,
+          "Y": 1052
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": ")",
+      "box": {
+        "Min": {
+          "X": 1009,
+          "Y": 1033
+        },
+        "Max": {
+          "X": 1015,
+          "Y": 1056
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 1
+    },
+    {
+      "char": "C",
+      "box": {
+        "Min": {
+          "X": 121,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 136,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 138,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 150,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 152,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 163,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 165,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 175,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 177,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 188,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 191,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 208,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 211,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 222,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 223,
+          "Y": 1068
+        },
+        "Max": {
+          "X": 230,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 231,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 234,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 236,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 248,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 250,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 261,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 271,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 283,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "f",
+      "box": {
+        "Min": {
+          "X": 283,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 291,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 299,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 311,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 313,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 318,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 318,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 329,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 330,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 343,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 344,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 355,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 357,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 369,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 371,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 376,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 377,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 381,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 383,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 393,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 403,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 415,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 416,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 428,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "v",
+      "box": {
+        "Min": {
+          "X": 428,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 441,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 441,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 453,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 455,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 462,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 463,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 475,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "g",
+      "box": {
+        "Min": {
+          "X": 476,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 487,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 489,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 501,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 503,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 513,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 523,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 527,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 529,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 547,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 549,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 561,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 562,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 575,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 576,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 579,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 582,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 589,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 589,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 600,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 608,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 620,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 621,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 633,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 635,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 645,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 648,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 655,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 663,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 675,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 677,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 688,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 690,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 693,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 696,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 701,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 702,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 706,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 707,
+          "Y": 1068
+        },
+        "Max": {
+          "X": 714,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 713,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 726,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 733,
+          "Y": 1068
+        },
+        "Max": {
+          "X": 740,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 740,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 753,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 762,
+          "Y": 1065
+        },
+        "Max": {
+          "X": 773,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 776,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 783,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 784,
+          "Y": 1066
+        },
+        "Max": {
+          "X": 787,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "v",
+      "box": {
+        "Min": {
+          "X": 788,
+          "Y": 1071
+        },
+        "Max": {
+          "X": 801,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 801,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 813,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 822,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 834,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 843,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 853,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 855,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 867,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 869,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 876,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 884,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 896,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 898,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 905,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 913,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 925,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 927,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 938,
+          "Y": 1089
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 939,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 951,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 953,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 960,
+          "Y": 1084
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 961,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 973,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 973,
+          "Y": 1068
+        },
+        "Max": {
+          "X": 981,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 981,
+          "Y": 1070
+        },
+        "Max": {
+          "X": 993,
+          "Y": 1085
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 2
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 121,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 139,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 141,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 153,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 154,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 165,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 167,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 178,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "i",
+      "box": {
+        "Min": {
+          "X": 180,
+          "Y": 1098
+        },
+        "Max": {
+          "X": 183,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 186,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 197,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 198,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 210,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 213,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 220,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 219,
+          "Y": 1103
+        },
+        "Max": {
+          "X": 232,
+          "Y": 1121
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": ",",
+      "box": {
+        "Min": {
+          "X": 233,
+          "Y": 1113
+        },
+        "Max": {
+          "X": 237,
+          "Y": 1121
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 247,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 259,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "n",
+      "box": {
+        "Min": {
+          "X": 261,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 272,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "d",
+      "box": {
+        "Min": {
+          "X": 273,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 285,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 295,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 313,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 315,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 327,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "y",
+      "box": {
+        "Min": {
+          "X": 327,
+          "Y": 1103
+        },
+        "Max": {
+          "X": 340,
+          "Y": 1121
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "c",
+      "box": {
+        "Min": {
+          "X": 348,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 358,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 360,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 372,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "u",
+      "box": {
+        "Min": {
+          "X": 374,
+          "Y": 1103
+        },
+        "Max": {
+          "X": 384,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 387,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 397,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 398,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 410,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 420,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 431,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 433,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 445,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "a",
+      "box": {
+        "Min": {
+          "X": 446,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 459,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 460,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 466,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "t",
+      "box": {
+        "Min": {
+          "X": 465,
+          "Y": 1100
+        },
+        "Max": {
+          "X": 473,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "h",
+      "box": {
+        "Min": {
+          "X": 474,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 484,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "p",
+      "box": {
+        "Min": {
+          "X": 494,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 506,
+          "Y": 1121
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "r",
+      "box": {
+        "Min": {
+          "X": 508,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 515,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "o",
+      "box": {
+        "Min": {
+          "X": 515,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 527,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "b",
+      "box": {
+        "Min": {
+          "X": 529,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 541,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "l",
+      "box": {
+        "Min": {
+          "X": 542,
+          "Y": 1097
+        },
+        "Max": {
+          "X": 548,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "e",
+      "box": {
+        "Min": {
+          "X": 548,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 560,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "m",
+      "box": {
+        "Min": {
+          "X": 562,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 580,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": "s",
+      "box": {
+        "Min": {
+          "X": 582,
+          "Y": 1102
+        },
+        "Max": {
+          "X": 592,
+          "Y": 1117
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    },
+    {
+      "char": ".",
+      "box": {
+        "Min": {
+          "X": 595,
+          "Y": 1112
+        },
+        "Max": {
+          "X": 599,
+          "Y": 1116
+        }
+      },
+      "claim": "reference",
+      "heavy": false,
+      "line": 3
+    }
+  ]
+}
