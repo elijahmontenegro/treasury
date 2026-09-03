@@ -65,8 +65,19 @@ func NetText(ml float64) string {
 	return Num(ml) + " mL"
 }
 
-// LabelDocument lays exp out as a spirits label for the generator.
-func LabelDocument(exp Expected) synth.Document {
+// Variant is a deliberate deviation of a generated label from compliance.
+type Variant struct {
+	HeaderTitleCase bool   // "Government Warning:" instead of capitals
+	HeaderRegular   bool   // header in the body weight
+	Wording         string // replaces the statutory text when set
+	NoWarning       bool   // omit the warning block entirely
+}
+
+// LabelDocument lays exp out as a compliant spirits label for the generator.
+func LabelDocument(exp Expected) synth.Document { return LabelDocumentVariant(exp, Variant{}) }
+
+// LabelDocumentVariant lays exp out with a deliberate deviation.
+func LabelDocumentVariant(exp Expected, v Variant) synth.Document {
 	const w, h = 1200, 1600
 	cx := w / 2
 	doc := synth.Document{W: w, H: h}
@@ -90,18 +101,31 @@ func LabelDocument(exp Expected) synth.Document {
 	}
 	item(exp.Origin, "Go Regular", 28, y, "origin")
 	item("Handcrafted in limited quantities", "Go Italic", 26, 900, "")
-	doc.Blocks = append(doc.Blocks, synth.Block{
-		Text:      Statute,
-		Heavy:     []synth.Span{{Start: 0, End: HeaderLen}},
-		Face:      "Go Regular",
-		HeavyFace: "Go Bold",
-		Px:        24,
-		X:         120,
-		Y:         1020,
-		Width:     960,
-		Leading:   1.35,
-		Claim:     "reference",
-	})
+	text := Statute
+	if v.Wording != "" {
+		text = v.Wording
+	}
+	if v.HeaderTitleCase {
+		text = "Government Warning:" + text[HeaderLen:]
+	}
+	heavyFace := "Go Bold"
+	if v.HeaderRegular {
+		heavyFace = "Go Regular"
+	}
+	if !v.NoWarning {
+		doc.Blocks = append(doc.Blocks, synth.Block{
+			Text:      text,
+			Heavy:     []synth.Span{{Start: 0, End: HeaderLen}},
+			Face:      "Go Regular",
+			HeavyFace: heavyFace,
+			Px:        24,
+			X:         120,
+			Y:         1020,
+			Width:     960,
+			Leading:   1.35,
+			Claim:     "reference",
+		})
+	}
 	item("Please drink responsibly.", "Go Regular", 26, 1300, "")
 	item("www.oldtomdistillery.example", "Go Regular", 22, 1380, "")
 	return doc

@@ -302,7 +302,7 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 	kind := make([]alphabet.Kind, len(a.Block.Glyphs))
 	for _, st := range a.Path {
 		switch st.Kind {
-		case alphabet.Match, alphabet.Merge, alphabet.Insert:
+		case alphabet.Match, alphabet.Merge, alphabet.Merge3, alphabet.Insert:
 			kind[st.Glyph] = st.Kind
 		case alphabet.Split:
 			kind[st.Glyph], kind[st.Glyph+1] = st.Kind, st.Kind
@@ -315,7 +315,7 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 		switch kind[gi] {
 		case alphabet.Match:
 			c = color.RGBA{G: 170, A: 255}
-		case alphabet.Merge, alphabet.Split, alphabet.Split3:
+		case alphabet.Merge, alphabet.Merge3, alphabet.Split, alphabet.Split3:
 			c = color.RGBA{R: 230, G: 140, A: 255}
 		}
 		rect(out, gl.Box.Inset(-1), c)

@@ -9,6 +9,7 @@ const (
 	_      Kind = iota
 	Match       // one glyph, one character
 	Merge       // one glyph, two characters printed touching
+	Merge3      // one glyph, three characters printed touching
 	Split       // two glyphs, one character printed broken
 	Split3      // three glyphs, one character (a percent sign, a broken glyph with a dot)
 	Insert      // a glyph the reference does not explain
@@ -22,6 +23,8 @@ func (k Kind) String() string {
 		return "match"
 	case Merge:
 		return "merge"
+	case Merge3:
+		return "merge3"
 	case Split:
 		return "split"
 	case Split3:
@@ -74,6 +77,7 @@ type problem struct {
 	spaces []int     // spaces[c] = spaces among chars[:c]
 	shape  func(g, c int) float64 // glyph g as char c
 	pair   func(g, c int) float64 // glyph g as chars c and c+1 touching
+	triple func(g, c int) float64 // glyph g as chars c, c+1, c+2 touching; may be nil
 	union  func(g, c int) float64 // glyphs g and g+1 as char c; NaN when not allowed
 	union3 func(g, c int) float64 // glyphs g, g+1, g+2 as char c; NaN when not allowed; may be nil
 	pen    Penalties
@@ -156,6 +160,9 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 			relax(c+1, g+1, cur, p.shape(g, c), join, Match)
 			if c+1 < n && p.chars[c+1] != ' ' {
 				relax(c+2, g+1, cur, p.pen.Merge+p.pair(g, c), join, Merge)
+				if c+2 < n && p.chars[c+2] != ' ' && p.triple != nil {
+					relax(c+3, g+1, cur, p.pen.Merge+0.5+p.triple(g, c), join, Merge3)
+				}
 			}
 			if g+1 < m {
 				if u := p.union(g, c); !math.IsNaN(u) {
@@ -187,6 +194,9 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 		case Merge:
 			c, g = c-2, g-1
 			path = append(path, Step{Merge, g, c, sc})
+		case Merge3:
+			c, g = c-3, g-1
+			path = append(path, Step{Merge3, g, c, sc})
 		case Split:
 			c, g = c-1, g-2
 			path = append(path, Step{Split, g, c, sc})

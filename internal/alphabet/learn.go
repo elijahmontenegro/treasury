@@ -38,14 +38,31 @@ type Key struct {
 	Span int
 }
 
+// Anomaly is one glyph the reference does not account for well: an
+// unexplained glyph or character, or a matched or split glyph far from its
+// character's centroid.
+type Anomaly struct {
+	Kind     Kind            `json:"kind"`
+	Glyph    int             `json:"glyph"`
+	Char     string          `json:"char"`              // the character the reference expects
+	Nearest  string          `json:"nearest,omitempty"` // the character the glyph looks most like, for outliers
+	Distance float64         `json:"distance"`          // normalized Hamming to the centroid; 0 for inserts and deletes
+	Strong   bool            `json:"strong"`            // far beyond the outlier threshold, or unexplained
+	Box      image.Rectangle `json:"box"`
+}
+
 // RowQuality is the alignment quality of one row of the block.
 type RowQuality struct {
-	Row          int
-	Glyphs       int
-	Matched      int
-	Penalized    int     // merge, split, insert, delete steps on the row
-	Unexplained  int     // insert and delete steps only: what the reference cannot account for
-	MeanDistance float64 // mean normalized Hamming of matched glyphs to their centroids
+	Row             int
+	Glyphs          int
+	Matched         int
+	Penalized       int       // merge, split, insert, delete steps on the row
+	Unexplained     int       // insert and delete steps only: what the reference cannot account for
+	PriorViolations int       // matched glyphs whose shape features contradict their character (a lowercase glyph for a capital)
+	Outliers        int       // matched or split glyphs far from their character's centroid (a substituted letter)
+	StrongOutliers  int       // outliers beyond one and a half times the threshold
+	MeanDistance    float64   // mean normalized Hamming of matched glyphs to their centroids
+	Anomalies       []Anomaly // the unexplained and outlier glyphs, with evidence
 }
 
 // Alphabet is what the block taught: glyph samples per character.
@@ -63,10 +80,13 @@ type Alphabet struct {
 	LetterGap float64 // px
 	WordGap   float64 // px
 
+	Spans []Span
+
 	Spread      float64 // mean within-character normalized Hamming spread
 	Matched     int
 	Penalized   int // merge, split, insert, delete
 	Unexplained int // insert, delete
+	Outliers    int // matched glyphs far from their centroid
 	Recovered   int // samples cut out of merged pairs
 	Rows        []RowQuality
 	Cost      float64
@@ -171,6 +191,9 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	pr.pair = func(g, c int) float64 {
 		return priorCost(feats[g], widths[g], mergedPrior(priors[c], priors[c+1]))
 	}
+	pr.triple = func(g, c int) float64 {
+		return priorCost(feats[g], widths[g], mergedPrior(mergedPrior(priors[c], priors[c+1]), priors[c+2]))
+	}
 	unionCost := func(g, k, c int) float64 {
 		box, ok := unionBox(g, k)
 		if !ok {
@@ -223,10 +246,17 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 		centroids = centroidsOf(b, chars, spanOf, path, bits)
 	}
 	a := &Alphabet{
-		Block: b, Path: path, Centroid: centroids, Bits: bits,
+		Block: b, Path: path, Centroid: centroids, Bits: bits, Spans: spans,
 		Samples: map[rune][]Glyph{}, Emphasis: map[int]map[rune][]Glyph{},
 		XHeight: b.XHeight, Cost: cost, Band: band, Passes: passes,
 	}
+	type scoredGlyph struct {
+		glyph int
+		char  int
+		kind  Kind
+		d     float64
+	}
+	rowDist := make([][]scoredGlyph, len(b.Rows))
 	a.Assign = make([][]int, m)
 	rowQ := make([]RowQuality, len(b.Rows))
 	for i := range rowQ {
@@ -258,6 +288,10 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			rq := &rowQ[gl.Row]
 			rq.Matched++
 			rq.MeanDistance += d
+			rowDist[gl.Row] = append(rowDist[gl.Row], scoredGlyph{st.Glyph, st.Char, Match, d})
+			if priorCost(feats[st.Glyph], widths[st.Glyph], priors[st.Char]) >= 1 {
+				rq.PriorViolations++
+			}
 			a.Matched++
 			s := distSum[key]
 			distSum[key] = [2]float64{s[0] + d, s[1] + 1}
@@ -324,6 +358,10 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 					}
 				}
 			}
+		case Merge3:
+			a.Assign[st.Glyph] = []int{st.Char, st.Char + 1, st.Char + 2}
+			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
+			a.Penalized++
 		case Split, Split3:
 			k := 2
 			if st.Kind == Split3 {
@@ -332,17 +370,30 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			for i := range k {
 				a.Assign[st.Glyph+i] = []int{st.Char}
 			}
-			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
+			row := b.Glyphs[st.Glyph].Row
+			rowQ[row].Penalized++
 			a.Penalized++
+			// A split whose union does not look like the character is a
+			// substitution the alignment absorbed in pieces.
+			if box, ok := unionBox(st.Glyph, k); ok {
+				if cen, has := centroids[Key{chars[st.Char], spanOf(st.Char)}]; has {
+					code := b.enc.Encode(Frame(b.bin, box, b.Glyphs[st.Glyph].Baseline, b.XHeight))
+					rowDist[row] = append(rowDist[row], scoredGlyph{st.Glyph, st.Char, st.Kind, encoder.NormalizedDistance(code, cen, bits)})
+				}
+			}
 		case Insert:
-			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
-			rowQ[b.Glyphs[st.Glyph].Row].Unexplained++
+			row := b.Glyphs[st.Glyph].Row
+			rowQ[row].Penalized++
+			rowQ[row].Unexplained++
+			rowQ[row].Anomalies = append(rowQ[row].Anomalies, Anomaly{Kind: Insert, Glyph: st.Glyph, Strong: true, Box: b.Glyphs[st.Glyph].Box})
 			a.Penalized++
 			a.Unexplained++
 		case Delete:
 			g := min(st.Glyph, m-1)
-			rowQ[b.Glyphs[g].Row].Penalized++
-			rowQ[b.Glyphs[g].Row].Unexplained++
+			row := b.Glyphs[g].Row
+			rowQ[row].Penalized++
+			rowQ[row].Unexplained++
+			rowQ[row].Anomalies = append(rowQ[row].Anomalies, Anomaly{Kind: Delete, Glyph: g, Char: string(chars[st.Char]), Strong: true, Box: b.Glyphs[g].Box})
 			a.Penalized++
 			a.Unexplained++
 		case Space:
@@ -365,6 +416,50 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	}
 	if spreadN > 0 {
 		a.Spread = spreadSum / float64(spreadN)
+	}
+	// A matched glyph well beyond the alphabet's own spread that lies
+	// nearer some other character's centroid than its own is not that
+	// character: a substituted letter the alignment absorbed. A glyph far
+	// from everything, twice the threshold, is an outlier regardless.
+	outlier := math.Max(0.1, 4*a.Spread)
+	codeOf := func(sg scoredGlyph) bitcode.Code {
+		if sg.kind == Match {
+			return b.Glyphs[sg.glyph].Code
+		}
+		k := 2
+		if sg.kind == Split3 {
+			k = 3
+		}
+		box, _ := unionBox(sg.glyph, k)
+		return b.enc.Encode(Frame(b.bin, box, b.Glyphs[sg.glyph].Baseline, b.XHeight))
+	}
+	for i, ds := range rowDist {
+		for _, sg := range ds {
+			if sg.d <= outlier {
+				continue
+			}
+			own := Key{chars[sg.char], spanOf(sg.char)}
+			code := codeOf(sg)
+			nearest, nearestD := "", math.Inf(1)
+			for k, cen := range centroids {
+				if k == own {
+					continue
+				}
+				if d := encoder.NormalizedDistance(code, cen, bits); d < nearestD {
+					nearest, nearestD = string(k.R), d
+				}
+			}
+			if sg.d <= 2*outlier && nearestD+0.02 >= sg.d {
+				continue
+			}
+			strong := sg.d > 1.5*outlier
+			rowQ[i].Outliers++
+			if strong {
+				rowQ[i].StrongOutliers++
+			}
+			rowQ[i].Anomalies = append(rowQ[i].Anomalies, Anomaly{Kind: sg.kind, Glyph: sg.glyph, Char: string(chars[sg.char]), Nearest: nearest, Distance: sg.d, Strong: strong, Box: b.Glyphs[sg.glyph].Box})
+			a.Outliers++
+		}
 	}
 	a.CapHeight = median(capHeights)
 	a.LetterGap = median(letterGaps)
@@ -409,6 +504,25 @@ func median(v []float64) float64 {
 	s := append([]float64(nil), v...)
 	sort.Float64s(s)
 	return s[len(s)/2]
+}
+
+// SpanGlyphs returns, in reading order, the glyphs assigned to characters
+// inside the given emphasis span.
+func (a *Alphabet) SpanGlyphs(span int) []int {
+	if span < 0 || span >= len(a.Spans) {
+		return nil
+	}
+	s := a.Spans[span]
+	var out []int
+	for g, chars := range a.Assign {
+		for _, c := range chars {
+			if c >= s.Start && c < s.End {
+				out = append(out, g)
+				break
+			}
+		}
+	}
+	return out
 }
 
 // UnexplainedFraction is the share of glyphs the reference could not account

@@ -152,8 +152,13 @@ func (h Hash) Encode(p Patch) bitcode.Code {
 // Dual concatenates two views of a glyph patch: Pos encodes the patch as
 // given (a frame that carries size and position), Tight encodes the ink's
 // own bounding box resampled to the grid (shape alone, whatever the size).
+// The tight box is widened and heightened to at least MinTight of the
+// patch's larger side, centred on the ink, so that a stem three pixels wide
+// is not stretched across the whole grid where one pixel of rasterization
+// phase would rewrite its code.
 type Dual struct {
 	Pos, Tight Hash
+	MinTight   float64 // 0 means 0.25
 }
 
 // Bits is the code length.
@@ -174,7 +179,20 @@ func (d Dual) Encode(p Patch) bitcode.Code {
 	if !ok {
 		return code
 	}
-	tight := d.Tight.Encode(Patch{Bin: p.Bin.Crop(ib)})
+	frac := d.MinTight
+	if frac == 0 {
+		frac = 0.25
+	}
+	minSide := int(math.Ceil(frac * float64(max(p.Bin.W, p.Bin.H))))
+	if w := ib.Dx(); w < minSide {
+		ib.Min.X -= (minSide - w) / 2
+		ib.Max.X = ib.Min.X + minSide
+	}
+	if h := ib.Dy(); h < minSide {
+		ib.Min.Y -= (minSide - h) / 2
+		ib.Max.Y = ib.Min.Y + minSide
+	}
+	tight := d.Tight.Encode(Patch{Bin: cropPadded(p.Bin, ib)})
 	off := d.Pos.Bits()
 	for i := range d.Tight.Bits() {
 		if tight.Get(i) {
@@ -182,6 +200,17 @@ func (d Dual) Encode(p Patch) bitcode.Code {
 		}
 	}
 	return code
+}
+
+// cropPadded copies r out of b, with background where r leaves the bitmap.
+func cropPadded(b *bitmap.Bitmap, r image.Rectangle) *bitmap.Bitmap {
+	out := bitmap.New(r.Dx(), r.Dy())
+	for y := range out.H {
+		for x := range out.W {
+			out.Pix[y*out.W+x] = b.At(r.Min.X+x, r.Min.Y+y)
+		}
+	}
+	return out
 }
 
 // Coverage area-averages the bitmap onto a w×h grid: each cell is the

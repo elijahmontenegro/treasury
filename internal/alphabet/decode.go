@@ -44,9 +44,10 @@ func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangl
 // code of characters c and c+1 composed as one glyph, so a touching pair in
 // the image can be scored by shape.
 type Target struct {
-	Text  []rune
-	Codes []bitcode.Code
-	Pair  func(c int) bitcode.Code
+	Text   []rune
+	Codes  []bitcode.Code
+	Pair   func(c int) bitcode.Code
+	Triple func(c int) bitcode.Code // characters c, c+1, c+2 composed as one glyph; may be nil
 }
 
 // DecodeStats summarizes an alignment of observed glyphs to a target.
@@ -103,6 +104,18 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		pairCodes[c] = code
 		return code
 	}
+	tripleCodes := map[int]bitcode.Code{}
+	tripleCode := func(c int) bitcode.Code {
+		if t.Triple == nil {
+			return nil
+		}
+		if code, ok := tripleCodes[c]; ok {
+			return code
+		}
+		code := t.Triple(c)
+		tripleCodes[c] = code
+		return code
+	}
 	unionBox := func(g, k int) image.Rectangle {
 		box := obs.Boxes[g]
 		for i := g + 1; i < g+k; i++ {
@@ -130,6 +143,13 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 	pr.pair = func(g, c int) float64 {
 		pc := priorCost(feats[g], widths[g], mergedPrior(priors[c], priors[c+1]))
 		if code := pairCode(c); code != nil {
+			return 0.25*pc + 4*encoder.NormalizedDistance(obs.Codes[g], code, bits)
+		}
+		return pc + 0.6
+	}
+	pr.triple = func(g, c int) float64 {
+		pc := priorCost(feats[g], widths[g], mergedPrior(mergedPrior(priors[c], priors[c+1]), priors[c+2]))
+		if code := tripleCode(c); code != nil {
 			return 0.25*pc + 4*encoder.NormalizedDistance(obs.Codes[g], code, bits)
 		}
 		return pc + 0.6
@@ -170,6 +190,11 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		case Merge:
 			st.Structural++
 			if code := pairCode(s.Char); code != nil {
+				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], code)
+			}
+		case Merge3:
+			st.Structural++
+			if code := tripleCode(s.Char); code != nil {
 				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], code)
 			}
 		case Split, Split3:

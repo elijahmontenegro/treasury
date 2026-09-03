@@ -88,6 +88,17 @@ type Evidence struct {
 	Penalized     int             `json:"penalized"` // merge/split/insert/delete steps when refined
 	Competitor    string          `json:"competitor,omitempty"`
 	LowConfidence bool            `json:"low_confidence"`
+
+	// Reference rows.
+	Matched         int                `json:"matched,omitempty"`
+	Unexplained     int                `json:"unexplained,omitempty"`
+	Outliers        int                `json:"outliers,omitempty"`
+	PriorViolations int                `json:"prior_violations,omitempty"`
+	MeanDistance    float64            `json:"mean_distance,omitempty"`
+	Anomalies       []alphabet.Anomaly `json:"anomalies,omitempty"`
+
+	// Emphasis spans.
+	StrokeRatio float64 `json:"stroke_ratio,omitempty"`
 }
 
 // Verdict is the outcome for one claim.
@@ -124,18 +135,25 @@ type Result struct {
 	Regions   int             `json:"regions"`
 	Alphabet  *AlphabetReport `json:"alphabet,omitempty"`
 	Reason    string          `json:"reason,omitempty"`
+	Reference []Verdict       `json:"reference,omitempty"` // one per row of the reference block
+	Emphasis  []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
 	Claims    []Verdict       `json:"claims"`
 }
 
 // Options tune the engine. Zero values take the defaults.
 type Options struct {
-	Encoder        string  // "hash" (default) or "hash-nodhash"
-	DefaultRadius  float64 // fraction of code length; 0.15
-	TieMargin      float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.02
-	LineTieMargin  float64 // line-wise fallback: fraction of the line code; 0.04
-	MaxSpread      float64 // alphabet acceptance; 0.12
-	MaxUnexplained float64 // alphabet acceptance; 0.05
-	GlareFraction  float64 // region overlap with the glare mask that flags low confidence; 0.3
+	Encoder           string  // "hash" (default) or "hash-nodhash"
+	DefaultRadius     float64 // fraction of code length; 0.15
+	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.02
+	LineTieMargin     float64 // line-wise fallback: fraction of the line code; 0.04
+	MaxSpread         float64 // alphabet acceptance; 0.12
+	MaxUnexplained    float64 // alphabet acceptance; 0.05
+	LineThreshold     float64 // reference row acceptance, mean normalized distance; 0.08
+	ViolationFraction float64 // reference row acceptance, share of glyphs contradicting their shape class; 0.1
+	RowFailAnomalies  float64 // anomaly weight (unexplained and strong outliers one, weak outliers half) at which a reference row fails rather than reviews; 2
+	HeavyFactor       float64 // stroke ratio of the heavy hypothesis to the body; 1.25
+	EmphasisGate      float64 // an emphasis span must be within this fraction of a hypothesis; 0.15
+	GlareFraction     float64 // region overlap with the glare mask that flags low confidence; 0.3
 }
 
 func (o Options) withDefaults() Options {
@@ -156,6 +174,21 @@ func (o Options) withDefaults() Options {
 	}
 	if o.MaxUnexplained == 0 {
 		o.MaxUnexplained = 0.05
+	}
+	if o.LineThreshold == 0 {
+		o.LineThreshold = 0.08
+	}
+	if o.ViolationFraction == 0 {
+		o.ViolationFraction = 0.1
+	}
+	if o.RowFailAnomalies == 0 {
+		o.RowFailAnomalies = 2
+	}
+	if o.HeavyFactor == 0 {
+		o.HeavyFactor = 1.25
+	}
+	if o.EmphasisGate == 0 {
+		o.EmphasisGate = 0.15
 	}
 	if o.GlareFraction == 0 {
 		o.GlareFraction = 0.3
@@ -225,6 +258,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	sp := spell.New(a, e.faces, e.lineEnc)
 	res.Alphabet = report(a, sp)
+	res.Reference = e.referenceVerdicts(a)
+	for i := range spans {
+		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
+	}
 	encoded := encodeRegions(pre, regions, e.lineEnc, e.opt.GlareFraction)
 	for _, c := range claims {
 		if err := ctx.Err(); err != nil {

@@ -210,36 +210,55 @@ func (s *Speller) Target(text string) (t alphabet.Target, top, bottom int, err e
 		top = min(top, p.box.Min.Y)
 		bottom = max(bottom, p.box.Max.Y)
 	}
-	t.Pair = func(c int) bitcode.Code {
-		if c+1 >= len(t.Text) || t.Text[c] == ' ' || t.Text[c+1] == ' ' {
+	run := func(c, n int) bitcode.Code {
+		if c+n > len(t.Text) {
 			return nil
 		}
-		a, err := s.piece(t.Text[c])
-		if err != nil {
-			return nil
+		ps := make([]piece, 0, n)
+		for i := c; i < c+n; i++ {
+			if t.Text[i] == ' ' {
+				return nil
+			}
+			p, err := s.piece(t.Text[i])
+			if err != nil {
+				return nil
+			}
+			ps = append(ps, p)
 		}
-		b, err := s.piece(t.Text[c+1])
-		if err != nil {
-			return nil
-		}
-		return s.pairCode(a, b)
+		return s.runCode(ps)
 	}
+	t.Pair = func(c int) bitcode.Code { return run(c, 2) }
+	t.Triple = func(c int) bitcode.Code { return run(c, 3) }
 	return t, top, bottom, nil
 }
 
-// pairCode frames two pieces set side by side at the label's letter gap, as
-// a touching pair in the image would be framed.
-func (s *Speller) pairCode(a, b piece) bitcode.Code {
+// runCode frames pieces set side by side at the label's letter gap, as a
+// touching run in the image would be framed.
+func (s *Speller) runCode(ps []piece) bitcode.Code {
 	xh := s.A.XHeight
 	side := int(math.Ceil(2.2 * xh))
-	w := a.box.Dx() + s.letterGap + b.box.Dx()
+	w := 0
+	for i, p := range ps {
+		if i > 0 {
+			w += s.letterGap
+		}
+		w += p.box.Dx()
+	}
 	canvas := bitmap.New(w+2*side, 4*side)
 	baseline := 2 * side
-	ax := image.Pt(side, baseline+a.box.Min.Y)
-	bx := image.Pt(side+a.box.Dx()+s.letterGap, baseline+b.box.Min.Y)
-	blit(canvas, a.bin, ax)
-	blit(canvas, b.bin, bx)
-	box := image.Rect(ax.X, min(ax.Y, bx.Y), bx.X+b.box.Dx(), max(ax.Y+a.box.Dy(), bx.Y+b.box.Dy()))
+	x := side
+	box := image.Rectangle{}
+	for i, p := range ps {
+		at := image.Pt(x, baseline+p.box.Min.Y)
+		blit(canvas, p.bin, at)
+		r := image.Rect(at.X, at.Y, at.X+p.box.Dx(), at.Y+p.box.Dy())
+		if i == 0 {
+			box = r
+		} else {
+			box = box.Union(r)
+		}
+		x += p.box.Dx() + s.letterGap
+	}
 	return s.GlyphEnc.Encode(alphabet.Frame(canvas, box, baseline, xh))
 }
 
