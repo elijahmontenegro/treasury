@@ -35,6 +35,16 @@ type Result struct {
 	Scale    float64        // Gray size / input size
 }
 
+// ToInput maps a point in Result coordinates back to the input image: undo
+// the deskew rotation, then the resize.
+func (r *Result) ToInput(x, y float64) (float64, float64) {
+	if r.AngleDeg != 0 {
+		cx, cy := float64(r.Gray.Rect.Dx())/2, float64(r.Gray.Rect.Dy())/2
+		x, y = imgops.RotatePoint(x, y, cx, cy, r.AngleDeg)
+	}
+	return x / r.Scale, y / r.Scale
+}
+
 // Run preprocesses img.
 func Run(img image.Image, p Params) (*Result, error) {
 	g := imgops.ToGray(img)
