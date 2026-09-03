@@ -24,13 +24,13 @@ func TestStatuteHash(t *testing.T) {
 
 func TestText(t *testing.T) {
 	cases := map[string]string{
-		ABVText(45):    "45% Alc./Vol.",
-		ABVText(45.5):  "45.5% Alc./Vol.",
-		ProofText(45):  "90 Proof",
+		ABVText(45):     "45% Alc./Vol.",
+		ABVText(45.5):   "45.5% Alc./Vol.",
+		ProofText(45):   "90 Proof",
 		ProofText(40.5): "81 Proof",
-		NetText(750):   "750 mL",
-		NetText(1000):  "1 L",
-		NetText(1750):  "1.75 L",
+		NetText(750):    "750 mL",
+		NetText(1000):   "1 L",
+		NetText(1750):   "1.75 L",
 	}
 	for got, want := range cases {
 		if got != want {

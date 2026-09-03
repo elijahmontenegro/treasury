@@ -63,7 +63,7 @@ func NetClaim(expectedML float64) verify.Claim {
 		var texts []string
 		if ml >= 1000 {
 			l := Num(ml / 1000)
-			texts = append(texts, l+" L", l+"L", l+" l", l+" Liter", l+" Litre")
+			texts = append(texts, l+" L", l+"L", l+" Liter", l+" LITER", l+" Litre")
 		} else {
 			m := Num(ml)
 			texts = append(texts, m+" mL", m+" ml", m+" ML", m+"mL", m+"ml")

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"sort"
 	"unicode"
 
 	"treasury/internal/alphabet"
@@ -59,12 +60,14 @@ type Speller struct {
 	medoids            map[alphabet.Key]alphabet.Glyph
 	synth              map[rune]piece
 	heavySynth         map[rune]piece
+	altFaces           []*render.Face // the next-nearest faces; their glyphs stand as alternatives for synthesized characters
+	altCodes           map[rune][]bitcode.Code
 }
 
 // New picks the nearest faces and prepares the medoid sample per character.
 func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Speller {
 	glyphEnc := a.Block.Encoder()
-	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}}
+	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}, altCodes: map[rune][]bitcode.Code{}}
 	s.bodyStroke = a.BodyStroke()
 	s.heavyStroke = 1.25 * s.bodyStroke
 	if len(a.Emphasis) > 0 {
@@ -72,7 +75,16 @@ func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Spell
 			s.heavyStroke = w
 		}
 	}
-	s.Face, _ = nearestFace(a, faces, glyphEnc, -1)
+	scores := FaceScores(a, faces, glyphEnc, -1)
+	sort.Slice(scores, func(i, j int) bool { return scores[i].Score < scores[j].Score })
+	if len(scores) > 0 {
+		s.Face = scores[0].Face
+		for _, fs := range scores[1:min(len(scores), 4)] {
+			s.altFaces = append(s.altFaces, fs.Face)
+		}
+	} else if len(faces) > 0 {
+		s.Face = faces[0]
+	}
 	if len(a.Emphasis) > 0 {
 		s.HeavyFace, _ = nearestFace(a, faces, glyphEnc, 0)
 	}
@@ -295,6 +307,34 @@ func (s *Speller) synthesize(r rune, face *render.Face, cache map[rune]piece) (p
 	return p, nil
 }
 
+// alternatives returns r synthesized in the next-nearest faces, stroke
+// normalized, for characters the reference did not teach. No single
+// bundled face reproduces a held-out font's digits; the nearest of a few
+// usually comes close enough while a wrong digit stays far in all of them.
+func (s *Speller) alternatives(r rune) []bitcode.Code {
+	if codes, ok := s.altCodes[r]; ok {
+		return codes
+	}
+	var codes []bitcode.Code
+	byCap := (unicode.IsUpper(r) || unicode.IsDigit(r)) && s.A.CapHeight > 0
+	target := s.A.XHeight
+	if byCap {
+		target = s.A.CapHeight
+	}
+	for _, f := range s.altFaces {
+		sg, err := f.Glyph(r, target, byCap)
+		if err != nil {
+			continue
+		}
+		if s.bodyStroke > 0 {
+			sg.Bin = sg.Bin.WithStroke(s.bodyStroke)
+		}
+		codes = append(codes, frameCode(sg, s.A.XHeight, s.GlyphEnc))
+	}
+	s.altCodes[r] = codes
+	return codes
+}
+
 func fromGlyph(g alphabet.Glyph, source byte) piece {
 	return piece{bin: g.Bin, gray: g.Gray, box: g.Box.Sub(image.Pt(g.Box.Min.X, g.Baseline)), code: g.Code, source: source}
 }
@@ -317,6 +357,14 @@ func (s *Speller) Target(text string, heavy bool) (t alphabet.Target, top, botto
 		t.Codes[i] = p.code
 		top = min(top, p.box.Min.Y)
 		bottom = max(bottom, p.box.Max.Y)
+		if p.source == 's' && !heavy {
+			if alts := s.alternatives(r); len(alts) > 0 {
+				if t.Alt == nil {
+					t.Alt = map[int][]bitcode.Code{}
+				}
+				t.Alt[i] = alts
+			}
+		}
 	}
 	// Composed run codes are memoized per target: an alignment asks for
 	// them once per region, and a candidate is aligned to many regions.

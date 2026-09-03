@@ -120,7 +120,7 @@ type scored struct {
 //	d1 ≤ radius, margin ≥ tie, value != expected → MISMATCH (observed = value)
 //	d1 ≤ radius, margin <  tie                   → REVIEW  (both values)
 //	d1 >  radius                                  → NOT_FOUND or SKIPPED
-func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regions []encodedRegion) Verdict {
+func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regions []encodedRegion) (Verdict, *scored) {
 	v := Verdict{Claim: c.Name, Expected: c.Expected}
 	var words []spell.Codeword
 	unspellable := 0
@@ -141,7 +141,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		if unspellable > 0 {
 			v.Reason = "unspellable"
 		}
-		return v
+		return v, nil
 	}
 	lineBits := e.lineEnc.Bits()
 	glyphBits := sp.GlyphEnc.Bits()
@@ -279,7 +279,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 			v.Status = Skipped
 		}
 		v.Reason = "no_region_fits"
-		return v
+		return v, nil
 	}
 	all := make([]scored, 0, len(top))
 	for _, s := range top {
@@ -345,12 +345,13 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 			Region: reg.box, Crop: reg.patch.Gray, Codeword: p.word_.Patch,
 			Text: p.word_.Text, Params: p.word_.Params,
 			D1: p.raw, D2: -1, Radius: int(math.Round(radius * float64(p.bits))), Bits: p.bits,
-			Refined: p.refined, Glyphs: p.glyphs, Penalized: p.penalized,
+			Refined: p.refined, Glyphs: p.glyphs, Penalized: p.penalized, Spread: sp.A.Spread,
 			LowConfidence: reg.lowConfidence,
 		}
 		if comp.region >= 0 {
 			ev.D2 = comp.raw
 			ev.Competitor = comp.word_.Value
+			ev.CompetitorText = comp.word_.Text
 		}
 		return ev
 	}
@@ -361,7 +362,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		if !c.Required {
 			v.Status = Skipped
 		}
-		return v
+		return v, nil
 	}
 
 	// Every region near the best reads as some value: its nearest
@@ -369,8 +370,9 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	// conflicting decisive readings, or none, go to review. A blurred
 	// "(90 Proof)" that cannot tell its 0 from a 9 does not override a
 	// clear "45%" elsewhere on the label. A reading much farther than the
-	// best is not a peer observation of the claim: a two-glyph fragment
-	// that happens to read as "1 L" at three times the distance is noise.
+	// best is not a peer observation of the claim, and a reading of fewer
+	// than MinGlyphs glyphs is too little evidence to decide anything: a
+	// batch number that happens to read as "1 L" can only ask for review.
 	const maxReadings = 8
 	peer := math.Min(radius, math.Max(1.5*best.dist, best.dist+0.02))
 	var decided []scored
@@ -387,7 +389,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		}
 		read[p.region] = true
 		comp := competitor(p)
-		if decisive(p, comp) {
+		if p.refined && p.glyphs >= e.opt.MinGlyphs && decisive(p, comp) {
 			if len(decided) == 0 {
 				v.Evidence = evidence(p, comp)
 			}
@@ -401,8 +403,14 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	if len(decided) == 0 {
 		v.Evidence = evidence(*firstTie, tieComp)
 		v.Status = Review
-		v.Candidates = []string{firstTie.word_.Value, tieComp.word_.Value}
-		return v
+		v.Candidates = []string{firstTie.word_.Value}
+		if tieComp.region >= 0 {
+			v.Candidates = append(v.Candidates, tieComp.word_.Value)
+		}
+		if firstTie.glyphs < e.opt.MinGlyphs {
+			v.Reason = "too_few_glyphs"
+		}
+		return v, nil
 	}
 	values := []string{decided[0].word_.Value}
 	for _, p := range decided[1:] {
@@ -414,7 +422,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		v.Status = Review
 		v.Reason = "regions_disagree"
 		v.Candidates = values
-		return v
+		return v, nil
 	}
 	v.Observed = values[0]
 	if values[0] == c.Expected {
@@ -422,7 +430,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	} else {
 		v.Status = Mismatch
 	}
-	return v
+	return v, &decided[0]
 }
 
 // runProbe reports every region overlapping the probe box against the

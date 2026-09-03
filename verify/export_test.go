@@ -59,7 +59,6 @@ func DigitDistances(fn func(line string)) {
 	digitProbe = fn
 }
 
-
 // SetProbe makes decide report, through the SetDebugScored hook, every
 // region overlapping box against the candidate whose text is text: its
 // components, aspect, filter decisions, and coarse and refined distances.

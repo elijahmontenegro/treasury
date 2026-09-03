@@ -75,20 +75,23 @@ func (s Status) MarshalText() ([]byte, error) { return []byte(s.String()), nil }
 
 // Evidence is what a verdict rests on.
 type Evidence struct {
-	Region        image.Rectangle `json:"region"`
-	Crop          *image.Gray     `json:"-"`
-	Codeword      encoder.Patch   `json:"-"`
-	Text          string          `json:"text"` // the candidate text that matched
-	Params        spell.Params    `json:"params"`
-	D1            int             `json:"d1"`
-	D2            int             `json:"d2"`
-	Radius        int             `json:"radius"`
-	Bits          int             `json:"bits"`
-	Refined       bool            `json:"refined"`   // glyph-wise alignment scored the match
-	Glyphs        int             `json:"glyphs"`    // candidate glyphs when refined
-	Penalized     int             `json:"penalized"` // merge/split/insert/delete steps when refined
-	Competitor    string          `json:"competitor,omitempty"`
-	LowConfidence bool            `json:"low_confidence"`
+	Region         image.Rectangle `json:"region"`
+	Crop           *image.Gray     `json:"-"`
+	Codeword       encoder.Patch   `json:"-"`
+	Text           string          `json:"text"` // the candidate text that matched
+	Params         spell.Params    `json:"params"`
+	D1             int             `json:"d1"`
+	D2             int             `json:"d2"`
+	Radius         int             `json:"radius"`
+	Bits           int             `json:"bits"`
+	Refined        bool            `json:"refined"`   // glyph-wise alignment scored the match
+	Glyphs         int             `json:"glyphs"`    // candidate glyphs when refined
+	Penalized      int             `json:"penalized"` // merge/split/insert/delete steps when refined
+	Competitor     string          `json:"competitor,omitempty"`
+	CompetitorText string          `json:"competitor_text,omitempty"`
+	Spread         float64         `json:"spread,omitempty"`    // the alphabet's within-character spread, which sets the tie margin
+	Relearned      bool            `json:"relearned,omitempty"` // decided on the second pass, after glyphs learned from verified claims
+	LowConfidence  bool            `json:"low_confidence"`
 
 	// Reference rows.
 	Matched         int                `json:"matched,omitempty"`
@@ -119,6 +122,7 @@ type AlphabetReport struct {
 	Glyphs      int                   `json:"glyphs"`
 	Matched     int                   `json:"matched"`
 	Unexplained int                   `json:"unexplained"`
+	Violations  float64               `json:"violations"` // share of matched glyphs contradicting their shape class
 	Recovered   int                   `json:"recovered"`
 	Spread      float64               `json:"spread"`
 	Characters  string                `json:"characters"`
@@ -128,6 +132,7 @@ type AlphabetReport struct {
 	LetterGap   float64               `json:"letter_gap"`
 	WordGap     float64               `json:"word_gap"`
 	Rows        []alphabet.RowQuality `json:"rows"`
+	Learned     string                `json:"learned,omitempty"` // characters learned from claims that verified decisively
 }
 
 // Result is everything Verify found.
@@ -143,38 +148,39 @@ type Result struct {
 
 // Options tune the engine. Zero values take the defaults.
 type Options struct {
-	Encoder           string  // "hash" (default) or "hash-nodhash"
+	Encoder           string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
 	DefaultRadius     float64 // fraction of code length; 0.15
-	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.02
+	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.01 (tuned on half A of the synthetic set; the spread term usually dominates)
 	LineTieMargin     float64 // line-wise fallback: fraction of the line code; 0.04
-	MaxSpread         float64 // alphabet acceptance; 0.12
-	MaxUnexplained    float64 // alphabet acceptance; 0.05
+	MaxSpread         float64 // alphabet acceptance; 0.10
+	MaxUnexplained    float64 // alphabet acceptance; 0.10
 	LineThreshold     float64 // reference row acceptance, mean normalized distance; 0.08
-	ViolationFraction float64 // reference row acceptance, share of glyphs contradicting their shape class; 0.1
+	ViolationFraction float64 // alphabet and reference row acceptance, share of glyphs contradicting their shape class; 0.1
 	RowFailAnomalies  float64 // anomaly weight (unexplained and strong outliers one, weak outliers half) at which a reference row fails rather than reviews; 2
 	HeavyFactor       float64 // stroke ratio of the heavy hypothesis to the body; 1.25
 	EmphasisGate      float64 // an emphasis span must be within this fraction of a hypothesis; 0.15
 	GlareFraction     float64 // region overlap with the glare mask that flags low confidence; 0.3
+	MinGlyphs         int     // a reading of fewer glyphs cannot decide a claim, only ask for review; 3
 }
 
 func (o Options) withDefaults() Options {
 	if o.Encoder == "" {
-		o.Encoder = "hash"
+		o.Encoder = "dual"
 	}
 	if o.DefaultRadius == 0 {
 		o.DefaultRadius = 0.15
 	}
 	if o.TieMargin == 0 {
-		o.TieMargin = 0.02
+		o.TieMargin = 0.01
 	}
 	if o.LineTieMargin == 0 {
 		o.LineTieMargin = 0.04
 	}
 	if o.MaxSpread == 0 {
-		o.MaxSpread = 0.12
+		o.MaxSpread = 0.10
 	}
 	if o.MaxUnexplained == 0 {
-		o.MaxUnexplained = 0.05
+		o.MaxUnexplained = 0.10
 	}
 	if o.LineThreshold == 0 {
 		o.LineThreshold = 0.08
@@ -194,6 +200,9 @@ func (o Options) withDefaults() Options {
 	if o.GlareFraction == 0 {
 		o.GlareFraction = 0.3
 	}
+	if o.MinGlyphs == 0 {
+		o.MinGlyphs = 3
+	}
 	return o
 }
 
@@ -212,16 +221,18 @@ func New(o Options) (*Engine, error) {
 	if err != nil {
 		return nil, err
 	}
-	var line encoder.Encoder
+	var glyph encoder.Encoder
 	switch o.Encoder {
-	case "hash":
-		line = encoder.Line()
-	case "hash-nodhash":
-		line = encoder.Hash{W: 64, H: 16}
+	case "hash", "dual":
+		glyph = encoder.Glyph()
+	case "pos16":
+		glyph = encoder.Hash{W: 16, H: 16, Levels: 4, Smooth: 1}
+	case "sharp24":
+		glyph = encoder.Hash{W: 24, H: 24, Levels: 2}
 	default:
 		return nil, fmt.Errorf("verify: unknown encoder %q", o.Encoder)
 	}
-	return &Engine{opt: o, faces: faces, lineEnc: line, glyphEnc: encoder.Glyph()}, nil
+	return &Engine{opt: o, faces: faces, lineEnc: encoder.Line(), glyphEnc: glyph}, nil
 }
 
 // Verify decodes the image. It learns the alphabet from the first reference;
@@ -247,8 +258,11 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	if err != nil && !errors.Is(err, alphabet.ErrNoBlock) {
 		return Result{}, err
 	}
-	if err != nil || !a.OK(e.opt.MaxSpread, e.opt.MaxUnexplained) {
+	if err != nil || !a.OK(e.opt.MaxSpread, e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 		res.Reason = "no_alphabet"
+		if a != nil {
+			res.Alphabet = report(a, nil) // what was rejected, and why
+		}
 		for _, c := range claims {
 			res.Claims = append(res.Claims, Verdict{Claim: c.Name, Status: NotFound, Reason: "no_alphabet", Expected: c.Expected})
 		}
@@ -258,19 +272,82 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		return Result{}, err
 	}
 	sp := spell.New(a, e.faces, e.lineEnc)
-	res.Alphabet = report(a, sp)
 	res.Reference = e.referenceVerdicts(a)
 	for i := range spans {
 		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
 	}
 	encoded := encodeRegions(pre, regions, e.lineEnc, e.opt.GlareFraction)
-	for _, c := range claims {
+	res.Claims = make([]Verdict, len(claims))
+	winners := make([]*scored, len(claims))
+	for i, c := range claims {
 		if err := ctx.Err(); err != nil {
 			return Result{}, err
 		}
-		res.Claims = append(res.Claims, e.decide(c, sp, pre, encoded))
+		res.Claims[i], winners[i] = e.decide(c, sp, pre, encoded)
 	}
+	// A claim that verified decisively is known text too: its glyphs teach
+	// the characters the reference lacked, digits and capitals above all.
+	// With those learned from the label's own type, the claims that were
+	// undecided are read again.
+	learned := e.harvest(a, pre, winners)
+	if len(learned) > 0 {
+		sp = spell.New(a, e.faces, e.lineEnc)
+		for i, c := range claims {
+			if res.Claims[i].Status == Verified {
+				continue
+			}
+			if err := ctx.Err(); err != nil {
+				return Result{}, err
+			}
+			res.Claims[i], _ = e.decide(c, sp, pre, encoded)
+			if res.Claims[i].Evidence != nil {
+				res.Claims[i].Evidence.Relearned = true
+			}
+		}
+	}
+	res.Alphabet = report(a, sp)
+	res.Alphabet.Learned = string(learned)
 	return res, nil
+}
+
+// harvest adds, from every decisive reading, the glyphs matched to
+// characters the alphabet has no sample of, rescaled to the reference's
+// size. Heavy readings feed the emphasis pool. It returns the characters
+// learned.
+func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners []*scored) []rune {
+	var learned []rune
+	seen := map[rune]bool{}
+	for _, w := range winners {
+		if w == nil || !w.refined {
+			continue
+		}
+		span := -1
+		if w.word_.Heavy && len(a.Spans) > 0 {
+			span = 0
+		}
+		for _, st := range w.path {
+			if st.Kind != alphabet.Match {
+				continue
+			}
+			r := w.target.Text[st.Char]
+			if r == ' ' {
+				continue
+			}
+			if span < 0 && len(a.Samples[r]) > 0 {
+				continue
+			}
+			if span >= 0 && len(a.Emphasis[span][r]) > 0 {
+				continue
+			}
+			g := a.Rescaled(pre.Bin, pre.Gray, w.obs.Boxes[st.Glyph], w.obs.Baseline, w.obs.XHeight)
+			a.AddSample(r, span, g)
+			if !seen[r] {
+				seen[r] = true
+				learned = append(learned, r)
+			}
+		}
+	}
+	return learned
 }
 
 func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {
@@ -285,10 +362,11 @@ func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {
 	}
 	r := &AlphabetReport{
 		Block: a.Block.Box, Glyphs: len(a.Block.Glyphs), Matched: a.Matched, Unexplained: a.Unexplained,
-		Recovered: a.Recovered, Spread: a.Spread, Characters: string(chars),
+		Violations: a.ViolationFraction(),
+		Recovered:  a.Recovered, Spread: a.Spread, Characters: string(chars),
 		XHeight: a.XHeight, CapHeight: a.CapHeight, LetterGap: a.LetterGap, WordGap: a.WordGap, Rows: a.Rows,
 	}
-	if sp.Face != nil {
+	if sp != nil && sp.Face != nil {
 		r.Face = sp.Face.Name
 	}
 	return r

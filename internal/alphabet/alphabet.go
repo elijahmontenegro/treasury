@@ -140,7 +140,10 @@ func Locate(lines []region.Line, top int) [][]int {
 }
 
 // adjacent says whether b continues the block a belongs to: similar glyph
-// size and a baseline no more than three glyph heights away.
+// size and a baseline within four and a half glyph heights. The median
+// glyph height of running text is about the x-height, and leading runs to
+// 1.5 times the size, close to three x-heights; three heights split a
+// generously leaded block into single lines.
 func adjacent(a, b region.Line) bool {
 	ha, hb := float64(a.MedH), float64(b.MedH)
 	if ha == 0 || hb == 0 {
@@ -149,7 +152,7 @@ func adjacent(a, b region.Line) bool {
 	if r := ha / hb; r < 0.6 || r > 1/0.6 {
 		return false
 	}
-	return math.Abs(float64(b.Baseline-a.Baseline)) <= 3*math.Max(ha, hb)
+	return math.Abs(float64(b.Baseline-a.Baseline)) <= 4.5*math.Max(ha, hb)
 }
 
 // Extract builds a Block from a cluster of lines: rows by baseline, glyphs

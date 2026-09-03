@@ -1,9 +1,13 @@
 // Command gen writes synthetic documents with ground truth.
 //
 //	gen sample [-out testdata] [-rotate 7] [-blur 1.0] [-jpeg 50]
+//	gen set -n 500 -seed 1 -out synth [-fontdir DIR] [-errors 0.2] [-clean 0.2]
 //
-// It writes NAME.png, NAME.json (the ttb application the decoder consumes),
-// and NAME.truth.json (per-glyph boxes) for sample and sample_aug.
+// sample writes the fixed sample label and its augmented copy with per-glyph
+// truth. set writes a randomized labelled set: NNNN.png, NNNN.json (the
+// application the decoder consumes), NNNN.truth.json (what was printed,
+// the error if any, the augmentation), and manifest.json listing the faces
+// used so the evaluation can refuse a set drawn from the bundled ones.
 package main
 
 import (
@@ -11,8 +15,10 @@ import (
 	"flag"
 	"fmt"
 	"image"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"treasury/internal/bitmap"
 	"treasury/internal/render"
@@ -21,23 +27,44 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 || os.Args[1] != "sample" {
-		fmt.Fprintln(os.Stderr, "usage: gen sample [-out dir] [-rotate deg] [-blur sigma] [-jpeg quality]")
-		os.Exit(2)
+	if len(os.Args) < 2 {
+		usage()
 	}
-	fs := flag.NewFlagSet("sample", flag.ExitOnError)
-	out := fs.String("out", "testdata", "output directory")
-	rot := fs.Float64("rotate", 7, "rotation of the augmented copy in degrees")
-	blur := fs.Float64("blur", 1.0, "Gaussian blur sigma of the augmented copy")
-	jpg := fs.Int("jpeg", 50, "JPEG quality of the augmented copy")
-	_ = fs.Parse(os.Args[2:])
-	if err := run(*out, synth.Aug{RotateDeg: *rot, BlurSigma: *blur, JPEGQuality: *jpg}); err != nil {
+	var err error
+	switch os.Args[1] {
+	case "sample":
+		fs := flag.NewFlagSet("sample", flag.ExitOnError)
+		out := fs.String("out", "testdata", "output directory")
+		rot := fs.Float64("rotate", 7, "rotation of the augmented copy in degrees")
+		blur := fs.Float64("blur", 1.0, "Gaussian blur sigma of the augmented copy")
+		jpg := fs.Int("jpeg", 50, "JPEG quality of the augmented copy")
+		_ = fs.Parse(os.Args[2:])
+		err = sample(*out, synth.Aug{RotateDeg: *rot, BlurSigma: *blur, JPEGQuality: *jpg})
+	case "set":
+		fs := flag.NewFlagSet("set", flag.ExitOnError)
+		n := fs.Int("n", 500, "number of labels")
+		seed := fs.Int64("seed", 1, "random seed")
+		out := fs.String("out", "synth", "output directory")
+		fontdir := fs.String("fontdir", "", "directory of .ttf faces to draw with; default the bundled faces (leaks into the eval)")
+		errors := fs.Float64("errors", 0.2, "share of labels carrying a deliberate error")
+		clean := fs.Float64("clean", 0.2, "share of labels left un-augmented")
+		_ = fs.Parse(os.Args[2:])
+		err = set(*out, *n, *seed, *fontdir, *errors, *clean)
+	default:
+		usage()
+	}
+	if err != nil {
 		fmt.Fprintln(os.Stderr, "gen:", err)
 		os.Exit(1)
 	}
 }
 
-func run(dir string, aug synth.Aug) error {
+func usage() {
+	fmt.Fprintln(os.Stderr, "usage: gen sample [-out dir] | gen set -n N -seed S -out dir [-fontdir DIR]")
+	os.Exit(2)
+}
+
+func sample(dir string, aug synth.Aug) error {
 	faces, err := render.Bundled()
 	if err != nil {
 		return err
@@ -55,6 +82,95 @@ func run(dir string, aug synth.Aug) error {
 		return err
 	}
 	return write(dir, "sample_aug", augImg, exp, augTruth)
+}
+
+// Manifest describes a generated set.
+type Manifest struct {
+	Seed     int64    `json:"seed"`
+	N        int      `json:"n"`
+	FontDir  string   `json:"font_dir"`
+	Faces    []string `json:"faces"`
+	Families []string `json:"families"`
+	Errors   float64  `json:"error_rate"`
+	Clean    float64  `json:"clean_rate"`
+}
+
+// Truth is what the eval needs per label.
+type Truth struct {
+	Printed ttb.Printed `json:"printed"`
+	Aug     *synth.Aug  `json:"aug,omitempty"`
+}
+
+func set(dir string, n int, seed int64, fontdir string, errorRate, cleanRate float64) error {
+	var faces []*render.Face
+	var err error
+	if fontdir == "" {
+		faces, err = render.Bundled()
+	} else {
+		var skipped []string
+		faces, skipped, err = render.LoadDir(fontdir)
+		if len(skipped) > 0 {
+			fmt.Fprintf(os.Stderr, "skipped %d files in %s\n", len(skipped), fontdir)
+		}
+	}
+	if err != nil {
+		return err
+	}
+	pool := ttb.NewFacePool(faces)
+	if len(pool.Body) == 0 {
+		return fmt.Errorf("no family in %q has both a regular and a bold text face", fontdir)
+	}
+	fmt.Printf("%d body faces, %d display faces\n", len(pool.Body), len(pool.Display))
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return err
+	}
+	rng := rand.New(rand.NewSource(seed))
+	used := map[string]bool{}
+	families := map[string]bool{}
+	for i := 1; i <= n; i++ {
+		doc, exp, pr := ttb.Generate(rng, pool, errorRate)
+		img, truth, err := synth.Render(doc, faces)
+		if err != nil {
+			return fmt.Errorf("label %d: %w", i, err)
+		}
+		for _, f := range []string{pr.BodyFace, pr.HeavyFace, pr.BrandFace} {
+			used[f] = true
+			if face, ok := render.Find(faces, f); ok {
+				families[face.Family] = true
+			}
+		}
+		t := Truth{Printed: pr}
+		if rng.Float64() >= cleanRate {
+			a := synth.Random(rng)
+			if img, _, err = synth.Augment(img, truth, a); err != nil {
+				return err
+			}
+			t.Aug = &a
+		}
+		name := fmt.Sprintf("%04d", i)
+		if err := bitmap.WritePNG(filepath.Join(dir, name+".png"), img); err != nil {
+			return err
+		}
+		if err := writeJSON(filepath.Join(dir, name+".json"), exp); err != nil {
+			return err
+		}
+		if err := writeJSON(filepath.Join(dir, name+".truth.json"), t); err != nil {
+			return err
+		}
+		if i%50 == 0 {
+			fmt.Printf("%d labels\n", i)
+		}
+	}
+	m := Manifest{Seed: seed, N: n, FontDir: fontdir, Errors: errorRate, Clean: cleanRate}
+	for f := range used {
+		m.Faces = append(m.Faces, f)
+	}
+	for f := range families {
+		m.Families = append(m.Families, f)
+	}
+	sort.Strings(m.Faces)
+	sort.Strings(m.Families)
+	return writeJSON(filepath.Join(dir, "manifest.json"), m)
 }
 
 func write(dir, name string, img image.Image, exp ttb.Expected, truth *synth.Truth) error {

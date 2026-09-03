@@ -10,6 +10,7 @@ import (
 	"treasury/internal/bitcode"
 	"treasury/internal/bitmap"
 	"treasury/internal/encoder"
+	"treasury/internal/imgops"
 	"treasury/internal/region"
 )
 
@@ -23,7 +24,7 @@ type Options struct {
 	MaxPasses int
 	Penalties Penalties
 	Encoder   encoder.Encoder // glyph encoder
-	MinGlyphs float64 // a block needs at least this fraction of the reference's non-space characters
+	MinGlyphs float64         // a block needs at least this fraction of the reference's non-space characters
 }
 
 // DefaultOptions are the starting values.
@@ -82,16 +83,17 @@ type Alphabet struct {
 
 	Spans []Span
 
-	Spread      float64 // mean within-character normalized Hamming spread
-	Matched     int
-	Penalized   int // merge, split, insert, delete
-	Unexplained int // insert, delete
-	Outliers    int // matched glyphs far from their centroid
-	Recovered   int // samples cut out of merged pairs
-	Rows        []RowQuality
-	Cost      float64
-	Band      int
-	Passes    int
+	Spread          float64 // mean within-character normalized Hamming spread
+	Matched         int
+	Penalized       int // merge, split, insert, delete
+	Unexplained     int // insert, delete
+	PriorViolations int // matched glyphs contradicting their character's shape class
+	Outliers        int // matched glyphs far from their centroid
+	Recovered       int // samples cut out of merged pairs
+	Rows            []RowQuality
+	Cost            float64
+	Band            int
+	Passes          int
 }
 
 // ErrNoBlock is returned when no candidate block aligns.
@@ -291,6 +293,7 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			rowDist[gl.Row] = append(rowDist[gl.Row], scoredGlyph{st.Glyph, st.Char, Match, d})
 			if priorCost(feats[st.Glyph], widths[st.Glyph], priors[st.Char]) >= 1 {
 				rq.PriorViolations++
+				a.PriorViolations++
 			}
 			a.Matched++
 			s := distSum[key]
@@ -506,6 +509,72 @@ func median(v []float64) float64 {
 	return s[len(s)/2]
 }
 
+// AddSample adds a glyph learned elsewhere on the image (from a claim that
+// verified decisively) to the body pool, or to an emphasis pool when span
+// is not negative, and refreshes that character's centroid. The glyph must
+// already be at the alphabet's scale and framed with its encoder.
+func (a *Alphabet) AddSample(r rune, span int, g Glyph) {
+	key := Key{R: r, Span: span}
+	if span < 0 {
+		a.Samples[r] = append(a.Samples[r], g)
+	} else {
+		if a.Emphasis[span] == nil {
+			a.Emphasis[span] = map[rune][]Glyph{}
+		}
+		a.Emphasis[span][r] = append(a.Emphasis[span][r], g)
+	}
+	var codes []bitcode.Code
+	pool := a.Samples[r]
+	if span >= 0 {
+		pool = a.Emphasis[span][r]
+	}
+	for _, s := range pool {
+		codes = append(codes, s.Code)
+	}
+	a.Centroid[key] = bitcode.Majority(codes, a.Bits)
+}
+
+// Rescaled builds a Glyph at the alphabet's scale from a component seen at
+// another size: the crops are resampled by xhRef/xhSeen and the frame code
+// is taken at the reference x-height, so the sample sits beside the learned
+// ones as if printed at the reference's size.
+func (a *Alphabet) Rescaled(bin *bitmap.Bitmap, gray *image.Gray, box image.Rectangle, baseline int, xhSeen float64) Glyph {
+	scale := a.XHeight / xhSeen
+	crop := bin.Crop(box)
+	w, h := max(1, int(math.Round(float64(crop.W)*scale))), max(1, int(math.Round(float64(crop.H)*scale)))
+	scaled := bitmap.New(w, h)
+	cov := encoder.Coverage(crop, w, h)
+	for i, v := range cov {
+		if v >= 0.5 {
+			scaled.Pix[i] = 1
+		}
+	}
+	g := grayCrop(gray, box)
+	gs := imgops.Resize(g, w, h)
+	// Place on a canvas at a baseline and frame it like a reference glyph.
+	side := int(math.Ceil(2.2 * a.XHeight))
+	canvas := bitmap.New(w+2*side, 4*side)
+	base := 2 * side
+	rise := int(math.Round(float64(baseline-box.Min.Y) * scale)) // ink top above baseline
+	top := base - rise
+	for y := range h {
+		for x := range w {
+			if scaled.Pix[y*w+x] != 0 {
+				canvas.Set(side+x, top+y, 1)
+			}
+		}
+	}
+	fbox := image.Rect(side, top, side+w, top+h)
+	return Glyph{
+		Box:      fbox,
+		Baseline: base,
+		Bin:      scaled,
+		Gray:     gs,
+		Code:     a.Block.enc.Encode(Frame(canvas, fbox, base, a.XHeight)),
+		Derived:  true,
+	}
+}
+
 // BodyStroke is the median stroke width in pixels over the body samples.
 func (a *Alphabet) BodyStroke() float64 { return medianStroke(a.Samples) }
 
@@ -556,8 +625,20 @@ func (a *Alphabet) UnexplainedFraction() float64 {
 	return float64(a.Unexplained) / float64(len(a.Block.Glyphs))
 }
 
+// ViolationFraction is the share of matched glyphs whose shape class
+// contradicts their character's: tall where short, descending where not.
+// Text aligned to the wrong reference contradicts it in about a quarter of
+// its glyphs; a real block in a few percent.
+func (a *Alphabet) ViolationFraction() float64 {
+	if a.Matched == 0 {
+		return 1
+	}
+	return float64(a.PriorViolations) / float64(a.Matched)
+}
+
 // OK says whether the alphabet is trustworthy: within-character spread at or
-// under maxSpread and unexplained fraction at or under maxUnexplained.
-func (a *Alphabet) OK(maxSpread, maxUnexplained float64) bool {
-	return a.Spread <= maxSpread && a.UnexplainedFraction() <= maxUnexplained
+// under maxSpread, unexplained fraction at or under maxUnexplained, and
+// shape-class violations at or under maxViolations.
+func (a *Alphabet) OK(maxSpread, maxUnexplained, maxViolations float64) bool {
+	return a.Spread <= maxSpread && a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations
 }

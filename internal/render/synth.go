@@ -25,7 +25,9 @@ func (f *Face) ratios() (xh, cap float64, err error) {
 	if err != nil {
 		return 0, 0, err
 	}
+	f.draw.Lock()
 	m := face.Metrics()
+	f.draw.Unlock()
 	return float64(m.XHeight) / 64 / 100, float64(m.CapHeight) / 64 / 100, nil
 }
 
@@ -54,11 +56,15 @@ func (f *Face) Glyph(r rune, target float64, byCap bool) (Synth, error) {
 		canvas.Pix[i] = 255
 	}
 	dot := fixed.P(pad, 2*pad)
+	f.draw.Lock()
 	dr, mask, maskp, _, ok := face.Glyph(dot, r)
+	if ok {
+		draw.DrawMask(canvas, dr, image.Black, image.Point{}, mask, maskp, draw.Over)
+	}
+	f.draw.Unlock()
 	if !ok {
 		return Synth{}, fmt.Errorf("render: %s has no glyph for %q", f.Name, r)
 	}
-	draw.DrawMask(canvas, dr, image.Black, image.Point{}, mask, maskp, draw.Over)
 	bin := bitmap.FromGray(canvas, 128)
 	ib, has := bin.InkBounds()
 	if !has {

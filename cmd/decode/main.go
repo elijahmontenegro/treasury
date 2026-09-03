@@ -128,27 +128,28 @@ type summary struct {
 	GlareMask     bool           `json:"glare_mask"`
 	Alphabet      *alphaSummary  `json:"alphabet,omitempty"`
 	Reason        string         `json:"reason,omitempty"`
+	Clusters      []string       `json:"clusters,omitempty"` // candidate blocks when none aligned
 }
 
 type alphaSummary struct {
-	Block         image.Rectangle       `json:"block"`
-	Glyphs        int                   `json:"glyphs"`
-	Matched       int                   `json:"matched"`
-	Penalized     int                   `json:"penalized"`
-	Unexplained   int                   `json:"unexplained"`
-	Recovered     int                   `json:"recovered"`
-	Spread        float64               `json:"spread"`
-	Cost          float64               `json:"cost"`
-	Band          int                   `json:"band"`
-	Passes        int                   `json:"passes"`
-	XHeight       float64               `json:"x_height"`
-	CapHeight     float64               `json:"cap_height"`
-	LetterGap     float64               `json:"letter_gap"`
-	WordGap       float64               `json:"word_gap"`
-	Characters    string                `json:"characters"`
-	Emphasis      map[int]string        `json:"emphasis"`
-	Rows          []alphabet.RowQuality `json:"rows"`
-	StepsByKind   map[string]int        `json:"steps_by_kind"`
+	Block       image.Rectangle       `json:"block"`
+	Glyphs      int                   `json:"glyphs"`
+	Matched     int                   `json:"matched"`
+	Penalized   int                   `json:"penalized"`
+	Unexplained int                   `json:"unexplained"`
+	Recovered   int                   `json:"recovered"`
+	Spread      float64               `json:"spread"`
+	Cost        float64               `json:"cost"`
+	Band        int                   `json:"band"`
+	Passes      int                   `json:"passes"`
+	XHeight     float64               `json:"x_height"`
+	CapHeight   float64               `json:"cap_height"`
+	LetterGap   float64               `json:"letter_gap"`
+	WordGap     float64               `json:"word_gap"`
+	Characters  string                `json:"characters"`
+	Emphasis    map[int]string        `json:"emphasis"`
+	Rows        []alphabet.RowQuality `json:"rows"`
+	StepsByKind map[string]int        `json:"steps_by_kind"`
 }
 
 func run(path, ref string, spans []alphabet.Span, debug string) error {
@@ -182,10 +183,20 @@ func run(path, ref string, spans []alphabet.Span, debug string) error {
 		switch {
 		case errors.Is(err, alphabet.ErrNoBlock):
 			s.Reason = "no_alphabet"
+			for _, cl := range alphabet.Locate(lines, 3) {
+				n := 0
+				for _, i := range cl {
+					n += len(lines[i].Comps)
+				}
+				s.Clusters = append(s.Clusters, fmt.Sprintf("%d lines, %d glyphs", len(cl), n))
+			}
 		case err != nil:
 			return err
 		default:
 			s.Alphabet = summarize(alpha)
+			if !alpha.OK(0.10, 0.05, 0.1) {
+				s.Reason = "alphabet_rejected"
+			}
 		}
 	}
 	enc := json.NewEncoder(os.Stdout)

@@ -31,7 +31,8 @@ type Face struct {
 	Weight string // regular, medium, bold
 	Font   *sfnt.Font
 
-	mu    sync.Mutex
+	mu    sync.Mutex // guards cache
+	draw  sync.Mutex // serializes rasterization: an opentype face is not safe for concurrent use
 	cache map[float64]font.Face
 }
 

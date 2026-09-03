@@ -72,9 +72,9 @@ func DefaultPenalties() Penalties {
 // problem is one alignment instance with its cost functions.
 type problem struct {
 	chars  []rune
-	m      int       // glyph count
-	gap    []float64 // gap before glyph g, x-heights; +Inf at row starts
-	spaces []int     // spaces[c] = spaces among chars[:c]
+	m      int                    // glyph count
+	gap    []float64              // gap before glyph g, x-heights; +Inf at row starts
+	spaces []int                  // spaces[c] = spaces among chars[:c]
 	shape  func(g, c int) float64 // glyph g as char c
 	pair   func(g, c int) float64 // glyph g as chars c and c+1 touching
 	triple func(g, c int) float64 // glyph g as chars c, c+1, c+2 touching; may be nil

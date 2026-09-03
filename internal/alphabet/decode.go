@@ -76,8 +76,27 @@ func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangl
 type Target struct {
 	Text   []rune
 	Codes  []bitcode.Code
+	Alt    map[int][]bitcode.Code // alternative codes per character (synthesized in other faces); the nearest counts
 	Pair   func(c int) bitcode.Code
 	Triple func(c int) bitcode.Code // characters c, c+1, c+2 composed as one glyph; may be nil
+}
+
+// distance is the Hamming distance from an observed code to the target's
+// character c: its code, or an alternative when that beats the code by a
+// clear margin. Alternatives exist so a true digit synthesized in the wrong
+// face can find its shape in another; a wrong digit must not borrow one by
+// a hair, or every competitor closes in and nothing decides.
+func (t Target) distance(code bitcode.Code, c int) int {
+	d := bitcode.Distance(code, t.Codes[c])
+	if alts := t.Alt[c]; len(alts) > 0 {
+		gain := len(t.Codes[c]) * 64 / 50 // two percent of the code length
+		for _, alt := range alts {
+			if ad := bitcode.Distance(code, alt); ad+gain < d {
+				d = ad + gain
+			}
+		}
+	}
+	return d
 }
 
 // DecodeStats summarizes an alignment of observed glyphs to a target.
@@ -120,7 +139,7 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		if t.Codes[c] == nil {
 			return 0.25*pc + 0.6
 		}
-		return 0.25*pc + 4*encoder.NormalizedDistance(code, t.Codes[c], bits)
+		return 0.25*pc + 4*math.Min(1, float64(t.distance(code, c))/float64(bits))
 	}
 	pairCodes := map[int]bitcode.Code{}
 	pairCode := func(c int) bitcode.Code {
@@ -195,7 +214,7 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		switch s.Kind {
 		case Match:
 			if t.Codes[s.Char] != nil {
-				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], t.Codes[s.Char])
+				st.Hamming += t.distance(obs.Codes[s.Glyph], s.Char)
 			}
 			st.Matched++
 		case Merge:
@@ -215,7 +234,7 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 				k = 3
 			}
 			if code, ok := obs.unionCode(s.Glyph, k); ok && t.Codes[s.Char] != nil {
-				st.Hamming += bitcode.Distance(code, t.Codes[s.Char])
+				st.Hamming += t.distance(code, s.Char)
 			}
 		case Insert, Delete:
 			st.Unexplained++
