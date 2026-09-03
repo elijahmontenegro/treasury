@@ -65,12 +65,17 @@ func NetText(ml float64) string {
 	return Num(ml) + " mL"
 }
 
-// Variant is a deliberate deviation of a generated label from compliance.
+// Variant is a deliberate deviation of a generated label from the default
+// compliant layout: an error to catch, or a change of type.
 type Variant struct {
 	HeaderTitleCase bool   // "Government Warning:" instead of capitals
 	HeaderRegular   bool   // header in the body weight
 	Wording         string // replaces the statutory text when set
 	NoWarning       bool   // omit the warning block entirely
+	BrandText       string // print this instead of the application's brand
+	BodyFace        string // face for body text; default Go Regular
+	HeavyFace       string // face for the header; default Go Bold
+	BrandFace       string // face for the brand line; default the heavy face
 }
 
 // LabelDocument lays exp out as a compliant spirits label for the generator.
@@ -80,27 +85,42 @@ func LabelDocument(exp Expected) synth.Document { return LabelDocumentVariant(ex
 func LabelDocumentVariant(exp Expected, v Variant) synth.Document {
 	const w, h = 1200, 1600
 	cx := w / 2
+	body, heavy := v.BodyFace, v.HeavyFace
+	if body == "" {
+		body = "Go Regular"
+	}
+	if heavy == "" {
+		heavy = "Go Bold"
+	}
+	brandFace := v.BrandFace
+	if brandFace == "" {
+		brandFace = heavy
+	}
+	brand := exp.Brand
+	if v.BrandText != "" {
+		brand = v.BrandText
+	}
 	doc := synth.Document{W: w, H: h}
 	item := func(text, face string, px float64, y int, claim string) {
 		doc.Items = append(doc.Items, synth.Item{Text: text, Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim})
 	}
-	item(exp.Brand, "Go Bold", 84, 180, "brand")
-	item("SMALL BATCH", "Go Medium", 36, 270, "")
-	item(exp.Class, "Go Regular", 44, 350, "class")
-	item("AGED 8 YEARS", "Go Regular", 32, 420, "")
-	item("Batch No. 12 - Est. 1887", "Go Regular", 28, 480, "")
-	item("Distilled from grain and aged in new charred oak barrels", "Go Regular", 26, 560, "")
+	item(brand, brandFace, 84, 180, "brand")
+	item("SMALL BATCH", heavy, 36, 270, "")
+	item(exp.Class, body, 44, 350, "class")
+	item("AGED 8 YEARS", body, 32, 420, "")
+	item("Batch No. 12 - Est. 1887", body, 28, 480, "")
+	item("Distilled from grain and aged in new charred oak barrels", body, 26, 560, "")
 	doc.Items = append(doc.Items,
-		synth.Item{Text: fmt.Sprintf("%s (%s)", ABVText(exp.ABV), ProofText(exp.ABV)), Face: "Go Regular", Px: 34, X: 120, Y: 640, Claim: "abv"},
-		synth.Item{Text: NetText(exp.NetML), Face: "Go Regular", Px: 34, X: 900, Y: 640, Claim: "net"},
+		synth.Item{Text: fmt.Sprintf("%s (%s)", ABVText(exp.ABV), ProofText(exp.ABV)), Face: body, Px: 34, X: 120, Y: 640, Claim: "abv"},
+		synth.Item{Text: NetText(exp.NetML), Face: body, Px: 34, X: 900, Y: 640, Claim: "net"},
 	)
 	y := 720
 	for _, line := range exp.Producer {
-		item(line, "Go Regular", 28, y, "producer")
+		item(line, body, 28, y, "producer")
 		y += 40
 	}
-	item(exp.Origin, "Go Regular", 28, y, "origin")
-	item("Handcrafted in limited quantities", "Go Italic", 26, 900, "")
+	item(exp.Origin, body, 28, y, "origin")
+	item("Handcrafted in limited quantities", body, 26, 900, "")
 	text := Statute
 	if v.Wording != "" {
 		text = v.Wording
@@ -108,16 +128,15 @@ func LabelDocumentVariant(exp Expected, v Variant) synth.Document {
 	if v.HeaderTitleCase {
 		text = "Government Warning:" + text[HeaderLen:]
 	}
-	heavyFace := "Go Bold"
 	if v.HeaderRegular {
-		heavyFace = "Go Regular"
+		heavy = body
 	}
 	if !v.NoWarning {
 		doc.Blocks = append(doc.Blocks, synth.Block{
 			Text:      text,
 			Heavy:     []synth.Span{{Start: 0, End: HeaderLen}},
-			Face:      "Go Regular",
-			HeavyFace: heavyFace,
+			Face:      body,
+			HeavyFace: heavy,
 			Px:        24,
 			X:         120,
 			Y:         1020,
@@ -126,7 +145,7 @@ func LabelDocumentVariant(exp Expected, v Variant) synth.Document {
 			Claim:     "reference",
 		})
 	}
-	item("Please drink responsibly.", "Go Regular", 26, 1300, "")
-	item("www.oldtomdistillery.example", "Go Regular", 22, 1380, "")
+	item("Please drink responsibly.", body, 26, 1300, "")
+	item("www.oldtomdistillery.example", body, 22, 1380, "")
 	return doc
 }

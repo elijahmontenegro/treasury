@@ -506,6 +506,28 @@ func median(v []float64) float64 {
 	return s[len(s)/2]
 }
 
+// BodyStroke is the median stroke width in pixels over the body samples.
+func (a *Alphabet) BodyStroke() float64 { return medianStroke(a.Samples) }
+
+// SpanStroke is the median stroke width over an emphasis span's samples.
+func (a *Alphabet) SpanStroke(span int) float64 { return medianStroke(a.Emphasis[span]) }
+
+// medianStroke skips samples cut out of merged pairs.
+func medianStroke(pool map[rune][]Glyph) float64 {
+	var ws []float64
+	for _, samples := range pool {
+		for _, g := range samples {
+			if g.Derived {
+				continue
+			}
+			if w := g.Bin.StrokeWidth(); w > 0 {
+				ws = append(ws, w)
+			}
+		}
+	}
+	return median(ws)
+}
+
 // SpanGlyphs returns, in reading order, the glyphs assigned to characters
 // inside the given emphasis span.
 func (a *Alphabet) SpanGlyphs(span int) []int {

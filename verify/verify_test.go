@@ -49,8 +49,8 @@ func run(t *testing.T, img image.Image, exp ttb.Expected) map[string]verify.Verd
 		out[v.Claim] = v
 		if v.Evidence != nil {
 			ev := v.Evidence
-			t.Logf("%-12s %-9s observed=%q d1=%d d2=%d radius=%d bits=%d refined=%v glyphs=%d pen=%d text=%q synth=%q comp=%q",
-				v.Claim, v.Status, v.Observed, ev.D1, ev.D2, ev.Radius, ev.Bits, ev.Refined, ev.Glyphs, ev.Penalized, ev.Text, ev.Params.Synthesized, ev.Competitor)
+			t.Logf("%-12s %-9s observed=%q d1=%d d2=%d radius=%d bits=%d refined=%v glyphs=%d pen=%d text=%q casing=%s weight=%s synth=%q comp=%q",
+				v.Claim, v.Status, v.Observed, ev.D1, ev.D2, ev.Radius, ev.Bits, ev.Refined, ev.Glyphs, ev.Penalized, ev.Text, ev.Params.Casing, ev.Params.Weight, ev.Params.Synthesized, ev.Competitor)
 		} else {
 			t.Logf("%-12s %-9s reason=%s", v.Claim, v.Status, v.Reason)
 		}
@@ -133,6 +133,13 @@ func full(t *testing.T, img image.Image, exp ttb.Expected) verify.Result {
 		t.Logf("%-16s %-9s reason=%-12s matched=%d unexplained=%d outliers=%d violations=%d mean=%.3f", v.Claim, v.Status, v.Reason, e.Matched, e.Unexplained, e.Outliers, e.PriorViolations, e.MeanDistance)
 		for _, an := range e.Anomalies {
 			t.Logf("    %-7s glyph %3d as %q looks like %q distance %.3f at %v", an.Kind, an.Glyph, an.Char, an.Nearest, an.Distance, an.Box)
+		}
+	}
+	for _, v := range res.Claims {
+		if v.Evidence != nil {
+			t.Logf("%-12s %-9s d1=%d bits=%d text=%q casing=%s weight=%s synth=%q", v.Claim, v.Status, v.Evidence.D1, v.Evidence.Bits, v.Evidence.Text, v.Evidence.Params.Casing, v.Evidence.Params.Weight, v.Evidence.Params.Synthesized)
+		} else {
+			t.Logf("%-12s %-9s reason=%s", v.Claim, v.Status, v.Reason)
 		}
 	}
 	for _, v := range res.Emphasis {
@@ -232,4 +239,118 @@ func TestNoReferenceGivesNoAlphabet(t *testing.T) {
 			t.Errorf("%s: %s %s", v.Claim, v.Status, v.Reason)
 		}
 	}
+}
+
+func claimMap(res verify.Result) map[string]verify.Verdict {
+	out := map[string]verify.Verdict{}
+	for _, v := range res.Claims {
+		out[v.Claim] = v
+	}
+	return out
+}
+
+// unique is the sample with a brand that appears nowhere else on the label,
+// so a brand verdict can only come from the brand line.
+func unique() ttb.Expected {
+	exp := ttb.Sample()
+	exp.Brand = "SILVER FOX RESERVE"
+	return exp
+}
+
+func variantOf(t *testing.T, exp ttb.Expected, v ttb.Variant) *image.Gray {
+	t.Helper()
+	faces, err := render.Bundled()
+	if err != nil {
+		t.Fatal(err)
+	}
+	img, _, err := synth.Render(ttb.LabelDocumentVariant(exp, v), faces)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return img
+}
+
+// TestFreeTextCasingVariant: the label prints the brand in title case while
+// the application states it in capitals; the casing variant carries it.
+func TestFreeTextCasingVariant(t *testing.T) {
+	exp := unique()
+	res := full(t, variantOf(t, exp, ttb.Variant{BrandText: "Silver Fox Reserve"}), exp)
+	v := claimMap(res)["brand"]
+	if v.Status != verify.Verified || v.Evidence == nil || v.Evidence.Params.Casing != "title" {
+		t.Errorf("brand: %s casing=%q", v.Status, v.Evidence.Params.Casing)
+	}
+}
+
+// TestDisplayFaceBrandNotFound: a brand set in a script face the alphabet
+// cannot reach decodes as NOT_FOUND, the documented limit; the body claims
+// are unaffected.
+func TestDisplayFaceBrandNotFound(t *testing.T) {
+	exp := unique()
+	res := full(t, variantOf(t, exp, ttb.Variant{BrandFace: "Lobster Regular"}), exp)
+	vs := claimMap(res)
+	if vs["brand"].Status != verify.NotFound {
+		t.Errorf("brand in Lobster: %s", vs["brand"].Status)
+	}
+	for _, c := range []string{"class", "producer_1", "abv", "net"} {
+		if vs[c].Status != verify.Verified {
+			t.Errorf("%s: %s", c, vs[c].Status)
+		}
+	}
+}
+
+// TestOtherBodyFace: the whole label in PT Serif. The alphabet must learn
+// it, the nearest face must be PT Serif, and every claim must verify.
+func TestOtherBodyFace(t *testing.T) {
+	res := full(t, variant(t, ttb.Variant{BodyFace: "PTSerif Regular", HeavyFace: "PTSerif Bold"}, nil), ttb.Sample())
+	if res.Alphabet == nil || res.Alphabet.Face != "PTSerif Regular" {
+		t.Errorf("nearest face: %+v", res.Alphabet.Face)
+	}
+	for name, v := range claimMap(res) {
+		if v.Status != verify.Verified {
+			t.Errorf("%s: %s", name, v.Status)
+		}
+	}
+	for i, s := range rowStatuses(res) {
+		if s == verify.Mismatch || s == verify.NotFound {
+			t.Errorf("row %d: %s", i+1, s)
+		}
+	}
+	if len(res.Emphasis) != 1 || res.Emphasis[0].Status != verify.Verified {
+		t.Errorf("emphasis: %+v", res.Emphasis)
+	}
+}
+
+// TestDumpPairsSerif prints the refined abv pairs on the PT Serif label and
+// probes the regions over the true ABV line.
+func TestDumpPairsSerif(t *testing.T) {
+	verify.SetDebugScored(func(claim string, lines []string) {
+		if claim != "abv" && claim != "abv/probe" {
+			return
+		}
+		for _, l := range lines {
+			t.Logf("%s: %s", claim, l)
+		}
+	})
+	defer verify.SetDebugScored(nil)
+	faces, err := render.Bundled()
+	if err != nil {
+		t.Fatal(err)
+	}
+	img, truth, err := synth.Render(ttb.LabelDocumentVariant(ttb.Sample(), ttb.Variant{BodyFace: "PTSerif Regular", HeavyFace: "PTSerif Bold"}), faces)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var box image.Rectangle
+	for _, g := range truth.Glyphs {
+		if g.Claim == "abv" {
+			if box.Empty() {
+				box = g.Box
+			} else {
+				box = box.Union(g.Box)
+			}
+		}
+	}
+	t.Logf("true abv box %v", box)
+	verify.SetProbe(box, "45% Alc./Vol.")
+	full(t, img, ttb.Sample())
 }

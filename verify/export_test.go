@@ -31,8 +31,8 @@ func SetDebugScored(fn func(claim string, lines []string)) {
 				break
 			}
 			r := regions[p.region]
-			out = append(out, fmt.Sprintf("%-18q dist=%.3f raw=%d bits=%d refined=%v pen=%d region=%v comps=%d",
-				p.word_.Text, p.dist, p.raw, p.bits, p.refined, p.penalized, r.ink, len(r.comps)))
+			out = append(out, fmt.Sprintf("%-18q dist=%.3f raw=%d bits=%d refined=%v pen=%d region=%v comps=%d %s",
+				p.word_.Text, p.dist, p.raw, p.bits, p.refined, p.penalized, r.ink, len(r.comps), p.word_.Params.Face))
 			if i == 0 && p.path != nil {
 				out = append(out, "  xh="+fmt.Sprintf("%.1f baseline=%d", p.obs.XHeight, p.obs.Baseline))
 				for _, st := range p.path {
@@ -59,3 +59,10 @@ func DigitDistances(fn func(line string)) {
 	digitProbe = fn
 }
 
+
+// SetProbe makes decide report, through the SetDebugScored hook, every
+// region overlapping box against the candidate whose text is text: its
+// components, aspect, filter decisions, and coarse and refined distances.
+func SetProbe(box image.Rectangle, text string) {
+	debugProbe = &probe{box: box, text: text}
+}

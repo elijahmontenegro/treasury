@@ -18,7 +18,8 @@ import (
 
 // Params records how a codeword was spelled, for evidence.
 type Params struct {
-	Casing      string `json:"casing,omitempty"`
+	Casing      string `json:"casing,omitempty"`      // as_given, upper, title
+	Weight      string `json:"weight,omitempty"`      // regular, heavy
 	Synthesized string `json:"synthesized,omitempty"` // characters synthesized from Face
 	Emphasis    string `json:"emphasis,omitempty"`    // characters taken from an emphasis pool
 	Face        string `json:"face,omitempty"`
@@ -28,6 +29,7 @@ type Params struct {
 type Codeword struct {
 	Text   string
 	Value  string
+	Heavy  bool
 	Code   bitcode.Code
 	Params Params
 	Patch  encoder.Patch
@@ -45,21 +47,42 @@ type piece struct {
 
 // Speller spells with one alphabet.
 type Speller struct {
-	A        *alphabet.Alphabet
-	Face     *render.Face // nearest bundled face
-	Enc      encoder.Encoder
-	GlyphEnc encoder.Encoder
+	A         *alphabet.Alphabet
+	Face      *render.Face // bundled face nearest the body samples
+	HeavyFace *render.Face // bundled face nearest the emphasis samples, or the body face's bold sibling
+	Enc       encoder.Encoder
+	GlyphEnc  encoder.Encoder
 
 	letterGap, wordGap int
+	bodyStroke         float64 // learned body stroke width in px; synthesized glyphs are brought to it
+	heavyStroke        float64 // learned emphasis stroke width, or 1.25 times the body's
 	medoids            map[alphabet.Key]alphabet.Glyph
 	synth              map[rune]piece
+	heavySynth         map[rune]piece
 }
 
-// New picks the nearest face and prepares the medoid sample per character.
+// New picks the nearest faces and prepares the medoid sample per character.
 func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Speller {
 	glyphEnc := a.Block.Encoder()
-	face, _ := NearestFace(a, faces, glyphEnc)
-	s := &Speller{A: a, Face: face, Enc: enc, GlyphEnc: glyphEnc, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}}
+	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}}
+	s.bodyStroke = a.BodyStroke()
+	s.heavyStroke = 1.25 * s.bodyStroke
+	if len(a.Emphasis) > 0 {
+		if w := a.SpanStroke(0); w > 0 {
+			s.heavyStroke = w
+		}
+	}
+	s.Face, _ = nearestFace(a, faces, glyphEnc, -1)
+	if len(a.Emphasis) > 0 {
+		s.HeavyFace, _ = nearestFace(a, faces, glyphEnc, 0)
+	}
+	if s.HeavyFace == nil {
+		if b, ok := render.Sibling(faces, s.Face, "bold"); ok {
+			s.HeavyFace = b
+		} else {
+			s.HeavyFace = s.Face
+		}
+	}
 	s.letterGap = int(math.Round(a.LetterGap))
 	s.wordGap = int(math.Round(a.WordGap))
 	if s.wordGap <= s.letterGap {
@@ -75,6 +98,10 @@ func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Spell
 	}
 	return s
 }
+
+// HasEmphasis reports whether the alphabet learned a heavier pool, so that
+// heavy spellings mean something.
+func (s *Speller) HasEmphasis() bool { return len(s.A.Emphasis) > 0 }
 
 // medoid is the sample nearest all the others by frame code; samples that
 // are components of their own are preferred over ones cut from merged pairs.
@@ -107,33 +134,81 @@ func medoid(samples []alphabet.Glyph) alphabet.Glyph {
 // at the alphabet's x-height and measuring their frame codes against the
 // learned centroids.
 func NearestFace(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Encoder) (*render.Face, float64) {
-	var best *render.Face
-	bestD := math.Inf(1)
+	return nearestFace(a, faces, glyphEnc, -1)
+}
+
+// FaceScore is how well one bundled face reproduces a pool of the alphabet.
+type FaceScore struct {
+	Face     *render.Face
+	Score    float64 // mean normalized distance of synthesized glyphs to the pool's centroids
+	Compared int
+}
+
+// FaceScores scores every face against the centroids of one pool: the body
+// (span -1) by its lowercase letters, an emphasis span by its letters. Each
+// synthesized glyph is first brought to the pool's stroke width, so the
+// score compares letterforms alone: the image's threshold thickens strokes
+// relative to a synthesized rendering, and left uncorrected that bias made
+// every bold face outscore its regular sibling against a regular body.
+func FaceScores(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Encoder, span int) []FaceScore {
+	stroke := a.BodyStroke()
+	if span >= 0 {
+		stroke = a.SpanStroke(span)
+	}
+	var out []FaceScore
 	for _, f := range faces {
 		sum, n := 0.0, 0
-		for r := range a.Samples {
-			if !unicode.IsLower(r) {
+		for key, cen := range a.Centroid {
+			if key.Span != span || !unicode.IsLetter(key.R) || (span < 0 && !unicode.IsLower(key.R)) {
 				continue
 			}
-			cen, ok := a.Centroid[alphabet.Key{R: r, Span: -1}]
-			if !ok {
-				continue
+			byCap := unicode.IsUpper(key.R) && a.CapHeight > 0
+			target := a.XHeight
+			if byCap {
+				target = a.CapHeight
 			}
-			sg, err := f.Glyph(r, a.XHeight, false)
+			sg, err := f.Glyph(key.R, target, byCap)
 			if err != nil {
 				continue
+			}
+			if stroke > 0 {
+				sg.Bin = sg.Bin.WithStroke(stroke)
 			}
 			sum += encoder.NormalizedDistance(frameCode(sg, a.XHeight, glyphEnc), cen, glyphEnc.Bits())
 			n++
 		}
-		if n > 0 && sum/float64(n) < bestD {
-			best, bestD = f, sum/float64(n)
+		if n > 0 {
+			out = append(out, FaceScore{Face: f, Score: sum / float64(n), Compared: n})
+		}
+	}
+	return out
+}
+
+func nearestFace(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Encoder, span int) (*render.Face, float64) {
+	var best *render.Face
+	bestD := math.Inf(1)
+	for _, fs := range FaceScores(a, faces, glyphEnc, span) {
+		if fs.Score < bestD {
+			best, bestD = fs.Face, fs.Score
 		}
 	}
 	if best == nil && len(faces) > 0 {
 		best = faces[0]
 	}
 	return best, bestD
+}
+
+func median(v []float64) float64 {
+	if len(v) == 0 {
+		return 0
+	}
+	s := append([]float64(nil), v...)
+	for i := 1; i < len(s); i++ {
+		for j := i; j > 0 && s[j] < s[j-1]; j-- {
+			s[j], s[j-1] = s[j-1], s[j]
+		}
+	}
+	return s[len(s)/2]
 }
 
 // frameCode encodes a synthesized glyph the way the alphabet encodes its own.
@@ -156,21 +231,46 @@ func blit(dst *bitmap.Bitmap, src *bitmap.Bitmap, at image.Point) {
 	}
 }
 
-// piece returns the glyph to place for r: the learned medoid, else an
-// emphasis medoid, else a synthesized glyph.
-func (s *Speller) piece(r rune) (piece, error) {
-	if g, ok := s.medoids[alphabet.Key{R: r, Span: -1}]; ok {
-		return fromGlyph(g, 'l'), nil
-	}
+// piece returns the glyph to place for r. Regular spellings take the body
+// medoid, then an emphasis medoid, then a glyph synthesized from the body
+// face; heavy spellings take an emphasis medoid, then a glyph synthesized
+// from the heavy face, then the body medoid.
+func (s *Speller) piece(r rune, heavy bool) (piece, error) {
+	body, hasBody := s.medoids[alphabet.Key{R: r, Span: -1}]
+	var emph alphabet.Glyph
+	hasEmph := false
 	for span := range s.A.Emphasis {
 		if g, ok := s.medoids[alphabet.Key{R: r, Span: span}]; ok {
-			return fromGlyph(g, 'e'), nil
+			emph, hasEmph = g, true
+			break
 		}
 	}
-	if p, ok := s.synth[r]; ok {
+	if heavy {
+		if hasEmph {
+			return fromGlyph(emph, 'e'), nil
+		}
+		if p, err := s.synthesize(r, s.HeavyFace, s.heavySynth); err == nil {
+			return p, nil
+		}
+		if hasBody {
+			return fromGlyph(body, 'l'), nil
+		}
+		return piece{}, fmt.Errorf("spell: no glyph for %q", r)
+	}
+	if hasBody {
+		return fromGlyph(body, 'l'), nil
+	}
+	if hasEmph {
+		return fromGlyph(emph, 'e'), nil
+	}
+	return s.synthesize(r, s.Face, s.synth)
+}
+
+func (s *Speller) synthesize(r rune, face *render.Face, cache map[rune]piece) (piece, error) {
+	if p, ok := cache[r]; ok {
 		return p, nil
 	}
-	if s.Face == nil {
+	if face == nil {
 		return piece{}, fmt.Errorf("spell: no face to synthesize %q", r)
 	}
 	byCap := (unicode.IsUpper(r) || unicode.IsDigit(r)) && s.A.CapHeight > 0
@@ -178,12 +278,20 @@ func (s *Speller) piece(r rune) (piece, error) {
 	if byCap {
 		target = s.A.CapHeight
 	}
-	sg, err := s.Face.Glyph(r, target, byCap)
+	sg, err := face.Glyph(r, target, byCap)
 	if err != nil {
 		return piece{}, err
 	}
+	// Bring the stroke to the learned weight so a synthesized glyph sits
+	// beside learned ones as if printed by the same press.
+	if stroke := s.bodyStroke; stroke > 0 {
+		if face == s.HeavyFace && s.heavyStroke > 0 {
+			stroke = s.heavyStroke
+		}
+		sg.Bin = sg.Bin.WithStroke(stroke)
+	}
 	p := piece{bin: sg.Bin, gray: sg.Gray, box: sg.Box, code: frameCode(sg, s.A.XHeight, s.GlyphEnc), source: 's'}
-	s.synth[r] = p
+	cache[r] = p
 	return p, nil
 }
 
@@ -192,9 +300,9 @@ func fromGlyph(g alphabet.Glyph, source byte) piece {
 }
 
 // Target returns the glyph-wise codeword for text: a frame code per
-// non-space character, plus the vertical ink extent of the composite
-// relative to its baseline.
-func (s *Speller) Target(text string) (t alphabet.Target, top, bottom int, err error) {
+// non-space character, composed pair and triple codes for touching runs,
+// plus the vertical ink extent of the composite relative to its baseline.
+func (s *Speller) Target(text string, heavy bool) (t alphabet.Target, top, bottom int, err error) {
 	t.Text = []rune(text)
 	t.Codes = make([]bitcode.Code, len(t.Text))
 	top, bottom = math.MaxInt, math.MinInt
@@ -202,7 +310,7 @@ func (s *Speller) Target(text string) (t alphabet.Target, top, bottom int, err e
 		if r == ' ' {
 			continue
 		}
-		p, err := s.piece(r)
+		p, err := s.piece(r, heavy)
 		if err != nil {
 			return alphabet.Target{}, 0, 0, err
 		}
@@ -210,22 +318,35 @@ func (s *Speller) Target(text string) (t alphabet.Target, top, bottom int, err e
 		top = min(top, p.box.Min.Y)
 		bottom = max(bottom, p.box.Max.Y)
 	}
+	// Composed run codes are memoized per target: an alignment asks for
+	// them once per region, and a candidate is aligned to many regions.
+	memo := map[int]bitcode.Code{}
 	run := func(c, n int) bitcode.Code {
-		if c+n > len(t.Text) {
-			return nil
+		key := c*4 + n
+		if code, ok := memo[key]; ok {
+			return code
 		}
-		ps := make([]piece, 0, n)
-		for i := c; i < c+n; i++ {
-			if t.Text[i] == ' ' {
-				return nil
+		var code bitcode.Code
+		if c+n <= len(t.Text) {
+			ps := make([]piece, 0, n)
+			for i := c; i < c+n; i++ {
+				if t.Text[i] == ' ' {
+					ps = nil
+					break
+				}
+				p, err := s.piece(t.Text[i], heavy)
+				if err != nil {
+					ps = nil
+					break
+				}
+				ps = append(ps, p)
 			}
-			p, err := s.piece(t.Text[i])
-			if err != nil {
-				return nil
+			if len(ps) == n {
+				code = s.runCode(ps)
 			}
-			ps = append(ps, p)
 		}
-		return s.runCode(ps)
+		memo[key] = code
+		return code
 	}
 	t.Pair = func(c int) bitcode.Code { return run(c, 2) }
 	t.Triple = func(c int) bitcode.Code { return run(c, 3) }
@@ -265,14 +386,19 @@ func (s *Speller) runCode(ps []piece) bitcode.Code {
 // Spell composes text on one baseline with the label's own letter and word
 // gaps, tight to the ink like an encoded region, and encodes it.
 func (s *Speller) Spell(text, value string) (Codeword, error) {
-	return s.spell(text, value, float64(s.letterGap), float64(s.wordGap))
+	return s.spell(text, value, false, float64(s.letterGap), float64(s.wordGap))
+}
+
+// SpellAs is Spell with a choice of weight.
+func (s *Speller) SpellAs(text, value string, heavy bool) (Codeword, error) {
+	return s.spell(text, value, heavy, float64(s.letterGap), float64(s.wordGap))
 }
 
 // SpellFit composes text so that its aspect matches a region of width×height
 // px: the composite lives at the reference's glyph size, so the region's
 // width is first brought to that scale through the ratio of ink heights,
 // then the label's gap proportions are scaled to fill it.
-func (s *Speller) SpellFit(text, value string, width, height int) (Codeword, error) {
+func (s *Speller) SpellFit(text, value string, heavy bool, width, height int) (Codeword, error) {
 	letters, words, glyphs := 0, 0, 0
 	top, bottom := math.MaxInt, math.MinInt
 	prev := rune(-1)
@@ -280,7 +406,7 @@ func (s *Speller) SpellFit(text, value string, width, height int) (Codeword, err
 		if r == ' ' {
 			words++
 		} else {
-			p, err := s.piece(r)
+			p, err := s.piece(r, heavy)
 			if err != nil {
 				return Codeword{}, err
 			}
@@ -294,22 +420,22 @@ func (s *Speller) SpellFit(text, value string, width, height int) (Codeword, err
 		prev = r
 	}
 	if glyphs == 0 || height <= 0 || bottom <= top {
-		return s.spell(text, value, 0, 0)
+		return s.spell(text, value, heavy, 0, 0)
 	}
 	scale := float64(bottom-top) / float64(height)
 	budget := float64(width)*scale - float64(glyphs)
 	if budget <= 0 || letters+words == 0 {
-		return s.spell(text, value, 0, 0)
+		return s.spell(text, value, heavy, 0, 0)
 	}
 	ratio := 3.0
 	if s.letterGap > 0 {
 		ratio = float64(s.wordGap) / float64(s.letterGap)
 	}
 	unit := budget / (float64(letters) + ratio*float64(words))
-	return s.spell(text, value, unit, unit*ratio)
+	return s.spell(text, value, heavy, unit, unit*ratio)
 }
 
-func (s *Speller) spell(text, value string, letterGap, wordGap float64) (Codeword, error) {
+func (s *Speller) spell(text, value string, heavy bool, letterGap, wordGap float64) (Codeword, error) {
 	type placed struct {
 		p piece
 		x int
@@ -324,7 +450,7 @@ func (s *Speller) spell(text, value string, letterGap, wordGap float64) (Codewor
 			prev = r
 			continue
 		}
-		p, err := s.piece(r)
+		p, err := s.piece(r, heavy)
 		if err != nil {
 			return Codeword{}, err
 		}
@@ -374,11 +500,21 @@ func (s *Speller) spell(text, value string, letterGap, wordGap float64) (Codewor
 		}
 	}
 	patch := encoder.Patch{Bin: bin, Gray: gray}
-	cw := Codeword{Text: text, Value: value, Code: s.Enc.Encode(patch), Patch: patch}
+	cw := Codeword{Text: text, Value: value, Heavy: heavy, Code: s.Enc.Encode(patch), Patch: patch}
 	cw.Params.Synthesized = string(synthesized)
 	cw.Params.Emphasis = string(emphasis)
-	if len(synthesized) > 0 && s.Face != nil {
-		cw.Params.Face = s.Face.Name
+	cw.Params.Weight = "regular"
+	if heavy {
+		cw.Params.Weight = "heavy"
+	}
+	if len(synthesized) > 0 {
+		face := s.Face
+		if heavy {
+			face = s.HeavyFace
+		}
+		if face != nil {
+			cw.Params.Face = face.Name
+		}
 	}
 	return cw, nil
 }

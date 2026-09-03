@@ -10,6 +10,8 @@ import (
 )
 
 // Observed is a run of components in reading order with their frame codes.
+// Union codes of neighbouring components, which depend on the run alone,
+// are computed on demand and shared by every alignment of the run.
 type Observed struct {
 	Boxes    []image.Rectangle
 	Codes    []bitcode.Code
@@ -18,12 +20,40 @@ type Observed struct {
 	XHeight  float64
 	Bin      *bitmap.Bitmap
 	Enc      encoder.Encoder
+
+	unions map[int]bitcode.Code
+}
+
+// unionBox is the box spanning glyphs g through g+k-1.
+func (o Observed) unionBox(g, k int) image.Rectangle {
+	box := o.Boxes[g]
+	for i := g + 1; i < g+k; i++ {
+		box = box.Union(o.Boxes[i])
+	}
+	return box
+}
+
+// unionCode is the frame code of glyphs g through g+k-1 taken as one, or
+// false when they are not close enough to be one broken character.
+func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
+	for i := g + 1; i < g+k; i++ {
+		if o.Gaps[i] > 0.3 {
+			return nil, false
+		}
+	}
+	key := g*4 + k
+	if code, ok := o.unions[key]; ok {
+		return code, true
+	}
+	code := o.Enc.Encode(Frame(o.Bin, o.unionBox(g, k), o.Baseline, o.XHeight))
+	o.unions[key] = code
+	return code, true
 }
 
 // NewObserved frames and encodes boxes (sorted left to right) at the given
 // baseline and x-height.
 func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangle, baseline int, xh float64) Observed {
-	o := Observed{Boxes: boxes, Baseline: baseline, XHeight: xh, Bin: bin, Enc: enc}
+	o := Observed{Boxes: boxes, Baseline: baseline, XHeight: xh, Bin: bin, Enc: enc, unions: map[int]bitcode.Code{}}
 	o.Codes = make([]bitcode.Code, len(boxes))
 	o.Gaps = make([]float64, len(boxes))
 	maxX := 0
@@ -116,27 +146,8 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		tripleCodes[c] = code
 		return code
 	}
-	unionBox := func(g, k int) image.Rectangle {
-		box := obs.Boxes[g]
-		for i := g + 1; i < g+k; i++ {
-			box = box.Union(obs.Boxes[i])
-		}
-		return box
-	}
-	unionCodes := map[int]bitcode.Code{}
-	unionCode := func(g, k int) (bitcode.Code, bool) {
-		for i := g + 1; i < g+k; i++ {
-			if obs.Gaps[i] > 0.3 {
-				return nil, false
-			}
-		}
-		key := g*4 + k
-		if code, ok := unionCodes[key]; ok {
-			return code, true
-		}
-		code := obs.Enc.Encode(Frame(obs.Bin, unionBox(g, k), obs.Baseline, obs.XHeight))
-		unionCodes[key] = code
-		return code, true
+	if obs.unions == nil {
+		obs.unions = map[int]bitcode.Code{}
 	}
 	pr := &problem{chars: t.Text, m: m, gap: obs.Gaps, spaces: spaces, pen: pen}
 	pr.shape = func(g, c int) float64 { return shapeOf(obs.Codes[g], feats[g], widths[g], c) }
@@ -155,11 +166,11 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		return pc + 0.6
 	}
 	unionCost := func(g, k, c int) float64 {
-		code, ok := unionCode(g, k)
+		code, ok := obs.unionCode(g, k)
 		if !ok {
 			return math.NaN()
 		}
-		f, w := measured(unionBox(g, k), obs.Baseline, obs.XHeight)
+		f, w := measured(obs.unionBox(g, k), obs.Baseline, obs.XHeight)
 		return shapeOf(code, f, w, c)
 	}
 	pr.union = func(g, c int) float64 { return unionCost(g, 2, c) }
@@ -203,7 +214,7 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 			if s.Kind == Split3 {
 				k = 3
 			}
-			if code, ok := unionCode(s.Glyph, k); ok && t.Codes[s.Char] != nil {
+			if code, ok := obs.unionCode(s.Glyph, k); ok && t.Codes[s.Char] != nil {
 				st.Hamming += bitcode.Distance(code, t.Codes[s.Char])
 			}
 		case Insert, Delete:

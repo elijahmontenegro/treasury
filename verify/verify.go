@@ -42,6 +42,7 @@ type Claim struct {
 	Candidates []Candidate // every value the claim could decode to; free text has one
 	Required   bool
 	Radius     float64 // Hamming radius as a fraction of the code length; 0 uses the default
+	Variants   bool    // also spell casing, quote, and weight variants of each candidate; for free text
 }
 
 // Status is a verdict.

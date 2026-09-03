@@ -6,6 +6,8 @@ import (
 	"image/draw"
 	"math"
 	"sort"
+	"strings"
+	"unicode"
 
 	"treasury/internal/alphabet"
 	"treasury/internal/bitcode"
@@ -70,25 +72,29 @@ func modeInt(v []int) int {
 	return best
 }
 
-type match struct {
-	region, word, d int
-}
-
 // debugScored, when set by a test, receives every refined pair of a claim;
-// digitProbe receives each observed digit's distances to all ten digits.
+// digitProbe receives each observed digit's distances to all ten digits;
+// debugProbe names a region box and candidate text to report on.
 var (
 	debugScored func(claim string, regions []encodedRegion, pairs []scored)
 	digitProbe  func(line string)
+	debugProbe  *probe
 )
 
-// scored is a (region, candidate) pair after refinement: a normalized
+// probe names a region box and a candidate text to report on.
+type probe struct {
+	box  image.Rectangle
+	text string
+}
+
+// scored is a (region, candidate) pair after scoring: a normalized
 // distance, the raw bits behind it, and how it was measured.
 type scored struct {
 	region, word int
 	dist         float64 // normalized to [0, 1]
 	raw, bits    int
 	glyphs       int  // candidate glyphs when refined
-	refined      bool // glyph-wise alignment succeeded
+	refined      bool // glyph-wise alignment scored the pair
 	penalized    int
 	word_        spell.Codeword
 	path         alphabet.Path
@@ -96,12 +102,19 @@ type scored struct {
 	obs          alphabet.Observed
 }
 
-// decide spells the claim's candidates and applies the rules in two passes.
-// The coarse pass compares every region's line code with every candidate's
-// spelled code and keeps the nearest pairs. The refinement aligns each
-// kept region's components to the candidate glyph by glyph with the
-// alphabet's decoder, which is what makes a single differing digit count;
-// where that alignment fails the coarse distance stands.
+// decide spells the claim's candidates and applies the rules.
+//
+// Every structurally possible (region, candidate) pair is scored glyph by
+// glyph: the region's components aligned to the candidate's glyph codes by
+// the alphabet's decoder, at a geometry estimated from the ink heights. A
+// region must have about as many components as the candidate has glyphs,
+// allowing for touching and broken ones, and a similar aspect. The nearest
+// pairs are then re-scored over a small neighbourhood of scales and
+// baselines, and the nearest of those decodes the claim. The competitor is
+// the nearest candidate of a different value on the same region under the
+// winner's geometry. The spec's line hash is kept only for regions without
+// components: as a ranker it puts short spurious pairs ahead of the true
+// one whenever the label's face differs from the synthesized one.
 //
 //	d1 ≤ radius, margin ≥ tie, value == expected → VERIFIED
 //	d1 ≤ radius, margin ≥ tie, value != expected → MISMATCH (observed = value)
@@ -111,12 +124,13 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	v := Verdict{Claim: c.Name, Expected: c.Expected}
 	var words []spell.Codeword
 	unspellable := 0
-	for _, cand := range c.Candidates {
-		w, err := sp.Spell(cand.Text, cand.Value)
+	for _, cand := range variants(c, sp.HasEmphasis()) {
+		w, err := sp.SpellAs(cand.Text, cand.Value, cand.heavy)
 		if err != nil {
 			unspellable++
 			continue
 		}
+		w.Params.Casing = cand.casing
 		words = append(words, w)
 	}
 	if len(words) == 0 || len(regions) == 0 {
@@ -130,190 +144,280 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		return v
 	}
 	lineBits := e.lineEnc.Bits()
+	glyphBits := sp.GlyphEnc.Bits()
 	radius := c.Radius
 	if radius == 0 {
 		radius = e.opt.DefaultRadius
 	}
 
-	// Coarse pass: the K nearest (region, word) pairs overall.
-	const topK = 24
-	top := make([]match, 0, topK+1)
-	for ri, r := range regions {
-		for wi, w := range words {
-			d := bitcode.Distance(r.code, w.Code)
-			if len(top) == topK && d >= top[topK-1].d {
-				continue
-			}
-			top = append(top, match{ri, wi, d})
-			sort.Slice(top, func(a, b int) bool { return top[a].d < top[b].d })
-			if len(top) > topK {
-				top = top[:topK]
+	// Candidate shapes and glyph-wise targets, once per candidate.
+	type shape struct {
+		glyphs      int
+		aspect      float64
+		target      alphabet.Target
+		top, bottom int
+		ok          bool
+	}
+	shapes := make([]shape, len(words))
+	for i, w := range words {
+		s := shape{aspect: float64(w.Patch.Bin.W) / float64(max(1, w.Patch.Bin.H))}
+		if t, top, bottom, err := sp.Target(w.Text, w.Heavy); err == nil && bottom > top {
+			s.target, s.top, s.bottom, s.ok = t, top, bottom, true
+			for _, code := range t.Codes {
+				if code != nil {
+					s.glyphs++
+				}
 			}
 		}
+		shapes[i] = s
 	}
 
-	glyphBits := sp.GlyphEnc.Bits()
+	// Observed frames per region and geometry, shared across candidates.
+	type obsKey struct{ region, xh10, dy int }
+	cache := map[obsKey]alphabet.Observed{}
+	observed := func(ri int, xh float64, dy int) alphabet.Observed {
+		k := obsKey{ri, int(math.Round(xh * 10)), dy}
+		if o, ok := cache[k]; ok {
+			return o
+		}
+		o := alphabet.NewObserved(pre.Bin, sp.GlyphEnc, regions[ri].comps, regions[ri].baseline+dy, xh)
+		cache[k] = o
+		return o
+	}
+	fits := func(ri, wi int) bool {
+		r, s := regions[ri], shapes[wi]
+		if !s.ok || len(r.comps) == 0 {
+			return false
+		}
+		slack := max(3, s.glyphs/4)
+		if len(r.comps) < s.glyphs-slack || len(r.comps) > s.glyphs+slack {
+			return false
+		}
+		ratio := float64(r.ink.Dx()) / float64(max(1, r.ink.Dy())) / s.aspect
+		return ratio >= 0.6 && ratio <= 1.6
+	}
+	nominalXH := func(ri, wi int) float64 {
+		return sp.A.XHeight * float64(regions[ri].ink.Dy()) / float64(shapes[wi].bottom-shapes[wi].top)
+	}
+	lineScore := func(ri, wi int) scored {
+		d := bitcode.Distance(regions[ri].code, words[wi].Code)
+		return scored{region: ri, word: wi, dist: float64(d) / float64(lineBits), raw: d, bits: lineBits, word_: words[wi]}
+	}
 	// score aligns one candidate to one framing of a region's components.
-	score := func(m match, obs alphabet.Observed, t alphabet.Target, n int) (scored, bool) {
-		path, st, ok := alphabet.Decode(obs, t, alphabet.DefaultPenalties())
+	score := func(ri, wi int, obs alphabet.Observed) (scored, bool) {
+		s := shapes[wi]
+		path, st, ok := alphabet.Decode(obs, s.target, alphabet.DefaultPenalties())
 		if !ok {
 			return scored{}, false
 		}
 		// Structural steps are scored by their union or pair shape and carry
-		// a quarter-glyph penalty; unexplained glyphs and characters cost
-		// half a glyph each.
-		raw := st.Hamming + st.Structural*glyphBits/4 + st.Unexplained*glyphBits/2
+		// a quarter-glyph penalty. An unexplained glyph or character costs
+		// a whole glyph: ink the candidate does not account for means the
+		// region is not that text, however well the rest matches, and at
+		// half a glyph "(90 Proof)" passed for "190 Proof".
+		raw := st.Hamming + st.Structural*glyphBits/4 + st.Unexplained*glyphBits
 		return scored{
-			region: m.region, word: m.word, dist: float64(raw) / float64(n*glyphBits), raw: raw, bits: n * glyphBits,
-			glyphs: n, refined: true, penalized: st.Structural + st.Unexplained, word_: words[m.word],
-			path: path, target: t, obs: obs,
+			region: ri, word: wi, dist: float64(raw) / float64(s.glyphs*glyphBits), raw: raw, bits: s.glyphs * glyphBits,
+			glyphs: s.glyphs, refined: true, penalized: st.Structural + st.Unexplained, word_: words[wi],
+			path: path, target: s.target, obs: obs,
 		}, true
 	}
-	// refine re-scores a coarse pair glyph by glyph. With fixed set, the
-	// region is framed exactly as in fixed (a competitor must be judged
-	// under the winner's geometry, not one that flatters it); otherwise
-	// the framing is estimated from the ink heights and a small
-	// neighbourhood of scales and baselines is searched.
-	refine := func(m match, fixed *scored) scored {
-		s := scored{region: m.region, word: m.word, dist: float64(m.d) / float64(lineBits), raw: m.d, bits: lineBits, word_: words[m.word]}
-		reg := regions[m.region]
-		if len(reg.comps) == 0 {
-			return s
-		}
-		t, top, bottom, err := sp.Target(words[m.word].Text)
-		if err != nil || bottom <= top || reg.ink.Dy() == 0 {
-			return s
-		}
-		n := 0
-		for _, code := range t.Codes {
-			if code != nil {
-				n++
-			}
+	// refine re-scores a pair over a neighbourhood of scales and baselines;
+	// with fixed set, the region is framed exactly as in fixed.
+	refine := func(ri, wi int, fixed *scored) scored {
+		if !fits(ri, wi) {
+			return lineScore(ri, wi)
 		}
 		if fixed != nil {
-			if f, ok := score(m, fixed.obs, t, n); ok {
+			if f, ok := score(ri, wi, fixed.obs); ok {
 				return f
 			}
-			return s
+			return lineScore(ri, wi)
 		}
-		xh0 := sp.A.XHeight * float64(reg.ink.Dy()) / float64(bottom-top)
-		found := false
+		best, found := lineScore(ri, wi), false
+		xh0 := nominalXH(ri, wi)
 		for _, scale := range []float64{1, 0.96, 1.04} {
 			for _, dy := range []int{0, -1, 1} {
-				obs := alphabet.NewObserved(pre.Bin, sp.GlyphEnc, reg.comps, reg.baseline+dy, xh0*scale)
-				if f, ok := score(m, obs, t, n); ok && (!found || f.dist < s.dist) {
-					s, found = f, true
+				if f, ok := score(ri, wi, observed(ri, xh0*scale, dy)); ok && (!found || f.dist < best.dist) {
+					best, found = f, true
 				}
 			}
 		}
-		return s
+		return best
 	}
-	best := refine(top[0], nil)
-	var all []scored
-	if debugScored != nil {
-		all = append(all, best)
-	}
-	for _, m := range top[1:] {
-		f := refine(m, nil)
-		if debugScored != nil {
-			all = append(all, f)
+
+	// Nominal pass over every plausible pair; the line hash stands in for
+	// regions without components.
+	const topK = 48
+	top := make([]scored, 0, topK+1)
+	keep := func(s scored) {
+		if len(top) == topK && s.dist >= top[topK-1].dist {
+			return
 		}
-		if f.dist < best.dist {
-			best = f
+		top = append(top, s)
+		sort.Slice(top, func(a, b int) bool { return top[a].dist < top[b].dist })
+		if len(top) > topK {
+			top = top[:topK]
 		}
 	}
+	for ri := range regions {
+		for wi := range words {
+			if !fits(ri, wi) {
+				if len(regions[ri].comps) == 0 {
+					keep(lineScore(ri, wi))
+				}
+				continue
+			}
+			if s, ok := score(ri, wi, observed(ri, nominalXH(ri, wi), 0)); ok {
+				keep(s)
+			}
+		}
+	}
+	if len(top) == 0 {
+		v.Status = NotFound
+		if !c.Required {
+			v.Status = Skipped
+		}
+		v.Reason = "no_region_fits"
+		return v
+	}
+	all := make([]scored, 0, len(top))
+	for _, s := range top {
+		all = append(all, refine(s.region, s.word, nil))
+	}
+	sort.Slice(all, func(a, b int) bool { return all[a].dist < all[b].dist })
+	best := all[0]
 	if debugScored != nil {
 		debugScored(c.Name, regions, all)
 	}
+	if debugProbe != nil && debugScored != nil {
+		runProbe(c.Name, words, regions, func(ri, wi int) scored { return refine(ri, wi, nil) }, fits)
+	}
 	if digitProbe != nil && best.refined {
-		for _, st := range best.path {
-			if st.Kind != alphabet.Match || st.Char >= len(best.target.Text) {
-				continue
-			}
-			r := best.target.Text[st.Char]
-			if r < '0' || r > '9' {
-				continue
-			}
-			line := fmt.Sprintf("%s glyph %d as %q:", c.Name, st.Glyph, r)
-			for d := '0'; d <= '9'; d++ {
-				t, _, _, err := sp.Target(string(d))
-				if err != nil {
-					continue
-				}
-				line += fmt.Sprintf(" %c=%d", d, bitcode.Distance(best.obs.Codes[st.Glyph], t.Codes[0]))
-			}
-			digitProbe(line)
-		}
+		runDigitProbe(c.Name, sp, best)
 	}
 
-	// Competitor: nearest different value on the winning region, refined
-	// among the ten nearest by coarse distance.
-	var others []match
-	for wi, w := range words {
-		if w.Value == best.word_.Value {
-			continue
+	// competitor is the nearest candidate of a different value on the
+	// pair's region under the pair's geometry.
+	competitor := func(p scored) scored {
+		comp := scored{region: -1, dist: math.Inf(1)}
+		for wi, w := range words {
+			if w.Value == p.word_.Value {
+				continue
+			}
+			s, ok := scored{}, false
+			if p.refined && fits(p.region, wi) {
+				s, ok = score(p.region, wi, p.obs)
+			}
+			if !ok {
+				s = lineScore(p.region, wi)
+			}
+			if s.dist < comp.dist {
+				comp = s
+			}
 		}
-		others = append(others, match{best.region, wi, bitcode.Distance(regions[best.region].code, w.Code)})
+		return comp
 	}
-	sort.Slice(others, func(a, b int) bool { return others[a].d < others[b].d })
-	comp := scored{region: -1, dist: math.Inf(1)}
-	var fixed *scored
-	if best.refined {
-		fixed = &best
+	// decisive says whether a pair beats its competitor by the margin.
+	// Glyph-wise, the two candidates only differ where their characters
+	// differ, so the margin is counted per differing glyph: the tie
+	// fraction, or one and a half times the alphabet's own within-character
+	// spread when the image is noisier than that, since the spread is the
+	// noise of one glyph comparison and a difference under it is not
+	// evidence. Line-wise it is the doc's fraction of the code length.
+	decisive := func(p, comp scored) bool {
+		if comp.region < 0 {
+			return true
+		}
+		var margin float64
+		if p.refined && comp.refined {
+			k := differing([]rune(p.word_.Text), []rune(comp.word_.Text))
+			per := math.Max(e.opt.TieMargin, 1.5*sp.A.Spread)
+			margin = per * float64(k) / float64(max(1, p.glyphs))
+		} else {
+			margin = e.opt.LineTieMargin
+		}
+		return comp.dist-p.dist >= margin
 	}
-	for i, m := range others {
-		if i >= 10 {
-			break
+	evidence := func(p, comp scored) *Evidence {
+		reg := regions[p.region]
+		ev := &Evidence{
+			Region: reg.box, Crop: reg.patch.Gray, Codeword: p.word_.Patch,
+			Text: p.word_.Text, Params: p.word_.Params,
+			D1: p.raw, D2: -1, Radius: int(math.Round(radius * float64(p.bits))), Bits: p.bits,
+			Refined: p.refined, Glyphs: p.glyphs, Penalized: p.penalized,
+			LowConfidence: reg.lowConfidence,
 		}
-		if f := refine(m, fixed); f.dist < comp.dist {
-			comp = f
+		if comp.region >= 0 {
+			ev.D2 = comp.raw
+			ev.Competitor = comp.word_.Value
 		}
+		return ev
 	}
 
-	reg := regions[best.region]
-	ev := &Evidence{
-		Region: reg.box, Crop: reg.patch.Gray, Codeword: best.word_.Patch,
-		Text: best.word_.Text, Params: best.word_.Params,
-		D1: best.raw, D2: -1, Radius: int(math.Round(radius * float64(best.bits))), Bits: best.bits,
-		Refined: best.refined, Glyphs: best.glyphs, Penalized: best.penalized,
-		LowConfidence: reg.lowConfidence,
-	}
-	if comp.region >= 0 {
-		ev.D2 = comp.raw
-		ev.Competitor = comp.word_.Value
-	}
-	v.Evidence = ev
 	if best.dist > radius {
+		v.Evidence = evidence(best, competitor(best))
 		v.Status = NotFound
 		if !c.Required {
 			v.Status = Skipped
 		}
 		return v
 	}
-	// Margin: glyph-wise, the two candidates only differ where their
-	// characters differ, so the margin is counted per differing glyph;
-	// line-wise it is the doc's fraction of the code length.
-	if comp.region >= 0 {
-		var margin float64
-		if best.refined && comp.refined {
-			// Per differing glyph: the tie fraction, or one and a half times
-			// the alphabet's own within-character spread when the image is
-			// noisier than that. The spread is the noise of one glyph
-			// comparison; a difference under that is not evidence.
-			k := differing([]rune(best.word_.Text), []rune(comp.word_.Text))
-			per := math.Max(e.opt.TieMargin, 1.5*sp.A.Spread)
-			margin = per * float64(k) / float64(max(1, best.glyphs))
-		} else {
-			margin = e.opt.LineTieMargin
+
+	// Every region near the best reads as some value: its nearest
+	// candidate. The claim is decided when the decisive readings agree;
+	// conflicting decisive readings, or none, go to review. A blurred
+	// "(90 Proof)" that cannot tell its 0 from a 9 does not override a
+	// clear "45%" elsewhere on the label. A reading much farther than the
+	// best is not a peer observation of the claim: a two-glyph fragment
+	// that happens to read as "1 L" at three times the distance is noise.
+	const maxReadings = 8
+	peer := math.Min(radius, math.Max(1.5*best.dist, best.dist+0.02))
+	var decided []scored
+	var firstTie *scored
+	var tieComp scored
+	read := map[int]bool{}
+	for i := range all {
+		p := all[i]
+		if p.dist > peer || len(read) >= maxReadings {
+			break
 		}
-		if comp.dist-best.dist < margin {
-			v.Status = Review
-			v.Candidates = []string{best.word_.Value, comp.word_.Value}
-			return v
+		if read[p.region] {
+			continue
+		}
+		read[p.region] = true
+		comp := competitor(p)
+		if decisive(p, comp) {
+			if len(decided) == 0 {
+				v.Evidence = evidence(p, comp)
+			}
+			decided = append(decided, p)
+			continue
+		}
+		if firstTie == nil {
+			firstTie, tieComp = &p, comp
 		}
 	}
-	v.Observed = best.word_.Value
-	if best.word_.Value == c.Expected {
+	if len(decided) == 0 {
+		v.Evidence = evidence(*firstTie, tieComp)
+		v.Status = Review
+		v.Candidates = []string{firstTie.word_.Value, tieComp.word_.Value}
+		return v
+	}
+	values := []string{decided[0].word_.Value}
+	for _, p := range decided[1:] {
+		if p.word_.Value != values[0] {
+			values = append(values, p.word_.Value)
+		}
+	}
+	if len(values) > 1 {
+		v.Status = Review
+		v.Reason = "regions_disagree"
+		v.Candidates = values
+		return v
+	}
+	v.Observed = values[0]
+	if values[0] == c.Expected {
 		v.Status = Verified
 	} else {
 		v.Status = Mismatch
@@ -321,12 +425,145 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	return v
 }
 
-// differing counts the non-space positions where two texts differ, plus the
-// length difference; it is at least one.
+// runProbe reports every region overlapping the probe box against the
+// probed candidate text.
+func runProbe(claim string, words []spell.Codeword, regions []encodedRegion, refine func(ri, wi int) scored, fits func(ri, wi int) bool) {
+	wi := -1
+	for i, w := range words {
+		if w.Text == debugProbe.text {
+			wi = i
+			break
+		}
+	}
+	if wi < 0 {
+		return
+	}
+	var probed []scored
+	for ri, r := range regions {
+		if !r.ink.Overlaps(debugProbe.box) {
+			continue
+		}
+		f := refine(ri, wi)
+		f.word_.Params.Face = fmt.Sprintf("probe comps=%d fits=%v aspect=%.2f line=%d", len(r.comps), fits(ri, wi), float64(r.ink.Dx())/float64(max(1, r.ink.Dy())), bitcode.Distance(r.code, words[wi].Code))
+		probed = append(probed, f)
+	}
+	debugScored(claim+"/probe", regions, probed)
+}
+
+// runDigitProbe reports, for every matched digit of the best pair, the
+// observed glyph's distance to all ten synthesized digits.
+func runDigitProbe(claim string, sp *spell.Speller, best scored) {
+	for _, st := range best.path {
+		if st.Kind != alphabet.Match || st.Char >= len(best.target.Text) {
+			continue
+		}
+		r := best.target.Text[st.Char]
+		if r < '0' || r > '9' {
+			continue
+		}
+		var line strings.Builder
+		fmt.Fprintf(&line, "%s glyph %d as %q:", claim, st.Glyph, r)
+		for d := '0'; d <= '9'; d++ {
+			t, _, _, err := sp.Target(string(d), false)
+			if err != nil {
+				continue
+			}
+			fmt.Fprintf(&line, " %c=%d", d, bitcode.Distance(best.obs.Codes[st.Glyph], t.Codes[0]))
+		}
+		digitProbe(line.String())
+	}
+}
+
+// variant is a candidate with the spelling choices applied to it.
+type variant struct {
+	Text, Value string
+	casing      string
+	heavy       bool
+}
+
+// variants expands a claim's candidates. Enumerations are spelled as given;
+// free text (Variants set) also in capitals and title case where the text
+// admits them, with straight and curly apostrophes and quotes, and in the
+// heavy weight when the alphabet learned one. All variants of a candidate
+// share its value.
+func variants(c Claim, hasHeavy bool) []variant {
+	if !c.Variants {
+		out := make([]variant, 0, len(c.Candidates))
+		for _, cand := range c.Candidates {
+			out = append(out, variant{cand.Text, cand.Value, "as_given", false})
+		}
+		return out
+	}
+	var out []variant
+	for _, cand := range c.Candidates {
+		texts := map[string]string{"as_given": cand.Text}
+		if u := strings.ToUpper(cand.Text); u != cand.Text {
+			texts["upper"] = u
+		}
+		if t := titleCase(cand.Text); t != cand.Text && strings.ToLower(cand.Text) != cand.Text {
+			texts["title"] = t
+		}
+		for casing, text := range texts {
+			for _, q := range quoteForms(text) {
+				for _, heavy := range []bool{false, true} {
+					if heavy && !hasHeavy {
+						continue
+					}
+					out = append(out, variant{q, cand.Value, casing, heavy})
+				}
+			}
+		}
+	}
+	sort.Slice(out, func(i, j int) bool {
+		if out[i].casing != out[j].casing {
+			return out[i].casing < out[j].casing
+		}
+		if out[i].Text != out[j].Text {
+			return out[i].Text < out[j].Text
+		}
+		return !out[i].heavy && out[j].heavy
+	})
+	return out
+}
+
+// titleCase capitalizes the first letter of every word and lowers the rest.
+func titleCase(s string) string {
+	words := strings.Fields(s)
+	for i, w := range words {
+		r := []rune(strings.ToLower(w))
+		r[0] = unicode.ToUpper(r[0])
+		words[i] = string(r)
+	}
+	return strings.Join(words, " ")
+}
+
+// quoteForms returns the text with straight and with curly apostrophes and
+// quotes, when it has any.
+func quoteForms(s string) []string {
+	straight := strings.NewReplacer("’", "'", "“", "\"", "”", "\"").Replace(s)
+	curly := strings.NewReplacer("'", "’", "\"", "”").Replace(s)
+	if straight == curly {
+		return []string{s}
+	}
+	return []string{straight, curly}
+}
+
+// differing counts the glyph positions where two texts differ once spaces
+// are dropped, plus the difference in glyph count; it is at least one.
 func differing(a, b []rune) int {
+	strip := func(r []rune) []rune {
+		out := r[:0:0]
+		for _, c := range r {
+			if c != ' ' {
+				out = append(out, c)
+			}
+		}
+		return out
+	}
+	a, b = strip(a), strip(b)
 	n := 0
 	for i := 0; i < len(a) && i < len(b); i++ {
-		if a[i] != b[i] && (a[i] != ' ' || b[i] != ' ') {
+		if a[i] != b[i] {
 			n++
 		}
 	}

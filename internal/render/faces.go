@@ -4,7 +4,11 @@
 package render
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
+	"sort"
+	"strings"
 	"sync"
 
 	"golang.org/x/image/font"
@@ -17,10 +21,13 @@ import (
 	"golang.org/x/image/font/sfnt"
 )
 
+//go:embed fonts/*.ttf
+var bundled embed.FS
+
 // Face is one parsed typeface at one weight.
 type Face struct {
-	Name   string // "Go Regular"
-	Family string // "Go"
+	Name   string // "Lato Bold"
+	Family string // "Lato"
 	Weight string // regular, medium, bold
 	Font   *sfnt.Font
 
@@ -47,7 +54,8 @@ func (f *Face) At(px float64) (font.Face, error) {
 	return ff, nil
 }
 
-// Bundled parses the embedded Go fonts.
+// Bundled parses the embedded faces: the Go fonts plus the OFL faces under
+// fonts/, whose file names are Family-Weight.ttf.
 func Bundled() ([]*Face, error) {
 	specs := []struct {
 		name, family, weight string
@@ -59,13 +67,35 @@ func Bundled() ([]*Face, error) {
 		{"Go Italic", "Go", "regular", goitalic.TTF},
 		{"Go Mono", "Go Mono", "regular", gomono.TTF},
 	}
-	out := make([]*Face, 0, len(specs))
+	out := make([]*Face, 0, len(specs)+12)
 	for _, s := range specs {
 		f, err := opentype.Parse(s.ttf)
 		if err != nil {
 			return nil, fmt.Errorf("parse %s: %w", s.name, err)
 		}
 		out = append(out, &Face{Name: s.name, Family: s.family, Weight: s.weight, Font: f})
+	}
+	entries, err := fs.ReadDir(bundled, "fonts")
+	if err != nil {
+		return nil, err
+	}
+	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
+	for _, e := range entries {
+		stem := strings.TrimSuffix(e.Name(), ".ttf")
+		family, weight, ok := strings.Cut(stem, "-")
+		if !ok {
+			return nil, fmt.Errorf("font file %q is not Family-Weight.ttf", e.Name())
+		}
+		weight = strings.ToLower(weight)
+		b, err := bundled.ReadFile("fonts/" + e.Name())
+		if err != nil {
+			return nil, err
+		}
+		f, err := opentype.Parse(b)
+		if err != nil {
+			return nil, fmt.Errorf("parse %s: %w", e.Name(), err)
+		}
+		out = append(out, &Face{Name: family + " " + strings.ToUpper(weight[:1]) + weight[1:], Family: family, Weight: weight, Font: f})
 	}
 	return out, nil
 }
@@ -74,6 +104,19 @@ func Bundled() ([]*Face, error) {
 func Find(faces []*Face, name string) (*Face, bool) {
 	for _, f := range faces {
 		if f.Name == name {
+			return f, true
+		}
+	}
+	return nil, false
+}
+
+// Sibling returns the face of the same family at the given weight.
+func Sibling(faces []*Face, of *Face, weight string) (*Face, bool) {
+	if of == nil {
+		return nil, false
+	}
+	for _, f := range faces {
+		if f.Family == of.Family && f.Weight == weight {
 			return f, true
 		}
 	}

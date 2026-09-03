@@ -14,8 +14,11 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 		if text == "" {
 			return
 		}
+		// The spec's 0.22 is a line-hash radius. Glyph-wise, text in the
+		// label's own face lands within 3–8 percent and text in a script
+		// face at 15; 0.12 sits between them until the eval tunes it.
 		claims = append(claims, verify.Claim{
-			Name: name, Expected: text, Required: required, Radius: 0.22,
+			Name: name, Expected: text, Required: required, Radius: 0.12, Variants: true,
 			Candidates: []verify.Candidate{{Text: text, Value: text}},
 		})
 	}
@@ -40,8 +43,10 @@ func ABVClaim(expected float64, required bool) verify.Claim {
 	c := verify.Claim{Name: "abv", Expected: Num(expected), Required: required, Radius: 0.15}
 	for v := 0.5; v <= 95.0+1e-9; v += 0.5 {
 		n := Num(v)
+		proof := Num(2 * v)
 		for _, text := range []string{
-			n + "% Alc./Vol.", n + "% ALC./VOL.", n + "% ABV", "ALC. " + n + "% BY VOL.", n + "% alc/vol", Num(2*v) + " Proof",
+			n + "% Alc./Vol.", n + "% ALC./VOL.", n + "% ABV", "ALC. " + n + "% BY VOL.", n + "% alc/vol",
+			proof + " Proof", "(" + proof + " Proof)", proof + " PROOF",
 		} {
 			c.Candidates = append(c.Candidates, verify.Candidate{Text: text, Value: n})
 		}

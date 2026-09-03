@@ -70,8 +70,8 @@ func (e *Engine) emphasisVerdict(a *alphabet.Alphabet, pre *preprocess.Result, r
 		box = box.Union(a.Block.Glyphs[g].Box)
 	}
 	crop := pre.Bin.Crop(box)
-	body := medianStroke(a.Samples)
-	spanStroke := medianStroke(a.Emphasis[span])
+	body := a.BodyStroke()
+	spanStroke := a.SpanStroke(span)
 	if body == 0 || spanStroke == 0 {
 		v.Status, v.Reason = NotFound, "no_stroke"
 		return v
@@ -110,31 +110,6 @@ func (e *Engine) emphasisVerdict(a *alphabet.Alphabet, pre *preprocess.Result, r
 		v.Status, v.Observed = Mismatch, "regular"
 	}
 	return v
-}
-
-// medianStroke is the median stroke width over a pool of glyph samples,
-// skipping samples cut out of merged pairs.
-func medianStroke(pool map[rune][]alphabet.Glyph) float64 {
-	var ws []float64
-	for _, samples := range pool {
-		for _, g := range samples {
-			if g.Derived {
-				continue
-			}
-			if w := g.Bin.StrokeWidth(); w > 0 {
-				ws = append(ws, w)
-			}
-		}
-	}
-	if len(ws) == 0 {
-		return 0
-	}
-	for i := 1; i < len(ws); i++ {
-		for j := i; j > 0 && ws[j] < ws[j-1]; j-- {
-			ws[j], ws[j-1] = ws[j-1], ws[j]
-		}
-	}
-	return ws[len(ws)/2]
 }
 
 func grayCrop(pre *preprocess.Result, r image.Rectangle) *image.Gray {
