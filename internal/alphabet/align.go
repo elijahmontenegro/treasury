@@ -12,6 +12,7 @@ const (
 	Merge3      // one glyph, three characters printed touching
 	Split       // two glyphs, one character printed broken
 	Split3      // three glyphs, one character (a percent sign, a broken glyph with a dot)
+	Rejoin      // two adjacent pieces, two characters: a fused pair that was cut in the wrong place
 	Insert      // a glyph the reference does not explain
 	Delete      // a character with no glyph
 	Space       // a space character consumed at a gap
@@ -29,6 +30,8 @@ func (k Kind) String() string {
 		return "split"
 	case Split3:
 		return "split3"
+	case Rejoin:
+		return "rejoin"
 	case Insert:
 		return "insert"
 	case Delete:
@@ -80,6 +83,7 @@ type problem struct {
 	triple func(g, c int) float64 // glyph g as chars c, c+1, c+2 touching; may be nil
 	union  func(g, c int) float64 // glyphs g and g+1 as char c; NaN when not allowed
 	union3 func(g, c int) float64 // glyphs g, g+1, g+2 as char c; NaN when not allowed; may be nil
+	rejoin func(g, c int) float64 // glyphs g and g+1 as chars c and c+1 through their union; NaN when not allowed; may be nil
 	pen    Penalties
 }
 
@@ -113,7 +117,14 @@ func (p *problem) joinCost(c, g int) float64 {
 func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 	n, m := len(p.chars), p.m
 	width := 2*band + 1
-	exp := func(c int) int { return c - p.spaces[c] }
+	// The expected glyph for a character scales with the glyph count, so a
+	// run cut into more pieces than it has characters, or fused into fewer,
+	// keeps its path inside the band.
+	scale := 1.0
+	if chars := n - p.spaces[n]; chars > 0 && m > 0 {
+		scale = float64(m) / float64(chars)
+	}
+	exp := func(c int) int { return int(math.Round(float64(c-p.spaces[c]) * scale)) }
 	lo := func(c int) int { return max(0, exp(c)-band) }
 	hi := func(c int) int { return min(m, exp(c)+band) }
 	valid := func(c, g int) bool { return g >= lo(c) && g <= hi(c) }
@@ -174,6 +185,15 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 					relax(c+1, g+3, cur, p.pen.Split+0.5+u, join, Split3)
 				}
 			}
+			// Rejoining two pieces is a correction of our own segmentation,
+			// not an anomaly in the image: it carries a small fixed cost, so
+			// that a union which looks like the pair beats two mediocre
+			// matches of the pieces.
+			if g+1 < m && c+1 < n && p.chars[c+1] != ' ' && p.rejoin != nil {
+				if u := p.rejoin(g, c); !math.IsNaN(u) {
+					relax(c+2, g+2, cur, 0.5+u, join, Rejoin)
+				}
+			}
 		}
 	}
 	if !valid(n, m) || math.IsInf(dp[idx(n, m)], 1) {
@@ -203,6 +223,9 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 		case Split3:
 			c, g = c-1, g-3
 			path = append(path, Step{Split3, g, c, sc})
+		case Rejoin:
+			c, g = c-2, g-2
+			path = append(path, Step{Rejoin, g, c, sc})
 		case Insert:
 			g--
 			path = append(path, Step{Insert, g, c, sc})

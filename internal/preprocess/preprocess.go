@@ -15,6 +15,8 @@ type Params struct {
 	LongSide      int     // target longer side in px
 	Window        int     // Sauvola window (odd)
 	K             float64 // Sauvola k
+	WeakK         float64 // a second, more permissive k; its ink is kept only where it touches ink at K (hysteresis); 0 disables
+	CoreFrac      float64 // a permissive component is taken whole only when strict ink covers less than this fraction of it
 	R             float64 // Sauvola dynamic range of the standard deviation
 	MaxSkewDeg    float64 // deskew sweep is ±MaxSkewDeg
 	GlareQuantile float64 // pixels at or above this intensity quantile are glare
@@ -23,7 +25,7 @@ type Params struct {
 
 // Default returns the spec's parameters.
 func Default() Params {
-	return Params{LongSide: 1600, Window: 31, K: 0.2, R: 128, MaxSkewDeg: 15, GlareQuantile: 0.99, GlareMinGap: 16}
+	return Params{LongSide: 1600, Window: 31, K: 0.2, WeakK: 0.1, CoreFrac: 0.5, R: 128, MaxSkewDeg: 15, GlareQuantile: 0.99, GlareMinGap: 16}
 }
 
 // Result is the preprocessed image. Gray and Bin share coordinates.
@@ -56,16 +58,32 @@ func Run(img image.Image, p Params) (*Result, error) {
 		g = imgops.Resize(g, int(math.Round(float64(w)*scale)), int(math.Round(float64(h)*scale)))
 	}
 	glare := GlareMask(g, p.GlareQuantile, p.GlareMinGap)
-	bin := Sauvola(g, p.Window, p.K, p.R)
+	bin := Threshold(g, p)
 	angle := EstimateSkew(bin, p.MaxSkewDeg)
 	if math.Abs(angle) >= 0.05 {
 		g = imgops.Rotate(g, -angle, 255)
-		bin = Sauvola(g, p.Window, p.K, p.R)
+		bin = Threshold(g, p)
 		if glare != nil {
 			glare = bitmap.FromGray(imgops.Rotate(glare.ToGray(), -angle, 255), 128)
 		}
 	}
 	return &Result{Gray: g, Bin: bin, Glare: glare, AngleDeg: angle, Scale: scale}, nil
+}
+
+// Threshold binarizes g: Sauvola at p.K, and when p.WeakK is set, Sauvola
+// at p.WeakK combined with it by hysteresis. The strict pass finds the dark
+// cores of strokes; where it found only cores, the permissive pass fills in
+// the light strokes of faint text around them, without admitting isolated
+// noise of its own. Where the strict pass already covers a component, the
+// permissive one would only thicken it and bridge its letters, and is not
+// used.
+func Threshold(g *image.Gray, p Params) *bitmap.Bitmap {
+	strong := Sauvola(g, p.Window, p.K, p.R)
+	if p.WeakK <= 0 || p.WeakK >= p.K {
+		return strong
+	}
+	weak := Sauvola(g, p.Window, p.WeakK, p.R)
+	return bitmap.Hysteresis(strong, weak, p.CoreFrac)
 }
 
 // Sauvola thresholds g with T = m·(1 + k·(s/R − 1)) over a window×window

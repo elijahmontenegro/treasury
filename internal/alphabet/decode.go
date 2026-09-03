@@ -13,13 +13,14 @@ import (
 // Union codes of neighbouring components, which depend on the run alone,
 // are computed on demand and shared by every alignment of the run.
 type Observed struct {
-	Boxes    []image.Rectangle
-	Codes    []bitcode.Code
-	Gaps     []float64 // gap before each glyph in x-heights; +Inf for the first
-	Baseline int
-	XHeight  float64
-	Bin      *bitmap.Bitmap
-	Enc      encoder.Encoder
+	Boxes     []image.Rectangle
+	Codes     []bitcode.Code
+	Gaps      []float64 // gap before each glyph in x-heights; +Inf for the first
+	Baselines []int     // per glyph, from the run's fitted baseline
+	Baseline  int       // the run's baseline at its centre, for reporting
+	XHeight   float64
+	Bin       *bitmap.Bitmap
+	Enc       encoder.Encoder
 
 	unions map[int]bitcode.Code
 }
@@ -45,26 +46,31 @@ func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
 	if code, ok := o.unions[key]; ok {
 		return code, true
 	}
-	code := o.Enc.Encode(Frame(o.Bin, o.unionBox(g, k), o.Baseline, o.XHeight))
+	code := o.Enc.Encode(Frame(o.Bin, o.unionBox(g, k), o.Baselines[g], o.XHeight))
 	o.unions[key] = code
 	return code, true
 }
 
 // NewObserved frames and encodes boxes (sorted left to right) at the given
-// baseline and x-height.
-func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangle, baseline int, xh float64) Observed {
-	o := Observed{Boxes: boxes, Baseline: baseline, XHeight: xh, Bin: bin, Enc: enc, unions: map[int]bitcode.Code{}}
+// x-height, each on its own baseline; dy shifts every baseline.
+func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangle, baselines []int, dy int, xh float64) Observed {
+	o := Observed{Boxes: boxes, XHeight: xh, Bin: bin, Enc: enc, unions: map[int]bitcode.Code{}}
 	o.Codes = make([]bitcode.Code, len(boxes))
 	o.Gaps = make([]float64, len(boxes))
+	o.Baselines = make([]int, len(boxes))
 	maxX := 0
 	for i, b := range boxes {
-		o.Codes[i] = enc.Encode(Frame(bin, b, baseline, xh))
+		o.Baselines[i] = baselines[i] + dy
+		o.Codes[i] = enc.Encode(Frame(bin, b, o.Baselines[i], xh))
 		if i == 0 {
 			o.Gaps[i] = math.Inf(1)
 		} else {
 			o.Gaps[i] = float64(b.Min.X-maxX) / xh
 		}
 		maxX = max(maxX, b.Max.X)
+	}
+	if n := len(boxes); n > 0 {
+		o.Baseline = o.Baselines[n/2]
 	}
 	return o
 }
@@ -132,7 +138,7 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 	feats := make([]feat, m)
 	widths := make([]float64, m)
 	for g, b := range obs.Boxes {
-		feats[g], widths[g] = measured(b, obs.Baseline, obs.XHeight)
+		feats[g], widths[g] = measured(b, obs.Baselines[g], obs.XHeight)
 	}
 	shapeOf := func(code bitcode.Code, f feat, w float64, c int) float64 {
 		pc := priorCost(f, w, priors[c])
@@ -189,11 +195,23 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 		if !ok {
 			return math.NaN()
 		}
-		f, w := measured(obs.unionBox(g, k), obs.Baseline, obs.XHeight)
+		f, w := measured(obs.unionBox(g, k), obs.Baselines[g], obs.XHeight)
 		return shapeOf(code, f, w, c)
 	}
 	pr.union = func(g, c int) float64 { return unionCost(g, 2, c) }
 	pr.union3 = func(g, c int) float64 { return unionCost(g, 3, c) }
+	pr.rejoin = func(g, c int) float64 {
+		code, ok := obs.unionCode(g, 2)
+		if !ok {
+			return math.NaN()
+		}
+		f, w := measured(obs.unionBox(g, 2), obs.Baselines[g], obs.XHeight)
+		pc := priorCost(f, w, mergedPrior(priors[c], priors[c+1]))
+		if pair := pairCode(c); pair != nil {
+			return 0.25*pc + 4*encoder.NormalizedDistance(code, pair, bits)
+		}
+		return pc + 0.6
+	}
 
 	band := max(6, int(0.05*float64(m)))
 	var path Path
@@ -226,6 +244,13 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 			st.Structural++
 			if code := tripleCode(s.Char); code != nil {
 				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], code)
+			}
+		case Rejoin:
+			st.Structural++
+			if union, ok := obs.unionCode(s.Glyph, 2); ok {
+				if pair := pairCode(s.Char); pair != nil {
+					st.Hamming += bitcode.Distance(union, pair)
+				}
 			}
 		case Split, Split3:
 			st.Structural++

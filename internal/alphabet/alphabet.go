@@ -112,10 +112,15 @@ func Locate(lines []region.Line, top int) [][]int {
 		}
 		return la.Box.Min.X < lb.Box.Min.X
 	})
+	// A line of one or two components, a speck or a stray mark between two
+	// rows, neither continues a block nor breaks it; it is left out.
 	var clusters [][]int
 	var cur []int
-	for k, i := range idx {
-		if k > 0 && adjacent(lines[idx[k-1]], lines[i]) {
+	for _, i := range idx {
+		if len(lines[i].Comps) < 3 {
+			continue
+		}
+		if cur != nil && adjacent(lines[cur[len(cur)-1]], lines[i]) {
 			cur = append(cur, i)
 			continue
 		}
@@ -124,7 +129,9 @@ func Locate(lines []region.Line, top int) [][]int {
 		}
 		cur = []int{i}
 	}
-	clusters = append(clusters, cur)
+	if cur != nil {
+		clusters = append(clusters, cur)
+	}
 	count := func(cl []int) int {
 		n := 0
 		for _, i := range cl {
@@ -179,9 +186,10 @@ func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image
 	}
 
 	type rowData struct {
-		comps    []region.Component
-		baseline int
-		xh       float64
+		comps            []region.Component
+		slope, intercept float64 // fitted baseline y = intercept + slope·x
+		baseline         int     // at the row's centre, for reporting
+		xh               float64
 	}
 	rows := make([]rowData, len(rowLines))
 	type wxh struct {
@@ -196,13 +204,14 @@ func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image
 			comps = append(comps, lines[li].Comps...)
 		}
 		sort.Slice(comps, func(a, b int) bool { return comps[a].Box.Min.X < comps[b].Box.Min.X })
-		bottoms := make([]int, len(comps))
+		boxes := make([]image.Rectangle, len(comps))
 		for i, c := range comps {
-			bottoms[i] = c.Box.Max.Y
+			boxes[i] = c.Box
 		}
-		baseline := mode(bottoms)
-		xh := rowXHeight(comps, baseline)
-		rows[ri] = rowData{comps: comps, baseline: baseline, xh: xh}
+		slope, intercept := region.FitBaseline(boxes)
+		cx := (comps[0].Box.Min.X + comps[len(comps)-1].Box.Max.X) / 2
+		xh := rowXHeightFit(comps, slope, intercept)
+		rows[ri] = rowData{comps: comps, slope: slope, intercept: intercept, baseline: region.BaselineAt(slope, intercept, cx), xh: xh}
 		xhs = append(xhs, wxh{xh, len(comps)})
 		total += len(comps)
 	}
@@ -225,13 +234,14 @@ func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image
 		prevMax := 0
 		for k, c := range rd.comps {
 			gi := len(b.Glyphs)
+			baseline := region.BaselineAt(rd.slope, rd.intercept, (c.Box.Min.X+c.Box.Max.X)/2)
 			g := Glyph{
 				Box:      c.Box,
 				Row:      ri,
-				Baseline: rd.baseline,
+				Baseline: baseline,
 				Bin:      bin.Crop(c.Box),
 				Gray:     grayCrop(gray, c.Box),
-				Code:     enc.Encode(Frame(bin, c.Box, rd.baseline, blockXH)),
+				Code:     enc.Encode(Frame(bin, c.Box, baseline, blockXH)),
 			}
 			b.Glyphs = append(b.Glyphs, g)
 			row.Glyphs = append(row.Glyphs, gi)
@@ -254,12 +264,14 @@ func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image
 	return b
 }
 
-// rowXHeight is the most common height among components that sit on the
-// baseline; x-height letters outnumber ascenders and capitals in running text.
-func rowXHeight(comps []region.Component, baseline int) float64 {
+// rowXHeightFit is the most common height among components that sit on the
+// fitted baseline; x-height letters outnumber ascenders and capitals in
+// running text.
+func rowXHeightFit(comps []region.Component, slope, intercept float64) float64 {
 	var hs []int
 	for _, c := range comps {
-		if abs(c.Box.Max.Y-baseline) <= 2 && c.Box.Dy() >= 3 {
+		base := region.BaselineAt(slope, intercept, (c.Box.Min.X+c.Box.Max.X)/2)
+		if abs(c.Box.Max.Y-base) <= 2 && c.Box.Dy() >= 3 {
 			hs = append(hs, c.Box.Dy())
 		}
 	}

@@ -33,7 +33,11 @@ func main() {
 	debug := flag.String("debug", "", "write intermediate images to this directory")
 	ttbFile := flag.String("ttb", "", "label application JSON; uses the statutory warning as the reference")
 	ref := flag.String("ref", "", "reference text known to appear in the image")
+	trace := flag.Bool("trace", false, "print shape-class violations found while learning to stderr")
 	flag.Parse()
+	if *trace {
+		alphabet.Tracef = func(format string, args ...any) { fmt.Fprintln(os.Stderr, fmt.Sprintf(format, args...)) }
+	}
 	if flag.NArg() != 1 {
 		fmt.Fprintln(os.Stderr, "usage: decode [-ttb expected.json | -ref text] [-debug dir] image")
 		os.Exit(2)
@@ -139,6 +143,7 @@ type alphaSummary struct {
 	Unexplained int                   `json:"unexplained"`
 	Recovered   int                   `json:"recovered"`
 	Spread      float64               `json:"spread"`
+	Violations  float64               `json:"violations"`
 	Cost        float64               `json:"cost"`
 	Band        int                   `json:"band"`
 	Passes      int                   `json:"passes"`
@@ -194,7 +199,7 @@ func run(path, ref string, spans []alphabet.Span, debug string) error {
 			return err
 		default:
 			s.Alphabet = summarize(alpha)
-			if !alpha.OK(0.10, 0.05, 0.1) {
+			if !alpha.OK(0.10, 0.1) {
 				s.Reason = "alphabet_rejected"
 			}
 		}
@@ -229,7 +234,7 @@ func summarize(a *alphabet.Alphabet) *alphaSummary {
 	out := &alphaSummary{
 		Block: a.Block.Box, Glyphs: len(a.Block.Glyphs), Matched: a.Matched, Penalized: a.Penalized,
 		Unexplained: a.Unexplained, Recovered: a.Recovered,
-		Spread: a.Spread, Cost: a.Cost, Band: a.Band, Passes: a.Passes,
+		Spread: a.Spread, Violations: a.ViolationFraction(), Cost: a.Cost, Band: a.Band, Passes: a.Passes,
 		XHeight: a.XHeight, CapHeight: a.CapHeight, LetterGap: a.LetterGap, WordGap: a.WordGap,
 		Characters: string(chars), Emphasis: map[int]string{}, Rows: a.Rows, StepsByKind: map[string]int{},
 	}
@@ -315,6 +320,8 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 		switch st.Kind {
 		case alphabet.Match, alphabet.Merge, alphabet.Merge3, alphabet.Insert:
 			kind[st.Glyph] = st.Kind
+		case alphabet.Rejoin:
+			kind[st.Glyph], kind[st.Glyph+1] = st.Kind, st.Kind
 		case alphabet.Split:
 			kind[st.Glyph], kind[st.Glyph+1] = st.Kind, st.Kind
 		case alphabet.Split3:
@@ -326,7 +333,7 @@ func blockOverlay(g *image.Gray, a *alphabet.Alphabet) *image.RGBA {
 		switch kind[gi] {
 		case alphabet.Match:
 			c = color.RGBA{G: 170, A: 255}
-		case alphabet.Merge, alphabet.Merge3, alphabet.Split, alphabet.Split3:
+		case alphabet.Merge, alphabet.Merge3, alphabet.Split, alphabet.Split3, alphabet.Rejoin:
 			c = color.RGBA{R: 230, G: 140, A: 255}
 		}
 		rect(out, gl.Box.Inset(-1), c)

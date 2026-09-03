@@ -164,3 +164,93 @@ func (b *Bitmap) WithStroke(target float64) *Bitmap {
 	}
 	return up.Dilate(-delta).Downsample(k)
 }
+
+// Hysteresis combines a strict ink mask with a permissive one. Each
+// 8-connected component of the permissive mask is dropped when it holds no
+// strict ink, taken whole when strict ink covers less than coreFrac of it
+// (faint or blurred text of which the strict pass found only the cores),
+// and otherwise reduced to its strict pixels (dark text, where the
+// permissive mask only adds a halo that bridges letters).
+func Hysteresis(strong, weak *Bitmap, coreFrac float64) *Bitmap {
+	w, h := weak.W, weak.H
+	out := New(w, h)
+	seen := make([]bool, w*h)
+	var comp []int
+	stack := make([]int, 0, 1024)
+	for start, v := range weak.Pix {
+		if v == 0 || seen[start] {
+			continue
+		}
+		comp = comp[:0]
+		stack = append(stack[:0], start)
+		seen[start] = true
+		cores := 0
+		for len(stack) > 0 {
+			i := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			comp = append(comp, i)
+			if strong.Pix[i] != 0 {
+				cores++
+			}
+			x, y := i%w, i/w
+			for dy := -1; dy <= 1; dy++ {
+				for dx := -1; dx <= 1; dx++ {
+					nx, ny := x+dx, y+dy
+					if nx < 0 || ny < 0 || nx >= w || ny >= h {
+						continue
+					}
+					j := ny*w + nx
+					if weak.Pix[j] != 0 && !seen[j] {
+						seen[j] = true
+						stack = append(stack, j)
+					}
+				}
+			}
+		}
+		if cores == 0 {
+			continue
+		}
+		whole := float64(cores) < coreFrac*float64(len(comp))
+		for _, i := range comp {
+			if whole || strong.Pix[i] != 0 {
+				out.Pix[i] = 1
+			}
+		}
+	}
+	return out
+}
+
+// Reconstruct returns the pixels of mask reachable (8-connected, through
+// mask) from an ink pixel of seed: morphological reconstruction of seed
+// under mask. It keeps every mask component that contains a seed pixel and
+// drops the rest.
+func Reconstruct(seed, mask *Bitmap) *Bitmap {
+	w, h := mask.W, mask.H
+	out := New(w, h)
+	queue := make([]int, 0, 1024)
+	for i, v := range seed.Pix {
+		if v != 0 && mask.Pix[i] != 0 && out.Pix[i] == 0 {
+			out.Pix[i] = 1
+			queue = append(queue, i)
+		}
+	}
+	for len(queue) > 0 {
+		i := queue[len(queue)-1]
+		queue = queue[:len(queue)-1]
+		x, y := i%w, i/w
+		for dy := -1; dy <= 1; dy++ {
+			for dx := -1; dx <= 1; dx++ {
+				nx, ny := x+dx, y+dy
+				if nx < 0 || ny < 0 || nx >= w || ny >= h {
+					continue
+				}
+				j := ny*w + nx
+				if mask.Pix[j] != 0 && out.Pix[j] == 0 {
+					out.Pix[j] = 1
+					queue = append(queue, j)
+				}
+			}
+		}
+	}
+	return out
+}

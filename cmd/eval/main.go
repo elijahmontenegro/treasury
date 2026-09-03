@@ -42,8 +42,9 @@ func main() {
 	allowLeak := flag.Bool("allow-leak", false, "evaluate a set drawn from the bundled faces anyway")
 	tune := flag.Bool("tune", false, "sweep radii and tie margin on half A of the records, report on half B")
 	limit := flag.Int("n", 0, "evaluate only the first n labels")
+	half := flag.String("half", "", "evaluate only half A (even labels) or B (odd labels)")
 	flag.Parse()
-	if err := run(*set, strings.Split(*encoders, ","), *workers, *allowLeak, *tune, *limit); err != nil {
+	if err := run(*set, strings.Split(*encoders, ","), *workers, *allowLeak, *tune, *limit, *half); err != nil {
 		fmt.Fprintln(os.Stderr, "eval:", err)
 		os.Exit(1)
 	}
@@ -69,7 +70,7 @@ type Record struct {
 	Emphasis  []verify.Verdict       `json:"emphasis"`
 }
 
-func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit int) error {
+func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit int, half string) error {
 	leaked, err := checkLeak(dir)
 	if err != nil {
 		return err
@@ -82,6 +83,17 @@ func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit
 		return err
 	}
 	sort.Strings(labels)
+	if half != "" {
+		var keep []string
+		for _, l := range labels {
+			var n int
+			fmt.Sscanf(filepath.Base(l), "%d", &n)
+			if (n%2 == 0) == (strings.EqualFold(half, "A")) {
+				keep = append(keep, l)
+			}
+		}
+		labels = keep
+	}
 	if limit > 0 && limit < len(labels) {
 		labels = labels[:limit]
 	}

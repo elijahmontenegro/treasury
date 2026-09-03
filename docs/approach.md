@@ -84,6 +84,32 @@ Reference row fail threshold (anomaly weight), half A → half B:
 
 The tuned values (free-text radius 0.12, enumeration radius 0.15, tie 0.01) are the engine's defaults.
 
+### Alphabet robustness, half B re-run, 2026-09-03
+
+The dominant loss in the table above was labels that learned no alphabet: 27 percent, and every claim on them is NOT_FOUND. Tracing those labels found three causes, none of them the alignment itself. Blur fuses letters into words and the splitter measured its yardstick from the fused line, so it never cut. Light-gray text at gray 160 to 207 on a 245 background loses half its strokes to the threshold and shatters into fragments. And at x-heights of 10 to 14 pixels the shape-class tests sat on pixel boundaries: a 3 px descender is exactly a quarter x-height, a period is four to nine pixels of area against a floor of eight, and the alignment absorbed the dropped period into its neighbour as a merge that counted as a violation.
+
+Three mechanisms answer them. Components are cut at necks, columns where the thickest ink is under three quarters of the stroke, and a component wide enough for three glyphs is also cut at single-run minima of its profile; the alignment's split path re-joins over-cuts and its merge path covers fusions the cutter misses. Thresholding is hysteretic: a permissive Sauvola pass is taken whole only for components where the strict pass found just the cores. Shape classes have dead bands, the width miss is uncapped, and the violation rate is per explained character. A wrong reference of the same length still scores 0.15 to 0.35 on that rate against 0.03 to 0.11 for real blocks.
+
+Same 250 labels of half B, same protocol:
+
+250 labels, 16 without an alphabet, latency median 18.5s p95 29.9s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 137 | 0.99 | 0.79 | 0.01 | 0/1 | 0 |
+| class | 250 | 1.00 | 0.72 | 0.00 | 0/5 | 1 |
+| producer_1 | 250 | 1.00 | 0.75 | 0.00 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.76 | 0.00 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.72 | 0.00 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.31 | 0.41 | 1/8 | 1 |
+| net | 250 | 0.99 | 0.53 | 0.25 | 2/3 | 1 |
+| brand (display face) | 113 | 0.98 | 0.74 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 82/208 (75 reviewed, 51 failed); wording and title-case errors caught 6/9.
+Emphasis: correct on 144/198 labels (compliant headers verified and regular-weight headers caught).
+
+Labels without an alphabet fell from 70 to 16 (6.4 percent). Among the 180 labels that already learned one, free-text recall is unchanged (0.915 against 0.92); the 54 newly recovered labels verify 30 percent of their free text, because their claim lines are as fused or as faint as their warnings were. Per-character acceptance produced two `char_unlearned` reviews in 250 labels. The alphabet gates on the sample hold at 99.2, 99.2, and 99.3 percent.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

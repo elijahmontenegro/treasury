@@ -5,6 +5,7 @@ package region
 
 import (
 	"image"
+	"math"
 	"sort"
 
 	"treasury/internal/bitmap"
@@ -66,6 +67,7 @@ type Params struct {
 	HGapFrac      float64 // same line when the gap is less than this × global median width
 	MaxWords      int     // longest run of words emitted as a sub-region
 	Pad           int     // region padding in px
+	FusedFrac     float64 // components wider than this × the line's typical glyph width are split; 0 disables
 }
 
 // Default returns the spec's parameters, except MinHeight: the spec's 6 px
@@ -74,13 +76,28 @@ type Params struct {
 // sub-regions at 2.5 glyph widths never isolate a value inside a sentence;
 // word runs do, and include that case.
 func Default() Params {
-	return Params{MinArea: 8, MinHeight: 3, MaxHeightFrac: 0.4, VCenterFrac: 0.6, HGapFrac: 1.5, MaxWords: 5, Pad: 4}
+	return Params{MinArea: 4, MinHeight: 3, MaxHeightFrac: 0.4, VCenterFrac: 0.6, HGapFrac: 1.5, MaxWords: 5, Pad: 4, FusedFrac: 1.6}
 }
 
-// Propose runs components → filter → dot merging → lines → regions.
+// Propose runs components → filter → dot merging → lines → fused-glyph
+// splitting → regions.
 func Propose(b *bitmap.Bitmap, glare *bitmap.Bitmap, p Params) ([]Line, []Region) {
 	cs := MergeDots(Filter(Components(b), b.H, p))
 	lines, bands := Lines(cs, p)
+	if p.FusedFrac > 0 {
+		for i := range lines {
+			ln := &lines[i]
+			// The typical glyph width: the line's median, capped below its
+			// median height so that a line that is mostly fused, whose
+			// median component is a word, does not inflate its own
+			// yardstick. A lowercase glyph is narrower than it is tall.
+			typical := math.Min(float64(ln.MedW), 0.9*float64(ln.MedH))
+			pieces := SplitFused(b, ln.Comps, typical, float64(ln.MedH), p.FusedFrac)
+			if len(pieces) != len(ln.Comps) {
+				*ln = newLine(pieces, ln.Band)
+			}
+		}
+	}
 	return lines, Regions(lines, bands, b.Bounds(), glare, p)
 }
 
@@ -239,13 +256,26 @@ func Components(b *bitmap.Bitmap) []Component {
 	return comps
 }
 
-// Filter drops noise and oversized components.
+// Filter drops noise and oversized components. Speckle from compression
+// and low contrast is small relative to the text: components shorter than
+// a fifth of the median height of glyph-sized components go, which keeps
+// periods and dots (a quarter of an x-height) and drops JPEG grain.
 func Filter(cs []Component, imgH int, p Params) []Component {
 	out := cs[:0:0]
 	maxH := int(p.MaxHeightFrac * float64(imgH))
+	var hs []int
+	for _, c := range cs {
+		if h := c.Box.Dy(); h >= 6 && h <= maxH && c.Area >= p.MinArea {
+			hs = append(hs, h)
+		}
+	}
+	minRel := 0
+	if len(hs) > 0 {
+		minRel = median(hs) / 5
+	}
 	for _, c := range cs {
 		h := c.Box.Dy()
-		if c.Area < p.MinArea || h < p.MinHeight || h > maxH {
+		if c.Area < p.MinArea || h < p.MinHeight || h > maxH || h < minRel {
 			continue
 		}
 		out = append(out, c)

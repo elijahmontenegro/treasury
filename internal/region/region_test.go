@@ -44,7 +44,7 @@ func TestComponents(t *testing.T) {
 
 func TestFilter(t *testing.T) {
 	cs := []Component{
-		{Box: image.Rect(0, 0, 2, 3), Area: 6},    // too small
+		{Box: image.Rect(0, 0, 1, 3), Area: 3},    // too small
 		{Box: image.Rect(0, 0, 10, 2), Area: 20},  // too short
 		{Box: image.Rect(0, 0, 10, 50), Area: 40}, // too tall for a 100 px image
 		{Box: image.Rect(0, 0, 3, 3), Area: 9},    // a period: keep

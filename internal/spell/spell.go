@@ -39,11 +39,12 @@ type Codeword struct {
 // piece is one glyph ready to place: Box relative to the pen origin on the
 // baseline, and its frame code for glyph-wise decoding.
 type piece struct {
-	bin    *bitmap.Bitmap
-	gray   *image.Gray
-	box    image.Rectangle
-	code   bitcode.Code
-	source byte // 'l' learned, 'e' emphasis, 's' synthesized
+	bin     *bitmap.Bitmap
+	gray    *image.Gray
+	box     image.Rectangle
+	code    bitcode.Code
+	source  byte // 'l' learned, 'e' emphasis, 's' synthesized
+	derived bool // learned from a claim or cut from a merged pair rather than a reference component
 }
 
 // Speller spells with one alphabet.
@@ -336,7 +337,7 @@ func (s *Speller) alternatives(r rune) []bitcode.Code {
 }
 
 func fromGlyph(g alphabet.Glyph, source byte) piece {
-	return piece{bin: g.Bin, gray: g.Gray, box: g.Box.Sub(image.Pt(g.Box.Min.X, g.Baseline)), code: g.Code, source: source}
+	return piece{bin: g.Bin, gray: g.Gray, box: g.Box.Sub(image.Pt(g.Box.Min.X, g.Baseline)), code: g.Code, source: source, derived: g.Derived}
 }
 
 // Target returns the glyph-wise codeword for text: a frame code per
@@ -357,8 +358,19 @@ func (s *Speller) Target(text string, heavy bool) (t alphabet.Target, top, botto
 		t.Codes[i] = p.code
 		top = min(top, p.box.Min.Y)
 		bottom = max(bottom, p.box.Max.Y)
-		if p.source == 's' && !heavy {
-			if alts := s.alternatives(r); len(alts) > 0 {
+		// Synthesized characters carry the next-nearest faces as
+		// alternatives. A character learned from a claim rather than the
+		// reference carries the synthesized glyphs too, so learning it can
+		// only add evidence, never replace a good synthesis with a worse
+		// sample.
+		if !heavy && (p.source == 's' || p.derived) {
+			alts := s.alternatives(r)
+			if p.derived {
+				if sp, err := s.synthesize(r, s.Face, s.synth); err == nil {
+					alts = append([]bitcode.Code{sp.code}, alts...)
+				}
+			}
+			if len(alts) > 0 {
 				if t.Alt == nil {
 					t.Alt = map[int][]bitcode.Code{}
 				}

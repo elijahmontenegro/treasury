@@ -132,7 +132,8 @@ type AlphabetReport struct {
 	LetterGap   float64               `json:"letter_gap"`
 	WordGap     float64               `json:"word_gap"`
 	Rows        []alphabet.RowQuality `json:"rows"`
-	Learned     string                `json:"learned,omitempty"` // characters learned from claims that verified decisively
+	Learned     string                `json:"learned,omitempty"`   // characters learned from claims that verified decisively
+	Unlearned   string                `json:"unlearned,omitempty"` // characters of the reference whose samples disagreed and were dropped
 }
 
 // Result is everything Verify found.
@@ -152,7 +153,7 @@ type Options struct {
 	DefaultRadius     float64 // fraction of code length; 0.15
 	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.01 (tuned on half A of the synthetic set; the spread term usually dominates)
 	LineTieMargin     float64 // line-wise fallback: fraction of the line code; 0.04
-	MaxSpread         float64 // alphabet acceptance; 0.10
+	MaxCharSpread     float64 // per-character acceptance: a character whose samples spread beyond this is unlearned; 0.12
 	MaxUnexplained    float64 // alphabet acceptance; 0.10
 	LineThreshold     float64 // reference row acceptance, mean normalized distance; 0.08
 	ViolationFraction float64 // alphabet and reference row acceptance, share of glyphs contradicting their shape class; 0.1
@@ -176,8 +177,8 @@ func (o Options) withDefaults() Options {
 	if o.LineTieMargin == 0 {
 		o.LineTieMargin = 0.04
 	}
-	if o.MaxSpread == 0 {
-		o.MaxSpread = 0.10
+	if o.MaxCharSpread == 0 {
+		o.MaxCharSpread = 0.12
 	}
 	if o.MaxUnexplained == 0 {
 		o.MaxUnexplained = 0.10
@@ -254,11 +255,12 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	opt := alphabet.DefaultOptions()
 	opt.Encoder = e.glyphEnc
+	opt.MaxCharSpread = e.opt.MaxCharSpread
 	a, err := alphabet.Find(lines, pre.Bin, pre.Gray, refs[0].Text, spans, opt)
 	if err != nil && !errors.Is(err, alphabet.ErrNoBlock) {
 		return Result{}, err
 	}
-	if err != nil || !a.OK(e.opt.MaxSpread, e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 		res.Reason = "no_alphabet"
 		if a != nil {
 			res.Alphabet = report(a, nil) // what was rejected, and why
@@ -330,7 +332,12 @@ func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners [
 				continue
 			}
 			r := w.target.Text[st.Char]
-			if r == ' ' {
+			if r == ' ' || w.target.Codes[st.Char] == nil {
+				continue
+			}
+			// Only a glyph that matched its own code closely teaches: a
+			// piece of a bad cut or a blurred glyph would poison the pool.
+			if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], e.glyphEnc.Bits()) > e.opt.MaxCharSpread {
 				continue
 			}
 			if span < 0 && len(a.Samples[r]) > 0 {
@@ -339,7 +346,7 @@ func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners [
 			if span >= 0 && len(a.Emphasis[span][r]) > 0 {
 				continue
 			}
-			g := a.Rescaled(pre.Bin, pre.Gray, w.obs.Boxes[st.Glyph], w.obs.Baseline, w.obs.XHeight)
+			g := a.Rescaled(pre.Bin, pre.Gray, w.obs.Boxes[st.Glyph], w.obs.Baselines[st.Glyph], w.obs.XHeight)
 			a.AddSample(r, span, g)
 			if !seen[r] {
 				seen[r] = true
@@ -369,5 +376,15 @@ func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {
 	if sp != nil && sp.Face != nil {
 		r.Face = sp.Face.Name
 	}
+	var un []rune
+	for c := range a.Unlearned {
+		un = append(un, c)
+	}
+	for i := 1; i < len(un); i++ {
+		for j := i; j > 0 && un[j] < un[j-1]; j-- {
+			un[j], un[j-1] = un[j-1], un[j]
+		}
+	}
+	r.Unlearned = string(un)
 	return r
 }

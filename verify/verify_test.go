@@ -49,8 +49,8 @@ func run(t *testing.T, img image.Image, exp ttb.Expected) map[string]verify.Verd
 		out[v.Claim] = v
 		if v.Evidence != nil {
 			ev := v.Evidence
-			t.Logf("%-12s %-9s observed=%q d1=%d d2=%d radius=%d bits=%d refined=%v glyphs=%d pen=%d text=%q casing=%s weight=%s synth=%q comp=%q",
-				v.Claim, v.Status, v.Observed, ev.D1, ev.D2, ev.Radius, ev.Bits, ev.Refined, ev.Glyphs, ev.Penalized, ev.Text, ev.Params.Casing, ev.Params.Weight, ev.Params.Synthesized, ev.Competitor)
+			t.Logf("%-12s %-9s reason=%q observed=%q d1=%d d2=%d radius=%d bits=%d refined=%v glyphs=%d pen=%d text=%q casing=%s weight=%s synth=%q comp=%q",
+				v.Claim, v.Status, v.Reason, v.Observed, ev.D1, ev.D2, ev.Radius, ev.Bits, ev.Refined, ev.Glyphs, ev.Penalized, ev.Text, ev.Params.Casing, ev.Params.Weight, ev.Params.Synthesized, ev.Competitor)
 		} else {
 			t.Logf("%-12s %-9s reason=%s", v.Claim, v.Status, v.Reason)
 		}
@@ -353,4 +353,9 @@ func TestDumpPairsSerif(t *testing.T) {
 	t.Logf("true abv box %v", box)
 	verify.SetProbe(box, "45% Alc./Vol.")
 	full(t, img, ttb.Sample())
+}
+
+// TestSerifClaims prints claim evidence with competitors on the PT Serif label.
+func TestSerifClaims(t *testing.T) {
+	run(t, variant(t, ttb.Variant{BodyFace: "PTSerif Regular", HeavyFace: "PTSerif Bold"}, nil), ttb.Sample())
 }

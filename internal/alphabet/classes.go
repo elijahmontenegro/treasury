@@ -100,17 +100,25 @@ func measured(box image.Rectangle, baseline int, xh float64) (feat, float64) {
 	above := float64(baseline-box.Min.Y) / xh
 	below := float64(box.Max.Y-baseline) / xh
 	h := float64(box.Dy()) / xh
-	var f feat
-	if above > 1.15 {
-		f.tall = 1
+	// Each feature has a dead band where a pixel of blur or baseline error
+	// at a small x-height could put it on either side; there it is "either"
+	// and neither confirms nor contradicts a character.
+	return feat{
+		tall:  grade(above, 1.12, 1.3),
+		desc:  grade(below, 0.15, 0.35),
+		small: grade(-h, -0.6, -0.4),
+	}, float64(box.Dx()) / xh
+}
+
+// grade is 0 below lo, 1 above hi, and 2 (either) in between.
+func grade(v, lo, hi float64) int8 {
+	switch {
+	case v < lo:
+		return 0
+	case v > hi:
+		return 1
 	}
-	if below > 0.25 {
-		f.desc = 1
-	}
-	if h < 0.5 {
-		f.small = 1
-	}
-	return f, float64(box.Dx()) / xh
+	return 2
 }
 
 // priorCost scores a measured glyph against a character prior: one per
@@ -118,15 +126,21 @@ func measured(box image.Rectangle, baseline int, xh float64) (feat, float64) {
 // two counts fully.
 func priorCost(m feat, w float64, p prior) float64 {
 	c := mismatch(m.tall, p.f.tall) + mismatch(m.desc, p.f.desc) + mismatch(m.small, p.f.small)
+	// Half a unit per doubling of the width miss, up to a full unit at
+	// four times: a glyph a quarter as wide as its characters contradicts
+	// them as surely as a missing ascender does.
 	if p.width > 0 && w > 0 {
-		c += 0.5 * math.Min(1, math.Abs(math.Log(w/p.width))/math.Ln2)
+		c += 0.5 * math.Min(2, math.Abs(math.Log(w/p.width))/math.Ln2)
 	}
 	return c
 }
 
 func mismatch(m, p int8) float64 {
-	if p == 2 || m == p {
+	switch {
+	case p == 2 || m == p:
 		return 0
+	case m == 2:
+		return 0.3
 	}
 	return 1
 }

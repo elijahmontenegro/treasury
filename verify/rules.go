@@ -26,6 +26,7 @@ type encodedRegion struct {
 	code          bitcode.Code
 	patch         encoder.Patch
 	comps         []image.Rectangle // component boxes, left to right
+	baselines     []int             // per component, from the fitted baseline
 	baseline      int
 	lowConfidence bool
 }
@@ -42,12 +43,16 @@ func encodeRegions(pre *preprocess.Result, regions []region.Region, enc encoder.
 		draw.Draw(gray, gray.Rect, pre.Gray, ink.Min, draw.Src)
 		p := encoder.Patch{Bin: pre.Bin.Crop(ink), Gray: gray}
 		er := encodedRegion{box: r.Box, ink: ink, code: enc.Encode(p), patch: p, lowConfidence: r.Glare > glareFrac}
-		bottoms := make([]int, 0, len(r.Comps))
 		for _, c := range r.Comps {
 			er.comps = append(er.comps, c.Box)
-			bottoms = append(bottoms, c.Box.Max.Y)
 		}
-		er.baseline = modeInt(bottoms)
+		slope, intercept := region.FitBaseline(er.comps)
+		for _, b := range er.comps {
+			er.baselines = append(er.baselines, region.BaselineAt(slope, intercept, (b.Min.X+b.Max.X)/2))
+		}
+		if n := len(er.baselines); n > 0 {
+			er.baseline = er.baselines[n/2]
+		}
 		out = append(out, er)
 	}
 	return out
@@ -180,7 +185,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		if o, ok := cache[k]; ok {
 			return o
 		}
-		o := alphabet.NewObserved(pre.Bin, sp.GlyphEnc, regions[ri].comps, regions[ri].baseline+dy, xh)
+		o := alphabet.NewObserved(pre.Bin, sp.GlyphEnc, regions[ri].comps, regions[ri].baselines, dy, xh)
 		cache[k] = o
 		return o
 	}
@@ -374,7 +379,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	// than MinGlyphs glyphs is too little evidence to decide anything: a
 	// batch number that happens to read as "1 L" can only ask for review.
 	const maxReadings = 8
-	peer := math.Min(radius, math.Max(1.5*best.dist, best.dist+0.02))
+	peer := math.Min(radius, best.dist+0.02)
 	var decided []scored
 	var firstTie *scored
 	var tieComp scored
@@ -429,6 +434,16 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		v.Status = Verified
 	} else {
 		v.Status = Mismatch
+	}
+	// A verdict resting on a character the label should have taught but
+	// did not (its samples disagreed) is only a review.
+	for _, r := range decided[0].word_.Text {
+		if sp.A.Unlearned[r] {
+			v.Status = Review
+			v.Reason = "char_unlearned:" + string(r)
+			v.Candidates = []string{values[0]}
+			return v, nil
+		}
 	}
 	return v, &decided[0]
 }

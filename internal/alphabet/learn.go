@@ -19,17 +19,18 @@ type Span struct{ Start, End int }
 
 // Options control learning.
 type Options struct {
-	BandFrac  float64 // DP band as a fraction of the glyph count
-	MinBand   int
-	MaxPasses int
-	Penalties Penalties
-	Encoder   encoder.Encoder // glyph encoder
-	MinGlyphs float64         // a block needs at least this fraction of the reference's non-space characters
+	BandFrac      float64 // DP band as a fraction of the glyph count
+	MinBand       int
+	MaxPasses     int
+	Penalties     Penalties
+	Encoder       encoder.Encoder // glyph encoder
+	MinGlyphs     float64         // a block needs at least this fraction of the reference's non-space characters
+	MaxCharSpread float64         // a character with two or more samples whose mean distance to their centroid exceeds this is unlearned
 }
 
 // DefaultOptions are the starting values.
 func DefaultOptions() Options {
-	return Options{BandFrac: 0.05, MinBand: 6, MaxPasses: 3, Penalties: DefaultPenalties(), Encoder: encoder.Glyph(), MinGlyphs: 0.5}
+	return Options{BandFrac: 0.05, MinBand: 6, MaxPasses: 3, Penalties: DefaultPenalties(), Encoder: encoder.Glyph(), MinGlyphs: 0.4, MaxCharSpread: 0.12}
 }
 
 // Key identifies a sample pool: a character in the body (Span -1) or inside
@@ -83,11 +84,19 @@ type Alphabet struct {
 
 	Spans []Span
 
-	Spread          float64 // mean within-character normalized Hamming spread
+	// Unlearned are characters the reference contains whose samples did
+	// not agree with each other: their samples are dropped, the speller
+	// synthesizes them, and a verdict that rests on one is only a review.
+	Unlearned map[rune]bool
+	KeySpread map[Key]float64 // mean distance to centroid per pool with two or more samples
+
+	Spread          float64 // mean within-character normalized Hamming spread over learned pools
 	Matched         int
 	Penalized       int // merge, split, insert, delete
 	Unexplained     int // insert, delete
 	PriorViolations int // matched glyphs contradicting their character's shape class
+	Deleted         int // reference characters no glyph accounts for
+	Chars           int // non-space characters of the reference
 	Outliers        int // matched glyphs far from their centroid
 	Recovered       int // samples cut out of merged pairs
 	Rows            []RowQuality
@@ -98,6 +107,22 @@ type Alphabet struct {
 
 // ErrNoBlock is returned when no candidate block aligns.
 var ErrNoBlock = errors.New("alphabet: no block aligns to the reference")
+
+// Tracef, when set, receives one line per shape-class violation found while
+// learning: which glyph, which characters, and the measured features that
+// contradicted the prior. A diagnostic hook; nil in normal use.
+var Tracef func(format string, args ...any)
+
+func traceViolation(kind string, gl Glyph, box image.Rectangle, xh float64, text string, p prior) {
+	if Tracef == nil {
+		return
+	}
+	f, w := measured(box, gl.Baseline, xh)
+	Tracef("violation %-6s row %d box %v base %d xh %.1f chars %q above=%.2f below=%.2f h=%.2f w=%.2f meas(tall=%d desc=%d small=%d) prior(tall=%d desc=%d small=%d width=%.2f)",
+		kind, gl.Row, box, gl.Baseline, xh, text,
+		float64(gl.Baseline-box.Min.Y)/xh, float64(box.Max.Y-gl.Baseline)/xh, float64(box.Dy())/xh, w,
+		f.tall, f.desc, f.small, p.f.tall, p.f.desc, p.f.small, p.width)
+}
 
 // Find locates candidate blocks among the lines, learns from each, and keeps
 // the one with the lowest alignment cost.
@@ -220,6 +245,43 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	}
 	pr.union = func(g, c int) float64 { return unionCost(g, 2, c) }
 	pr.union3 = func(g, c int) float64 { return unionCost(g, 3, c) }
+	// Two adjacent pieces as two touching characters: the union must look
+	// like the pair. From the second pass on, the pair is composed from the
+	// characters' own samples of the previous pass; in the first, the prior
+	// decides.
+	var pools map[Key][]int
+	pairCodes := map[int]bitcode.Code{}
+	pr.rejoin = func(g, c int) float64 {
+		box, ok := unionBox(g, 2)
+		if !ok {
+			return math.NaN()
+		}
+		f, w := measured(box, b.Glyphs[g].Baseline, b.XHeight)
+		pc := priorCost(f, w, mergedPrior(priors[c], priors[c+1]))
+		if centroids == nil {
+			return pc
+		}
+		pair, ok := pairCodes[c]
+		if !ok {
+			pair = nil
+			ga, okA := pools[Key{chars[c], spanOf(c)}]
+			gb, okB := pools[Key{chars[c+1], spanOf(c + 1)}]
+			if okA && okB && len(ga) > 0 && len(gb) > 0 {
+				pair = composePair(b, b.Glyphs[ga[0]], b.Glyphs[gb[0]], int(math.Round(0.1*b.XHeight)))
+			}
+			pairCodes[c] = pair
+		}
+		if pair == nil {
+			return 0.5*pc + 0.6
+		}
+		key := g*4 + 2
+		code, ok := unionCode[key]
+		if !ok {
+			code = b.enc.Encode(Frame(b.bin, box, b.Glyphs[g].Baseline, b.XHeight))
+			unionCode[key] = code
+		}
+		return 0.5*pc + 4*encoder.NormalizedDistance(code, pair, bits)
+	}
 
 	band := max(opt.MinBand, int(opt.BandFrac*float64(m)))
 	var path, prev Path
@@ -242,15 +304,18 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			break
 		}
 		prev = path
-		centroids = centroidsOf(b, chars, spanOf, path, bits)
+		centroids, pools = centroidsOf(b, chars, spanOf, path, bits)
+		pairCodes = map[int]bitcode.Code{}
 	}
 	if centroids == nil {
-		centroids = centroidsOf(b, chars, spanOf, path, bits)
+		centroids, pools = centroidsOf(b, chars, spanOf, path, bits)
 	}
 	a := &Alphabet{
 		Block: b, Path: path, Centroid: centroids, Bits: bits, Spans: spans,
 		Samples: map[rune][]Glyph{}, Emphasis: map[int]map[rune][]Glyph{},
+		Unlearned: map[rune]bool{}, KeySpread: map[Key]float64{},
 		XHeight: b.XHeight, Cost: cost, Band: band, Passes: passes,
+		Chars: n - spaces[n],
 	}
 	type scoredGlyph struct {
 		glyph int
@@ -294,6 +359,7 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			if priorCost(feats[st.Glyph], widths[st.Glyph], priors[st.Char]) >= 1 {
 				rq.PriorViolations++
 				a.PriorViolations++
+				traceViolation("match", gl, gl.Box, b.XHeight, string(r), priors[st.Char])
 			}
 			a.Matched++
 			s := distSum[key]
@@ -305,6 +371,11 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			a.Assign[st.Glyph] = []int{st.Char, st.Char + 1}
 			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
 			a.Penalized++
+			if mp := mergedPrior(priors[st.Char], priors[st.Char+1]); priorCost(feats[st.Glyph], widths[st.Glyph], mp) >= 1 {
+				rowQ[b.Glyphs[st.Glyph].Row].PriorViolations += 2
+				a.PriorViolations += 2
+				traceViolation("merge", b.Glyphs[st.Glyph], b.Glyphs[st.Glyph].Box, b.XHeight, string(chars[st.Char:st.Char+2]), mp)
+			}
 			// Recover both letters: cut at the thinnest column near where
 			// the width priors say the first letter ends.
 			gl := b.Glyphs[st.Glyph]
@@ -365,6 +436,27 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			a.Assign[st.Glyph] = []int{st.Char, st.Char + 1, st.Char + 2}
 			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
 			a.Penalized++
+			// A fused run whose shape class contradicts its characters
+			// (lowercase glyphs standing for capitals) violates like a
+			// match would; otherwise a cheap structural step could hide it.
+			if mp := mergedPrior(mergedPrior(priors[st.Char], priors[st.Char+1]), priors[st.Char+2]); priorCost(feats[st.Glyph], widths[st.Glyph], mp) >= 1 {
+				rowQ[b.Glyphs[st.Glyph].Row].PriorViolations += 3
+				a.PriorViolations += 3
+				traceViolation("merge3", b.Glyphs[st.Glyph], b.Glyphs[st.Glyph].Box, b.XHeight, string(chars[st.Char:st.Char+3]), mp)
+			}
+		case Rejoin:
+			// Which piece holds which character is unknown; both stand for both.
+			a.Assign[st.Glyph] = []int{st.Char, st.Char + 1}
+			a.Assign[st.Glyph+1] = []int{st.Char, st.Char + 1}
+			rowQ[b.Glyphs[st.Glyph].Row].Penalized++
+			a.Penalized++
+			if box, ok := unionBox(st.Glyph, 2); ok {
+				if f, w := measured(box, b.Glyphs[st.Glyph].Baseline, b.XHeight); priorCost(f, w, mergedPrior(priors[st.Char], priors[st.Char+1])) >= 1 {
+					rowQ[b.Glyphs[st.Glyph].Row].PriorViolations += 2
+					a.PriorViolations += 2
+					traceViolation("rejoin", b.Glyphs[st.Glyph], box, b.XHeight, string(chars[st.Char:st.Char+2]), mergedPrior(priors[st.Char], priors[st.Char+1]))
+				}
+			}
 		case Split, Split3:
 			k := 2
 			if st.Kind == Split3 {
@@ -399,6 +491,7 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			rowQ[row].Anomalies = append(rowQ[row].Anomalies, Anomaly{Kind: Delete, Glyph: g, Char: string(chars[st.Char]), Strong: true, Box: b.Glyphs[g].Box})
 			a.Penalized++
 			a.Unexplained++
+			a.Deleted++
 		case Space:
 			if st.Glyph > 0 && st.Glyph < m && !math.IsInf(b.Gap[st.Glyph], 1) {
 				wordGaps = append(wordGaps, b.Gap[st.Glyph]*b.XHeight)
@@ -411,11 +504,29 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 		}
 	}
 	a.Rows = rowQ
-	for _, s := range distSum {
-		if s[1] >= 2 {
-			spreadSum += s[0] / s[1]
-			spreadN++
+	// Per-character acceptance: a pool of two or more samples whose mean
+	// distance to their centroid exceeds the threshold did not teach that
+	// character; its samples go, and the character is flagged. A pool of one
+	// sample has no spread and stays, since the alignment as a whole has
+	// already passed the unexplained and shape-class checks.
+	for key, s := range distSum {
+		if s[1] < 2 {
+			continue
 		}
+		sp := s[0] / s[1]
+		a.KeySpread[key] = sp
+		if sp > opt.MaxCharSpread {
+			a.Unlearned[key.R] = true
+			if key.Span < 0 {
+				delete(a.Samples, key.R)
+			} else if a.Emphasis[key.Span] != nil {
+				delete(a.Emphasis[key.Span], key.R)
+			}
+			delete(a.Centroid, key)
+			continue
+		}
+		spreadSum += sp
+		spreadN++
 	}
 	if spreadN > 0 {
 		a.Spread = spreadSum / float64(spreadN)
@@ -470,22 +581,49 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	return a, nil
 }
 
-// centroidsOf pools the frame codes matched to each key and takes the
-// per-bit majority.
-func centroidsOf(b *Block, chars []rune, spanOf func(int) int, path Path, bits int) map[Key]bitcode.Code {
-	pools := map[Key][]bitcode.Code{}
+// centroidsOf pools the glyphs matched to each key and takes the per-bit
+// majority of their frame codes; it also returns the pools as glyph indices.
+func centroidsOf(b *Block, chars []rune, spanOf func(int) int, path Path, bits int) (map[Key]bitcode.Code, map[Key][]int) {
+	pools := map[Key][]int{}
 	for _, st := range path {
 		if st.Kind != Match {
 			continue
 		}
 		k := Key{chars[st.Char], spanOf(st.Char)}
-		pools[k] = append(pools[k], b.Glyphs[st.Glyph].Code)
+		pools[k] = append(pools[k], st.Glyph)
 	}
 	out := make(map[Key]bitcode.Code, len(pools))
-	for k, codes := range pools {
+	for k, glyphs := range pools {
+		codes := make([]bitcode.Code, len(glyphs))
+		for i, g := range glyphs {
+			codes[i] = b.Glyphs[g].Code
+		}
 		out[k] = bitcode.Majority(codes, bits)
 	}
-	return out
+	return out, pools
+}
+
+// composePair frames two glyph samples set side by side at the given gap,
+// as a touching pair in the image would be framed.
+func composePair(b *Block, x, y Glyph, gap int) bitcode.Code {
+	xh := b.XHeight
+	side := int(math.Ceil(2.2 * xh))
+	w := x.Box.Dx() + gap + y.Box.Dx()
+	canvas := bitmap.New(w+2*side, 4*side)
+	base := 2 * side
+	place := func(g Glyph, left int) image.Rectangle {
+		top := base - (g.Baseline - g.Box.Min.Y)
+		for yy := range g.Bin.H {
+			for xx := range g.Bin.W {
+				if g.Bin.Pix[yy*g.Bin.W+xx] != 0 {
+					canvas.Set(left+xx, top+yy, 1)
+				}
+			}
+		}
+		return image.Rect(left, top, left+g.Bin.W, top+g.Bin.H)
+	}
+	box := place(x, side).Union(place(y, side+x.Box.Dx()+gap))
+	return b.enc.Encode(Frame(canvas, box, base, xh))
 }
 
 func samePath(a, b Path) bool {
@@ -625,20 +763,24 @@ func (a *Alphabet) UnexplainedFraction() float64 {
 	return float64(a.Unexplained) / float64(len(a.Block.Glyphs))
 }
 
-// ViolationFraction is the share of matched glyphs whose shape class
-// contradicts their character's: tall where short, descending where not.
+// ViolationFraction is the share of the reference's explained characters
+// whose glyph's shape class contradicts them: tall where short, descending
+// where not, a quarter as wide as the characters it stands for. A merge
+// counts for each character it covers.
 // Text aligned to the wrong reference contradicts it in about a quarter of
 // its glyphs; a real block in a few percent.
 func (a *Alphabet) ViolationFraction() float64 {
-	if a.Matched == 0 {
+	explained := a.Chars - a.Deleted
+	if a.Matched == 0 || explained <= 0 {
 		return 1
 	}
-	return float64(a.PriorViolations) / float64(a.Matched)
+	return float64(a.PriorViolations) / float64(explained)
 }
 
-// OK says whether the alphabet is trustworthy: within-character spread at or
-// under maxSpread, unexplained fraction at or under maxUnexplained, and
-// shape-class violations at or under maxViolations.
-func (a *Alphabet) OK(maxSpread, maxUnexplained, maxViolations float64) bool {
-	return a.Spread <= maxSpread && a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations
+// OK says whether the alignment is trustworthy at all: unexplained fraction
+// at or under maxUnexplained and shape-class violations at or under
+// maxViolations, both signs of text aligned to the wrong reference. Which
+// characters were learned is decided per character, not here.
+func (a *Alphabet) OK(maxUnexplained, maxViolations float64) bool {
+	return a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations
 }
