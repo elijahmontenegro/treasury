@@ -47,15 +47,26 @@ func thinnestColumn(bm *bitmap.Bitmap, centre, spread float64) int {
 	if lo >= hi {
 		return -1
 	}
-	best, bestN := -1, bm.H+1
+	counts := make([]int, hi-lo)
+	minN := bm.H + 1
 	for x := lo; x < hi; x++ {
 		n := 0
 		for y := range bm.H {
 			n += int(bm.Pix[y*bm.W+x])
 		}
-		// prefer the column nearest the expected split among equals
-		if n < bestN || (n == bestN && math.Abs(float64(x)-centre*float64(bm.W)) < math.Abs(float64(best)-centre*float64(bm.W))) {
-			best, bestN = x, n
+		counts[x-lo] = n
+		minN = min(minN, n)
+	}
+	// Among columns within one pixel of the thinnest, take the one nearest
+	// the expected split.
+	want := centre * float64(bm.W)
+	best := -1
+	for x := lo; x < hi; x++ {
+		if counts[x-lo] > minN+1 {
+			continue
+		}
+		if best < 0 || math.Abs(float64(x)-want) < math.Abs(float64(best)-want) {
+			best = x
 		}
 	}
 	return best

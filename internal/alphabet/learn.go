@@ -275,25 +275,47 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			if cut := thinnestColumn(gl.Bin, wa/(wa+wb), 0.2); cut > 0 && gray != nil {
 				left := image.Rect(gl.Box.Min.X, gl.Box.Min.Y, gl.Box.Min.X+cut, gl.Box.Max.Y)
 				right := image.Rect(gl.Box.Min.X+cut, gl.Box.Min.Y, gl.Box.Max.X, gl.Box.Max.Y)
+				// Both halves must look like their characters: features
+				// consistent with the prior (a factor-of-two width miss
+				// fails) and, when clean samples exist, within a loose
+				// radius of their centroid. A wrong cut leaves one half
+				// plausible and the other not; accept neither.
+				var subs [2]Glyph
+				ok := true
 				for k, box := range []image.Rectangle{left, right} {
 					sub := b.glyphAt(box, gl.Row, gl.Baseline, gray)
-					if ib, ok := sub.Bin.InkBounds(); ok {
-						sub = b.glyphAt(ib.Add(box.Min), gl.Row, gl.Baseline, gray)
-					} else {
-						continue
+					ib, has := sub.Bin.InkBounds()
+					if !has {
+						ok = false
+						break
 					}
+					sub = b.glyphAt(ib.Add(box.Min), gl.Row, gl.Baseline, gray)
 					sub.Derived = true
 					c := st.Char + k
-					r := chars[c]
-					if span := spanOf(c); span < 0 {
-						a.Samples[r] = append(a.Samples[r], sub)
-					} else {
-						if a.Emphasis[span] == nil {
-							a.Emphasis[span] = map[rune][]Glyph{}
-						}
-						a.Emphasis[span][r] = append(a.Emphasis[span][r], sub)
+					if f, w := measured(sub.Box, sub.Baseline, b.XHeight); priorCost(f, w, priors[c]) > 0.4 {
+						ok = false
+						break
 					}
-					a.Recovered++
+					if cen, has := centroids[Key{chars[c], spanOf(c)}]; has && encoder.NormalizedDistance(sub.Code, cen, bits) > 0.15 {
+						ok = false
+						break
+					}
+					subs[k] = sub
+				}
+				if ok {
+					for k, sub := range subs {
+						c := st.Char + k
+						r := chars[c]
+						if span := spanOf(c); span < 0 {
+							a.Samples[r] = append(a.Samples[r], sub)
+						} else {
+							if a.Emphasis[span] == nil {
+								a.Emphasis[span] = map[rune][]Glyph{}
+							}
+							a.Emphasis[span][r] = append(a.Emphasis[span][r], sub)
+						}
+						a.Recovered++
+					}
 				}
 			}
 		case Split:

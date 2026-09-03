@@ -91,6 +91,11 @@ func Sheet(a *Alphabet, faces []*render.Face) *image.Gray {
 					}
 				}
 			}
+			if g.Derived { // underline samples cut out of merged pairs
+				for gx := range g.Box.Dx() {
+					img.SetGray(x+gx, top+cell-3, color.Gray{Y: 128})
+				}
+			}
 			x += g.Box.Dx() + 6
 		}
 	}
