@@ -95,6 +95,25 @@ func run(path, debug string) error {
 			return err
 		}
 	}
+	rf, err := os.Create(filepath.Join(debug, "regions.json"))
+	if err != nil {
+		return err
+	}
+	defer rf.Close()
+	type box struct {
+		Kind string          `json:"kind"`
+		Line int             `json:"line"`
+		Box  image.Rectangle `json:"box"`
+	}
+	boxes := make([]box, 0, len(regions))
+	for _, r := range regions {
+		boxes = append(boxes, box{Kind: r.Kind.String(), Line: r.Line, Box: r.Box})
+	}
+	renc := json.NewEncoder(rf)
+	renc.SetIndent("", " ")
+	if err := renc.Encode(boxes); err != nil {
+		return err
+	}
 	return bitmap.WritePNG(filepath.Join(debug, "regions.png"), overlay(pre.Gray, regions))
 }
 

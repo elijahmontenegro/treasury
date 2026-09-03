@@ -106,8 +106,10 @@ func MergeDots(cs []Component) []Component {
 			if j == i || d.Box.Dy()*2 <= c.Box.Dy()*3 {
 				continue
 			}
+			// A dot sits within about a quarter of its stem's height above
+			// it; a comma above the next line's ascender is much farther.
 			gap := d.Box.Min.Y - c.Box.Max.Y
-			if gap < -1 || float64(gap) > 0.6*float64(d.Box.Dy()) {
+			if gap < -1 || float64(gap) > 0.35*float64(d.Box.Dy()) {
 				continue
 			}
 			overlap := min(c.Box.Max.X, d.Box.Max.X) - max(c.Box.Min.X, d.Box.Min.X)
