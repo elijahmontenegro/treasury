@@ -31,9 +31,12 @@ type Face struct {
 	Weight string // regular, medium, bold
 	Font   *sfnt.Font
 
-	mu    sync.Mutex // guards cache
+	mu    sync.Mutex // guards cache and the measured ratios
 	draw  sync.Mutex // serializes rasterization: an opentype face is not safe for concurrent use
 	cache map[float64]font.Face
+
+	ratioDone         bool
+	xhRatio, capRatio float64
 }
 
 // At returns a rasterizing face at the given pixel size (72 dpi, no hinting).

@@ -2,6 +2,7 @@ package render
 
 import (
 	"fmt"
+	"golang.org/x/image/font"
 	"image"
 	"image/draw"
 	"math"
@@ -20,7 +21,18 @@ type Synth struct {
 }
 
 // ratios returns the face's x-height and cap height as fractions of its size.
+// Metrics reports the face's x-height and cap height as fractions of the
+// pixel size.
+func (f *Face) Metrics() (xh, cap float64, err error) { return f.ratios() }
+
 func (f *Face) ratios() (xh, cap float64, err error) {
+	f.mu.Lock()
+	if f.ratioDone {
+		xh, cap = f.xhRatio, f.capRatio
+		f.mu.Unlock()
+		return xh, cap, nil
+	}
+	f.mu.Unlock()
 	face, err := f.At(100)
 	if err != nil {
 		return 0, 0, err
@@ -28,7 +40,30 @@ func (f *Face) ratios() (xh, cap float64, err error) {
 	f.draw.Lock()
 	m := face.Metrics()
 	f.draw.Unlock()
-	return float64(m.XHeight) / 64 / 100, float64(m.CapHeight) / 64 / 100, nil
+	xh, cap = float64(m.XHeight)/64/100, float64(m.CapHeight)/64/100
+	// Many faces leave these out of their OS/2 table; measure the glyphs.
+	if xh <= 0 {
+		xh = f.inkHeight(face, 'x') / 100
+	}
+	if cap <= 0 {
+		cap = f.inkHeight(face, 'H') / 100
+	}
+	f.mu.Lock()
+	f.xhRatio, f.capRatio, f.ratioDone = xh, cap, true
+	f.mu.Unlock()
+	return xh, cap, nil
+}
+
+// inkHeight is the height of r's ink at the face's size, 0 when r is
+// missing or blank.
+func (f *Face) inkHeight(face font.Face, r rune) float64 {
+	f.draw.Lock()
+	defer f.draw.Unlock()
+	bounds, _, ok := face.GlyphBounds(r)
+	if !ok {
+		return 0
+	}
+	return float64(bounds.Max.Y-bounds.Min.Y) / 64
 }
 
 // Glyph renders r at the size where the face's x-height equals target px, or

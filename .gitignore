@@ -1,3 +1,7 @@
 out/
 synth/
 *.test
+python/digits/data/
+python/digits/model.pt
+python/digits/.venv/
+*.exe
