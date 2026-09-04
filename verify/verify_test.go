@@ -420,3 +420,44 @@ func TestLearnedClaims(t *testing.T) {
 		t.Logf("%-12s %-9s observed=%q", v.Claim, v.Status, v.Observed)
 	}
 }
+
+// TestSynthLearned runs one generated or real label through the learned
+// claim encoder, for timing: SYNTH_LABEL names the label's path without
+// extension.
+func TestSynthLearned(t *testing.T) {
+	base := os.Getenv("SYNTH_LABEL")
+	if base == "" {
+		t.Skip("set SYNTH_LABEL=path/to/label (without extension)")
+	}
+	eng, err := verify.New(verify.Options{ClaimEncoder: "learned"})
+	if err != nil {
+		t.Skip(err)
+	}
+	var exp ttb.Expected
+	b, err := os.ReadFile(base + ".json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(b, &exp); err != nil {
+		t.Fatal(err)
+	}
+	f, err := os.Open(base + ".png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	img, _, err := image.Decode(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	refs, claims := ttb.Inputs(exp)
+	start := time.Now()
+	res, err := eng.Verify(context.Background(), img, refs, claims)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("learned %s: %s orientation %s casing %s", base, time.Since(start), res.Orientation, res.ReferenceCasing)
+	for _, v := range res.Claims {
+		t.Logf("%-12s %-9s observed=%q", v.Claim, v.Status, v.Observed)
+	}
+}

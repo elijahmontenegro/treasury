@@ -194,6 +194,10 @@ func sheets(face *render.Face, rng *rand.Rand) ([]sample, error) {
 		if !renders(truth) {
 			return nil, fmt.Errorf("face does not draw the character set")
 		}
+		// Faces the installed set lacks, made from the ones it has: weight
+		// by a pixel of dilation or erosion, condensed and extended by a
+		// horizontal scale, obliques by a shear (amendment step 6b).
+		img, truth = styled(img, truth, rng)
 		if rng.Float64() < 0.8 {
 			if img, truth, err = synth.Augment(img, truth, synth.Random(rng)); err != nil {
 				return nil, err
@@ -206,6 +210,75 @@ func sheets(face *render.Face, rng *rand.Rand) ([]sample, error) {
 		all = append(all, frames(pre, truth, rng)...)
 	}
 	return all, nil
+}
+
+// styled applies, each with its own chance, a change of weight (a pixel
+// of dilation for bolder, erosion for lighter), a horizontal scale of 0.7
+// to 1.3, and a shear of up to 0.3, and maps the truth boxes through them.
+func styled(img *image.Gray, t *synth.Truth, rng *rand.Rand) (*image.Gray, *synth.Truth) {
+	if rng.Float64() < 0.4 {
+		if rng.Intn(2) == 0 {
+			img = minFilter(img)
+		} else {
+			img = maxFilter(img)
+		}
+	}
+	w, h := img.Rect.Dx(), img.Rect.Dy()
+	hscale, shear := 1.0, 0.0
+	if rng.Float64() < 0.6 {
+		hscale = 0.7 + 0.6*rng.Float64()
+	}
+	if rng.Float64() < 0.4 {
+		shear = (rng.Float64() - 0.5) * 0.6
+	}
+	if hscale == 1 && shear == 0 {
+		return img, t
+	}
+	// x' = hscale·x + shear·(y − h/2): an affine map, expressed as the
+	// homography of the four corners so Warp and WarpRect apply it.
+	cy := float64(h) / 2
+	src := [4][2]float64{{0, 0}, {float64(w), 0}, {float64(w), float64(h)}, {0, float64(h)}}
+	var dst [4][2]float64
+	for i, p := range src {
+		dst[i] = [2]float64{hscale*p[0] + shear*(p[1]-cy) + float64(w)*0.15, p[1]}
+	}
+	H := imgops.HomographyFrom(src, dst)
+	out := imgops.Warp(img, H, 255)
+	nt := &synth.Truth{W: out.Rect.Dx(), H: out.Rect.Dy(), AngleDeg: t.AngleDeg}
+	for _, g := range t.Glyphs {
+		g.Box = imgops.WarpRect(g.Box, H)
+		nt.Glyphs = append(nt.Glyphs, g)
+	}
+	return out, nt
+}
+
+// minFilter darkens each pixel to the darkest of its 3×3 neighbourhood: a
+// pixel of dilation of the ink. maxFilter is the erosion.
+func minFilter(g *image.Gray) *image.Gray { return rankFilter(g, true) }
+func maxFilter(g *image.Gray) *image.Gray { return rankFilter(g, false) }
+
+func rankFilter(g *image.Gray, min bool) *image.Gray {
+	w, h := g.Rect.Dx(), g.Rect.Dy()
+	out := image.NewGray(g.Rect)
+	for y := range h {
+		for x := range w {
+			v := g.Pix[y*g.Stride+x]
+			for dy := -1; dy <= 1; dy++ {
+				for dx := -1; dx <= 1; dx++ {
+					xx, yy := x+dx, y+dy
+					if xx < 0 || yy < 0 || xx >= w || yy >= h {
+						continue
+					}
+					p := g.Pix[yy*g.Stride+xx]
+					if (min && p < v) || (!min && p > v) {
+						v = p
+					}
+				}
+			}
+			out.Pix[y*out.Stride+x] = v
+		}
+	}
+	return out
 }
 
 // document lays out the character set in random order, in words, plus a

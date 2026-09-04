@@ -1,6 +1,6 @@
 ## Encoder dual, claims decoded with the learned encoder
 
-10 labels, 3 without an alphabet, latency median 5.5s p95 14.3s
+10 labels, 3 without an alphabet, latency median 5.6s p95 8.7s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|

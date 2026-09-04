@@ -25,9 +25,9 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2594336700,
+  "latency": 3471853700,
   "reason": "no_alphabet",
-  "orientation": "as_is",
+  "orientation": "inverted",
   "alphabet": {
    "block": {
     "Min": {
@@ -120,7 +120,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14277635300,
+  "latency": 8732247900,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -181,7 +181,7 @@
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.16509415064102562,
+     "spread": 0.16509415064102567,
      "low_confidence": false
     }
    },
@@ -192,23 +192,23 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 653,
-       "Y": 826
+       "X": 337,
+       "Y": 776
       },
       "Max": {
-       "X": 774,
-       "Y": 851
+       "X": 481,
+       "Y": 804
       }
      },
      "text": "BOURBON WHISKEYS",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "WH",
-      "emphasis": "BOURBONISKEYS",
-      "face": "Lato Bold"
+      "weight": "regular",
+      "synthesized": "W",
+      "emphasis": "BB",
+      "face": "Go Regular"
      },
-     "d1": 869,
+     "d1": 928,
      "d2": -1,
      "radius": 461,
      "bits": 3840,
@@ -251,7 +251,7 @@
      "refined": true,
      "glyphs": 33,
      "penalized": 2,
-     "spread": 0.16509415064102562,
+     "spread": 0.16509415064102567,
      "low_confidence": false
     }
    },
@@ -286,7 +286,7 @@
      "refined": true,
      "glyphs": 24,
      "penalized": 1,
-     "spread": 0.16509415064102562,
+     "spread": 0.16509415064102567,
      "low_confidence": false
     }
    },
@@ -325,7 +325,7 @@
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
-     "digit_confidence": 0.9471485291202024
+     "digit_confidence": 0.9474555767187536
     }
    },
    {
@@ -361,7 +361,7 @@
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
-     "digit_confidence": 0.9471485291202024
+     "digit_confidence": 0.9474555767187536
     }
    }
   ],
@@ -566,7 +566,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3412389800,
+  "latency": 4977830600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -654,7 +654,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7052346700,
+  "latency": 6618256000,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -673,7 +673,7 @@
    "unexplained": 0,
    "violations": 0.02074688796680498,
    "recovered": 0,
-   "spread": 0.05108777223140545,
+   "spread": 0.051087772231405475,
    "characters": "(),12ACGSabcdefghiklmnoprstuvy",
    "face": "Go Bold",
    "x_height": 7,
@@ -792,34 +792,35 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 197,
-       "Y": 1085
+       "X": 232,
+       "Y": 1404
       },
       "Max": {
-       "X": 257,
-       "Y": 1107
+       "X": 328,
+       "Y": 1424
       }
      },
-     "text": "(3 Proof)",
+     "text": "1 % ALC/VOL",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "3P",
+      "synthesized": "%L/L",
+      "emphasis": "VO",
       "face": "Go Bold"
      },
-     "d1": 735,
-     "d2": 879,
-     "radius": 307,
-     "bits": 2048,
+     "d1": 1489,
+     "d2": 922,
+     "radius": 346,
+     "bits": 2304,
      "refined": true,
-     "glyphs": 8,
-     "penalized": 4,
-     "competitor": "3",
-     "competitor_text": "3 % ALC/VOL",
+     "glyphs": 9,
+     "penalized": 3,
+     "competitor": "0.5",
+     "competitor_text": "1 Proof",
      "spread": 0.05094995382240163,
      "low_confidence": false,
-     "reading": "3",
-     "digit_confidence": 0.506030927719916
+     "reading": "1",
+     "digit_confidence": 0.9142650726085307
     }
    },
    {
@@ -829,12 +830,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 500,
-       "Y": 120
+       "X": 232,
+       "Y": 1404
       },
       "Max": {
-       "X": 514,
-       "Y": 135
+       "X": 256,
+       "Y": 1423
       }
      },
      "text": "1 L",
@@ -844,17 +845,17 @@
       "synthesized": "L",
       "face": "Go Bold"
      },
-     "d1": 140,
+     "d1": 382,
      "d2": -1,
      "radius": 77,
      "bits": 512,
      "refined": true,
      "glyphs": 2,
-     "penalized": 0,
+     "penalized": 1,
      "spread": 0.05094995382240163,
      "low_confidence": false,
      "reading": "1",
-     "digit_confidence": 0.7700372047006538
+     "digit_confidence": 0.9142650726085307
     }
    }
   ],
@@ -1182,7 +1183,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5540178500,
+  "latency": 5574389300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1201,7 +1202,7 @@
    "unexplained": 0,
    "violations": 0.016597510373443983,
    "recovered": 0,
-   "spread": 0.02500381098316366,
+   "spread": 0.025003810983163666,
    "characters": "),.ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 13.793103448275863,
@@ -1416,8 +1417,37 @@
    {
     "claim": "net",
     "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "750"
+    "expected": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 605,
+       "Y": 478
+      },
+      "Max": {
+       "X": 644,
+       "Y": 506
+      }
+     },
+     "text": "1 L",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "1",
+      "face": "Go Regular"
+     },
+     "d1": 253,
+     "d2": -1,
+     "radius": 77,
+     "bits": 512,
+     "refined": true,
+     "glyphs": 2,
+     "penalized": 1,
+     "spread": 0.022926908915360002,
+     "low_confidence": false,
+     "reading": "1",
+     "digit_confidence": 0.5803898229158064
+    }
    }
   ],
   "reference": [
@@ -1597,7 +1627,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8464440000,
+  "latency": 8656501000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1663,7 +1693,7 @@
      "refined": true,
      "glyphs": 8,
      "penalized": 1,
-     "spread": 0.11599209996498601,
+     "spread": 0.115992099964986,
      "relearned": true,
      "low_confidence": false
     }
@@ -1732,7 +1762,7 @@
      "refined": true,
      "glyphs": 63,
      "penalized": 29,
-     "spread": 0.11599209996498601,
+     "spread": 0.115992099964986,
      "relearned": true,
      "low_confidence": false
     }
@@ -1806,7 +1836,7 @@
      "refined": true,
      "glyphs": 13,
      "penalized": 3,
-     "spread": 0.11599209996498601,
+     "spread": 0.115992099964986,
      "relearned": true,
      "low_confidence": false,
      "reading": "19%",
@@ -2201,7 +2231,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3196767200,
+  "latency": 3418469700,
   "orientation": "inverted",
   "reference_casing": "upper",
   "alphabet": {
@@ -2267,7 +2297,7 @@
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.07502398574561404,
+     "spread": 0.07502398574561403,
      "relearned": true,
      "low_confidence": false
     }
@@ -2302,7 +2332,7 @@
      "refined": true,
      "glyphs": 11,
      "penalized": 2,
-     "spread": 0.07502398574561404,
+     "spread": 0.07502398574561403,
      "relearned": true,
      "low_confidence": false
     }
@@ -2342,7 +2372,7 @@
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.07502398574561404,
+     "spread": 0.07502398574561403,
      "relearned": true,
      "low_confidence": false
     }
@@ -2382,7 +2412,7 @@
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.07502398574561404,
+     "spread": 0.07502398574561403,
      "relearned": true,
      "low_confidence": false
     }
@@ -2417,7 +2447,7 @@
      "refined": true,
      "glyphs": 11,
      "penalized": 1,
-     "spread": 0.07502398574561403,
+     "spread": 0.07502398574561404,
      "low_confidence": false,
      "reading": "20%",
      "digit_confidence": 0.9696635162252861
@@ -2453,7 +2483,7 @@
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "spread": 0.07502398574561403,
+     "spread": 0.07502398574561404,
      "low_confidence": false,
      "reading": "375",
      "digit_confidence": 0.9268858659364061
@@ -2629,7 +2659,7 @@
        "kind": 1,
        "glyph": 156,
        "char": "E",
-       "nearest": "Y",
+       "nearest": ")",
        "distance": 0.22488839285714285,
        "strong": false,
        "box": {
@@ -2734,7 +2764,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1551349200,
+  "latency": 2169126800,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -2829,7 +2859,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4552588400,
+  "latency": 2393122400,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2866,30 +2896,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 724,
-       "Y": 116
+       "X": 1198,
+       "Y": 712
       },
       "Max": {
-       "X": 765,
-       "Y": 134
+       "X": 1231,
+       "Y": 743
       }
      },
      "text": "Gaul",
      "params": {
       "casing": "title",
-      "weight": "heavy",
+      "weight": "regular",
       "synthesized": "aul",
-      "emphasis": "G",
-      "face": "PTSans Bold"
+      "face": "Go Regular"
      },
-     "d1": 170,
+     "d1": 185,
      "d2": -1,
      "radius": 123,
      "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 2,
-     "spread": 0.16181640625000002,
+     "spread": 0.16181640625,
      "low_confidence": false
     }
    },
@@ -2900,12 +2929,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 724,
-       "Y": 116
+       "X": 98,
+       "Y": 98
       },
       "Max": {
-       "X": 765,
-       "Y": 134
+       "X": 147,
+       "Y": 127
       }
      },
      "text": "LAGER",
@@ -2914,14 +2943,14 @@
       "weight": "regular",
       "emphasis": "AE"
      },
-     "d1": 223,
+     "d1": 242,
      "d2": -1,
      "radius": 154,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 3,
-     "spread": 0.16181640625000002,
+     "spread": 0.16181640625,
      "low_confidence": false
     }
    },
@@ -2932,30 +2961,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 226,
-       "Y": 192
+       "X": 135,
+       "Y": 552
       },
       "Max": {
-       "X": 647,
-       "Y": 212
+       "X": 1482,
+       "Y": 645
       }
      },
-     "text": "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY",
+     "text": "Brewed And Canned In Philadelphia, Pa By Serra Beverage Company",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "BWDDCDPHLDLPH,PBYSBCPY",
-      "emphasis": "REEANANNEINIAEIAAERRAEVERAGEOMAN",
-      "face": "PTSans Bold"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "BrewedndCannednhiladelphia,aBySerraBeverageCompany",
+      "emphasis": "A",
+      "face": "Go Regular"
      },
-     "d1": 3116,
+     "d1": 4184,
      "d2": -1,
      "radius": 1659,
      "bits": 13824,
      "refined": true,
      "glyphs": 54,
-     "penalized": 25,
-     "spread": 0.16181640625000002,
+     "penalized": 29,
+     "spread": 0.16181640625,
      "low_confidence": false
     }
    },
@@ -2966,35 +2995,34 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 512,
-       "Y": 1445
+       "X": 1169,
+       "Y": 712
       },
       "Max": {
-       "X": 569,
-       "Y": 1463
+       "X": 1231,
+       "Y": 743
       }
      },
-     "text": "12 PROOF",
+     "text": "12 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "12",
-      "emphasis": "OO",
+      "synthesized": "12roof",
       "face": "Go Regular"
      },
-     "d1": 334,
-     "d2": 987,
+     "d1": 326,
+     "d2": 1004,
      "radius": 269,
      "bits": 1792,
      "refined": true,
      "glyphs": 7,
-     "penalized": 4,
+     "penalized": 3,
      "competitor": "12",
      "competitor_text": "12 % ALC/VOL",
-     "spread": 0.16181640625000002,
+     "spread": 0.16181640625,
      "low_confidence": false,
      "reading": "12",
-     "digit_confidence": 0.8852376089252915
+     "digit_confidence": 0.8611402747359751
     }
    },
    {
@@ -3004,33 +3032,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 512,
-       "Y": 1445
+       "X": 1169,
+       "Y": 712
       },
       "Max": {
-       "X": 569,
-       "Y": 1463
+       "X": 1267,
+       "Y": 744
       }
      },
-     "text": "12 FL. OZ.",
+     "text": "12 fl. oz.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "12.Z.",
-      "emphasis": "O",
+      "synthesized": "12fl.oz.",
       "face": "Go Regular"
      },
-     "d1": 447,
+     "d1": 333,
      "d2": -1,
      "radius": 307,
      "bits": 2048,
      "refined": true,
      "glyphs": 8,
-     "penalized": 4,
-     "spread": 0.16181640625000002,
+     "penalized": 2,
+     "spread": 0.16181640625,
      "low_confidence": false,
      "reading": "12",
-     "digit_confidence": 0.8852376089252915
+     "digit_confidence": 0.8611402747359751
     }
    }
   ],
@@ -3246,7 +3273,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6034858100,
+  "latency": 6242889500,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -3458,33 +3485,33 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 311,
-       "Y": 983
+       "X": 388,
+       "Y": 1093
       },
       "Max": {
-       "X": 359,
-       "Y": 1003
+       "X": 445,
+       "Y": 1111
       }
      },
-     "text": "51% abv",
+     "text": "7% abv",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "%",
       "face": "Go Bold"
      },
-     "d1": 288,
+     "d1": 266,
      "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "radius": 192,
+     "bits": 1280,
      "refined": true,
-     "glyphs": 6,
+     "glyphs": 5,
      "penalized": 3,
      "spread": 0.03679030920304298,
      "relearned": true,
      "low_confidence": false,
-     "reading": "51",
-     "digit_confidence": 0.5103582301045146
+     "reading": "7",
+     "digit_confidence": 0.7073692936025733
     }
    },
    {

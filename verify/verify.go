@@ -12,6 +12,7 @@ import (
 	"treasury/internal/imgops"
 
 	"treasury/internal/alphabet"
+	"treasury/internal/bitmap"
 	"treasury/internal/digits"
 	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
@@ -148,15 +149,16 @@ type AlphabetReport struct {
 
 // Result is everything Verify found.
 type Result struct {
-	Orientation     string          `json:"orientation,omitempty"`      // how the image was taken: as_is, inverted, rot90, rot270, or both
-	ReferenceCasing string          `json:"reference_casing,omitempty"` // as_given or upper: how the reference was printed
-	DeskewDeg       float64         `json:"deskew_deg"`
-	Regions         int             `json:"regions"`
-	Alphabet        *AlphabetReport `json:"alphabet,omitempty"`
-	Reason          string          `json:"reason,omitempty"`
-	Reference       []Verdict       `json:"reference,omitempty"` // one per row of the reference block
-	Emphasis        []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
-	Claims          []Verdict       `json:"claims"`
+	Orientation       string          `json:"orientation,omitempty"`        // how the image was taken: as_is, inverted, rot90, rot270, or both
+	ReferenceCasing   string          `json:"reference_casing,omitempty"`   // as_given or upper: how the reference was printed
+	ClaimsOrientation string          `json:"claims_orientation,omitempty"` // the image the claims were searched in
+	DeskewDeg         float64         `json:"deskew_deg"`
+	Regions           int             `json:"regions"`
+	Alphabet          *AlphabetReport `json:"alphabet,omitempty"`
+	Reason            string          `json:"reason,omitempty"`
+	Reference         []Verdict       `json:"reference,omitempty"` // one per row of the reference block
+	Emphasis          []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
+	Claims            []Verdict       `json:"claims"`
 }
 
 // Options tune the engine. Zero values take the defaults.
@@ -296,35 +298,73 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		quarters int
 		invert   bool
 	}
-	attempts := []attempt{{"as_is", 0, false}, {"rot90", 1, false}, {"rot270", 3, false}, {"inverted", 0, true}, {"inverted_rot90", 1, true}, {"inverted_rot270", 3, true}}
-	var pre *preprocess.Result
-	var lines []region.Line
-	var regions []region.Region
-	var a *alphabet.Alphabet
-	var err error
-	var found attempt
-	casing := ""
-	// The image as it came, kept when the alphabet is learned in another
-	// orientation: a label that sets its warning vertically sets its
-	// claims upright, and they are searched where they are upright.
-	var preAsIs *preprocess.Result
-	var regionsAsIs []region.Region
-	// The inverted attempts come last: they are for dark grounds, but a
-	// light label with a boxed warning has been found through them too,
-	// so they are tried rather than gated, and only by a label that the
-	// upright and rotated attempts have already failed.
-	for _, at := range attempts {
+	// Detection before trial. The median gray says whether the label is
+	// light on dark; the anisotropy of the binarized image's projection
+	// profiles says whether its text runs horizontal or vertical (rows of
+	// text make the row sums vary far more than the column sums). The
+	// detected orientation and polarity are tried first; the rest of the
+	// ladder stays as the fallback, since a warning alone may run
+	// vertically on a horizontal label, and a light label with a boxed
+	// warning has been found only inverted.
+	invertFirst := medianGray(gray) < 128
+	type prepared struct {
+		pre     *preprocess.Result
+		lines   []region.Line
+		regions []region.Region
+	}
+	done := map[attempt]prepared{}
+	prepare := func(at attempt) (prepared, error) {
+		if p, ok := done[at]; ok {
+			return p, nil
+		}
 		g := imgops.Rotate90(gray, at.quarters)
 		if at.invert {
 			g = imgops.Invert(g)
 		}
-		if pre, err = preprocess.Run(g, preprocess.Default()); err != nil {
+		pre, err := preprocess.Run(g, preprocess.Default())
+		if err != nil {
+			return prepared{}, err
+		}
+		lines, regions := region.Propose(pre.Bin, pre.Glare, region.Default())
+		p := prepared{pre, lines, regions}
+		done[at] = p
+		return p, nil
+	}
+	first, err := prepare(attempt{"as_is", 0, invertFirst})
+	if err != nil {
+		return Result{}, err
+	}
+	verticalText := anisotropy(first.pre.Bin) < 1
+	var order []int
+	if verticalText {
+		order = []int{1, 3, 0, 2}
+	} else {
+		order = []int{0, 1, 3, 2}
+	}
+	var attempts []attempt
+	for _, inv := range []bool{invertFirst, !invertFirst} {
+		for _, q := range order {
+			name := map[int]string{0: "as_is", 1: "rot90", 2: "rot180", 3: "rot270"}[q]
+			if inv {
+				name = "inverted_" + name
+				if q == 0 {
+					name = "inverted"
+				}
+			}
+			attempts = append(attempts, attempt{name, q, inv})
+		}
+	}
+	var pre *preprocess.Result
+	var lines []region.Line
+	var a *alphabet.Alphabet
+	var found attempt
+	casing := ""
+	for _, at := range attempts {
+		p, err := prepare(at)
+		if err != nil {
 			return Result{}, err
 		}
-		lines, regions = region.Propose(pre.Bin, pre.Glare, region.Default())
-		if at.name == "as_is" {
-			preAsIs, regionsAsIs = pre, regions
-		}
+		pre, lines = p.pre, p.lines
 		var candidates []*alphabet.Alphabet
 		for _, c := range []struct{ name, text string }{{"as_given", refs[0].Text}, {"upper", strings.ToUpper(refs[0].Text)}} {
 			b, ferr := alphabet.Find(lines, pre.Bin, pre.Gray, c.text, spans, opt)
@@ -359,7 +399,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		if a == nil && len(candidates) > 0 {
 			a = candidates[0]
 		}
-		if at.name == "as_is" {
+		if at == attempts[0] {
 			found = at
 		}
 	}
@@ -368,7 +408,57 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	} else {
 		err = nil
 	}
-	res := Result{DeskewDeg: pre.AngleDeg, Regions: len(regions), Orientation: found.name, ReferenceCasing: casing}
+	// Claims are searched in the image whose text is upright by
+	// detection, at the alphabet's polarity: a label that sets its warning
+	// vertically sets its claims upright, and the rotated image's regions
+	// are that upright text on its side, a second region set that once
+	// doubled the decoding of such a label.
+	// Which image that is: the anisotropy is decided by the largest text
+	// mass, and a vertical warning is often that mass on a label whose
+	// other text is upright. So the alphabet's image and the detected one
+	// are compared by the glyphs in runs of four or more outside the
+	// warning block, and the claims are searched where there are more.
+	claimsAt := found
+	if a != nil && err == nil && found.quarters != 0 {
+		asIs := attempt{"as_is", 0, found.invert}
+		if found.invert {
+			asIs.name = "inverted"
+		}
+		alt, err2 := prepare(asIs)
+		if err2 != nil {
+			return Result{}, err2
+		}
+		block := a.Block.Box
+		own := done[found]
+		if textMass(alt.regions, rotateBack(block, found.quarters, own.pre.Gray.Rect.Dx(), own.pre.Gray.Rect.Dy())) > textMass(own.regions, block) {
+			claimsAt = asIs
+		}
+	}
+	claims_, err2 := prepare(claimsAt)
+	if err2 != nil {
+		return Result{}, err2
+	}
+	claimsPre, claimsRegions := claims_.pre, claims_.regions
+	// The reference block's glyphs are never claims: regions inside it
+	// are left out, in the alphabet's image or mapped into the other.
+	// In the alphabet's own image they stay: a block aligned across a
+	// two-column label holds the claims' words too, and dropping them
+	// dropped THE AUSTIN WINERY's verified fields.
+	if a != nil && err == nil && claimsAt != found {
+		kept := claimsRegions[:0:0]
+		{
+			own := done[found]
+			block := rotateBack(a.Block.Box, found.quarters, own.pre.Gray.Rect.Dx(), own.pre.Gray.Rect.Dy())
+			for _, r := range claimsRegions {
+				if inter := r.Box.Intersect(block); inter.Dx()*inter.Dy()*10 >= r.Box.Dx()*r.Box.Dy()*8 {
+					continue
+				}
+				kept = append(kept, r)
+			}
+		}
+		claimsRegions = kept
+	}
+	res := Result{DeskewDeg: pre.AngleDeg, Regions: len(claimsRegions), Orientation: found.name, ClaimsOrientation: claimsAt.name, ReferenceCasing: casing}
 	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 		res.Reason = "no_alphabet"
 		if a != nil {
@@ -388,10 +478,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	for i := range spans {
 		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
 	}
-	encoded := encodeRegions(pre, regions, e.lineEnc, e.opt.GlareFraction)
-	if found.quarters != 0 && preAsIs != nil {
-		encoded = append(encoded, encodeRegions(preAsIs, regionsAsIs, e.lineEnc, e.opt.GlareFraction)...)
-	}
+	encoded := encodeRegions(claimsPre, claimsRegions, e.lineEnc, e.opt.GlareFraction)
 	res.Claims = make([]Verdict, len(claims))
 	cache := newCallCache()
 	winners := make([]*scored, len(claims))
@@ -502,4 +589,97 @@ func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {
 	}
 	r.Unlearned = string(un)
 	return r
+}
+
+// medianGray is the median pixel of g, sampled on a coarse grid.
+func medianGray(g *image.Gray) int {
+	var hist [256]int
+	n := 0
+	for y := g.Rect.Min.Y; y < g.Rect.Max.Y; y += 4 {
+		for x := g.Rect.Min.X; x < g.Rect.Max.X; x += 4 {
+			hist[g.GrayAt(x, y).Y]++
+			n++
+		}
+	}
+	acc := 0
+	for v, c := range hist {
+		acc += c
+		if 2*acc >= n {
+			return v
+		}
+	}
+	return 255
+}
+
+// anisotropy is the variation of the binarized image's row ink counts
+// against its column ink counts, each as a squared coefficient of
+// variation. Rows of horizontal text alternate between ink and leading,
+// so their sums vary far more than the columns'; text set vertically
+// reverses it. Above 1 the text runs horizontal.
+func anisotropy(b *bitmap.Bitmap) float64 {
+	rows := make([]float64, b.H)
+	cols := make([]float64, b.W)
+	for y := range b.H {
+		for x := range b.W {
+			if b.Pix[y*b.W+x] != 0 {
+				rows[y]++
+				cols[x]++
+			}
+		}
+	}
+	cv2 := func(v []float64) float64 {
+		n := float64(len(v))
+		if n == 0 {
+			return 0
+		}
+		mean := 0.0
+		for _, x := range v {
+			mean += x
+		}
+		mean /= n
+		if mean == 0 {
+			return 0
+		}
+		s := 0.0
+		for _, x := range v {
+			s += (x - mean) * (x - mean)
+		}
+		return s / n / (mean * mean)
+	}
+	c := cv2(cols)
+	if c == 0 {
+		return 2
+	}
+	return cv2(rows) / c
+}
+
+// textMass counts the glyphs of line regions holding four or more, outside
+// the excluded box: the upright running text of an image.
+func textMass(regions []region.Region, exclude image.Rectangle) int {
+	n := 0
+	for _, r := range regions {
+		if r.Kind != region.KindLine || len(r.Comps) < 4 || r.Box.Overlaps(exclude) {
+			continue
+		}
+		n += len(r.Comps)
+	}
+	return n
+}
+
+// rotateBack maps a box in an image rotated by quarters clockwise (of
+// size w×h after rotation) into the unrotated image, padded a little for
+// the deskew that differs between the two.
+func rotateBack(r image.Rectangle, quarters, w, h int) image.Rectangle {
+	var out image.Rectangle
+	switch ((quarters % 4) + 4) % 4 {
+	case 1:
+		out = image.Rect(r.Min.Y, h-r.Max.X, r.Max.Y, h-r.Min.X)
+	case 2:
+		out = image.Rect(w-r.Max.X, h-r.Max.Y, w-r.Min.X, h-r.Min.Y)
+	case 3:
+		out = image.Rect(w-r.Max.Y, r.Min.X, w-r.Min.Y, r.Max.X)
+	default:
+		out = r
+	}
+	return out.Inset(-8)
 }

@@ -84,6 +84,7 @@ func Default() Params {
 func Propose(b *bitmap.Bitmap, glare *bitmap.Bitmap, p Params) ([]Line, []Region) {
 	cs := MergeDots(Filter(Components(b), b.H, p))
 	lines, bands := Lines(cs, p)
+	lines = dropBarcodes(lines)
 	if p.FusedFrac > 0 {
 		for i := range lines {
 			ln := &lines[i]
@@ -515,4 +516,28 @@ func mode(v []int) int {
 		}
 	}
 	return best
+}
+
+// dropBarcodes removes lines that are barcodes: a dozen or more components
+// of which most are bars, at least six times taller than wide. No text is
+// set that way, and a barcode's bars are as many components as a
+// paragraph, each of which a claim decoder would otherwise frame and
+// encode.
+func dropBarcodes(lines []Line) []Line {
+	out := lines[:0]
+	for _, ln := range lines {
+		if len(ln.Comps) >= 12 {
+			bars := 0
+			for _, c := range ln.Comps {
+				if c.Box.Dy() >= 6*max(1, c.Box.Dx()) {
+					bars++
+				}
+			}
+			if 10*bars >= 6*len(ln.Comps) {
+				continue
+			}
+		}
+		out = append(out, ln)
+	}
+	return out
 }

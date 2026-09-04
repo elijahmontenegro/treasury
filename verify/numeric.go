@@ -45,8 +45,9 @@ type reading struct {
 	region     int
 	text       string
 	confidence float64
-	alt        string // the text with the least certain digit's runner-up class
-	percent    string // the text with a percent sign, when a wide unrecognized glyph follows it
+	alt        string            // the text with the least certain digit's runner-up class
+	percent    string            // the text with a percent sign, when a wide unrecognized glyph follows it
+	boxes      []image.Rectangle // the run's glyphs, first and last
 }
 
 // glyphClass is the classifier's verdict on one component: its class and
@@ -172,9 +173,17 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		short = append(short, reg)
 	}
 	regions = short
+	// One reading per digit run: the same run is read on every word run
+	// that holds it, and each copy would be decided again.
 	var readings []reading
+	seen := map[[2]image.Rectangle]bool{}
 	for ri := range regions {
 		if r, ok := e.read(pre, regions[ri], ri, cache); ok {
+			key := [2]image.Rectangle{r.boxes[0], r.boxes[1]}
+			if seen[key] {
+				continue
+			}
+			seen[key] = true
 			readings = append(readings, r)
 		}
 	}
@@ -281,14 +290,35 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		if len(cands) == 0 {
 			continue
 		}
+		// The regions that hold the run's glyphs: the word runs of its
+		// line that include its word, not every region its box touches.
 		var sub []encodedRegion
 		var back []int
-		rb := regions[r.region].box
 		for i, reg := range regions {
-			if reg.box.Overlaps(rb) {
+			if !reg.box.Overlaps(r.boxes[0]) {
+				continue
+			}
+			holdsAll := true
+			for _, b := range r.boxes {
+				held := false
+				for _, c := range reg.comps {
+					if c == b {
+						held = true
+						break
+					}
+				}
+				if !held {
+					holdsAll = false
+					break
+				}
+			}
+			if holdsAll {
 				sub = append(sub, reg)
 				back = append(back, i)
 			}
+		}
+		if len(sub) == 0 {
+			continue
 		}
 		one := inner
 		one.Candidates = cands
@@ -402,8 +432,11 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 
 // read classifies a region's components and returns its digit run.
 func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *callCache) (reading, bool) {
+	// A number and its unit are three glyphs at the least; a region of
+	// one or two is a fragment, and a rotated warning's glyphs in the
+	// upright image are hundreds of them.
 	n := len(reg.comps)
-	if n == 0 || n > 24 {
+	if n < 3 || n > 24 {
 		return reading{}, false
 	}
 	xh := regionXHeight(reg.comps)
@@ -580,7 +613,7 @@ func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *
 	if bestStart < 0 {
 		return reading{}, false
 	}
-	r := reading{region: ri, confidence: 1}
+	r := reading{region: ri, confidence: 1, boxes: []image.Rectangle{reg.comps[bestStart], reg.comps[bestEnd-1]}}
 	weakest := -1
 	var text []byte
 	for k := bestStart; k < bestEnd; k++ {
