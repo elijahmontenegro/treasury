@@ -36,6 +36,9 @@ import (
 // Charset is the label space, in index order.
 const Charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,:;'()-/%&"
 
+// styleOn applies the weight, width, and slant styling to the sheets.
+var styleOn = true
+
 // Side is the frame's side as the encoder sees it.
 const Side = 32
 
@@ -50,7 +53,9 @@ func main() {
 	seed := fs.Int64("seed", 1, "random seed")
 	limit := fs.Int("limit", 0, "use at most this many faces (0 = all)")
 	workers := fs.Int("workers", 8, "parallel faces")
+	style := fs.Bool("style", true, "vary weight, width, and slant of the rendered sheets")
 	fs.Parse(os.Args[2:])
+	styleOn = *style
 	if err := run(*fontdir, *out, *seed, *limit, *workers); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -197,7 +202,9 @@ func sheets(face *render.Face, rng *rand.Rand) ([]sample, error) {
 		// Faces the installed set lacks, made from the ones it has: weight
 		// by a pixel of dilation or erosion, condensed and extended by a
 		// horizontal scale, obliques by a shear (amendment step 6b).
-		img, truth = styled(img, truth, rng)
+		if styleOn {
+			img, truth = styled(img, truth, rng)
+		}
 		if rng.Float64() < 0.8 {
 			if img, truth, err = synth.Augment(img, truth, synth.Random(rng)); err != nil {
 				return nil, err

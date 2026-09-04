@@ -25,7 +25,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3471853700,
+  "latency": 3559573600,
   "reason": "no_alphabet",
   "orientation": "inverted",
   "alphabet": {
@@ -120,7 +120,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8732247900,
+  "latency": 8345730700,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -139,7 +139,7 @@
    "unexplained": 1,
    "violations": 0.03734439834024896,
    "recovered": 0,
-   "spread": 0.07292382097069597,
+   "spread": 0.07292382097069595,
    "characters": "()12ACDEFHIKLNOPRSTUY",
    "face": "Go Regular",
    "x_height": 11.724137931034484,
@@ -174,14 +174,14 @@
       "emphasis": "IG",
       "face": "PTSerif Regular"
      },
-     "d1": 290,
+     "d1": 265,
      "d2": -1,
      "radius": 369,
      "bits": 3072,
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.16509415064102567,
+     "spread": 0.1525040064102564,
      "low_confidence": false
     }
    },
@@ -208,14 +208,14 @@
       "emphasis": "BB",
       "face": "Go Regular"
      },
-     "d1": 928,
+     "d1": 836,
      "d2": -1,
      "radius": 461,
      "bits": 3840,
      "refined": true,
      "glyphs": 15,
-     "penalized": 7,
-     "spread": 0.16509415064102567,
+     "penalized": 6,
+     "spread": 0.1525040064102564,
      "relearned": true,
      "low_confidence": false
     }
@@ -244,14 +244,14 @@
       "emphasis": "IGII",
       "face": "PTSerif Regular"
      },
-     "d1": 857,
+     "d1": 821,
      "d2": -1,
      "radius": 1014,
      "bits": 8448,
      "refined": true,
      "glyphs": 33,
-     "penalized": 2,
-     "spread": 0.16509415064102567,
+     "penalized": 1,
+     "spread": 0.1525040064102564,
      "low_confidence": false
     }
    },
@@ -279,14 +279,14 @@
       "emphasis": "IG",
       "face": "PTSerif Regular"
      },
-     "d1": 539,
+     "d1": 519,
      "d2": -1,
      "radius": 737,
      "bits": 6144,
      "refined": true,
      "glyphs": 24,
      "penalized": 1,
-     "spread": 0.16509415064102567,
+     "spread": 0.1525040064102564,
      "low_confidence": false
     }
    },
@@ -305,15 +305,15 @@
        "Y": 792
       }
      },
-     "text": "50 Proof",
+     "text": "50 PROOF",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "50roof",
+      "synthesized": "50",
       "face": "Go Regular"
      },
-     "d1": 303,
-     "d2": 915,
+     "d1": 318,
+     "d2": 970,
      "radius": 269,
      "bits": 1792,
      "refined": true,
@@ -321,7 +321,7 @@
      "penalized": 3,
      "competitor": "50",
      "competitor_text": "50 % ALC/VOL",
-     "spread": 0.16509415064102567,
+     "spread": 0.1525040064102564,
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
@@ -350,14 +350,14 @@
       "synthesized": "50ml",
       "face": "Go Regular"
      },
-     "d1": 181,
+     "d1": 174,
      "d2": -1,
      "radius": 154,
      "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 0,
-     "spread": 0.16509415064102567,
+     "spread": 0.1525040064102564,
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
@@ -566,7 +566,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4977830600,
+  "latency": 5022927500,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -654,7 +654,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6618256000,
+  "latency": 6555191700,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -673,7 +673,7 @@
    "unexplained": 0,
    "violations": 0.02074688796680498,
    "recovered": 0,
-   "spread": 0.051087772231405475,
+   "spread": 0.05108777223140547,
    "characters": "(),12ACGSabcdefghiklmnoprstuvy",
    "face": "Go Bold",
    "x_height": 7,
@@ -698,22 +698,22 @@
        "Y": 1014
       }
      },
-     "text": "SEELBACH'S",
+     "text": "SEELBACH’S",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "LBH'",
+      "synthesized": "LBH’",
       "emphasis": "EE",
       "face": "Go Bold"
      },
-     "d1": 435,
+     "d1": 515,
      "d2": -1,
      "radius": 307,
      "bits": 2560,
      "refined": true,
      "glyphs": 10,
-     "penalized": 2,
-     "spread": 0.05094995382240163,
+     "penalized": 4,
+     "spread": 0.061603201545223266,
      "low_confidence": false
     }
    },
@@ -735,19 +735,19 @@
      "text": "KENTUCKY STRAIGHT BOURBON WHISKEY",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "KUKYHBUBHKY",
-      "emphasis": "ENTTRITORONWIE",
-      "face": "Go Bold"
+      "weight": "heavy",
+      "synthesized": "KUCKYSHBUBHSKY",
+      "emphasis": "ENTTRAIGTORONWIE",
+      "face": "Go Medium"
      },
-     "d1": 1106,
+     "d1": 1020,
      "d2": -1,
      "radius": 922,
      "bits": 7680,
      "refined": true,
      "glyphs": 30,
-     "penalized": 7,
-     "spread": 0.05094995382240163,
+     "penalized": 5,
+     "spread": 0.061603201545223266,
      "low_confidence": false
     }
    },
@@ -774,14 +774,14 @@
       "emphasis": "M",
       "face": "Go Bold"
      },
-     "d1": 2031,
+     "d1": 1939,
      "d2": -1,
      "radius": 1075,
      "bits": 8960,
      "refined": true,
      "glyphs": 35,
      "penalized": 16,
-     "spread": 0.05094995382240163,
+     "spread": 0.061603201545223266,
      "low_confidence": false
     }
    },
@@ -808,16 +808,16 @@
       "emphasis": "VO",
       "face": "Go Bold"
      },
-     "d1": 1489,
-     "d2": 922,
+     "d1": 1393,
+     "d2": 933,
      "radius": 346,
      "bits": 2304,
      "refined": true,
      "glyphs": 9,
      "penalized": 3,
      "competitor": "0.5",
-     "competitor_text": "1 Proof",
-     "spread": 0.05094995382240163,
+     "competitor_text": "(1 Proof)",
+     "spread": 0.061603201545223266,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.9142650726085307
@@ -845,14 +845,14 @@
       "synthesized": "L",
       "face": "Go Bold"
      },
-     "d1": 382,
+     "d1": 367,
      "d2": -1,
      "radius": 77,
      "bits": 512,
      "refined": true,
      "glyphs": 2,
      "penalized": 1,
-     "spread": 0.05094995382240163,
+     "spread": 0.061603201545223266,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.9142650726085307
@@ -1183,7 +1183,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5574389300,
+  "latency": 6000980900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1202,7 +1202,7 @@
    "unexplained": 0,
    "violations": 0.016597510373443983,
    "recovered": 0,
-   "spread": 0.025003810983163666,
+   "spread": 0.025003810983163656,
    "characters": "),.ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 13.793103448275863,
@@ -1233,14 +1233,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 19,
+     "d1": 15,
      "d2": -1,
      "radius": 123,
      "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 0,
-     "spread": 0.022926908915360002,
+     "spread": 0.021955475080475084,
      "low_confidence": false
     }
    },
@@ -1262,19 +1262,16 @@
      "text": "WHITE WINE",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "H",
-      "emphasis": "WITEWINE",
-      "face": "FjallaOne Regular"
+      "weight": "regular"
      },
-     "d1": 346,
+     "d1": 364,
      "d2": -1,
      "radius": 276,
      "bits": 2304,
      "refined": true,
      "glyphs": 9,
-     "penalized": 2,
-     "spread": 0.022926908915360002,
+     "penalized": 3,
+     "spread": 0.021955475080475084,
      "low_confidence": false
     }
    },
@@ -1301,14 +1298,14 @@
       "synthesized": "Z",
       "face": "Go Regular"
      },
-     "d1": 275,
+     "d1": 218,
      "d2": -1,
      "radius": 522,
      "bits": 4352,
      "refined": true,
      "glyphs": 17,
      "penalized": 1,
-     "spread": 0.022926908915360002,
+     "spread": 0.021955475080475084,
      "low_confidence": false
     }
    },
@@ -1330,18 +1327,19 @@
      "text": "SAN MARZANO DI S.G. - ITALIA",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "Z-",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "SMZDS..-L",
+      "emphasis": "ANARANOIGITAIA",
+      "face": "FjallaOne Regular"
      },
-     "d1": 1192,
+     "d1": 1135,
      "d2": -1,
      "radius": 707,
      "bits": 5888,
      "refined": true,
      "glyphs": 23,
-     "penalized": 8,
-     "spread": 0.022926908915360002,
+     "penalized": 7,
+     "spread": 0.021955475080475084,
      "low_confidence": false
     }
    },
@@ -1366,14 +1364,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 250,
+     "d1": 188,
      "d2": -1,
      "radius": 430,
      "bits": 3584,
      "refined": true,
      "glyphs": 14,
-     "penalized": 2,
-     "spread": 0.022926908915360002,
+     "penalized": 1,
+     "spread": 0.021955475080475084,
      "low_confidence": false
     }
    },
@@ -1399,16 +1397,16 @@
       "synthesized": "(70",
       "face": "Go Regular"
      },
-     "d1": 758,
-     "d2": 860,
+     "d1": 735,
+     "d2": 760,
      "radius": 346,
      "bits": 2304,
      "refined": true,
      "glyphs": 9,
      "penalized": 5,
-     "competitor": "70",
-     "competitor_text": "70 % ALC/VOL",
-     "spread": 0.022926908915360002,
+     "competitor": "37.5",
+     "competitor_text": "(75 PROOF)",
+     "spread": 0.021955475080475084,
      "low_confidence": false,
      "reading": "70",
      "digit_confidence": 0.5276460734142504
@@ -1436,14 +1434,14 @@
       "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 253,
+     "d1": 241,
      "d2": -1,
      "radius": 77,
      "bits": 512,
      "refined": true,
      "glyphs": 2,
      "penalized": 1,
-     "spread": 0.022926908915360002,
+     "spread": 0.021955475080475084,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.5803898229158064
@@ -1627,7 +1625,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8656501000,
+  "latency": 8883182300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1647,53 +1645,49 @@
    "violations": 0.07883817427385892,
    "recovered": 0,
    "spread": 0.060009420434840595,
-   "characters": "()057BCDEFGHIJKMNOPRSTUVWdeilmnwy",
+   "characters": "()57BCDEFGHIKMNOPRSTUVWdeilmn",
    "face": "PTSerif Bold",
    "x_height": 11.724137931034484,
    "cap_height": 16,
    "letter_gap": 2,
    "word_gap": 4,
    "rows": null,
-   "learned": "edinwJy750ml",
+   "learned": "edinwJry75ml",
    "unlearned": "A"
   },
   "claims": [
    {
     "claim": "brand",
-    "status": "REVIEW",
-    "reason": "char_unlearned:A",
+    "status": "VERIFIED",
     "expected": "STOKELAN",
     "observed": "STOKELAN",
-    "candidates": [
-     "STOKELAN"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 410,
-       "Y": 933
+       "X": 281,
+       "Y": 1024
       },
       "Max": {
-       "X": 726,
-       "Y": 980
+       "X": 372,
+       "Y": 1049
       }
      },
-     "text": "STOKELAN",
+     "text": "Stokelan",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "SKL",
-      "emphasis": "TOEAN",
-      "face": "PTSans Regular"
+      "synthesized": "Stoklan",
+      "emphasis": "e",
+      "face": "PTSans Bold"
      },
-     "d1": 127,
+     "d1": 99,
      "d2": -1,
      "radius": 246,
      "bits": 2048,
      "refined": true,
      "glyphs": 8,
-     "penalized": 1,
-     "spread": 0.115992099964986,
+     "penalized": 0,
+     "spread": 0.11321377509337069,
      "relearned": true,
      "low_confidence": false
     }
@@ -1721,14 +1715,14 @@
       "synthesized": "essertedine",
       "face": "Go Regular"
      },
-     "d1": 297,
+     "d1": 339,
      "d2": -1,
      "radius": 430,
      "bits": 3584,
      "refined": true,
      "glyphs": 14,
      "penalized": 3,
-     "spread": 0.115992099964986,
+     "spread": 0.11321377509337069,
      "low_confidence": false
     }
    },
@@ -1750,19 +1744,19 @@
      "text": "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "BottledbyStokelanstateinery,50ayrestownoad,edford,J,08055",
-      "emphasis": "EWERMN",
-      "face": "PTSans Regular"
+      "weight": "regular",
+      "synthesized": "ottbtokastat,0astooa,fo,,080",
+      "emphasis": "yryyrwrJ",
+      "face": "PTSerif Bold"
      },
-     "d1": 3960,
+     "d1": 3344,
      "d2": -1,
      "radius": 1935,
      "bits": 16128,
      "refined": true,
      "glyphs": 63,
-     "penalized": 29,
-     "spread": 0.115992099964986,
+     "penalized": 28,
+     "spread": 0.11321377509337069,
      "relearned": true,
      "low_confidence": false
     }
@@ -1786,18 +1780,19 @@
      "text": "New Jersey",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
+      "weight": "heavy",
       "synthesized": "ewJersey",
-      "face": "Go Regular"
+      "emphasis": "N",
+      "face": "PTSans Regular"
      },
-     "d1": 173,
+     "d1": 98,
      "d2": -1,
      "radius": 276,
      "bits": 2304,
      "refined": true,
      "glyphs": 9,
-     "penalized": 1,
-     "spread": 0.115992099964986,
+     "penalized": 0,
+     "spread": 0.11321377509337069,
      "low_confidence": false
     }
    },
@@ -1821,22 +1816,22 @@
        "Y": 1534
       }
      },
-     "text": "Alc. 19% by Vol.",
+     "text": "Alc 19% by Vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "c.19%bo.",
-      "emphasis": "A",
+      "synthesized": "c19%bo.",
+      "emphasis": "Ay",
       "face": "PTSerif Bold"
      },
-     "d1": 365,
+     "d1": 402,
      "d2": -1,
-     "radius": 499,
-     "bits": 3328,
+     "radius": 461,
+     "bits": 3072,
      "refined": true,
-     "glyphs": 13,
+     "glyphs": 12,
      "penalized": 3,
-     "spread": 0.115992099964986,
+     "spread": 0.11321377509337069,
      "relearned": true,
      "low_confidence": false,
      "reading": "19%",
@@ -1866,14 +1861,14 @@
       "synthesized": "750ml",
       "face": "Go Regular"
      },
-     "d1": 44,
+     "d1": 72,
      "d2": -1,
      "radius": 192,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "spread": 0.115992099964986,
+     "spread": 0.11321377509337069,
      "low_confidence": false,
      "reading": "750",
      "digit_confidence": 0.9260254464570316
@@ -2231,7 +2226,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3418469700,
+  "latency": 3437681500,
   "orientation": "inverted",
   "reference_casing": "upper",
   "alphabet": {
@@ -2290,14 +2285,14 @@
       "emphasis": "NN",
       "face": "Lato Bold"
      },
-     "d1": 406,
+     "d1": 434,
      "d2": -1,
      "radius": 461,
      "bits": 3840,
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.07502398574561403,
+     "spread": 0.07673578477443609,
      "relearned": true,
      "low_confidence": false
     }
@@ -2325,14 +2320,14 @@
       "emphasis": "N",
       "face": "Lato Bold"
      },
-     "d1": 395,
+     "d1": 412,
      "d2": -1,
      "radius": 338,
      "bits": 2816,
      "refined": true,
      "glyphs": 11,
      "penalized": 2,
-     "spread": 0.07502398574561403,
+     "spread": 0.07673578477443609,
      "relearned": true,
      "low_confidence": false
     }
@@ -2365,14 +2360,14 @@
       "emphasis": "NN",
       "face": "Lato Bold"
      },
-     "d1": 406,
+     "d1": 434,
      "d2": -1,
      "radius": 461,
      "bits": 3840,
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.07502398574561403,
+     "spread": 0.07673578477443609,
      "relearned": true,
      "low_confidence": false
     }
@@ -2405,14 +2400,14 @@
       "emphasis": "N",
       "face": "Lato Bold"
      },
-     "d1": 191,
+     "d1": 275,
      "d2": -1,
      "radius": 369,
      "bits": 3072,
      "refined": true,
      "glyphs": 12,
-     "penalized": 0,
-     "spread": 0.07502398574561403,
+     "penalized": 1,
+     "spread": 0.07673578477443609,
      "relearned": true,
      "low_confidence": false
     }
@@ -2440,14 +2435,14 @@
       "synthesized": "20%lcbyol",
       "face": "Go Regular"
      },
-     "d1": 276,
+     "d1": 256,
      "d2": -1,
      "radius": 422,
      "bits": 2816,
      "refined": true,
      "glyphs": 11,
      "penalized": 1,
-     "spread": 0.07502398574561404,
+     "spread": 0.07673578477443609,
      "low_confidence": false,
      "reading": "20%",
      "digit_confidence": 0.9696635162252861
@@ -2476,14 +2471,14 @@
       "synthesized": "375",
       "face": "Go Regular"
      },
-     "d1": 42,
+     "d1": 51,
      "d2": -1,
      "radius": 192,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "spread": 0.07502398574561404,
+     "spread": 0.07673578477443609,
      "low_confidence": false,
      "reading": "375",
      "digit_confidence": 0.9268858659364061
@@ -2659,7 +2654,7 @@
        "kind": 1,
        "glyph": 156,
        "char": "E",
-       "nearest": ")",
+       "nearest": "Y",
        "distance": 0.22488839285714285,
        "strong": false,
        "box": {
@@ -2764,7 +2759,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2169126800,
+  "latency": 2308901700,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -2783,7 +2778,7 @@
    "unexplained": 1,
    "violations": 0.5166666666666667,
    "recovered": 0,
-   "spread": 0.08973461036200195,
+   "spread": 0.08973461036200193,
    "characters": ".CGabcdeghkmnoprstuvwy",
    "face": "",
    "x_height": 14,
@@ -2859,7 +2854,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2393122400,
+  "latency": 2754109200,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2879,13 +2874,14 @@
    "violations": 0.024896265560165973,
    "recovered": 4,
    "spread": 0.0937220982142857,
-   "characters": "(DFGHIKLPRUVY",
-   "face": "Go Regular",
+   "characters": "(1DFGHIKLPRUVYz",
+   "face": "PTSans Bold",
    "x_height": 6.8965517241379315,
    "cap_height": 9,
    "letter_gap": 0,
    "word_gap": 3,
    "rows": null,
+   "learned": "1z",
    "unlearned": "ABCEMNOST"
   },
   "claims": [
@@ -2896,12 +2892,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 1198,
-       "Y": 712
+       "X": 439,
+       "Y": 326
       },
       "Max": {
-       "X": 1231,
-       "Y": 743
+       "X": 466,
+       "Y": 346
       }
      },
      "text": "Gaul",
@@ -2909,16 +2905,17 @@
       "casing": "title",
       "weight": "regular",
       "synthesized": "aul",
-      "face": "Go Regular"
+      "face": "PTSans Bold"
      },
-     "d1": 185,
+     "d1": 195,
      "d2": -1,
      "radius": 123,
      "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 2,
-     "spread": 0.16181640625,
+     "spread": 0.14641927083333334,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -2943,50 +2940,23 @@
       "weight": "regular",
       "emphasis": "AE"
      },
-     "d1": 242,
+     "d1": 246,
      "d2": -1,
      "radius": 154,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 3,
-     "spread": 0.16181640625,
+     "spread": 0.14641927083333334,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_1",
     "status": "NOT_FOUND",
-    "expected": "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 135,
-       "Y": 552
-      },
-      "Max": {
-       "X": 1482,
-       "Y": 645
-      }
-     },
-     "text": "Brewed And Canned In Philadelphia, Pa By Serra Beverage Company",
-     "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "BrewedndCannednhiladelphia,aBySerraBeverageCompany",
-      "emphasis": "A",
-      "face": "Go Regular"
-     },
-     "d1": 4184,
-     "d2": -1,
-     "radius": 1659,
-     "bits": 13824,
-     "refined": true,
-     "glyphs": 54,
-     "penalized": 29,
-     "spread": 0.16181640625,
-     "low_confidence": false
-    }
+    "reason": "no_region_fits",
+    "expected": "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY"
    },
    {
     "claim": "abv",
@@ -2995,40 +2965,40 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 1169,
-       "Y": 712
+       "X": 376,
+       "Y": 684
       },
       "Max": {
-       "X": 1231,
-       "Y": 743
+       "X": 535,
+       "Y": 716
       }
      },
-     "text": "12 Proof",
+     "text": "41% alc./vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "12roof",
-      "face": "Go Regular"
+      "synthesized": "4%alc./vol.",
+      "face": "PTSans Bold"
      },
-     "d1": 326,
-     "d2": 1004,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 508,
+     "d2": -1,
+     "radius": 461,
+     "bits": 3072,
      "refined": true,
-     "glyphs": 7,
+     "glyphs": 12,
      "penalized": 3,
-     "competitor": "12",
-     "competitor_text": "12 % ALC/VOL",
-     "spread": 0.16181640625,
+     "spread": 0.14641927083333334,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "12",
-     "digit_confidence": 0.8611402747359751
+     "reading": "41%",
+     "digit_confidence": 0.8575107656952622
     }
    },
    {
     "claim": "net",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "355",
+    "observed": "355",
     "evidence": {
      "region": {
       "Min": {
@@ -3040,21 +3010,21 @@
        "Y": 744
       }
      },
-     "text": "12 fl. oz.",
+     "text": "12 fl oz",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "12fl.oz.",
+      "synthesized": "12floz",
       "face": "Go Regular"
      },
-     "d1": 333,
+     "d1": 218,
      "d2": -1,
-     "radius": 307,
-     "bits": 2048,
+     "radius": 230,
+     "bits": 1536,
      "refined": true,
-     "glyphs": 8,
-     "penalized": 2,
-     "spread": 0.16181640625,
+     "glyphs": 6,
+     "penalized": 0,
+     "spread": 0.14641927083333334,
      "low_confidence": false,
      "reading": "12",
      "digit_confidence": 0.8611402747359751
@@ -3273,7 +3243,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6242889500,
+  "latency": 6388729900,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -3293,14 +3263,14 @@
    "violations": 0.04564315352697095,
    "recovered": 12,
    "spread": 0.03912316980275312,
-   "characters": "(),.1235789ACFGLSabcdefghiklmnoprstuvwy",
+   "characters": "(),.13ACGSabcdefghiklmnoprstuvwy",
    "face": "Go Bold",
    "x_height": 9,
    "cap_height": 11,
    "letter_gap": 1,
    "word_gap": 5,
    "rows": null,
-   "learned": "8592FL37"
+   "learned": "3"
   },
   "claims": [
    {
@@ -3321,19 +3291,16 @@
      "text": "Gallo",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "allo",
-      "emphasis": "G",
-      "face": "PTSans Bold"
+      "weight": "regular"
      },
-     "d1": 205,
+     "d1": 212,
      "d2": -1,
      "radius": 154,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 2,
-     "spread": 0.03679030920304298,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false
     }
@@ -3345,30 +3312,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 304,
-       "Y": 1046
+       "X": 303,
+       "Y": 1217
       },
       "Max": {
-       "X": 335,
-       "Y": 1065
+       "X": 325,
+       "Y": 1233
       }
      },
-     "text": "BEER",
+     "text": "Beer",
      "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "B",
-      "emphasis": "EER",
-      "face": "Go Bold"
+      "casing": "as_given",
+      "weight": "heavy",
+      "synthesized": "Beer",
+      "face": "PTSans Bold"
      },
-     "d1": 131,
+     "d1": 134,
      "d2": -1,
      "radius": 123,
      "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 2,
-     "spread": 0.03679030920304298,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false
     }
@@ -3380,39 +3346,38 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 296,
-       "Y": 1152
+       "X": 157,
+       "Y": 1199
       },
       "Max": {
-       "X": 527,
-       "Y": 1173
+       "X": 362,
+       "Y": 1221
       }
      },
-     "text": "Imported by Latin American Traders LLC",
+     "text": "Imported By Latin American Traders Llc",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "ImportedbyLatinmericanTradersLLC",
+      "synthesized": "ImportedByLatinmericanTradersLlc",
       "emphasis": "A",
       "face": "PTSans Bold"
      },
-     "d1": 2025,
+     "d1": 1944,
      "d2": -1,
      "radius": 1014,
      "bits": 8448,
      "refined": true,
      "glyphs": 33,
-     "penalized": 17,
-     "spread": 0.03679030920304298,
+     "penalized": 15,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_2",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "8859 NW 102nd Ct, Doral, FL 33178",
-    "observed": "8859 NW 102nd Ct, Doral, FL 33178",
     "evidence": {
      "region": {
       "Min": {
@@ -3428,18 +3393,19 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "885902DFL3378",
+      "synthesized": "885902DFL78",
       "emphasis": "NW",
       "face": "Go Bold"
      },
-     "d1": 773,
+     "d1": 856,
      "d2": -1,
      "radius": 829,
      "bits": 6912,
      "refined": true,
      "glyphs": 27,
-     "penalized": 5,
-     "spread": 0.03679030920304298,
+     "penalized": 6,
+     "spread": 0.0418456855899411,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3450,12 +3416,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 223,
-       "Y": 1030
+       "X": 289,
+       "Y": 952
       },
       "Max": {
-       "X": 367,
-       "Y": 1049
+       "X": 404,
+       "Y": 968
       }
      },
      "text": "Product Of Guatemala",
@@ -3466,14 +3432,14 @@
       "emphasis": "O",
       "face": "Go Bold"
      },
-     "d1": 993,
+     "d1": 947,
      "d2": -1,
      "radius": 553,
      "bits": 4608,
      "refined": true,
      "glyphs": 18,
      "penalized": 8,
-     "spread": 0.03679030920304298,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false
     }
@@ -3497,17 +3463,17 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "%",
+      "synthesized": "7%",
       "face": "Go Bold"
      },
-     "d1": 266,
+     "d1": 269,
      "d2": -1,
      "radius": 192,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 3,
-     "spread": 0.03679030920304298,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false,
      "reading": "7",
@@ -3516,8 +3482,9 @@
    },
    {
     "claim": "net",
-    "status": "NOT_FOUND",
+    "status": "MISMATCH",
     "expected": "350",
+    "observed": "331",
     "evidence": {
      "region": {
       "Min": {
@@ -3529,21 +3496,21 @@
        "Y": 1127
       }
      },
-     "text": "331 ML",
+     "text": "331ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "M",
+      "synthesized": "ML",
       "face": "Go Bold"
      },
-     "d1": 198,
+     "d1": 185,
      "d2": -1,
      "radius": 192,
      "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 1,
-     "spread": 0.03679030920304298,
+     "spread": 0.0418456855899411,
      "relearned": true,
      "low_confidence": false,
      "reading": "331",

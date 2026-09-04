@@ -9,6 +9,7 @@ import (
 
 	"treasury/internal/bitcode"
 	"treasury/internal/bitmap"
+	"treasury/internal/nn"
 )
 
 // glyphSet loads the glyph-frame data cmd/glyphs wrote, when present:
@@ -23,6 +24,9 @@ type glyphSet struct {
 func loadGlyphs(t *testing.T, name string) glyphSet {
 	t.Helper()
 	dir := filepath.Join("..", "..", "python", "encoder", "data")
+	if d := os.Getenv("GLYPH_DATA"); d != "" {
+		dir = d
+	}
 	b, err := os.ReadFile(filepath.Join(dir, "manifest.json"))
 	if err != nil {
 		t.Skip("no glyph data:", err)
@@ -130,4 +134,26 @@ func TestCrossFaceLearned(t *testing.T) {
 		t.Skip(err)
 	}
 	crossFaceScore(t, enc, 40000, 20000)
+}
+
+// TestCrossFaceLearnedAlt scores a learned encoder read from the directory
+// LEARNED_ALT names (learned.bin and learned.json), for comparing models.
+func TestCrossFaceLearnedAlt(t *testing.T) {
+	dir := os.Getenv("LEARNED_ALT")
+	if dir == "" {
+		t.Skip("set LEARNED_ALT=dir")
+	}
+	bin, err := os.ReadFile(filepath.Join(dir, "learned.bin"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	js, err := os.ReadFile(filepath.Join(dir, "learned.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	net, err := nn.Decode(bin, js)
+	if err != nil {
+		t.Fatal(err)
+	}
+	crossFaceScore(t, &Learned{net: net}, 40000, 20000)
 }

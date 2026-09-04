@@ -379,6 +379,102 @@ The vertical real label: 14.5 s to 8.7 s, verdicts unchanged (brand and both pro
 
 Half B with the learned encoder after 6a: median 3.6 s, p95 5.0 s (5b: 3.6 and 5.2); brand 0.86, class 0.80, producer 0.72/0.74, origin 0.67, alcohol 0.58, net 0.60 (5b: 0.82, 0.77, 0.70/0.71, 0.65, 0.55, 0.56); cross-face class 0.80, producer 0.74/0.75, origin 0.65, alcohol 0.57, net 0.62; vertical labels 0.76 (5b: 0.63); 13 of 250 without an alphabet. The real ten: 12 claims verified as in 5b, precision 1.00, median 5.6 s, p95 8.7 s.
 
+### Step 6b: encoder coverage for the tail (2026-09-04)
+
+Gate, stated before the run: the styled glyph set, the encoder retrained, and the 5b gate again (cross-face recall on half B against 5b's, precision 1.00, median under 5.0 s and p95 under 7.0 s) plus the real ten, with the bold, condensed, and display alignments reported before and after.
+
+The glyph generator now styles each sheet before the channel: a pixel of dilation or erosion for weight (probability 0.4), a horizontal scale of 0.7 to 1.3 for condensed and extended (0.6), a shear of up to 0.3 for obliques (0.4), as an affine warp with the truth boxes mapped through it; the same faces and the same held-out families, 135,925 training frames and 50,188 held out. The encoder retrained on it scores, in Go on the engine's binary path, 80.8 percent nearest-character on the plain held-out frames (5b's encoder: 81.9) and 74.4 on the styled ones (5b's: 71.1): three points bought on the styles the installed faces lack for one point on the plain ones, with distances compressed a little (nearest other character at a median of 0.188 against 0.211). The tuner on half A first moved the numeric radius from 0.15 to 0.18, which on the gate run cost alcohol recall (0.58 to 0.44, reviews 0.08 to 0.26) and produced two false mismatches on the real ten; the eval had counted a mismatch on a correct label as a miss rather than a wrong assertion, so the tuner paid nothing for them. With that counted as a false positive the tuner keeps the radii at 0.12 and 0.15 and raises the tie margin from 0.020 to 0.050, and those are the values run here.
+
+Half B, single-threaded, claims decoded with the styled encoder:
+
+250 labels, 13 without an alphabet, latency median 3.7s p95 4.9s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 142 | 0.98 | 0.86 | 0.06 | 0/4 | 0 |
+| class | 250 | 1.00 | 0.82 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.73 | 0.03 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.04 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.69 | 0.01 | 0/0 | 0 |
+| abv | 250 | 0.94 | 0.58 | 0.12 | 2/5 | 6 |
+| net | 250 | 0.97 | 0.61 | 0.20 | 2/2 | 1 |
+| brand (display face) | 108 | 0.96 | 0.88 | 0.02 | | |
+
+Reference rows: compliant labels with every row verified 71/201 (65 reviewed, 65 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.81 | 177 | 0.82 |
+| producer_1 | 56 | 0.66 | 194 | 0.75 |
+| producer_2 | 56 | 0.71 | 194 | 0.75 |
+| origin | 68 | 0.75 | 182 | 0.67 |
+| abv | 49 | 0.62 | 189 | 0.57 |
+| net | 58 | 0.56 | 187 | 0.62 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 5 | 0.80 |
+| light on dark | 40 | 1 | 0.77 |
+| vertical warning | 52 | 1 | 0.76 |
+| crowded warning | 56 | 5 | 0.71 |
+| none of these | 68 | 4 | 0.77 |
+
+Against 6a's run of the 5b encoder (brand 0.86, class 0.80, producer 0.72, origin 0.67, alcohol 0.58, net 0.60; cross-face class 0.80, producer 0.74, origin 0.65, alcohol 0.57, net 0.62; median 3.6 s, p95 5.0 s): brand 0.86, class 0.82, producer 0.73/0.74, origin 0.69, alcohol 0.58, net 0.61; cross-face class 0.82, producer 0.75/0.75, origin 0.67, alcohol 0.57, net 0.62; median 3.7 s, p95 4.9 s; 13 of 250 without an alphabet.
+
+Precision under the corrected metric is 1.00 on the free-text claims and 0.94 on alcohol and 0.97 on net: twelve numeric verdicts on half B name a wrong value on a label that is right, and the earlier tables' 1.00 on those claims was the old metric's. They are partial reads: "2%" for 12%, "3" for 13, "5%" for 4.5%, where the leading digit was classified as not a digit at all, confidently, so a rule ending the run at a half-seen digit before it, tried here, catches none of them. The remedy is a classifier that does not lose a leading 1 or 4, or a reading that will not decide when the digit word it read is shorter than the word's glyphs; the second is a rule the next round should try.
+
+The real ten: 7 of ten with an alphabet, 13 claims verified (5b: 12), 1 mismatch on a correct label (Gallo's net, "331" cut from a zip code, at 0.150 under a radius of 0.15), counted against precision.
+
+10 labels, 3 without an alphabet, latency median 6.0s p95 8.9s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 10 | 1.00 | 0.30 | 0.10 | 0/0 | 0 |
+| class | 10 | 1.00 | 0.10 | 0.00 | 0/0 | 0 |
+| producer_1 | 10 | 1.00 | 0.20 | 0.10 | 0/0 | 0 |
+| producer_2 | 6 | 1.00 | 0.17 | 0.17 | 0/0 | 0 |
+| origin | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
+| abv | 10 | 1.00 | 0.10 | 0.10 | 0/0 | 0 |
+| net | 10 | 0.75 | 0.33 | 0.00 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 1/10 (3 reviewed, 6 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 6/7 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 10 | 3 | 0.23 |
+
+The tail the step was aimed at, the free-text claims on real labels that did not verify under 5b, with their alignment distances under each encoder:
+
+| label | claim | distance, 5b encoder | distance, 6b encoder | verdict now |
+|---|---|---|---|---|
+| 0002 | class | 0.242 | 0.218 | NOT_FOUND |
+| 0004 | brand | 0.170 | 0.201 | NOT_FOUND |
+| 0004 | class | 0.144 | 0.133 | NOT_FOUND |
+| 0004 | producer_1 | 0.227 | 0.216 | NOT_FOUND |
+| 0005 | class | 0.150 | 0.158 | NOT_FOUND |
+| 0005 | producer_2 | 0.202 | 0.193 | NOT_FOUND |
+| 0006 | producer_1 | 0.246 | 0.207 | NOT_FOUND |
+| 0007 | class | 0.140 | 0.146 | NOT_FOUND |
+| 0009 | brand | 0.181 | 0.190 | NOT_FOUND |
+| 0009 | class | 0.189 | 0.192 | NOT_FOUND |
+| 0009 | producer_1 | 0.303 | 0.000 | NOT_FOUND |
+| 0010 | brand | 0.160 | 0.166 | NOT_FOUND |
+| 0010 | class | 0.128 | 0.131 | NOT_FOUND |
+| 0010 | producer_1 | 0.240 | 0.230 | NOT_FOUND |
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

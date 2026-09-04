@@ -299,10 +299,13 @@ func (t *tally) add(status verify.Status, w string) {
 			t.fn++
 		}
 	case verify.Mismatch:
+		// A mismatch on a correct label asserts a wrong value: a false
+		// positive, not a miss. Counting it as a miss let a tuner widen the
+		// numeric radius into false mismatches without a penalty.
 		if w == "wrong" {
 			t.mismatchHit++
 		} else if w == "correct" {
-			t.fn++
+			t.fp++
 		}
 	default:
 		if w == "correct" {

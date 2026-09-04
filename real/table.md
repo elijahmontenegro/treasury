@@ -1,16 +1,16 @@
 ## Encoder dual, claims decoded with the learned encoder
 
-10 labels, 3 without an alphabet, latency median 5.6s p95 8.7s
+10 labels, 3 without an alphabet, latency median 6.0s p95 8.9s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|
-| brand | 10 | 1.00 | 0.20 | 0.20 | 0/0 | 0 |
+| brand | 10 | 1.00 | 0.30 | 0.10 | 0/0 | 0 |
 | class | 10 | 1.00 | 0.10 | 0.00 | 0/0 | 0 |
 | producer_1 | 10 | 1.00 | 0.20 | 0.10 | 0/0 | 0 |
-| producer_2 | 6 | 1.00 | 0.33 | 0.17 | 0/0 | 0 |
+| producer_2 | 6 | 1.00 | 0.17 | 0.17 | 0/0 | 0 |
 | origin | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
 | abv | 10 | 1.00 | 0.10 | 0.10 | 0/0 | 0 |
-| net | 10 | 1.00 | 0.20 | 0.00 | 0/0 | 0 |
+| net | 10 | 0.75 | 0.33 | 0.00 | 0/0 | 0 |
 | brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
 
 Reference rows: compliant labels with every row verified 1/10 (3 reviewed, 6 failed); wording and title-case errors caught 0/0.

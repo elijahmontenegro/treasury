@@ -594,6 +594,15 @@ func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *
 		if before == 1 && float64(reg.comps[i-1].Dx()) > 0.6*xh {
 			before = 2
 		}
+		// The one glyph allowed before a run is an opening paren, and a
+		// paren is never digit-shaped. A leading digit the classifier
+		// half-saw is a digit the reading would drop: "12%" read as "2%"
+		// was decided, and named a wrong value, on labels that were right.
+		if before == 1 {
+			if g := glyphs[i-1]; g.class >= 0 && g.class < 10 && g.prob >= 0.25 {
+				before = 2
+			}
+		}
 		if before <= 1 && after <= 2 && j-i > bestEnd-bestStart {
 			bestStart, bestEnd = i, j
 		}

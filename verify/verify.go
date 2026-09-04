@@ -196,7 +196,10 @@ func (o Options) withDefaults() Options {
 		o.LineTieMargin = 0.04
 	}
 	if o.LearnedTie == 0 {
-		o.LearnedTie = 0.02
+		o.LearnedTie = 0.05 // tuned on half A with false mismatches counted as false positives (6b)
+	}
+	if o.LearnedNumericRadius == 0 {
+		o.LearnedNumericRadius = 0.15 // the tuner with false mismatches counted as false positives keeps 0.15
 	}
 	if o.MaxCharSpread == 0 {
 		o.MaxCharSpread = 0.12
