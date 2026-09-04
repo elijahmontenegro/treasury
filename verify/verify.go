@@ -47,6 +47,8 @@ type Claim struct {
 	Radius     float64  // Hamming radius as a fraction of the code length; 0 uses the default
 	Variants   bool     // also spell casing, quote, and weight variants of each candidate; for free text
 	Numeric    *Numeric // when set, the claim is read as a number and Candidates is ignored
+
+	numericInner bool // an instantiated numeric claim, decided by the free-text path
 }
 
 // Status is a verdict.
@@ -159,20 +161,23 @@ type Result struct {
 
 // Options tune the engine. Zero values take the defaults.
 type Options struct {
-	Encoder           string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
-	ClaimEncoder      string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
-	DefaultRadius     float64 // fraction of code length; 0.15
-	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.01 (tuned on half A of the synthetic set; the spread term usually dominates)
-	LineTieMargin     float64 // line-wise fallback: fraction of the line code; 0.04
-	MaxCharSpread     float64 // per-character acceptance: a character whose samples spread beyond this is unlearned; 0.12
-	MaxUnexplained    float64 // alphabet acceptance; 0.10
-	LineThreshold     float64 // reference row acceptance, mean normalized distance; 0.08
-	ViolationFraction float64 // alphabet and reference row acceptance, share of glyphs contradicting their shape class; 0.1
-	RowFailAnomalies  float64 // anomaly weight (unexplained and strong outliers one, weak outliers half) at which a reference row fails rather than reviews; 2
-	HeavyFactor       float64 // stroke ratio of the heavy hypothesis to the body; 1.25
-	EmphasisGate      float64 // an emphasis span must be within this fraction of a hypothesis; 0.15
-	GlareFraction     float64 // region overlap with the glare mask that flags low confidence; 0.3
-	MinGlyphs         int     // a reading of fewer glyphs cannot decide a claim, only ask for review; 3
+	Encoder              string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
+	ClaimEncoder         string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
+	LearnedRadius        float64 // free-text radius when claims are decoded with the learned encoder; 0 keeps DefaultRadius
+	LearnedNumericRadius float64 // numeric radius under the learned encoder; 0 keeps the claim's own
+	LearnedTie           float64 // tie margin per differing glyph under the learned encoder; tuned 0.02 on half A
+	DefaultRadius        float64 // fraction of code length; 0.15
+	TieMargin            float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.01 (tuned on half A of the synthetic set; the spread term usually dominates)
+	LineTieMargin        float64 // line-wise fallback: fraction of the line code; 0.04
+	MaxCharSpread        float64 // per-character acceptance: a character whose samples spread beyond this is unlearned; 0.12
+	MaxUnexplained       float64 // alphabet acceptance; 0.10
+	LineThreshold        float64 // reference row acceptance, mean normalized distance; 0.08
+	ViolationFraction    float64 // alphabet and reference row acceptance, share of glyphs contradicting their shape class; 0.1
+	RowFailAnomalies     float64 // anomaly weight (unexplained and strong outliers one, weak outliers half) at which a reference row fails rather than reviews; 2
+	HeavyFactor          float64 // stroke ratio of the heavy hypothesis to the body; 1.25
+	EmphasisGate         float64 // an emphasis span must be within this fraction of a hypothesis; 0.15
+	GlareFraction        float64 // region overlap with the glare mask that flags low confidence; 0.3
+	MinGlyphs            int     // a reading of fewer glyphs cannot decide a claim, only ask for review; 3
 }
 
 func (o Options) withDefaults() Options {
@@ -187,6 +192,9 @@ func (o Options) withDefaults() Options {
 	}
 	if o.LineTieMargin == 0 {
 		o.LineTieMargin = 0.04
+	}
+	if o.LearnedTie == 0 {
+		o.LearnedTie = 0.02
 	}
 	if o.MaxCharSpread == 0 {
 		o.MaxCharSpread = 0.12
@@ -288,7 +296,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		quarters int
 		invert   bool
 	}
-	attempts := []attempt{{"as_is", 0, false}, {"inverted", 0, true}, {"rot90", 1, false}, {"rot270", 3, false}, {"inverted_rot90", 1, true}, {"inverted_rot270", 3, true}}
+	attempts := []attempt{{"as_is", 0, false}, {"rot90", 1, false}, {"rot270", 3, false}, {"inverted", 0, true}, {"inverted_rot90", 1, true}, {"inverted_rot270", 3, true}}
 	var pre *preprocess.Result
 	var lines []region.Line
 	var regions []region.Region
@@ -296,6 +304,15 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	var err error
 	var found attempt
 	casing := ""
+	// The image as it came, kept when the alphabet is learned in another
+	// orientation: a label that sets its warning vertically sets its
+	// claims upright, and they are searched where they are upright.
+	var preAsIs *preprocess.Result
+	var regionsAsIs []region.Region
+	// The inverted attempts come last: they are for dark grounds, but a
+	// light label with a boxed warning has been found through them too,
+	// so they are tried rather than gated, and only by a label that the
+	// upright and rotated attempts have already failed.
 	for _, at := range attempts {
 		g := imgops.Rotate90(gray, at.quarters)
 		if at.invert {
@@ -305,6 +322,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			return Result{}, err
 		}
 		lines, regions = region.Propose(pre.Bin, pre.Glare, region.Default())
+		if at.name == "as_is" {
+			preAsIs, regionsAsIs = pre, regions
+		}
 		var candidates []*alphabet.Alphabet
 		for _, c := range []struct{ name, text string }{{"as_given", refs[0].Text}, {"upper", strings.ToUpper(refs[0].Text)}} {
 			b, ferr := alphabet.Find(lines, pre.Bin, pre.Gray, c.text, spans, opt)
@@ -362,12 +382,16 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	if err := ctx.Err(); err != nil {
 		return Result{}, err
 	}
-	sp := spell.NewWith(a, e.faces, e.lineEnc, e.claimEnc)
+	spellCache := spell.NewCache()
+	sp := spell.NewCached(a, e.faces, e.lineEnc, e.claimEnc, spellCache)
 	res.Reference = e.referenceVerdicts(a)
 	for i := range spans {
 		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
 	}
 	encoded := encodeRegions(pre, regions, e.lineEnc, e.opt.GlareFraction)
+	if found.quarters != 0 && preAsIs != nil {
+		encoded = append(encoded, encodeRegions(preAsIs, regionsAsIs, e.lineEnc, e.opt.GlareFraction)...)
+	}
 	res.Claims = make([]Verdict, len(claims))
 	cache := newCallCache()
 	winners := make([]*scored, len(claims))
@@ -381,9 +405,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// the characters the reference lacked, digits and capitals above all.
 	// With those learned from the label's own type, the claims that were
 	// undecided are read again.
-	learned := e.harvest(a, pre, winners)
+	learned := e.harvest(a, encoded, winners)
 	if len(learned) > 0 {
-		sp = spell.NewWith(a, e.faces, e.lineEnc, e.claimEnc)
+		sp = spell.NewCached(a, e.faces, e.lineEnc, e.claimEnc, spellCache.NextPass())
 		for i, c := range claims {
 			if res.Claims[i].Status == Verified {
 				continue
@@ -406,7 +430,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 // characters the alphabet has no sample of, rescaled to the reference's
 // size. Heavy readings feed the emphasis pool. It returns the characters
 // learned.
-func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners []*scored) []rune {
+func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners []*scored) []rune {
 	var learned []rune
 	seen := map[rune]bool{}
 	for _, w := range winners {
@@ -436,6 +460,7 @@ func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners [
 			if span >= 0 && len(a.Emphasis[span][r]) > 0 {
 				continue
 			}
+			pre := regions[w.region].pre
 			g := a.Rescaled(pre.Bin, pre.Gray, w.obs.Boxes[st.Glyph], w.obs.Baselines[st.Glyph], w.obs.XHeight)
 			a.AddSample(r, span, g)
 			if !seen[r] {

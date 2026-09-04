@@ -21,8 +21,19 @@ type Observed struct {
 	XHeight   float64
 	Bin       *bitmap.Bitmap
 	Enc       encoder.Encoder
+	// Coder, when set, supplies the code of a frame instead of Enc: an
+	// encoder whose code tolerates the framing's error by construction
+	// can be asked once per box, whatever the framing.
+	Coder func(box image.Rectangle, baseline int, xh float64) bitcode.Code
 
 	unions map[int]bitcode.Code
+}
+
+func (o Observed) code(box image.Rectangle, baseline int, xh float64) bitcode.Code {
+	if o.Coder != nil {
+		return o.Coder(box, baseline, xh)
+	}
+	return o.Enc.Encode(Frame(o.Bin, box, baseline, xh))
 }
 
 // unionBox is the box spanning glyphs g through g+k-1.
@@ -37,8 +48,11 @@ func (o Observed) unionBox(g, k int) image.Rectangle {
 // unionCode is the frame code of glyphs g through g+k-1 taken as one, or
 // false when they are not close enough to be one broken character.
 func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
+	// Pieces of one broken glyph touch or nearly touch; letters set
+	// apart by their normal spacing, a tenth of an x-height and more, are
+	// not one glyph, and their union would only cost an encoding.
 	for i := g + 1; i < g+k; i++ {
-		if o.Gaps[i] > 0.3 {
+		if o.Gaps[i] > 0.15 {
 			return nil, false
 		}
 	}
@@ -46,7 +60,7 @@ func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
 	if code, ok := o.unions[key]; ok {
 		return code, true
 	}
-	code := o.Enc.Encode(Frame(o.Bin, o.unionBox(g, k), o.Baselines[g], o.XHeight))
+	code := o.code(o.unionBox(g, k), o.Baselines[g], o.XHeight)
 	o.unions[key] = code
 	return code, true
 }
@@ -54,14 +68,19 @@ func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
 // NewObserved frames and encodes boxes (sorted left to right) at the given
 // x-height, each on its own baseline; dy shifts every baseline.
 func NewObserved(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangle, baselines []int, dy int, xh float64) Observed {
-	o := Observed{Boxes: boxes, XHeight: xh, Bin: bin, Enc: enc, unions: map[int]bitcode.Code{}}
+	return NewObservedWith(bin, enc, boxes, baselines, dy, xh, nil)
+}
+
+// NewObservedWith is NewObserved with a code supplier; see Observed.Coder.
+func NewObservedWith(bin *bitmap.Bitmap, enc encoder.Encoder, boxes []image.Rectangle, baselines []int, dy int, xh float64, coder func(image.Rectangle, int, float64) bitcode.Code) Observed {
+	o := Observed{Boxes: boxes, XHeight: xh, Bin: bin, Enc: enc, Coder: coder, unions: map[int]bitcode.Code{}}
 	o.Codes = make([]bitcode.Code, len(boxes))
 	o.Gaps = make([]float64, len(boxes))
 	o.Baselines = make([]int, len(boxes))
 	maxX := 0
 	for i, b := range boxes {
 		o.Baselines[i] = baselines[i] + dy
-		o.Codes[i] = enc.Encode(Frame(bin, b, o.Baselines[i], xh))
+		o.Codes[i] = o.code(b, o.Baselines[i], xh)
 		if i == 0 {
 			o.Gaps[i] = math.Inf(1)
 		} else {

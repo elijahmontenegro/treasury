@@ -587,6 +587,9 @@ func table(enc string, recs []Record, o *override) string {
 	}
 	var b strings.Builder
 	title := "## Encoder " + enc
+	if *claimEnc != "" && *claimEnc != "same" {
+		title += ", claims decoded with the " + *claimEnc + " encoder"
+	}
 	if o != nil {
 		title += fmt.Sprintf(" (tuned: free radius %.2f, enum radius %.2f, tie %.3f; half B)", o.freeRadius, o.enumRadius, o.tie)
 	}

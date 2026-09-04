@@ -282,6 +282,11 @@ func Filter(cs []Component, imgH int, p Params) []Component {
 		if c.Area < p.MinArea || h < p.MinHeight || h > maxH || h < minRel {
 			continue
 		}
+		// A rule or a box edge: many times wider than tall and thin. Left
+		// in, it bridges the columns it sits between into one line.
+		if h <= 6 && c.Box.Dx() > 12*h {
+			continue
+		}
 		out = append(out, c)
 	}
 	return out

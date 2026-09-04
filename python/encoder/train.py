@@ -39,20 +39,23 @@ def load(data: Path, name: str, side: int):
 
 
 class Net(nn.Module):
-    """Four blocks of two 3×3 convolutions with batch norm, each followed by
-    a 2×2 max pool, global average pooling, a linear layer to DIM, and
-    tanh. About 170k parameters at widths 16, 32, 48, 64."""
+    """Four blocks of 3×3 convolutions with batch norm (one in the first
+    block, two in the others), each followed by a 2×2 max pool, global
+    average pooling, a linear layer to DIM, and tanh. About 4.5 million
+    multiply-adds a frame, half the first version's, for the engine's
+    latency budget."""
 
-    def __init__(self, widths=(16, 32, 48, 64), dim=DIM):
+    def __init__(self, widths=(12, 24, 40, 64), dim=DIM):
         super().__init__()
         layers = []
         cin = 1
-        for w in widths:
-            layers += [
-                nn.Conv2d(cin, w, 3, padding=1, bias=False), nn.BatchNorm2d(w), nn.ReLU(inplace=True),
-                nn.Conv2d(w, w, 3, padding=1, bias=False), nn.BatchNorm2d(w), nn.ReLU(inplace=True),
-                nn.MaxPool2d(2),
-            ]
+        for i, w in enumerate(widths):
+            layers += [nn.Conv2d(cin, w, 3, padding=1, bias=False), nn.BatchNorm2d(w), nn.ReLU(inplace=True)]
+            if i > 0:
+                # The first block, at full resolution, is one convolution:
+                # the second one there was a quarter of the network's cost.
+                layers += [nn.Conv2d(w, w, 3, padding=1, bias=False), nn.BatchNorm2d(w), nn.ReLU(inplace=True)]
+            layers.append(nn.MaxPool2d(2))
             cin = w
         self.features = nn.Sequential(*layers)
         self.head = nn.Linear(cin, dim)

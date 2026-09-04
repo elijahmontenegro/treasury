@@ -55,6 +55,7 @@ type Speller struct {
 	Enc       encoder.Encoder
 	GlyphEnc  encoder.Encoder
 	Spread    float64 // the alphabet's within-character spread in GlyphEnc's code
+	cache     *Cache
 
 	letterGap, wordGap int
 	bodyStroke         float64 // learned body stroke width in px; synthesized glyphs are brought to it
@@ -78,13 +79,56 @@ func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Spell
 // and the reference verdicts drawn from it, keep the encoder it was
 // learned with.
 func NewWith(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.Encoder) *Speller {
+	return NewCached(a, faces, enc, glyphEnc, nil)
+}
+
+// Cache holds codes that do not change between the spellers of one
+// verification: samples recoded under the claim encoder, and glyphs
+// synthesized in a face. A learned encoder costs milliseconds a frame,
+// and the second pass would otherwise pay for every frame again.
+type Cache struct {
+	samples map[sampleKey]bitcode.Code
+	synth   map[synthKey]bitcode.Code
+	runs    map[string]bitcode.Code
+}
+
+type sampleKey struct {
+	box      image.Rectangle
+	baseline int
+}
+
+type synthKey struct {
+	face   string
+	r      rune
+	xh     int // target x-height, quarter pixels
+	stroke int // normalized stroke, tenths
+}
+
+// NewCache returns an empty cache for one verification.
+func NewCache() *Cache {
+	return &Cache{samples: map[sampleKey]bitcode.Code{}, synth: map[synthKey]bitcode.Code{}, runs: map[string]bitcode.Code{}}
+}
+
+// NextPass keeps the sample and synthesized codes for another speller and
+// drops the composed runs, whose pieces may change when the alphabet has
+// learned from the first pass.
+func (c *Cache) NextPass() *Cache {
+	return &Cache{samples: c.samples, synth: c.synth, runs: map[string]bitcode.Code{}}
+}
+
+// NewCached is NewWith with a cache shared across the verification's spellers.
+func NewCached(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.Encoder, cache *Cache) *Speller {
+	if cache == nil {
+		cache = NewCache()
+	}
+	own := a.Block.Encoder()
 	if glyphEnc == nil {
-		glyphEnc = a.Block.Encoder()
+		glyphEnc = own
 	}
-	if glyphEnc != a.Block.Encoder() {
-		a = recoded(a, glyphEnc)
+	if glyphEnc != own {
+		a = recoded(a, glyphEnc, cache)
 	}
-	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, Spread: a.Spread, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}, altCodes: map[rune][]bitcode.Code{}}
+	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, Spread: a.Spread, cache: cache, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}, altCodes: map[rune][]bitcode.Code{}}
 	s.bodyStroke = a.BodyStroke()
 	s.heavyStroke = 1.25 * s.bodyStroke
 	if len(a.Emphasis) > 0 {
@@ -92,7 +136,9 @@ func NewWith(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.E
 			s.heavyStroke = w
 		}
 	}
-	scores := FaceScores(a, faces, glyphEnc, -1)
+	// Faces are scored in the alphabet's own code, not the claim code: a
+	// code trained to ignore the face cannot tell which face is nearest.
+	scores := FaceScores(a, faces, own, -1)
 	sort.Slice(scores, func(i, j int) bool { return scores[i].Score < scores[j].Score })
 	if len(scores) > 0 {
 		s.Face = scores[0].Face
@@ -134,7 +180,7 @@ func (s *Speller) HasEmphasis() bool { return len(s.A.Emphasis) > 0 }
 
 // recoded is a copy of a whose samples carry enc's codes, with the
 // within-character spread measured in that code.
-func recoded(a *alphabet.Alphabet, enc encoder.Encoder) *alphabet.Alphabet {
+func recoded(a *alphabet.Alphabet, enc encoder.Encoder, cache *Cache) *alphabet.Alphabet {
 	c := *a
 	c.Samples = map[rune][]alphabet.Glyph{}
 	c.Emphasis = map[int]map[rune][]alphabet.Glyph{}
@@ -143,7 +189,13 @@ func recoded(a *alphabet.Alphabet, enc encoder.Encoder) *alphabet.Alphabet {
 	pool := func(samples []alphabet.Glyph) []alphabet.Glyph {
 		out := make([]alphabet.Glyph, len(samples))
 		for i, g := range samples {
-			g.Code = a.Recode(g, enc)
+			k := sampleKey{g.Box, g.Baseline}
+			code, ok := cache.samples[k]
+			if !ok {
+				code = a.Recode(g, enc)
+				cache.samples[k] = code
+			}
+			g.Code = code
 			out[i] = g
 		}
 		if len(out) >= 2 {
@@ -181,6 +233,18 @@ func codesOf(gs []alphabet.Glyph) []bitcode.Code {
 		out[i] = g.Code
 	}
 	return out
+}
+
+// synthCode is the frame code of a synthesized glyph, cached across the
+// verification's spellers by face, character, target size, and stroke.
+func (s *Speller) synthCode(face *render.Face, r rune, sg render.Synth, stroke float64) bitcode.Code {
+	k := synthKey{face: face.Name, r: r, xh: int(math.Round(4 * s.A.XHeight)), stroke: int(math.Round(10 * stroke))}
+	if code, ok := s.cache.synth[k]; ok {
+		return code
+	}
+	code := frameCode(sg, s.A.XHeight, s.GlyphEnc)
+	s.cache.synth[k] = code
+	return code
 }
 
 // medoid is the sample nearest all the others by frame code; samples that
@@ -267,7 +331,7 @@ func FaceScores(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Enc
 func nearestFace(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Encoder, span int) (*render.Face, float64) {
 	var best *render.Face
 	bestD := math.Inf(1)
-	for _, fs := range FaceScores(a, faces, glyphEnc, span) {
+	for _, fs := range FaceScores(a, faces, a.Block.Encoder(), span) {
 		if fs.Score < bestD {
 			best, bestD = fs.Face, fs.Score
 		}
@@ -364,13 +428,14 @@ func (s *Speller) synthesize(r rune, face *render.Face, cache map[rune]piece) (p
 	}
 	// Bring the stroke to the learned weight so a synthesized glyph sits
 	// beside learned ones as if printed by the same press.
-	if stroke := s.bodyStroke; stroke > 0 {
-		if face == s.HeavyFace && s.heavyStroke > 0 {
-			stroke = s.heavyStroke
-		}
+	stroke := s.bodyStroke
+	if face == s.HeavyFace && s.heavyStroke > 0 {
+		stroke = s.heavyStroke
+	}
+	if stroke > 0 {
 		sg.Bin = sg.Bin.WithStroke(stroke)
 	}
-	p := piece{bin: sg.Bin, gray: sg.Gray, box: sg.Box, code: frameCode(sg, s.A.XHeight, s.GlyphEnc), source: 's'}
+	p := piece{bin: sg.Bin, gray: sg.Gray, box: sg.Box, code: s.synthCode(face, r, sg, stroke), source: 's'}
 	cache[r] = p
 	return p, nil
 }
@@ -397,7 +462,7 @@ func (s *Speller) alternatives(r rune) []bitcode.Code {
 		if s.bodyStroke > 0 {
 			sg.Bin = sg.Bin.WithStroke(s.bodyStroke)
 		}
-		codes = append(codes, frameCode(sg, s.A.XHeight, s.GlyphEnc))
+		codes = append(codes, s.synthCode(f, r, sg, s.bodyStroke))
 	}
 	s.altCodes[r] = codes
 	return codes
@@ -453,6 +518,16 @@ func (s *Speller) Target(text string, heavy bool) (t alphabet.Target, top, botto
 		if code, ok := memo[key]; ok {
 			return code
 		}
+		// The same run of characters composes to the same code in every
+		// candidate of this speller; the cache is keyed by the text.
+		var rkey string
+		if c+n <= len(t.Text) {
+			rkey = string(t.Text[c:c+n]) + "|" + map[bool]string{false: "r", true: "h"}[heavy]
+			if code, ok := s.cache.runs[rkey]; ok {
+				memo[key] = code
+				return code
+			}
+		}
 		var code bitcode.Code
 		if c+n <= len(t.Text) {
 			ps := make([]piece, 0, n)
@@ -473,10 +548,18 @@ func (s *Speller) Target(text string, heavy bool) (t alphabet.Target, top, botto
 			}
 		}
 		memo[key] = code
+		if rkey != "" {
+			s.cache.runs[rkey] = code
+		}
 		return code
 	}
 	t.Pair = func(c int) bitcode.Code { return run(c, 2) }
 	t.Triple = func(c int) bitcode.Code { return run(c, 3) }
+	// A three-way merge is rare and already costs two structural units;
+	// under a costly encoder its composed code is not worth computing.
+	if c, ok := s.GlyphEnc.(encoder.Costly); ok && c.Costly() {
+		t.Triple = nil
+	}
 	return t, top, bottom, nil
 }
 

@@ -8,8 +8,12 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 
+	"treasury/internal/alphabet"
+	"treasury/internal/bitcode"
 	"treasury/internal/digits"
+	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
 	"treasury/internal/spell"
 )
@@ -58,9 +62,34 @@ type glyphClass struct {
 // component is classified once however many word runs contain it.
 type callCache struct {
 	classes map[image.Rectangle]glyphClass
+	codes   map[codeKey]bitcode.Code // learned codes, one per box per image
 }
 
-func newCallCache() *callCache { return &callCache{classes: map[image.Rectangle]glyphClass{}} }
+type codeKey struct {
+	pre *preprocess.Result
+	box image.Rectangle
+}
+
+func newCallCache() *callCache {
+	return &callCache{classes: map[image.Rectangle]glyphClass{}, codes: map[codeKey]bitcode.Code{}}
+}
+
+// coder returns the learned encoder's code supplier for regions of pre:
+// one code per box, at the first framing asked for. The encoder was
+// trained with the engine's own framing jitter, so the framing's error is
+// inside what it ignores, and a component is encoded once rather than at
+// every scale and baseline the decoder tries.
+func (c *callCache) coder(enc encoder.Encoder, pre *preprocess.Result) func(image.Rectangle, int, float64) bitcode.Code {
+	return func(box image.Rectangle, baseline int, xh float64) bitcode.Code {
+		k := codeKey{pre, box}
+		if code, ok := c.codes[k]; ok {
+			return code
+		}
+		code := enc.Encode(alphabet.Frame(pre.Bin, box, baseline, xh))
+		c.codes[k] = code
+		return code
+	}
+}
 
 // numericTrace, when set, receives the readings and candidates of numeric
 // claims; a test hook.
@@ -71,7 +100,7 @@ func (e *Engine) decideClaim(c Claim, sp *spell.Speller, pre *preprocess.Result,
 	if c.Numeric != nil {
 		return e.decideNumeric(c, sp, pre, regions, cache)
 	}
-	return e.decide(c, sp, pre, regions)
+	return e.decide(c, sp, pre, regions, cache)
 }
 
 // decideNumeric reads the claim's number off the label and then verifies
@@ -169,6 +198,7 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 	instances := map[string]inst{}
 	inner := c
 	inner.Numeric = nil
+	inner.numericInner = true
 	inner.Candidates = nil
 	inner.Expected = canon(expected)
 	add := func(r reading, text string, alt bool) {
@@ -227,64 +257,147 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		return notFound("no_number_parsed")
 	}
 	sort.Slice(inner.Candidates, func(i, j int) bool { return inner.Candidates[i].Text < inner.Candidates[j].Text })
-	// A candidate instantiated from a reading can only be decided on a
-	// region that holds a digit run: elsewhere it is a string of letters
-	// matching a word by chance, as "1 Litre" once did on a real label at
-	// the radius's edge.
-	holds := make([]bool, len(regions))
+	// Each reading is decided on its own region and the regions
+	// overlapping it, with the candidates it instantiated. A reading from
+	// another line cannot claim this region: with a code that tolerates
+	// the face, "6% alc/vol" from an age statement fitted a "41% alc/vol"
+	// line within the radius, and the region's own reading was never
+	// asked.
+	type outcome struct {
+		v     Verdict
+		w     *scored
+		value float64
+		valid bool
+		d1    float64
+	}
+	var outcomes []outcome
 	for _, r := range readings {
-		holds[r.region] = true
-		rb := regions[r.region].box
-		for i := range regions {
-			if regions[i].box.Overlaps(rb) {
-				holds[i] = true
+		var cands []Candidate
+		for _, cand := range inner.Candidates {
+			if instances[cand.Text].reading.region == r.region {
+				cands = append(cands, cand)
 			}
 		}
+		if len(cands) == 0 {
+			continue
+		}
+		var sub []encodedRegion
+		var back []int
+		rb := regions[r.region].box
+		for i, reg := range regions {
+			if reg.box.Overlaps(rb) {
+				sub = append(sub, reg)
+				back = append(back, i)
+			}
+		}
+		one := inner
+		one.Candidates = cands
+		if numericTrace != nil {
+			var texts []string
+			for _, cand := range cands {
+				texts = append(texts, cand.Text+"="+cand.Value)
+			}
+			numericTrace("%s: reading %q on region %d, %d candidates over %d regions: %s", c.Name, r.text, r.region, len(cands), len(sub), strings.Join(texts, " | "))
+		}
+		out, w := e.decide(one, sp, pre, sub, cache)
+		if w != nil {
+			w.region = back[w.region]
+			// The unit must be there letter by letter. A decision rests on
+			// the sum over glyphs, and a fragment of a zip code with two
+			// stray glyphs where "ML" should be summed to within the
+			// radius once; a letter the region does not hold is a
+			// distance no single glyph of a real unit reaches.
+			if missing := unmatchedLetter(w, sp.GlyphEnc.Bits()); missing != "" {
+				out.Status = NotFound
+				out.Reason = "unit_not_matched:" + missing
+				out.Observed = ""
+				w = nil
+			}
+		}
+		o := outcome{v: out, w: w, d1: 1}
+		if out.Evidence != nil {
+			if in, ok := instances[out.Evidence.Text]; ok {
+				out.Evidence.Reading = in.reading.text
+				out.Evidence.DigitConfidence = in.reading.confidence
+				o.value, o.valid = in.value, in.valid
+			}
+			if out.Evidence.Bits > 0 {
+				o.d1 = float64(out.Evidence.D1) / float64(out.Evidence.Bits)
+			}
+			// Evidence regions index the full region list.
+			if out.Evidence.Region == sub[0].box && w == nil {
+				out.Evidence.Region = regions[back[0]].box
+			}
+		}
+		if numericTrace != nil && out.Evidence != nil {
+			numericTrace("%s: reading %q decided %s text %q d1=%.3f", c.Name, r.text, out.Status, out.Evidence.Text, o.d1)
+		}
+		o.v = out
+		outcomes = append(outcomes, o)
 	}
-	var withRuns []encodedRegion
-	for i, reg := range regions {
-		if holds[i] {
-			withRuns = append(withRuns, reg)
+	if len(outcomes) == 0 {
+		return notFound("no_number_parsed")
+	}
+	// Decisive readings must agree; otherwise the best undecided one stands.
+	var decided []outcome
+	for _, o := range outcomes {
+		if o.v.Status == Verified || o.v.Status == Mismatch {
+			decided = append(decided, o)
 		}
 	}
-	regions = withRuns
-
-	if numericTrace != nil {
-		var texts []string
-		for _, cand := range inner.Candidates {
-			texts = append(texts, cand.Text+"="+cand.Value)
+	best := func(os []outcome) outcome {
+		b := os[0]
+		for _, o := range os[1:] {
+			if o.d1 < b.d1 {
+				b = o
+			}
 		}
-		numericTrace("%s: %d candidates: %s", c.Name, len(texts), strings.Join(texts, " | "))
+		return b
 	}
-	out, winner := e.decide(inner, sp, pre, regions)
+	if len(decided) == 0 {
+		var reviews []outcome
+		for _, o := range outcomes {
+			if o.v.Status == Review {
+				reviews = append(reviews, o)
+			}
+		}
+		if len(reviews) > 0 {
+			o := best(reviews)
+			o.v.Claim, o.v.Expected = c.Name, c.Expected
+			return o.v, nil
+		}
+		o := best(outcomes)
+		o.v.Claim, o.v.Expected = c.Name, c.Expected
+		return o.v, nil
+	}
+	first := best(decided)
+	for _, o := range decided {
+		if math.Abs(o.value-first.value) > spec.Tolerance {
+			v.Status = Review
+			v.Reason = "regions_disagree"
+			v.Evidence = first.v.Evidence
+			for _, d := range decided {
+				v.Candidates = append(v.Candidates, canon(d.value))
+			}
+			return v, nil
+		}
+	}
+	out := first.v
 	out.Claim, out.Expected = c.Name, c.Expected
-	if numericTrace != nil && out.Evidence != nil {
-		numericTrace("%s: decided %s on region %v text %q d1=%d d2=%d bits=%d competitor %q", c.Name, out.Status, out.Evidence.Region, out.Evidence.Text, out.Evidence.D1, out.Evidence.D2, out.Evidence.Bits, out.Evidence.CompetitorText)
+	switch {
+	case !first.valid:
+		out.Status = Review
+		out.Reason = "invalid_value"
+		out.Candidates = []string{canon(first.value)}
+		return out, nil
+	case math.Abs(first.value-expected) <= spec.Tolerance:
+		out.Status = Verified
+		out.Observed = c.Expected
+	default:
+		out.Status = Mismatch
+		out.Observed = canon(first.value)
 	}
-	if out.Evidence != nil {
-		if in, ok := instances[out.Evidence.Text]; ok {
-			out.Evidence.Reading = in.reading.text
-			out.Evidence.DigitConfidence = in.reading.confidence
-		}
-	}
-	// Judge the decided value against the claim in its own unit.
-	if out.Status == Verified || out.Status == Mismatch {
-		val, _ := strconv.ParseFloat(out.Observed, 64)
-		in, known := instances[out.Evidence.Text]
-		switch {
-		case known && !in.valid:
-			out.Status = Review
-			out.Reason = "invalid_value"
-			out.Candidates = []string{out.Observed}
-			return out, nil
-		case math.Abs(val-expected) <= spec.Tolerance:
-			out.Status = Verified
-			out.Observed = c.Expected
-		default:
-			out.Status = Mismatch
-		}
-	}
-	return out, winner
+	return out, first.w
 }
 
 // read classifies a region's components and returns its digit run.
@@ -317,7 +430,7 @@ func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *
 			glyphs[i] = glyphClass{class: digits.Other, prob: 1, second: -1}
 			continue
 		}
-		logits := e.digits.Logits(digits.Frame(pre.Gray, box, reg.baselines[i], xh))
+		logits := e.digits.Logits(digits.Frame(reg.pre.Gray, box, reg.baselines[i], xh))
 		g := glyphClass{class: -1, second: -1}
 		var sum float64
 		best := 0
@@ -503,6 +616,28 @@ func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *
 		}
 	}
 	return r, true
+}
+
+// unmatchedLetter returns the first letter of the candidate whose glyph
+// in the region is farther than 0.45 of the code from its target, or ""
+// when every letter is matched within that.
+func unmatchedLetter(w *scored, bits int) string {
+	if !w.refined {
+		return ""
+	}
+	for _, st := range w.path {
+		if st.Kind != alphabet.Match || st.Char >= len(w.target.Text) {
+			continue
+		}
+		r := w.target.Text[st.Char]
+		if !unicode.IsLetter(r) || w.target.Codes[st.Char] == nil {
+			continue
+		}
+		if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], bits) > 0.45 {
+			return string(r)
+		}
+	}
+	return ""
 }
 
 // regionXHeight estimates a region's x-height from its components: digits

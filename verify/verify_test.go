@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"treasury/internal/render"
 	"treasury/internal/synth"
@@ -397,4 +398,25 @@ func TestSynthTrace(t *testing.T) {
 	verify.SetNumericTrace(func(format string, args ...any) { t.Logf(format, args...) })
 	defer verify.SetNumericTrace(nil)
 	run(t, img, exp)
+}
+
+// TestLearnedClaims runs the sample label with claims decoded by the
+// learned encoder; a timing and behaviour check.
+func TestLearnedClaims(t *testing.T) {
+	eng, err := verify.New(verify.Options{ClaimEncoder: "learned"})
+	if err != nil {
+		t.Skip(err)
+	}
+	exp := ttb.Sample()
+	img := label(t, exp, nil)
+	refs, claims := ttb.Inputs(exp)
+	start := time.Now()
+	res, err := eng.Verify(context.Background(), img, refs, claims)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("learned: %s", time.Since(start))
+	for _, v := range res.Claims {
+		t.Logf("%-12s %-9s observed=%q", v.Claim, v.Status, v.Observed)
+	}
 }

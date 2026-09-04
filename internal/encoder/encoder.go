@@ -18,6 +18,12 @@ type Patch struct {
 	Gray *image.Gray
 }
 
+// Costly is implemented by an encoder whose Encode takes milliseconds
+// rather than microseconds; callers may then skip codes of marginal use.
+type Costly interface {
+	Costly() bool
+}
+
 // Encoder maps patches to codes of a fixed length.
 type Encoder interface {
 	Encode(p Patch) bitcode.Code

@@ -25,7 +25,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2663569400,
+  "latency": 2594336700,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -120,7 +120,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4942363900,
+  "latency": 14277635300,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -146,40 +146,42 @@
    "cap_height": 16,
    "letter_gap": 2,
    "word_gap": 2,
-   "rows": null
+   "rows": null,
+   "learned": "BRECKNDPOUYSL,A"
   },
   "claims": [
    {
     "claim": "brand",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "Breckenridge",
+    "observed": "Breckenridge",
     "evidence": {
      "region": {
       "Min": {
-       "X": 410,
-       "Y": 804
+       "X": 337,
+       "Y": 776
       },
       "Max": {
-       "X": 504,
-       "Y": 830
+       "X": 481,
+       "Y": 804
       }
      },
      "text": "BRECKENRIDGE",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "B",
-      "emphasis": "G",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "BRECKENRDE",
+      "emphasis": "IG",
+      "face": "PTSerif Regular"
      },
-     "d1": 3937,
+     "d1": 290,
      "d2": -1,
-     "radius": 2580,
-     "bits": 21504,
+     "radius": 369,
+     "bits": 3072,
      "refined": true,
      "glyphs": 12,
-     "penalized": 4,
-     "spread": 0.07292382097069597,
+     "penalized": 0,
+     "spread": 0.16509415064102562,
      "low_confidence": false
     }
    },
@@ -190,96 +192,101 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 96,
-       "Y": 825
+       "X": 653,
+       "Y": 826
       },
       "Max": {
-       "X": 226,
+       "X": 774,
        "Y": 851
       }
      },
      "text": "BOURBON WHISKEYS",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "BBW",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "WH",
+      "emphasis": "BOURBONISKEYS",
+      "face": "Lato Bold"
      },
-     "d1": 5054,
+     "d1": 869,
      "d2": -1,
-     "radius": 3226,
-     "bits": 26880,
+     "radius": 461,
+     "bits": 3840,
      "refined": true,
      "glyphs": 15,
-     "penalized": 6,
-     "spread": 0.07292382097069597,
+     "penalized": 7,
+     "spread": 0.16509415064102567,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_1",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "Produced by Breckenridge Distillery,",
+    "observed": "Produced by Breckenridge Distillery,",
     "evidence": {
      "region": {
       "Min": {
-       "X": 403,
-       "Y": 825
+       "X": 291,
+       "Y": 751
       },
       "Max": {
-       "X": 656,
-       "Y": 853
+       "X": 674,
+       "Y": 782
       }
      },
-     "text": "Produced By Breckenridge Distillery,",
+     "text": "PRODUCED BY BRECKENRIDGE DISTILLERY,",
      "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "roducedByBreckenridgeistillery,",
-      "face": "Go Regular"
+      "casing": "upper",
+      "weight": "heavy",
+      "synthesized": "PRODUCEDBYBRECKENRDEDSTLLERY,",
+      "emphasis": "IGII",
+      "face": "PTSerif Regular"
      },
-     "d1": 11778,
+     "d1": 857,
      "d2": -1,
-     "radius": 7096,
-     "bits": 59136,
+     "radius": 1014,
+     "bits": 8448,
      "refined": true,
      "glyphs": 33,
-     "penalized": 13,
-     "spread": 0.07292382097069597,
+     "penalized": 2,
+     "spread": 0.16509415064102562,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_2",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "Breckenridge, Colorado USA",
+    "observed": "Breckenridge, Colorado USA",
     "evidence": {
      "region": {
       "Min": {
-       "X": 250,
-       "Y": 783
+       "X": 337,
+       "Y": 776
       },
       "Max": {
-       "X": 457,
-       "Y": 810
+       "X": 629,
+       "Y": 804
       }
      },
      "text": "BRECKENRIDGE, COLORADO USA",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "B,",
-      "emphasis": "G",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "BRECKENRDE,COLORADOUSA",
+      "emphasis": "IG",
+      "face": "PTSerif Regular"
      },
-     "d1": 8320,
+     "d1": 539,
      "d2": -1,
-     "radius": 5161,
-     "bits": 43008,
+     "radius": 737,
+     "bits": 6144,
      "refined": true,
      "glyphs": 24,
-     "penalized": 9,
-     "spread": 0.07292382097069597,
+     "penalized": 1,
+     "spread": 0.16509415064102562,
      "low_confidence": false
     }
    },
@@ -290,32 +297,35 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 296,
-       "Y": 526
+       "X": 1194,
+       "Y": 766
       },
       "Max": {
-       "X": 364,
-       "Y": 563
+       "X": 1251,
+       "Y": 792
       }
      },
-     "text": "PROOF 2",
+     "text": "50 Proof",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "regular",
+      "synthesized": "50roof",
+      "face": "Go Regular"
      },
-     "d1": 1792,
-     "d2": 1893,
-     "radius": 1613,
-     "bits": 10752,
+     "d1": 303,
+     "d2": 915,
+     "radius": 269,
+     "bits": 1792,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 1,
-     "competitor": "1.5",
-     "competitor_text": "PROOF 3",
-     "spread": 0.07292382097069597,
+     "glyphs": 7,
+     "penalized": 3,
+     "competitor": "50",
+     "competitor_text": "50 % ALC/VOL",
+     "spread": 0.16509415064102567,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "2",
-     "digit_confidence": 0.9858610801014445
+     "reading": "50",
+     "digit_confidence": 0.9471485291202024
     }
    },
    {
@@ -325,32 +335,33 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 413,
-       "Y": 305
+       "X": 1194,
+       "Y": 766
       },
       "Max": {
-       "X": 457,
-       "Y": 332
+       "X": 1251,
+       "Y": 792
       }
      },
-     "text": "55ml",
+     "text": "50 ml",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "55ml",
+      "synthesized": "50ml",
       "face": "Go Regular"
      },
-     "d1": 1456,
+     "d1": 181,
      "d2": -1,
-     "radius": 1075,
-     "bits": 7168,
+     "radius": 154,
+     "bits": 1024,
      "refined": true,
      "glyphs": 4,
-     "penalized": 1,
-     "spread": 0.07292382097069597,
+     "penalized": 0,
+     "spread": 0.16509415064102567,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "55",
-     "digit_confidence": 0.5510186342603662
+     "reading": "50",
+     "digit_confidence": 0.9471485291202024
     }
    }
   ],
@@ -555,7 +566,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3476012000,
+  "latency": 3412389800,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -643,7 +654,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4836320800,
+  "latency": 7052346700,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -662,7 +673,7 @@
    "unexplained": 0,
    "violations": 0.02074688796680498,
    "recovered": 0,
-   "spread": 0.05108777223140549,
+   "spread": 0.05108777223140545,
    "characters": "(),12ACGSabcdefghiklmnoprstuvy",
    "face": "Go Bold",
    "x_height": 7,
@@ -679,29 +690,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 232,
-       "Y": 1436
+       "X": 188,
+       "Y": 960
       },
       "Max": {
-       "X": 305,
-       "Y": 1456
+       "X": 442,
+       "Y": 1014
       }
      },
-     "text": "Seelbach's",
+     "text": "SEELBACH'S",
      "params": {
-      "casing": "title",
+      "casing": "as_given",
       "weight": "regular",
-      "synthesized": "'",
+      "synthesized": "LBH'",
+      "emphasis": "EE",
       "face": "Go Bold"
      },
-     "d1": 3430,
+     "d1": 435,
      "d2": -1,
-     "radius": 2150,
-     "bits": 17920,
+     "radius": 307,
+     "bits": 2560,
      "refined": true,
      "glyphs": 10,
-     "penalized": 3,
-     "spread": 0.05108777223140549,
+     "penalized": 2,
+     "spread": 0.05094995382240163,
      "low_confidence": false
     }
    },
@@ -723,19 +735,19 @@
      "text": "KENTUCKY STRAIGHT BOURBON WHISKEY",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "KUCKYSHBUBHSKY",
-      "emphasis": "ENTTRAIGTORONWIE",
-      "face": "Go Medium"
+      "weight": "regular",
+      "synthesized": "KUKYHBUBHKY",
+      "emphasis": "ENTTRITORONWIE",
+      "face": "Go Bold"
      },
-     "d1": 9547,
+     "d1": 1106,
      "d2": -1,
-     "radius": 6451,
-     "bits": 53760,
+     "radius": 922,
+     "bits": 7680,
      "refined": true,
      "glyphs": 30,
-     "penalized": 6,
-     "spread": 0.05108777223140549,
+     "penalized": 7,
+     "spread": 0.05094995382240163,
      "low_confidence": false
     }
    },
@@ -746,30 +758,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 232,
-       "Y": 1404
+       "X": 180,
+       "Y": 1157
       },
       "Max": {
-       "X": 494,
-       "Y": 1425
+       "X": 471,
+       "Y": 1179
       }
      },
-     "text": "Manifest Distilling In Jacksonville, Fl",
+     "text": "Manifest Distilling in Jacksonville, FL",
      "params": {
-      "casing": "title",
+      "casing": "as_given",
       "weight": "regular",
-      "synthesized": "DJF",
-      "emphasis": "MI",
+      "synthesized": "DJFL",
+      "emphasis": "M",
       "face": "Go Bold"
      },
-     "d1": 12835,
+     "d1": 2031,
      "d2": -1,
-     "radius": 7526,
-     "bits": 62720,
+     "radius": 1075,
+     "bits": 8960,
      "refined": true,
      "glyphs": 35,
-     "penalized": 12,
-     "spread": 0.05108777223140549,
+     "penalized": 16,
+     "spread": 0.05094995382240163,
      "low_confidence": false
     }
    },
@@ -780,34 +792,34 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 431,
-       "Y": 1404
+       "X": 197,
+       "Y": 1085
       },
       "Max": {
-       "X": 494,
-       "Y": 1423
+       "X": 257,
+       "Y": 1107
       }
      },
-     "text": "(2 Proof)",
+     "text": "(3 Proof)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "P",
+      "synthesized": "3P",
       "face": "Go Bold"
      },
-     "d1": 2844,
-     "d2": 3057,
-     "radius": 2150,
-     "bits": 14336,
+     "d1": 735,
+     "d2": 879,
+     "radius": 307,
+     "bits": 2048,
      "refined": true,
      "glyphs": 8,
-     "penalized": 0,
-     "competitor": "5.5",
-     "competitor_text": "(11 Proof)",
-     "spread": 0.05108777223140549,
+     "penalized": 4,
+     "competitor": "3",
+     "competitor_text": "3 % ALC/VOL",
+     "spread": 0.05094995382240163,
      "low_confidence": false,
-     "reading": "2",
-     "digit_confidence": 0.5211597072683576
+     "reading": "3",
+     "digit_confidence": 0.506030927719916
     }
    },
    {
@@ -825,21 +837,21 @@
        "Y": 135
       }
      },
-     "text": "1L",
+     "text": "1 L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "L",
       "face": "Go Bold"
      },
-     "d1": 729,
+     "d1": 140,
      "d2": -1,
-     "radius": 538,
-     "bits": 3584,
+     "radius": 77,
+     "bits": 512,
      "refined": true,
      "glyphs": 2,
      "penalized": 0,
-     "spread": 0.05108777223140549,
+     "spread": 0.05094995382240163,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.7700372047006538
@@ -1170,7 +1182,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3715599900,
+  "latency": 5540178500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1189,7 +1201,7 @@
    "unexplained": 0,
    "violations": 0.016597510373443983,
    "recovered": 0,
-   "spread": 0.025003810983163666,
+   "spread": 0.02500381098316366,
    "characters": "),.ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 13.793103448275863,
@@ -1220,14 +1232,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 380,
+     "d1": 19,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 123,
+     "bits": 1024,
      "refined": true,
      "glyphs": 4,
      "penalized": 0,
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false
     }
    },
@@ -1238,27 +1250,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 618,
-       "Y": 504
+       "X": 581,
+       "Y": 615
       },
       "Max": {
-       "X": 718,
-       "Y": 532
+       "X": 653,
+       "Y": 639
       }
      },
      "text": "WHITE WINE",
      "params": {
       "casing": "upper",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "H",
+      "emphasis": "WITEWINE",
+      "face": "FjallaOne Regular"
      },
-     "d1": 2331,
+     "d1": 346,
      "d2": -1,
-     "radius": 1935,
-     "bits": 16128,
+     "radius": 276,
+     "bits": 2304,
      "refined": true,
      "glyphs": 9,
      "penalized": 2,
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false
     }
    },
@@ -1285,14 +1300,14 @@
       "synthesized": "Z",
       "face": "Go Regular"
      },
-     "d1": 2132,
+     "d1": 275,
      "d2": -1,
-     "radius": 3656,
-     "bits": 30464,
+     "radius": 522,
+     "bits": 4352,
      "refined": true,
      "glyphs": 17,
      "penalized": 1,
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false
     }
    },
@@ -1303,12 +1318,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 423,
-       "Y": 504
+       "X": 619,
+       "Y": 615
       },
       "Max": {
-       "X": 620,
-       "Y": 532
+       "X": 754,
+       "Y": 639
       }
      },
      "text": "SAN MARZANO DI S.G. - ITALIA",
@@ -1318,14 +1333,14 @@
       "synthesized": "Z-",
       "face": "Go Regular"
      },
-     "d1": 7137,
+     "d1": 1192,
      "d2": -1,
-     "radius": 4946,
-     "bits": 41216,
+     "radius": 707,
+     "bits": 5888,
      "refined": true,
      "glyphs": 23,
      "penalized": 8,
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false
     }
    },
@@ -1350,92 +1365,59 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 2576,
+     "d1": 250,
      "d2": -1,
-     "radius": 3011,
-     "bits": 25088,
+     "radius": 430,
+     "bits": 3584,
      "refined": true,
      "glyphs": 14,
      "penalized": 2,
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
-    "status": "REVIEW",
+    "status": "NOT_FOUND",
     "expected": "14",
-    "candidates": [
-     "11",
-     "70"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 550,
-       "Y": 742
+       "X": 364,
+       "Y": 738
       },
       "Max": {
-       "X": 680,
+       "X": 531,
        "Y": 779
       }
      },
-     "text": "11 % ALC/VOL",
+     "text": "(70 PROOF)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "11%/",
+      "synthesized": "(70",
       "face": "Go Regular"
      },
-     "d1": 1893,
-     "d2": 2001,
-     "radius": 2688,
-     "bits": 17920,
+     "d1": 758,
+     "d2": 860,
+     "radius": 346,
+     "bits": 2304,
      "refined": true,
-     "glyphs": 10,
-     "penalized": 2,
+     "glyphs": 9,
+     "penalized": 5,
      "competitor": "70",
      "competitor_text": "70 % ALC/VOL",
-     "spread": 0.025003810983163666,
+     "spread": 0.022926908915360002,
      "low_confidence": false,
-     "reading": "11",
-     "digit_confidence": 0.7545918424795266
+     "reading": "70",
+     "digit_confidence": 0.5276460734142504
     }
    },
    {
     "claim": "net",
     "status": "NOT_FOUND",
-    "expected": "750",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 561,
-       "Y": 478
-      },
-      "Max": {
-       "X": 598,
-       "Y": 505
-      }
-     },
-     "text": "1 L",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "1",
-      "face": "Go Regular"
-     },
-     "d1": 541,
-     "d2": -1,
-     "radius": 538,
-     "bits": 3584,
-     "refined": true,
-     "glyphs": 2,
-     "penalized": 0,
-     "spread": 0.025003810983163666,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5557768702391077
-    }
+    "reason": "no_region_fits",
+    "expected": "750"
    }
   ],
   "reference": [
@@ -1615,75 +1597,583 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2828513300,
-  "reason": "no_alphabet",
+  "latency": 8464440000,
   "orientation": "as_is",
+  "reference_casing": "upper",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 300,
-     "Y": 1150
+     "X": 381,
+     "Y": 1338
     },
     "Max": {
-     "X": 827,
-     "Y": 1300
+     "X": 844,
+     "Y": 1477
     }
    },
-   "glyphs": 236,
-   "matched": 95,
+   "glyphs": 234,
+   "matched": 91,
    "unexplained": 1,
-   "violations": 0.24896265560165975,
+   "violations": 0.07883817427385892,
    "recovered": 0,
-   "spread": 0.08633861797924297,
-   "characters": "(,.ACGabcefghimnoprsuvwy",
-   "face": "",
-   "x_height": 12,
-   "cap_height": 14,
-   "letter_gap": 1,
-   "word_gap": 2,
+   "spread": 0.060009420434840595,
+   "characters": "()057BCDEFGHIJKMNOPRSTUVWdeilmnwy",
+   "face": "PTSerif Bold",
+   "x_height": 11.724137931034484,
+   "cap_height": 16,
+   "letter_gap": 2,
+   "word_gap": 4,
    "rows": null,
-   "unlearned": "dt"
+   "learned": "edinwJy750ml",
+   "unlearned": "A"
   },
   "claims": [
    {
     "claim": "brand",
-    "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "STOKELAN"
+    "status": "REVIEW",
+    "reason": "char_unlearned:A",
+    "expected": "STOKELAN",
+    "observed": "STOKELAN",
+    "candidates": [
+     "STOKELAN"
+    ],
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 410,
+       "Y": 933
+      },
+      "Max": {
+       "X": 726,
+       "Y": 980
+      }
+     },
+     "text": "STOKELAN",
+     "params": {
+      "casing": "as_given",
+      "weight": "heavy",
+      "synthesized": "SKL",
+      "emphasis": "TOEAN",
+      "face": "PTSans Regular"
+     },
+     "d1": 127,
+     "d2": -1,
+     "radius": 246,
+     "bits": 2048,
+     "refined": true,
+     "glyphs": 8,
+     "penalized": 1,
+     "spread": 0.11599209996498601,
+     "relearned": true,
+     "low_confidence": false
+    }
    },
    {
     "claim": "class",
-    "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "Dessert Red Wine"
+    "status": "VERIFIED",
+    "expected": "Dessert Red Wine",
+    "observed": "Dessert Red Wine",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 373,
+       "Y": 1202
+      },
+      "Max": {
+       "X": 554,
+       "Y": 1228
+      }
+     },
+     "text": "Dessert Red Wine",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "essertedine",
+      "face": "Go Regular"
+     },
+     "d1": 297,
+     "d2": -1,
+     "radius": 430,
+     "bits": 3584,
+     "refined": true,
+     "glyphs": 14,
+     "penalized": 3,
+     "spread": 0.115992099964986,
+     "low_confidence": false
+    }
    },
    {
     "claim": "producer_1",
     "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055"
+    "expected": "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 281,
+       "Y": 1024
+      },
+      "Max": {
+       "X": 849,
+       "Y": 1053
+      }
+     },
+     "text": "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055",
+     "params": {
+      "casing": "as_given",
+      "weight": "heavy",
+      "synthesized": "BottledbyStokelanstateinery,50ayrestownoad,edford,J,08055",
+      "emphasis": "EWERMN",
+      "face": "PTSans Regular"
+     },
+     "d1": 3960,
+     "d2": -1,
+     "radius": 1935,
+     "bits": 16128,
+     "refined": true,
+     "glyphs": 63,
+     "penalized": 29,
+     "spread": 0.11599209996498601,
+     "relearned": true,
+     "low_confidence": false
+    }
    },
    {
     "claim": "origin",
-    "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "New Jersey"
+    "status": "VERIFIED",
+    "expected": "New Jersey",
+    "observed": "New Jersey",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 377,
+       "Y": 1050
+      },
+      "Max": {
+       "X": 495,
+       "Y": 1078
+      }
+     },
+     "text": "New Jersey",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "ewJersey",
+      "face": "Go Regular"
+     },
+     "d1": 173,
+     "d2": -1,
+     "radius": 276,
+     "bits": 2304,
+     "refined": true,
+     "glyphs": 9,
+     "penalized": 1,
+     "spread": 0.115992099964986,
+     "low_confidence": false
+    }
    },
    {
     "claim": "abv",
-    "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "19"
+    "status": "REVIEW",
+    "reason": "char_unlearned:A",
+    "expected": "19",
+    "observed": "19",
+    "candidates": [
+     "19"
+    ],
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 477,
+       "Y": 1508
+      },
+      "Max": {
+       "X": 617,
+       "Y": 1534
+      }
+     },
+     "text": "Alc. 19% by Vol.",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "c.19%bo.",
+      "emphasis": "A",
+      "face": "PTSerif Bold"
+     },
+     "d1": 365,
+     "d2": -1,
+     "radius": 499,
+     "bits": 3328,
+     "refined": true,
+     "glyphs": 13,
+     "penalized": 3,
+     "spread": 0.11599209996498601,
+     "relearned": true,
+     "low_confidence": false,
+     "reading": "19%",
+     "digit_confidence": 0.9148716634706977
+    }
    },
    {
     "claim": "net",
-    "status": "NOT_FOUND",
-    "reason": "no_alphabet",
-    "expected": "750"
+    "status": "VERIFIED",
+    "expected": "750",
+    "observed": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 410,
+       "Y": 1507
+      },
+      "Max": {
+       "X": 471,
+       "Y": 1534
+      }
+     },
+     "text": "750ml",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "750ml",
+      "face": "Go Regular"
+     },
+     "d1": 44,
+     "d2": -1,
+     "radius": 192,
+     "bits": 1280,
+     "refined": true,
+     "glyphs": 5,
+     "penalized": 0,
+     "spread": 0.115992099964986,
+     "low_confidence": false,
+     "reading": "750",
+     "digit_confidence": 0.9260254464570316
+    }
    }
   ],
-  "reference": null,
-  "emphasis": null
+  "reference": [
+   {
+    "claim": "reference_row_1",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 408,
+       "Y": 1338
+      },
+      "Max": {
+       "X": 805,
+       "Y": 1359
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 26,
+     "mean_distance": 0.01856541895604396
+    }
+   },
+   {
+    "claim": "reference_row_2",
+    "status": "REVIEW",
+    "reason": "anomalies",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 381,
+       "Y": 1361
+      },
+      "Max": {
+       "X": 809,
+       "Y": 1381
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 17,
+     "outliers": 1,
+     "mean_distance": 0.030527836134453784,
+     "anomalies": [
+      {
+       "kind": 4,
+       "glyph": 36,
+       "char": "S",
+       "nearest": "O",
+       "distance": 0.24274553571428573,
+       "strong": false,
+       "box": {
+        "Min": {
+         "X": 381,
+         "Y": 1372
+        },
+        "Max": {
+         "X": 385,
+         "Y": 1381
+        }
+       }
+      }
+     ]
+    }
+   },
+   {
+    "claim": "reference_row_3",
+    "status": "MISMATCH",
+    "reason": "shape_class",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 381,
+       "Y": 1374
+      },
+      "Max": {
+       "X": 844,
+       "Y": 1403
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 8,
+     "unexplained": 1,
+     "outliers": 1,
+     "prior_violations": 6,
+     "mean_distance": 0.051967075892857144,
+     "anomalies": [
+      {
+       "kind": 7,
+       "glyph": 74,
+       "char": "",
+       "distance": 0,
+       "strong": true,
+       "box": {
+        "Min": {
+         "X": 408,
+         "Y": 1384
+        },
+        "Max": {
+         "X": 418,
+         "Y": 1400
+        }
+       }
+      },
+      {
+       "kind": 5,
+       "glyph": 71,
+       "char": "A",
+       "nearest": "S",
+       "distance": 0.26060267857142855,
+       "strong": false,
+       "box": {
+        "Min": {
+         "X": 381,
+         "Y": 1393
+        },
+        "Max": {
+         "X": 396,
+         "Y": 1403
+        }
+       }
+      }
+     ]
+    }
+   },
+   {
+    "claim": "reference_row_4",
+    "status": "MISMATCH",
+    "reason": "shape_class",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 381,
+       "Y": 1404
+      },
+      "Max": {
+       "X": 809,
+       "Y": 1426
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 7,
+     "outliers": 1,
+     "prior_violations": 7,
+     "mean_distance": 0.08203125,
+     "anomalies": [
+      {
+       "kind": 1,
+       "glyph": 144,
+       "char": "N",
+       "nearest": "M",
+       "distance": 0.24107142857142858,
+       "strong": false,
+       "box": {
+        "Min": {
+         "X": 689,
+         "Y": 1406
+        },
+        "Max": {
+         "X": 698,
+         "Y": 1422
+        }
+       }
+      }
+     ]
+    }
+   },
+   {
+    "claim": "reference_row_5",
+    "status": "MISMATCH",
+    "reason": "distance",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 409,
+       "Y": 1428
+      },
+      "Max": {
+       "X": 840,
+       "Y": 1445
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 18,
+     "prior_violations": 1,
+     "mean_distance": 0.08162822420634919
+    }
+   },
+   {
+    "claim": "reference_row_6",
+    "status": "MISMATCH",
+    "reason": "distance",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 381,
+       "Y": 1445
+      },
+      "Max": {
+       "X": 799,
+       "Y": 1470
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 15,
+     "mean_distance": 0.10089285714285713
+    }
+   },
+   {
+    "claim": "reference_row_7",
+    "status": "NOT_FOUND",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 381,
+       "Y": 1467
+      },
+      "Max": {
+       "X": 396,
+       "Y": 1477
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "prior_violations": 5
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "emphasis_1",
+    "status": "VERIFIED",
+    "expected": "GOVERNMENT WARNING:",
+    "observed": "heavy",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 408,
+       "Y": 1339
+      },
+      "Max": {
+       "X": 616,
+       "Y": 1356
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 439,
+     "radius": 614,
+     "bits": 4096,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "stroke_ratio": 1.2906523821707514
+    }
+   }
+  ]
  },
  {
   "label": "0007",
@@ -1711,7 +2201,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3198253400,
+  "latency": 3196767200,
   "orientation": "inverted",
   "reference_casing": "upper",
   "alphabet": {
@@ -1731,14 +2221,14 @@
    "violations": 0.03734439834024896,
    "recovered": 0,
    "spread": 0.05499214694101325,
-   "characters": "(),7ABCDEGHIKLMOPRTUVWY",
-   "face": "Go Regular",
+   "characters": "%(),2357ABCDEGHIKLMOPRTUVWYbcly",
+   "face": "Lato Bold",
    "x_height": 8.275862068965518,
    "cap_height": 12,
    "letter_gap": 1,
    "word_gap": 5,
    "rows": null,
-   "learned": "7",
+   "learned": "2%lcby375",
    "unlearned": "NS"
   },
   "claims": [
@@ -1768,16 +2258,16 @@
       "weight": "regular",
       "synthesized": "S",
       "emphasis": "NN",
-      "face": "Go Regular"
+      "face": "Lato Bold"
      },
-     "d1": 2543,
+     "d1": 406,
      "d2": -1,
-     "radius": 3226,
-     "bits": 26880,
+     "radius": 461,
+     "bits": 3840,
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.05499214694101325,
+     "spread": 0.07502398574561404,
      "relearned": true,
      "low_confidence": false
     }
@@ -1803,16 +2293,16 @@
       "weight": "regular",
       "synthesized": "SS",
       "emphasis": "N",
-      "face": "Go Regular"
+      "face": "Lato Bold"
      },
-     "d1": 2428,
+     "d1": 395,
      "d2": -1,
-     "radius": 2365,
-     "bits": 19712,
+     "radius": 338,
+     "bits": 2816,
      "refined": true,
      "glyphs": 11,
-     "penalized": 1,
-     "spread": 0.05499214694101325,
+     "penalized": 2,
+     "spread": 0.07502398574561404,
      "relearned": true,
      "low_confidence": false
     }
@@ -1843,16 +2333,16 @@
       "weight": "regular",
       "synthesized": "S",
       "emphasis": "NN",
-      "face": "Go Regular"
+      "face": "Lato Bold"
      },
-     "d1": 2543,
+     "d1": 406,
      "d2": -1,
-     "radius": 3226,
-     "bits": 26880,
+     "radius": 461,
+     "bits": 3840,
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.05499214694101325,
+     "spread": 0.07502398574561404,
      "relearned": true,
      "low_confidence": false
     }
@@ -1883,28 +2373,25 @@
       "weight": "regular",
       "synthesized": "SXS",
       "emphasis": "N",
-      "face": "Go Regular"
+      "face": "Lato Bold"
      },
-     "d1": 1715,
+     "d1": 191,
      "d2": -1,
-     "radius": 2580,
-     "bits": 21504,
+     "radius": 369,
+     "bits": 3072,
      "refined": true,
      "glyphs": 12,
-     "penalized": 1,
-     "spread": 0.05499214694101325,
+     "penalized": 0,
+     "spread": 0.07502398574561404,
      "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
-    "status": "REVIEW",
+    "status": "VERIFIED",
     "expected": "20",
-    "candidates": [
-     "20",
-     "8"
-    ],
+    "observed": "20",
     "evidence": {
      "region": {
       "Min": {
@@ -1923,17 +2410,14 @@
       "synthesized": "20%lcbyol",
       "face": "Go Regular"
      },
-     "d1": 2138,
-     "d2": 2559,
-     "radius": 2957,
-     "bits": 19712,
+     "d1": 276,
+     "d2": -1,
+     "radius": 422,
+     "bits": 2816,
      "refined": true,
      "glyphs": 11,
      "penalized": 1,
-     "competitor": "8",
-     "competitor_text": "8% Alc by Vol",
-     "spread": 0.05499214694101325,
-     "relearned": true,
+     "spread": 0.07502398574561403,
      "low_confidence": false,
      "reading": "20%",
      "digit_confidence": 0.9696635162252861
@@ -1955,23 +2439,21 @@
        "Y": 178
       }
      },
-     "text": "375ML",
+     "text": "375 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "375",
       "face": "Go Regular"
      },
-     "d1": 795,
-     "d2": 3824,
-     "radius": 1344,
-     "bits": 8960,
+     "d1": 42,
+     "d2": -1,
+     "radius": 192,
+     "bits": 1280,
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "competitor": "1000",
-     "competitor_text": "1 Liter",
-     "spread": 0.05499214694101325,
+     "spread": 0.07502398574561403,
      "low_confidence": false,
      "reading": "375",
      "digit_confidence": 0.9268858659364061
@@ -2252,7 +2734,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1611228700,
+  "latency": 1551349200,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -2271,7 +2753,7 @@
    "unexplained": 1,
    "violations": 0.5166666666666667,
    "recovered": 0,
-   "spread": 0.08973461036200192,
+   "spread": 0.08973461036200195,
    "characters": ".CGabcdeghkmnoprstuvwy",
    "face": "",
    "x_height": 14,
@@ -2347,7 +2829,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2608871700,
+  "latency": 4552588400,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2384,28 +2866,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 698,
+       "X": 724,
        "Y": 116
       },
       "Max": {
-       "X": 728,
+       "X": 765,
        "Y": 134
       }
      },
-     "text": "GAUL",
+     "text": "Gaul",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "emphasis": "A"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "aul",
+      "emphasis": "G",
+      "face": "PTSans Bold"
      },
-     "d1": 1257,
+     "d1": 170,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 123,
+     "bits": 1024,
      "refined": true,
      "glyphs": 4,
-     "penalized": 1,
-     "spread": 0.0937220982142857,
+     "penalized": 2,
+     "spread": 0.16181640625000002,
      "low_confidence": false
     }
    },
@@ -2416,30 +2900,28 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 540,
-       "Y": 152
+       "X": 724,
+       "Y": 116
       },
       "Max": {
-       "X": 588,
-       "Y": 170
+       "X": 765,
+       "Y": 134
       }
      },
      "text": "LAGER",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "L",
-      "emphasis": "AGER",
-      "face": "PTSans Bold"
+      "weight": "regular",
+      "emphasis": "AE"
      },
-     "d1": 1656,
+     "d1": 223,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 154,
+     "bits": 1280,
      "refined": true,
      "glyphs": 5,
-     "penalized": 1,
-     "spread": 0.0937220982142857,
+     "penalized": 3,
+     "spread": 0.16181640625000002,
      "low_confidence": false
     }
    },
@@ -2466,14 +2948,14 @@
       "emphasis": "REEANANNEINIAEIAAERRAEVERAGEOMAN",
       "face": "PTSans Bold"
      },
-     "d1": 20107,
+     "d1": 3116,
      "d2": -1,
-     "radius": 11612,
-     "bits": 96768,
+     "radius": 1659,
+     "bits": 13824,
      "refined": true,
      "glyphs": 54,
-     "penalized": 20,
-     "spread": 0.0937220982142857,
+     "penalized": 25,
+     "spread": 0.16181640625000002,
      "low_confidence": false
     }
    },
@@ -2484,35 +2966,35 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 226,
-       "Y": 193
+       "X": 512,
+       "Y": 1445
       },
       "Max": {
-       "X": 278,
-       "Y": 210
+       "X": 569,
+       "Y": 1463
       }
      },
-     "text": "6 PROOF",
+     "text": "12 PROOF",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "6",
+      "synthesized": "12",
       "emphasis": "OO",
       "face": "Go Regular"
      },
-     "d1": 1821,
-     "d2": 1873,
-     "radius": 1613,
-     "bits": 10752,
+     "d1": 334,
+     "d2": 987,
+     "radius": 269,
+     "bits": 1792,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 1,
-     "competitor": "2.5",
-     "competitor_text": "5 PROOF",
-     "spread": 0.0937220982142857,
+     "glyphs": 7,
+     "penalized": 4,
+     "competitor": "12",
+     "competitor_text": "12 % ALC/VOL",
+     "spread": 0.16181640625000002,
      "low_confidence": false,
-     "reading": "2",
-     "digit_confidence": 0.6192926071203951
+     "reading": "12",
+     "digit_confidence": 0.8852376089252915
     }
    },
    {
@@ -2522,34 +3004,33 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 332,
-       "Y": 796
+       "X": 512,
+       "Y": 1445
       },
       "Max": {
-       "X": 382,
-       "Y": 844
+       "X": 569,
+       "Y": 1463
       }
      },
-     "text": "1 L",
+     "text": "12 FL. OZ.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1",
+      "synthesized": "12.Z.",
+      "emphasis": "O",
       "face": "Go Regular"
      },
-     "d1": 617,
-     "d2": 879,
-     "radius": 538,
-     "bits": 3584,
+     "d1": 447,
+     "d2": -1,
+     "radius": 307,
+     "bits": 2048,
      "refined": true,
-     "glyphs": 2,
-     "penalized": 0,
-     "competitor": "650",
-     "competitor_text": "22 FL. OZ.",
-     "spread": 0.0937220982142857,
+     "glyphs": 8,
+     "penalized": 4,
+     "spread": 0.16181640625000002,
      "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5640836022813631
+     "reading": "12",
+     "digit_confidence": 0.8852376089252915
     }
    }
   ],
@@ -2765,7 +3246,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4513919900,
+  "latency": 6034858100,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -2785,13 +3266,14 @@
    "violations": 0.04564315352697095,
    "recovered": 12,
    "spread": 0.03912316980275312,
-   "characters": "(),.1ACGSabcdefghiklmnoprstuvwy",
+   "characters": "(),.1235789ACFGLSabcdefghiklmnoprstuvwy",
    "face": "Go Bold",
    "x_height": 9,
    "cap_height": 11,
    "letter_gap": 1,
    "word_gap": 5,
-   "rows": null
+   "rows": null,
+   "learned": "8592FL37"
   },
   "claims": [
    {
@@ -2801,27 +3283,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 415,
-       "Y": 1108
+       "X": 277,
+       "Y": 1217
       },
       "Max": {
-       "X": 462,
-       "Y": 1127
+       "X": 306,
+       "Y": 1233
       }
      },
      "text": "Gallo",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "allo",
+      "emphasis": "G",
+      "face": "PTSans Bold"
      },
-     "d1": 1488,
+     "d1": 205,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 154,
+     "bits": 1280,
      "refined": true,
      "glyphs": 5,
-     "penalized": 1,
-     "spread": 0.03912316980275312,
+     "penalized": 2,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -2832,29 +3318,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 265,
-       "Y": 1217
+       "X": 304,
+       "Y": 1046
       },
       "Max": {
-       "X": 306,
-       "Y": 1233
+       "X": 335,
+       "Y": 1065
       }
      },
-     "text": "Beer",
+     "text": "BEER",
      "params": {
-      "casing": "as_given",
+      "casing": "upper",
       "weight": "regular",
       "synthesized": "B",
+      "emphasis": "EER",
       "face": "Go Bold"
      },
-     "d1": 946,
+     "d1": 131,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 123,
+     "bits": 1024,
      "refined": true,
      "glyphs": 4,
-     "penalized": 0,
-     "spread": 0.03912316980275312,
+     "penalized": 2,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -2865,36 +3353,39 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 218,
-       "Y": 1183
+       "X": 296,
+       "Y": 1152
       },
       "Max": {
-       "X": 467,
-       "Y": 1202
+       "X": 527,
+       "Y": 1173
       }
      },
-     "text": "Imported By Latin American Traders Llc",
+     "text": "Imported by Latin American Traders LLC",
      "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "IBLTL",
-      "face": "Go Bold"
+      "casing": "as_given",
+      "weight": "heavy",
+      "synthesized": "ImportedbyLatinmericanTradersLLC",
+      "emphasis": "A",
+      "face": "PTSans Bold"
      },
-     "d1": 11233,
+     "d1": 2025,
      "d2": -1,
-     "radius": 7096,
-     "bits": 59136,
+     "radius": 1014,
+     "bits": 8448,
      "refined": true,
      "glyphs": 33,
-     "penalized": 11,
-     "spread": 0.03912316980275312,
+     "penalized": 17,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_2",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "8859 NW 102nd Ct, Doral, FL 33178",
+    "observed": "8859 NW 102nd Ct, Doral, FL 33178",
     "evidence": {
      "region": {
       "Min": {
@@ -2906,22 +3397,22 @@
        "Y": 1129
       }
      },
-     "text": "8859 Nw 102nd Ct, Doral, Fl 33178",
+     "text": "8859 NW 102nd Ct, Doral, FL 33178",
      "params": {
-      "casing": "title",
-      "weight": "heavy",
-      "synthesized": "8859w102ndCt,Doral,Fl33178",
-      "emphasis": "N",
-      "face": "PTSans Bold"
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "885902DFL3378",
+      "emphasis": "NW",
+      "face": "Go Bold"
      },
-     "d1": 8122,
+     "d1": 773,
      "d2": -1,
-     "radius": 5806,
-     "bits": 48384,
+     "radius": 829,
+     "bits": 6912,
      "refined": true,
      "glyphs": 27,
-     "penalized": 9,
-     "spread": 0.03912316980275312,
+     "penalized": 5,
+     "spread": 0.03679030920304298,
      "low_confidence": false
     }
    },
@@ -2932,29 +3423,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 205,
-       "Y": 983
+       "X": 223,
+       "Y": 1030
       },
       "Max": {
-       "X": 359,
-       "Y": 1003
+       "X": 367,
+       "Y": 1049
       }
      },
-     "text": "Product of Guatemala",
+     "text": "Product Of Guatemala",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
       "synthesized": "P",
+      "emphasis": "O",
       "face": "Go Bold"
      },
-     "d1": 6355,
+     "d1": 993,
      "d2": -1,
-     "radius": 3871,
-     "bits": 32256,
+     "radius": 553,
+     "bits": 4608,
      "refined": true,
      "glyphs": 18,
-     "penalized": 6,
-     "spread": 0.03912316980275312,
+     "penalized": 8,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -2965,72 +3458,69 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 296,
-       "Y": 1183
+       "X": 311,
+       "Y": 983
       },
       "Max": {
-       "X": 373,
-       "Y": 1202
+       "X": 359,
+       "Y": 1003
       }
      },
-     "text": "1.0 Proof",
+     "text": "51% abv",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "0P",
+      "synthesized": "%",
       "face": "Go Bold"
      },
-     "d1": 2408,
-     "d2": 2535,
-     "radius": 2150,
-     "bits": 14336,
+     "d1": 288,
+     "d2": -1,
+     "radius": 230,
+     "bits": 1536,
      "refined": true,
-     "glyphs": 8,
-     "penalized": 2,
-     "competitor": "0.6",
-     "competitor_text": "1.1 Proof",
-     "spread": 0.03912316980275312,
+     "glyphs": 6,
+     "penalized": 3,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "1.1",
-     "digit_confidence": 0.6209654967556216
+     "reading": "51",
+     "digit_confidence": 0.5103582301045146
     }
    },
    {
     "claim": "net",
-    "status": "MISMATCH",
+    "status": "NOT_FOUND",
     "expected": "350",
-    "observed": "1000",
     "evidence": {
      "region": {
       "Min": {
-       "X": 201,
-       "Y": 1168
+       "X": 415,
+       "Y": 1108
       },
       "Max": {
-       "X": 243,
-       "Y": 1187
+       "X": 462,
+       "Y": 1127
       }
      },
-     "text": "1 Litre",
+     "text": "331 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "L",
+      "synthesized": "M",
       "face": "Go Bold"
      },
-     "d1": 1579,
-     "d2": 1727,
-     "radius": 1613,
-     "bits": 10752,
+     "d1": 198,
+     "d2": -1,
+     "radius": 192,
+     "bits": 1280,
      "refined": true,
-     "glyphs": 6,
+     "glyphs": 5,
      "penalized": 1,
-     "competitor": "237",
-     "competitor_text": "8 FL OZ",
-     "spread": 0.03912316980275312,
+     "spread": 0.03679030920304298,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.9690651289814317
+     "reading": "331",
+     "digit_confidence": 0.9648026839603859
     }
    }
   ],

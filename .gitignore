@@ -5,3 +5,7 @@ python/digits/data/
 python/digits/model.pt
 python/digits/.venv/
 *.exe
+python/encoder/data/
+python/encoder/model*.pt
+python/encoder/.venv/
+__pycache__/

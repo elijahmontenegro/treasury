@@ -273,6 +273,100 @@ What the two tables say. The cross-face gap on synthetic labels is about a tenth
 
 Step 5b therefore has two parts to measure against these numbers: claims searched in the image's original orientation when the alphabet was learned in a rotated one, and the contrastive encoder for the cross-face distance.
 
+### Step 5b: the contrastive encoder on cross-face pairs (2026-09-04)
+
+Gate, stated before the run: on the new half B and the ten real labels, single-threaded, cross-face recall against 5a's, precision held at 1.00 on every claim, median under 5.0 s and p95 under 7.0 s, radii re-tuned on half A for the learned code first.
+
+The encoder. `cmd/glyphs gen` renders every claim character (73 classes: letters, digits, and the punctuation claims use) in every installed and bundled face at three x-heights, through the label augmentation and the engine's preprocessing, and cuts binary frames at the alphabet's own geometry with the engine's framing jitter; 146,088 training frames from 169 families, 54,677 held-out frames from 57. A four-block network (12, 24, 40, 64 channels, one convolution in the first block and two in the others, 108,004 parameters) ends in a linear layer to 256 and tanh; the loss is supervised contrastive over the batch, with the same character in any face as a positive, plus a quantization term; the code is the sign bits. On held-out families the nearest character by Hamming distance to training prototypes is right 85 percent of the time in Python and 82 in Go, where the frames go through the engine's binary path; the dual hash scores 44 percent on the same frames. Same-character distances sit at a median of 0.04 and the nearest other character at 0.22. The first version, twice the cost, scored 86 and 83 and ran a label in 15 s.
+
+How it is used. The alphabet is still learned with the hash, whose gates were measured with it; claims are decoded in the learned code, both the observed frames and the target codes, with the alphabet's samples recoded from their crops and synthesized glyphs encoded in it. A face-invariant code cannot rank faces, so the nearest face is still chosen in the hash. Since the encoder was trained under the engine's framing jitter, each component and each union box is encoded once and the code memoized, where the hash is recomputed at every scale and baseline the decoder tries; recoded samples and synthesized codes are cached across the two passes, composed runs across candidates, unions are only formed for gaps under 0.15 x-heights, and no three-way composed codes are made. The tuner on half A keeps the radii at 0.12 and 0.15 and moves the tie margin from 0.010 to 0.020.
+
+Two engine changes measured by the same gate. Claims are now searched in the image's original orientation as well when the alphabet was learned in a rotated one (5a's vertical-warning labels verified nothing for this reason), and a numeric claim is decided per reading, on the regions overlapping that reading's region: with a face-tolerant code, "6% alc/vol" from an age line had matched a "41% alc/vol" line within the radius. Thin components many times wider than tall are dropped as rules: a boxed warning's edges had bridged a two-column label's rows into single lines. The inversion attempts moved to the end of the orientation ladder, so only a label that fails upright and rotated pays for them.
+
+Half B, single-threaded, claims decoded with the learned encoder:
+
+250 labels, 15 without an alphabet, latency median 3.6s p95 5.2s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 142 | 0.98 | 0.82 | 0.05 | 0/4 | 0 |
+| class | 250 | 1.00 | 0.77 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.70 | 0.03 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.71 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.65 | 0.02 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.55 | 0.08 | 2/5 | 7 |
+| net | 250 | 1.00 | 0.56 | 0.20 | 2/2 | 1 |
+| brand (display face) | 108 | 0.96 | 0.85 | 0.01 | | |
+
+Reference rows: compliant labels with every row verified 71/201 (67 reviewed, 63 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/194 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.79 | 177 | 0.77 |
+| producer_1 | 56 | 0.64 | 194 | 0.71 |
+| producer_2 | 56 | 0.68 | 194 | 0.72 |
+| origin | 68 | 0.69 | 182 | 0.63 |
+| abv | 49 | 0.57 | 189 | 0.55 |
+| net | 58 | 0.50 | 187 | 0.58 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 7 | 0.77 |
+| light on dark | 40 | 1 | 0.59 |
+| vertical warning | 52 | 1 | 0.63 |
+| crowded warning | 56 | 6 | 0.67 |
+| none of these | 68 | 4 | 0.76 |
+
+The cross-face gap is closed: class 0.79 same-face against 0.77 cross-face (5a: 0.51 against 0.36), producer 0.64/0.68 against 0.71/0.72 (0.48/0.50 against 0.37/0.42), origin 0.69 against 0.63 (0.53 against 0.37), alcohol 0.57 against 0.55 (0.45 against 0.40), net 0.50 against 0.58 (0.43 against 0.36). Same-face recall rose with it, since the learned code also tolerates the channel better than the hash. Precision is 1.00 on every claim but brand, at 0.98 as in 5a, the same labels whose producer line names the brand. Latency: median 3.6 s, p95 5.2 s against 5.0 and 7.0; 15 of 250 without an alphabet. By convention: capitals 0.77 (5a: 0.48), light on dark 0.59 (0.41), vertical 0.63 (0.00, the upright search), crowded 0.67 (0.43), none 0.76 (0.53).
+
+The ten real labels, same engine:
+
+10 labels, 3 without an alphabet, latency median 5.5s p95 14.3s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 10 | 1.00 | 0.20 | 0.20 | 0/0 | 0 |
+| class | 10 | 1.00 | 0.10 | 0.00 | 0/0 | 0 |
+| producer_1 | 10 | 1.00 | 0.20 | 0.10 | 0/0 | 0 |
+| producer_2 | 6 | 1.00 | 0.33 | 0.17 | 0/0 | 0 |
+| origin | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
+| abv | 10 | 1.00 | 0.10 | 0.10 | 0/0 | 0 |
+| net | 10 | 1.00 | 0.20 | 0.00 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 1/10 (3 reviewed, 6 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 6/7 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 10 | 3 | 0.23 |
+
+| label | TTB ID | taken, casing | brand class producer_1 producer_2 origin abv net | what the label is like |
+|---|---|---|---|---|
+| 0001 | 26027001000487 | as_is, — | no alphabet | light type on black; warning in condensed caps |
+| 0002 | 26044001000617 | rot90, upper | brand V class — produ V produ V abv — net — | warning vertical; brand in script; class in display face |
+| 0003 | 26051001000586 | as_is, — | no alphabet | clean; class and warning large |
+| 0004 | 26166001000601 | as_is, as_given | brand — class — produ — abv — net — | warning letterspaced with items on separate lines; producer magenta on dark band |
+| 0005 | 26054001000022 | as_is, upper | brand V class — produ V produ — origi V abv — net — | warning condensed caps; label prints "WITHE WINE" |
+| 0006 | 26146001000213 | as_is, upper | brand R class V produ — origi V abv R net V | warning condensed caps on back; "ALC 19% by Vol." |
+| 0007 | 26188001000248 | inverted, upper | brand R class — produ R produ R abv V net V | single strip label, warning boxed |
+| 0008 | 26033001000372 | as_is, — | no alphabet | can wrap; warning condensed caps in a column; beer fill 355 mL |
+| 0009 | 26202001000918 | inverted_rot90, upper | brand — class — produ — abv s net — | light type on dark blue; warning vertical and tiny |
+| 0010 | 25132001000733 | as_is, as_given | brand — class — produ — produ V origi s abv s net — | gold gradient; warning centered with items on their own lines; "ALC. BY VOL. 5%" |
+
+7 of ten learn an alphabet (5a: six; the rule filter recovers Stokelan and the inversion attempt THE AUSTIN WINERY) and 12 claims verify where 5a verified four: Breckenridge's brand and both producer lines, found in the upright image after its vertical warning was aligned rotated; EDDA's brand, producer, and origin; Stokelan's class, origin, and net; THE AUSTIN WINERY's alcohol content, the first on a real label, and its net; Gallo's importer address. Precision is 1.00 and there is no false mismatch; in one intermediate run "331" cut from a zip code had read as a fill of 331 mL on Gallo at exactly the radius, and a check that every letter of a unit matches within 0.45 of the code now stands, though the fragment was excluded in the final run by the per-reading decision rather than by that check. What still fails on real labels: claims set in bold, condensed, and display faces still align at 0.14 to 0.24 (Seelbach's, Gaul, Gallo's brand and class), which the encoder's training set, regular faces of installed families, does not cover; the latency of a label whose warning is vertical (Breckenridge, 14 s) because two orientations fail before the third, and every region of two images is then searched; and three labels that learn nothing (reversed condensed capitals on black, a distressed face, condensed capitals in a narrow column).
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
