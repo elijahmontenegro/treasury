@@ -475,6 +475,152 @@ The tail the step was aimed at, the free-text claims on real labels that did not
 | 0010 | class | 0.128 | 0.131 | NOT_FOUND |
 | 0010 | producer_1 | 0.240 | 0.230 | NOT_FOUND |
 
+### Step 7a: numeric reads complete or undecided (2026-09-04)
+
+Gate, stated before the run: precision 1.00 on alcohol content and net contents on half B and the ten real labels under the corrected metric, recall wherever it lands, latency held (median under 5.0 s, p95 under 7.0 s on half B).
+
+The diagnosis to test was a leading digit clipped by the region's padding or fused with the symbol before it. Tracing the thirteen false numeric verdicts of 6b's half B: the leading digit is classified as a digit, confidently, on every one of them. The causes are elsewhere, and all but one are extraction.
+
+**Tabular figures.** Five labels (0051, 0167, 0227, 0335, 0433) are set in Malgun Gothic, NanumSquare, or NanumBarunGothic, whose figures share one advance width, so a narrow 1 is followed by a gap of 8 to 10 px on lines whose word spaces are 7 to 15. The region proposer split "1 | 2.5%" into words at that gap, the run rule took the 1 for a word of its own, and the word run beginning at the 2 read "2.5%", a number complete by construction. Nothing in the geometry separates that gap from a space on the same line: on 0167 the space between BY and VOL. is 7 px and the gap after the 1 is 8.
+
+**A reading decided somewhere else.** On 0225 (Segoe Print) the B of "BY VOL." read as a 3, and "ALC. 3% BY VOL." aligned to the 49% line within the radius with one digit unexplained, an unexplained glyph being a thirteenth of that line. On 0313 and 0407 a "12" read from "Batch No. 12 - Est. 1887" matched "PROOF 12" on two perfect digits and the five letters of PROOF consumed by a three-way merge and a rejoin, structural steps that under the learned code compare no code at all, composed triples not being made for it. The four net cases (0111, 0269, 0413, 0437) are zip-code fragments, "201" of 11201 and "701" of 78701, cut at the same tabular gaps and matched as "201ml" with the unit deleted or merged into the last digit.
+
+**One is the generator's.** On 0013 the image prints "5% alc/vol" where the truth says 4.5: the two-column alcohol-and-net row starts a tenth of the way across the label, under the vertical warning, whose canvas covers the "4.". The engine's mismatch is right about the image. Regenerating the set with the same seed and that row moved changes exactly 50 of the 500 images (24 in half B) and nothing else; on those labels the alcohol content was mostly NOT_FOUND through 5a, 5b, 6a, and 6b, which was the truth's fault and is in those tables.
+
+**What changed.** A number is read from a whole line, every digit run of the line that stands as a word, never from a word run, so a reading cannot begin inside a number the line shows whole. Two confident digits across a gap no wider than the wider of them are one number, as are two digits across a point. The small glyphs about a percent slash are its circles whatever the classifier called them, one read as a 9 at 0.50 having made 13% into 39%. And a numeric verdict is decided only when it is a decision about the reading: the winning alignment must put each character of the number on one glyph of the run and every glyph of the run under the number, and each letter of the unit must be measured against a glyph, through its own code, a merged pair's composed code, or a split's union code, and match it within 0.45; a letter with no glyph, or one consumed by a step that compared nothing, leaves the outcome undecided (NOT_FOUND with the reason). A tie between values the field cannot take, a zip code fitted as "94558 mL" against "94558 L" on a label whose fill was never read, is nothing rather than a review; a tie between values it can take stays a review. The tuner on half A kept both radii and moved the tie margin from 0.050 to 0.010.
+
+One rule was written and then dropped, and both numbers are here: the unit's letters were also required to average within the claim's radius. It caught none of the thirteen, and on the real beer label it refused a correct "12 fl oz" whose whole candidate sat at 0.142 inside a radius of 0.15, letters in another face aligning farther than digits the classifier read. With it: half B alcohol 0.66, net 0.57, both at precision 1.00, and 12 claims verified on the real ten. Without it, as reported below.
+
+The thirteen, on the same images 6b measured:
+
+| label | claim | printed | 6b | 7a |
+|---|---|---|---|---|
+| 0013 | abv | 4.5% alc/vol | MISMATCH 5 | MISMATCH 5 |
+| 0051 | abv | 12% ABV | MISMATCH 2 | VERIFIED 12 |
+| 0111 | net | 1 L | MISMATCH 200 | NOT_FOUND |
+| 0167 | abv | ALC. 13% BY VOL. | MISMATCH 3 | VERIFIED 13 |
+| 0225 | abv | ALC. 49% BY VOL. | MISMATCH 3 | VERIFIED 49 |
+| 0227 | abv | 13% Alc./Vol. | MISMATCH 39 | VERIFIED 13 |
+| 0269 | net | 750 mL | MISMATCH 700 | VERIFIED 750 |
+| 0313 | abv | ALC. 7% BY VOL. | MISMATCH 6 | NOT_FOUND (unit_letter_unverified:P) |
+| 0335 | abv | ALC. 12.5% BY VOL. | MISMATCH 2.5 | VERIFIED 12.5 |
+| 0407 | abv | 5.5% alc/vol | MISMATCH 6 | NOT_FOUND (unit_letter_unverified:P) |
+| 0413 | net | 375mL | MISMATCH 700 | NOT_FOUND (number_not_on_reading) |
+| 0433 | abv | 12.5% Alc./Vol. | MISMATCH 2.5 | VERIFIED 12.5 |
+| 0437 | net | 1L | MISMATCH 200 | NOT_FOUND (number_not_on_reading) |
+
+(The labels 0013, 0313, 0407 are among the 24 the corrected images re-lay; the table above is the images 6b measured, so the comparison is like for like.)
+
+Half B on those images, single-threaded, claims decoded with the learned encoder:
+
+250 labels, 13 without an alphabet, latency median 3.6s p95 5.0s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 142 | 0.98 | 0.86 | 0.06 | 0/4 | 0 |
+| class | 250 | 1.00 | 0.82 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.73 | 0.03 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.04 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.69 | 0.01 | 0/0 | 0 |
+| abv | 250 | 0.99 | 0.62 | 0.02 | 1/5 | 7 |
+| net | 250 | 1.00 | 0.56 | 0.04 | 2/2 | 3 |
+| brand (display face) | 108 | 0.96 | 0.88 | 0.02 | | |
+
+Reference rows: compliant labels with every row verified 71/201 (65 reviewed, 65 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.81 | 177 | 0.82 |
+| producer_1 | 56 | 0.66 | 194 | 0.75 |
+| producer_2 | 56 | 0.71 | 194 | 0.75 |
+| origin | 68 | 0.75 | 182 | 0.67 |
+| abv | 49 | 0.60 | 189 | 0.62 |
+| net | 58 | 0.52 | 187 | 0.58 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 5 | 0.80 |
+| light on dark | 40 | 1 | 0.77 |
+| vertical warning | 52 | 1 | 0.76 |
+| crowded warning | 56 | 5 | 0.71 |
+| none of these | 68 | 4 | 0.77 |
+
+brand 0.86, class 0.82, producer 0.73/0.74, origin 0.69, alcohol 0.62 at precision 0.99, net 0.56 at precision 1.00; cross-face class 0.82, producer 0.75/0.75, origin 0.67, alcohol 0.62, net 0.58; median 3.6 s, p95 5.0 s; 13 of 250 without an alphabet. Against 6b: alcohol 0.58 at precision 0.94, net 0.61 at 0.97, median 3.7 s, p95 4.9 s. The one remaining alcohol false positive is 0013, whose image the engine reads correctly and whose truth is wrong.
+
+Half B on the corrected images, the reference set from here:
+
+250 labels, 13 without an alphabet, latency median 3.7s p95 5.0s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 142 | 0.98 | 0.86 | 0.06 | 0/4 | 0 |
+| class | 250 | 1.00 | 0.82 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.73 | 0.03 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.04 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.69 | 0.01 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.68 | 0.02 | 2/5 | 7 |
+| net | 250 | 1.00 | 0.56 | 0.04 | 2/2 | 3 |
+| brand (display face) | 108 | 0.96 | 0.88 | 0.02 | | |
+
+Reference rows: compliant labels with every row verified 71/201 (65 reviewed, 65 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.81 | 177 | 0.82 |
+| producer_1 | 56 | 0.66 | 194 | 0.75 |
+| producer_2 | 56 | 0.71 | 194 | 0.75 |
+| origin | 68 | 0.75 | 182 | 0.67 |
+| abv | 49 | 0.67 | 189 | 0.68 |
+| net | 58 | 0.52 | 187 | 0.58 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 5 | 0.80 |
+| light on dark | 40 | 1 | 0.77 |
+| vertical warning | 52 | 1 | 0.76 |
+| crowded warning | 56 | 5 | 0.71 |
+| none of these | 68 | 4 | 0.77 |
+
+brand 0.86, class 0.82, producer 0.73/0.74, origin 0.69, alcohol 0.68 at precision 1.00, net 0.56 at precision 1.00; cross-face class 0.82, producer 0.75/0.75, origin 0.67, alcohol 0.68, net 0.58; median 3.7 s, p95 5.0 s; 13 of 250 without an alphabet. The alcohol difference between the two runs is the truth's correction on those 24 labels, not an engine change.
+
+The ten real labels: 7 of ten with an alphabet, 13 claims verified, 0 mismatches, median 5.1 s, p95 7.9 s. 6b's one false mismatch, Gallo's net read from a zip code as 331 mL, is now undecided.
+
+10 labels, 3 without an alphabet, latency median 5.1s p95 8.0s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 10 | 1.00 | 0.30 | 0.10 | 0/0 | 0 |
+| class | 10 | 1.00 | 0.10 | 0.00 | 0/0 | 0 |
+| producer_1 | 10 | 1.00 | 0.20 | 0.10 | 0/0 | 0 |
+| producer_2 | 6 | 1.00 | 0.17 | 0.17 | 0/0 | 0 |
+| origin | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
+| abv | 10 | 1.00 | 0.10 | 0.10 | 0/0 | 0 |
+| net | 10 | 1.00 | 0.30 | 0.00 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 1/10 (3 reviewed, 6 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 6/7 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 10 | 3 | 0.23 |
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

@@ -196,7 +196,7 @@ func (o Options) withDefaults() Options {
 		o.LineTieMargin = 0.04
 	}
 	if o.LearnedTie == 0 {
-		o.LearnedTie = 0.05 // tuned on half A with false mismatches counted as false positives (6b)
+		o.LearnedTie = 0.01 // tuned on half A (7a): with partial reads undecided at the source, the tuner no longer trades decisions for reviews
 	}
 	if o.LearnedNumericRadius == 0 {
 		o.LearnedNumericRadius = 0.15 // the tuner with false mismatches counted as false positives keeps 0.15

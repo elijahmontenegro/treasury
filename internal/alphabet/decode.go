@@ -47,6 +47,10 @@ func (o Observed) unionBox(g, k int) image.Rectangle {
 
 // unionCode is the frame code of glyphs g through g+k-1 taken as one, or
 // false when they are not close enough to be one broken character.
+// UnionCode is the code of glyphs g..g+k-1 framed as one, when they are
+// close enough to be pieces of one glyph.
+func (o Observed) UnionCode(g, k int) (bitcode.Code, bool) { return o.unionCode(g, k) }
+
 func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
 	// Pieces of one broken glyph touch or nearly touch; letters set
 	// apart by their normal spacing, a tenth of an x-height and more, are

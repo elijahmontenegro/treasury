@@ -273,13 +273,18 @@ func writeDebug(debug string, pre *preprocess.Result, regions []region.Region) e
 		}
 	}
 	type box struct {
-		Kind string          `json:"kind"`
-		Line int             `json:"line"`
-		Box  image.Rectangle `json:"box"`
+		Kind  string            `json:"kind"`
+		Line  int               `json:"line"`
+		Box   image.Rectangle   `json:"box"`
+		Comps []image.Rectangle `json:"comps,omitempty"`
 	}
 	boxes := make([]box, 0, len(regions))
 	for _, r := range regions {
-		boxes = append(boxes, box{Kind: r.Kind.String(), Line: r.Line, Box: r.Box})
+		var comps []image.Rectangle
+		for _, c := range r.Comps {
+			comps = append(comps, c.Box)
+		}
+		boxes = append(boxes, box{Kind: r.Kind.String(), Line: r.Line, Box: r.Box, Comps: comps})
 	}
 	b, err := json.MarshalIndent(boxes, "", " ")
 	if err != nil {

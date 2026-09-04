@@ -29,6 +29,7 @@ type encodedRegion struct {
 	baselines     []int             // per component, from the fitted baseline
 	baseline      int
 	line          int // the line the region is a run of; -1 for bands
+	kind          region.Kind
 	lowConfidence bool
 	pre           *preprocess.Result // the image the region was proposed in: the alphabet's orientation, or the original
 }
@@ -44,7 +45,7 @@ func encodeRegions(pre *preprocess.Result, regions []region.Region, enc encoder.
 		gray := image.NewGray(image.Rect(0, 0, ink.Dx(), ink.Dy()))
 		draw.Draw(gray, gray.Rect, pre.Gray, ink.Min, draw.Src)
 		p := encoder.Patch{Bin: pre.Bin.Crop(ink), Gray: gray}
-		er := encodedRegion{box: r.Box, ink: ink, code: enc.Encode(p), patch: p, line: r.Line, lowConfidence: r.Glare > glareFrac, pre: pre}
+		er := encodedRegion{box: r.Box, ink: ink, code: enc.Encode(p), patch: p, line: r.Line, kind: r.Kind, lowConfidence: r.Glare > glareFrac, pre: pre}
 		for _, c := range r.Comps {
 			er.comps = append(er.comps, c.Box)
 		}
@@ -152,21 +153,9 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	}
 	lineBits := e.lineEnc.Bits()
 	glyphBits := sp.GlyphEnc.Bits()
-	radius := c.Radius
-	if radius == 0 {
-		radius = e.opt.DefaultRadius
-	}
 	// The learned code has its own distance scale; its radii are tuned
 	// separately (on half A) and override the claim's.
-	if e.claimEnc != nil {
-		if c.numericInner {
-			if e.opt.LearnedNumericRadius > 0 {
-				radius = e.opt.LearnedNumericRadius
-			}
-		} else if e.opt.LearnedRadius > 0 {
-			radius = e.opt.LearnedRadius
-		}
-	}
+	radius := e.radiusFor(c)
 
 	// Candidate shapes and glyph-wise targets, once per candidate.
 	type shape struct {

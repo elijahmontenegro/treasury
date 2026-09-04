@@ -429,6 +429,8 @@ func TestSynthLearned(t *testing.T) {
 	if base == "" {
 		t.Skip("set SYNTH_LABEL=path/to/label (without extension)")
 	}
+	verify.SetNumericTrace(func(format string, args ...any) { t.Logf(format, args...) })
+	defer verify.SetNumericTrace(nil)
 	eng, err := verify.New(verify.Options{ClaimEncoder: "learned"})
 	if err != nil {
 		t.Skip(err)

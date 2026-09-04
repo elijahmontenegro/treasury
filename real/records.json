@@ -25,7 +25,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3559573600,
+  "latency": 3520143600,
   "reason": "no_alphabet",
   "orientation": "inverted",
   "alphabet": {
@@ -120,7 +120,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8345730700,
+  "latency": 8020478300,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -139,7 +139,7 @@
    "unexplained": 1,
    "violations": 0.03734439834024896,
    "recovered": 0,
-   "spread": 0.07292382097069595,
+   "spread": 0.07292382097069597,
    "characters": "()12ACDEFHIKLNOPRSTUY",
    "face": "Go Regular",
    "x_height": 11.724137931034484,
@@ -313,19 +313,19 @@
       "face": "Go Regular"
      },
      "d1": 318,
-     "d2": 970,
+     "d2": 363,
      "radius": 269,
      "bits": 1792,
      "refined": true,
      "glyphs": 7,
      "penalized": 3,
-     "competitor": "50",
-     "competitor_text": "50 % ALC/VOL",
+     "competitor": "43",
+     "competitor_text": "43% ABV",
      "spread": 0.1525040064102564,
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
-     "digit_confidence": 0.9474555767187536
+     "digit_confidence": 0.931886107353025
     }
    },
    {
@@ -361,7 +361,7 @@
      "relearned": true,
      "low_confidence": false,
      "reading": "50",
-     "digit_confidence": 0.9474555767187536
+     "digit_confidence": 0.931886107353025
     }
    }
   ],
@@ -566,7 +566,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5022927500,
+  "latency": 5089526600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -654,7 +654,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6555191700,
+  "latency": 6308385000,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -713,7 +713,7 @@
      "refined": true,
      "glyphs": 10,
      "penalized": 4,
-     "spread": 0.061603201545223266,
+     "spread": 0.06160320154522327,
      "low_confidence": false
     }
    },
@@ -747,7 +747,7 @@
      "refined": true,
      "glyphs": 30,
      "penalized": 5,
-     "spread": 0.061603201545223266,
+     "spread": 0.06160320154522327,
      "low_confidence": false
     }
    },
@@ -781,81 +781,53 @@
      "refined": true,
      "glyphs": 35,
      "penalized": 16,
-     "spread": 0.061603201545223266,
+     "spread": 0.06160320154522327,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "status": "NOT_FOUND",
-    "expected": "60",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 232,
-       "Y": 1404
-      },
-      "Max": {
-       "X": 328,
-       "Y": 1424
-      }
-     },
-     "text": "1 % ALC/VOL",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "%L/L",
-      "emphasis": "VO",
-      "face": "Go Bold"
-     },
-     "d1": 1393,
-     "d2": 933,
-     "radius": 346,
-     "bits": 2304,
-     "refined": true,
-     "glyphs": 9,
-     "penalized": 3,
-     "competitor": "0.5",
-     "competitor_text": "(1 Proof)",
-     "spread": 0.061603201545223266,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.9142650726085307
-    }
+    "reason": "no_region_fits",
+    "expected": "60"
    },
    {
     "claim": "net",
     "status": "NOT_FOUND",
+    "reason": "number_not_on_reading",
     "expected": "750",
     "evidence": {
      "region": {
       "Min": {
-       "X": 232,
-       "Y": 1404
+       "X": 314,
+       "Y": 998
       },
       "Max": {
-       "X": 256,
-       "Y": 1423
+       "X": 352,
+       "Y": 1014
       }
      },
-     "text": "1 L",
+     "text": "2018ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "L",
+      "synthesized": "08L",
+      "emphasis": "M",
       "face": "Go Bold"
      },
-     "d1": 367,
-     "d2": -1,
-     "radius": 77,
-     "bits": 512,
+     "d1": 198,
+     "d2": 194,
+     "radius": 230,
+     "bits": 1536,
      "refined": true,
-     "glyphs": 2,
-     "penalized": 1,
-     "spread": 0.061603201545223266,
+     "glyphs": 6,
+     "penalized": 2,
+     "competitor": "2018000",
+     "competitor_text": "2018L",
+     "spread": 0.06160320154522327,
      "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.9142650726085307
+     "reading": "2818",
+     "digit_confidence": 0.6879551189720248
     }
    }
   ],
@@ -1183,7 +1155,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6000980900,
+  "latency": 5445097000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1240,7 +1212,7 @@
      "refined": true,
      "glyphs": 4,
      "penalized": 0,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false
     }
    },
@@ -1271,7 +1243,7 @@
      "refined": true,
      "glyphs": 9,
      "penalized": 3,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false
     }
    },
@@ -1305,7 +1277,7 @@
      "refined": true,
      "glyphs": 17,
      "penalized": 1,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false
     }
    },
@@ -1339,7 +1311,7 @@
      "refined": true,
      "glyphs": 23,
      "penalized": 7,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false
     }
    },
@@ -1371,7 +1343,7 @@
      "refined": true,
      "glyphs": 14,
      "penalized": 1,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false
     }
    },
@@ -1406,7 +1378,7 @@
      "penalized": 5,
      "competitor": "37.5",
      "competitor_text": "(75 PROOF)",
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false,
      "reading": "70",
      "digit_confidence": 0.5276460734142504
@@ -1441,7 +1413,7 @@
      "refined": true,
      "glyphs": 2,
      "penalized": 1,
-     "spread": 0.021955475080475084,
+     "spread": 0.021955475080475077,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.5803898229158064
@@ -1625,7 +1597,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8883182300,
+  "latency": 7895069000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1835,7 +1807,7 @@
      "relearned": true,
      "low_confidence": false,
      "reading": "19%",
-     "digit_confidence": 0.9148716634706977
+     "digit_confidence": 0.9524984325628362
     }
    },
    {
@@ -2226,7 +2198,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3437681500,
+  "latency": 3309647400,
   "orientation": "inverted",
   "reference_casing": "upper",
   "alphabet": {
@@ -2759,7 +2731,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2308901700,
+  "latency": 2209351600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -2854,7 +2826,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2754109200,
+  "latency": 2439559700,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2914,7 +2886,7 @@
      "refined": true,
      "glyphs": 4,
      "penalized": 2,
-     "spread": 0.14641927083333334,
+     "spread": 0.1464192708333333,
      "relearned": true,
      "low_confidence": false
     }
@@ -2947,7 +2919,7 @@
      "refined": true,
      "glyphs": 5,
      "penalized": 3,
-     "spread": 0.14641927083333334,
+     "spread": 0.1464192708333333,
      "relearned": true,
      "low_confidence": false
     }
@@ -2987,7 +2959,7 @@
      "refined": true,
      "glyphs": 12,
      "penalized": 3,
-     "spread": 0.14641927083333334,
+     "spread": 0.1464192708333333,
      "relearned": true,
      "low_confidence": false,
      "reading": "41%",
@@ -3243,7 +3215,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6388729900,
+  "latency": 5090517200,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -3263,14 +3235,13 @@
    "violations": 0.04564315352697095,
    "recovered": 12,
    "spread": 0.03912316980275312,
-   "characters": "(),.13ACGSabcdefghiklmnoprstuvwy",
+   "characters": "(),.1ACGSabcdefghiklmnoprstuvwy",
    "face": "Go Bold",
    "x_height": 9,
    "cap_height": 11,
    "letter_gap": 1,
    "word_gap": 5,
-   "rows": null,
-   "learned": "3"
+   "rows": null
   },
   "claims": [
    {
@@ -3301,7 +3272,6 @@
      "glyphs": 5,
      "penalized": 2,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3335,7 +3305,6 @@
      "glyphs": 4,
      "penalized": 2,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3370,7 +3339,6 @@
      "glyphs": 33,
      "penalized": 15,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3393,11 +3361,11 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "885902DFL78",
+      "synthesized": "885902DFL3378",
       "emphasis": "NW",
       "face": "Go Bold"
      },
-     "d1": 856,
+     "d1": 862,
      "d2": -1,
      "radius": 829,
      "bits": 6912,
@@ -3405,7 +3373,6 @@
      "glyphs": 27,
      "penalized": 6,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3440,7 +3407,6 @@
      "glyphs": 18,
      "penalized": 8,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -3474,7 +3440,6 @@
      "glyphs": 5,
      "penalized": 3,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false,
      "reading": "7",
      "digit_confidence": 0.7073692936025733
@@ -3482,39 +3447,37 @@
    },
    {
     "claim": "net",
-    "status": "MISMATCH",
+    "status": "NOT_FOUND",
     "expected": "350",
-    "observed": "331",
     "evidence": {
      "region": {
       "Min": {
-       "X": 415,
-       "Y": 1108
+       "X": 243,
+       "Y": 877
       },
       "Max": {
-       "X": 462,
-       "Y": 1127
+       "X": 445,
+       "Y": 948
       }
      },
-     "text": "331ML",
+     "text": "7 fl. oz.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "ML",
+      "synthesized": "7z",
       "face": "Go Bold"
      },
-     "d1": 185,
+     "d1": 590,
      "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "radius": 269,
+     "bits": 1792,
      "refined": true,
-     "glyphs": 5,
-     "penalized": 1,
+     "glyphs": 7,
+     "penalized": 3,
      "spread": 0.0418456855899411,
-     "relearned": true,
      "low_confidence": false,
-     "reading": "331",
-     "digit_confidence": 0.9648026839603859
+     "reading": "7",
+     "digit_confidence": 0.7776481957368689
     }
    }
   ],

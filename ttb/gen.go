@@ -314,8 +314,14 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 	}
 	px := 28 + float64(rng.Intn(10))
 	if pr.ABVText != "" && pr.NetText != "" && rng.Intn(2) == 0 {
+		left := w / 10
+		if v.Vertical {
+			// Right of the warning along the left side, which the row's
+			// old start overprinted: a "4.5%" lost its "4." under it.
+			left = 300
+		}
 		doc.Items = append(doc.Items,
-			synth.Item{Text: pr.ABVText, Face: face("abv"), Px: px, X: w / 10, Y: y, Claim: "abv"},
+			synth.Item{Text: pr.ABVText, Face: face("abv"), Px: px, X: left, Y: y, Claim: "abv"},
 			synth.Item{Text: pr.NetText, Face: face("net"), Px: px, X: w * 3 / 4, Y: y, Claim: "net"},
 		)
 		y += 70 + rng.Intn(30)

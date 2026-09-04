@@ -12,9 +12,9 @@ import (
 
 	"treasury/internal/alphabet"
 	"treasury/internal/bitcode"
-	"treasury/internal/digits"
 	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
+	"treasury/internal/region"
 	"treasury/internal/spell"
 )
 
@@ -48,6 +48,7 @@ type reading struct {
 	alt        string            // the text with the least certain digit's runner-up class
 	percent    string            // the text with a percent sign, when a wide unrecognized glyph follows it
 	boxes      []image.Rectangle // the run's glyphs, first and last
+	run        []image.Rectangle // the digits and marks the number was read from
 }
 
 // glyphClass is the classifier's verdict on one component: its class and
@@ -178,7 +179,10 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 	var readings []reading
 	seen := map[[2]image.Rectangle]bool{}
 	for ri := range regions {
-		if r, ok := e.read(pre, regions[ri], ri, cache); ok {
+		if regions[ri].kind != region.KindLine {
+			continue
+		}
+		for _, r := range e.readAll(regions[ri], ri, cache) {
 			key := [2]image.Rectangle{r.boxes[0], r.boxes[1]}
 			if seen[key] {
 				continue
@@ -332,16 +336,30 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		out, w := e.decide(one, sp, pre, sub, cache)
 		if w != nil {
 			w.region = back[w.region]
-			// The unit must be there letter by letter. A decision rests on
-			// the sum over glyphs, and a fragment of a zip code with two
-			// stray glyphs where "ML" should be summed to within the
-			// radius once; a letter the region does not hold is a
-			// distance no single glyph of a real unit reaches.
-			if missing := unmatchedLetter(w, sp.GlyphEnc.Bits()); missing != "" {
+			if why := numberAligned(w, r.run, sp.GlyphEnc.Bits()); why != "" {
+				if numericTrace != nil {
+					numericTrace("%s: reading %q not decided on %q: %s", c.Name, r.text, w.target.Text, why)
+				}
 				out.Status = NotFound
-				out.Reason = "unit_not_matched:" + missing
+				out.Reason = why
 				out.Observed = ""
 				w = nil
+			}
+		}
+		// A tie has no winner to check. Between candidates the field can
+		// take it is the digit's own uncertainty ("12" against its
+		// runner-up "13") and worth a review; between values the field
+		// cannot take it is a zip code fitted as "94558 mL" and "94558 L"
+		// on a label whose fill was never read, and is nothing.
+		if w == nil && out.Status == Review && out.Reason == "" {
+			valid := false
+			for _, cand := range cands {
+				valid = valid || instances[cand.Text].valid
+			}
+			if !valid {
+				out.Status = NotFound
+				out.Reason = "tie_among_invalid"
+				out.Candidates = nil
 			}
 		}
 		o := outcome{v: out, w: w, d1: 1}
@@ -361,6 +379,9 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		}
 		if numericTrace != nil && out.Evidence != nil {
 			numericTrace("%s: reading %q decided %s text %q d1=%.3f", c.Name, r.text, out.Status, out.Evidence.Text, o.d1)
+			if w != nil && os.Getenv("NUMERIC_GLYPHS") != "" {
+				numericTrace("%s: path on region %d (refined %v): %s", c.Name, w.region, w.refined, pathTrace(w, sp.GlyphEnc.Bits()))
+			}
 		}
 		o.v = out
 		outcomes = append(outcomes, o)
@@ -430,258 +451,6 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 	return out, first.w
 }
 
-// read classifies a region's components and returns its digit run.
-func (e *Engine) read(pre *preprocess.Result, reg encodedRegion, ri int, cache *callCache) (reading, bool) {
-	// A number and its unit are three glyphs at the least; a region of
-	// one or two is a fragment, and a rotated warning's glyphs in the
-	// upright image are hundreds of them.
-	n := len(reg.comps)
-	if n < 3 || n > 24 {
-		return reading{}, false
-	}
-	xh := regionXHeight(reg.comps)
-	if xh < 4 {
-		return reading{}, false
-	}
-	// Digits stand at cap height; a component clearly shorter than the
-	// region's tall glyphs and clearly taller than a period is a
-	// lowercase letter and is not classified. That halves the classifier's
-	// work on mixed-case lines, and the network is most of a claim's cost.
-	heights := make([]float64, 0, n)
-	for _, b := range reg.comps {
-		heights = append(heights, float64(b.Dy()))
-	}
-	sort.Float64s(heights)
-	tall := heights[len(heights)*9/10]
-	glyphs := make([]glyphClass, n)
-	for i, box := range reg.comps {
-		if g, ok := cache.classes[box]; ok {
-			glyphs[i] = g
-			continue
-		}
-		if h := float64(box.Dy()); h < 0.8*tall && h > 0.35*tall {
-			glyphs[i] = glyphClass{class: digits.Other, prob: 1, second: -1}
-			continue
-		}
-		logits := e.digits.Logits(digits.Frame(reg.pre.Gray, box, reg.baselines[i], xh))
-		g := glyphClass{class: -1, second: -1}
-		var sum float64
-		best := 0
-		for k := range logits {
-			if logits[k] > logits[best] {
-				best = k
-			}
-		}
-		probs := make([]float64, len(logits))
-		for k, l := range logits {
-			probs[k] = math.Exp(float64(l - logits[best]))
-			sum += probs[k]
-		}
-		for k := range probs {
-			probs[k] /= sum
-			if g.class < 0 || probs[k] > g.prob {
-				g.second, g.secondProb = g.class, g.prob
-				g.class, g.prob = k, probs[k]
-			} else if g.second < 0 || probs[k] > g.secondProb {
-				g.second, g.secondProb = k, probs[k]
-			}
-		}
-		cache.classes[box] = g
-		glyphs[i] = g
-	}
-	// The longest run of digit classes holding at least one digit, standing
-	// as a word of its own: bounded by word gaps or the region's ends, with
-	// at most one other glyph before it in its word (an opening paren) and
-	// two after it (an attached unit, "750mL"). A digit-looking glyph inside
-	// a word of letters, the O of FORK or the l of a batch code, is not a
-	// number. A percent sign only ends a run.
-	isDigit := func(k int) bool { return k >= 0 && k < 10 }
-	numeric := func(g glyphClass) bool { return g.class != digits.Other && g.class >= 0 && g.prob >= 0.5 }
-	// A word gap is wide against the x-height and against the region's
-	// own letter spacing, which a display face may set wide.
-	gaps := make([]float64, 0, n)
-	for i := 1; i < n; i++ {
-		gaps = append(gaps, float64(reg.comps[i].Min.X-reg.comps[i-1].Max.X))
-	}
-	wordGap := 0.35 * xh
-	if len(gaps) > 0 {
-		sorted := append([]float64(nil), gaps...)
-		sort.Float64s(sorted)
-		wordGap = math.Max(wordGap, 2.2*sorted[len(sorted)/2])
-	}
-	wordStart := make([]int, n) // index of the first glyph of each glyph's word
-	for i := range n {
-		wordStart[i] = i
-		if i > 0 && gaps[i-1] <= wordGap {
-			wordStart[i] = wordStart[i-1]
-		}
-	}
-	wordEnd := make([]int, n) // one past the last glyph of each glyph's word
-	for i := n - 1; i >= 0; i-- {
-		wordEnd[i] = i + 1
-		if i+1 < n && wordStart[i+1] == wordStart[i] {
-			wordEnd[i] = wordEnd[i+1]
-		}
-	}
-	// Within a run, a glyph too small to classify (under a third of the
-	// tall glyphs) is a decimal point or a thousands comma by its shape
-	// alone: a period sits on the baseline, a comma hangs below it. The
-	// classifier's own reading is used when it has one.
-	small := func(k int) bool { return float64(reg.comps[k].Dy()) <= 0.35*tall }
-	mark := func(k int) int {
-		g := glyphs[k]
-		if p, c := g.prob, g.class; p >= 0.2 && (c == digits.ClassOf('.') || c == digits.ClassOf(',')) {
-			return c
-		}
-		if float64(reg.comps[k].Max.Y-reg.baselines[k]) > 0.12*xh {
-			return digits.ClassOf(',')
-		}
-		return digits.ClassOf('.')
-	}
-	// A percent sign is often three components, two small circles about
-	// a slash; the classifier knows the slash. Small glyphs overlapping a
-	// recognized slash's columns are its circles and are absorbed by it.
-	absorbed := make([]bool, n)
-	for k, g := range glyphs {
-		if !numeric(g) || digits.Classes[g.class] != '%' {
-			continue
-		}
-		slash := reg.comps[k]
-		for _, m := range []int{k - 2, k - 1, k + 1, k + 2} {
-			if m < 0 || m >= n || numeric(glyphs[m]) || wordStart[m] != wordStart[k] {
-				continue
-			}
-			c := reg.comps[m]
-			if float64(c.Dy()) <= 0.6*tall && c.Min.X < slash.Max.X && c.Max.X > slash.Min.X {
-				absorbed[m] = true
-			}
-		}
-	}
-	bestStart, bestEnd := -1, -1
-	for i := 0; i < n; {
-		if !numeric(glyphs[i]) || !isDigit(glyphs[i].class) {
-			i++
-			continue
-		}
-		j := i
-		for j < n && wordStart[j] == wordStart[i] {
-			if absorbed[j] {
-				j++
-				continue
-			}
-			if numeric(glyphs[j]) {
-				if digits.Classes[glyphs[j].class] == '%' {
-					j++
-					for j < n && absorbed[j] {
-						j++
-					}
-					break
-				}
-				j++
-				continue
-			}
-			// A small unclassified glyph between digits joins the run.
-			if small(j) && j+1 < n && wordStart[j+1] == wordStart[i] && numeric(glyphs[j+1]) && isDigit(glyphs[j+1].class) {
-				glyphs[j] = glyphClass{class: mark(j), prob: 0.5, second: -1}
-				j++
-				continue
-			}
-			break
-		}
-		// The one glyph allowed before the run must be narrow, a paren,
-		// not a fused "787" in front of the "01" of a zip code.
-		before, after := i-wordStart[i], wordEnd[i]-j
-		if before == 1 && float64(reg.comps[i-1].Dx()) > 0.6*xh {
-			before = 2
-		}
-		// The one glyph allowed before a run is an opening paren, and a
-		// paren is never digit-shaped. A leading digit the classifier
-		// half-saw is a digit the reading would drop: "12%" read as "2%"
-		// was decided, and named a wrong value, on labels that were right.
-		if before == 1 {
-			if g := glyphs[i-1]; g.class >= 0 && g.class < 10 && g.prob >= 0.25 {
-				before = 2
-			}
-		}
-		if before <= 1 && after <= 2 && j-i > bestEnd-bestStart {
-			bestStart, bestEnd = i, j
-		}
-		i = j
-	}
-	if numericTrace != nil && os.Getenv("NUMERIC_GLYPHS") != "" {
-		var parts []string
-		for k, g := range glyphs {
-			c := byte('?')
-			if g.class >= 0 {
-				c = digits.Classes[g.class]
-			}
-			parts = append(parts, fmt.Sprintf("%c:%.2f(h%d,w%d)", c, g.prob, reg.comps[k].Dy(), reg.comps[k].Dx()))
-		}
-		numericTrace("region %d %v xh %.1f tall %.0f: %s", ri, reg.box, xh, tall, strings.Join(parts, " "))
-	}
-	if bestStart < 0 {
-		return reading{}, false
-	}
-	r := reading{region: ri, confidence: 1, boxes: []image.Rectangle{reg.comps[bestStart], reg.comps[bestEnd-1]}}
-	weakest := -1
-	var text []byte
-	for k := bestStart; k < bestEnd; k++ {
-		if absorbed[k] {
-			continue
-		}
-		g := glyphs[k]
-		text = append(text, digits.Classes[g.class])
-		if isDigit(g.class) && g.prob < r.confidence {
-			r.confidence = g.prob
-			weakest = k
-		}
-	}
-	r.text = string(text)
-	// A wide glyph right after the run in its word that the classifier
-	// did not recognize is most likely a percent sign it did not know in
-	// this face; the percent reading is offered too.
-	if k := bestEnd; !strings.HasSuffix(r.text, "%") && k < n && wordStart[k] == wordStart[bestStart] && !numeric(glyphs[k]) && float64(reg.comps[k].Dx()) >= 0.8*xh && float64(reg.comps[k].Dy()) >= 0.7*tall {
-		r.percent = r.text + "%"
-	}
-	if weakest >= 0 {
-		g := glyphs[weakest]
-		if g.second >= 0 && g.second != digits.Other && g.secondProb >= 0.1 {
-			pos := 0
-			for k := bestStart; k < weakest; k++ {
-				if !absorbed[k] {
-					pos++
-				}
-			}
-			alt := []byte(r.text)
-			alt[pos] = digits.Classes[g.second]
-			r.alt = string(alt)
-		}
-	}
-	return r, true
-}
-
-// unmatchedLetter returns the first letter of the candidate whose glyph
-// in the region is farther than 0.45 of the code from its target, or ""
-// when every letter is matched within that.
-func unmatchedLetter(w *scored, bits int) string {
-	if !w.refined {
-		return ""
-	}
-	for _, st := range w.path {
-		if st.Kind != alphabet.Match || st.Char >= len(w.target.Text) {
-			continue
-		}
-		r := w.target.Text[st.Char]
-		if !unicode.IsLetter(r) || w.target.Codes[st.Char] == nil {
-			continue
-		}
-		if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], bits) > 0.45 {
-			return string(r)
-		}
-	}
-	return ""
-}
-
 // regionXHeight estimates a region's x-height from its components: digits
 // and capitals stand about 1.42 x-heights tall, so the median height of
 // the taller half of the components, divided by that, is the estimate. The
@@ -737,4 +506,183 @@ func parseNumber(s string) (float64, bool) {
 		return 0, false
 	}
 	return v, true
+}
+
+// radiusFor is the radius a claim is decided at: its own, or the learned
+// code's for the claim's kind.
+func (e *Engine) radiusFor(c Claim) float64 {
+	radius := c.Radius
+	if radius == 0 {
+		radius = e.opt.DefaultRadius
+	}
+	if e.claimEnc != nil {
+		if c.numericInner {
+			if e.opt.LearnedNumericRadius > 0 {
+				radius = e.opt.LearnedNumericRadius
+			}
+		} else if e.opt.LearnedRadius > 0 {
+			radius = e.opt.LearnedRadius
+		}
+	}
+	return radius
+}
+
+// numberAligned reports why a decided numeric candidate is not a decision
+// about the reading, or "" when it is. A reading decides only what it read:
+// every character of the number must sit on one glyph of the run and every
+// glyph of the run under the number, and every letter of the unit must be
+// measured against a glyph and match it. Without that, "3" read from the B
+// of "BY" aligned "ALC. 3% BY VOL." to a 49% line within the radius with a
+// digit unexplained, a full glyph being a thirteenth of that line; "PROOF
+// 12" matched "No. 12" on two perfect digits and five letters consumed by
+// structural steps that compared nothing; and "201ml" matched the bare
+// "201" of a zip code with its unit deleted.
+func numberAligned(w *scored, run []image.Rectangle, bits int) string {
+	if !w.refined {
+		return ""
+	}
+	text := w.target.Text
+	numStart, numEnd := -1, -1
+	for i := 0; i < len(text); i++ {
+		c := text[i]
+		if c >= '0' && c <= '9' || (numStart >= 0 && (c == '.' || c == ',')) {
+			if numStart < 0 {
+				numStart = i
+			}
+			numEnd = i + 1
+			continue
+		}
+		if numStart >= 0 {
+			break
+		}
+	}
+	isNumber := func(c int) bool { return c >= numStart && c < numEnd }
+	isLetter := func(c int) bool { return c < len(text) && unicode.IsLetter(text[c]) }
+	inRun := map[image.Rectangle]bool{}
+	for _, b := range run {
+		inRun[b] = true
+	}
+	covered := map[image.Rectangle]bool{}
+	for _, st := range w.path {
+		var chars []int
+		switch st.Kind {
+		case alphabet.Match:
+			if isNumber(st.Char) {
+				if st.Glyph >= len(w.obs.Boxes) || !inRun[w.obs.Boxes[st.Glyph]] {
+					return "number_not_on_reading"
+				}
+				covered[w.obs.Boxes[st.Glyph]] = true
+				continue
+			}
+			if !isLetter(st.Char) || w.target.Codes[st.Char] == nil {
+				continue
+			}
+			d := encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], bits)
+			if d > 0.45 {
+				return "unit_letter_unmatched:" + string(text[st.Char])
+			}
+			continue
+		case alphabet.Insert:
+			if st.Glyph < len(w.obs.Boxes) && inRun[w.obs.Boxes[st.Glyph]] {
+				return "number_glyph_unexplained"
+			}
+			continue
+		case alphabet.Delete:
+			if isNumber(st.Char) {
+				return "number_char_missing"
+			}
+			if isLetter(st.Char) {
+				return "unit_letter_missing:" + string(text[st.Char])
+			}
+			continue
+		case alphabet.Merge, alphabet.Rejoin:
+			chars = []int{st.Char, st.Char + 1}
+		case alphabet.Merge3:
+			chars = []int{st.Char, st.Char + 1, st.Char + 2}
+		case alphabet.Split, alphabet.Split3:
+			chars = []int{st.Char}
+		default:
+			continue
+		}
+		// A digit is one glyph the classifier read, so the number's
+		// characters match one each. A structural step on the unit's
+		// letters is measured as the decoder measured it, the composed
+		// or union code against the other side; a step that compared
+		// nothing (a three-way merge under a code without composed
+		// triples, on which "PROOF" rode over "No.") leaves the unit
+		// unverified.
+		for _, c := range chars {
+			if isNumber(c) {
+				return "number_not_on_reading"
+			}
+		}
+		letter := -1
+		for _, c := range chars {
+			if isLetter(c) {
+				letter = c
+				break
+			}
+		}
+		if letter < 0 {
+			continue
+		}
+		var observed, target bitcode.Code
+		ok := st.Glyph < len(w.obs.Codes)
+		switch st.Kind {
+		case alphabet.Merge:
+			observed = w.obs.Codes[st.Glyph]
+			if w.target.Pair != nil {
+				target = w.target.Pair(st.Char)
+			}
+		case alphabet.Merge3:
+			observed = w.obs.Codes[st.Glyph]
+			if w.target.Triple != nil {
+				target = w.target.Triple(st.Char)
+			}
+		case alphabet.Rejoin:
+			observed, ok = w.obs.UnionCode(st.Glyph, 2)
+			if w.target.Pair != nil {
+				target = w.target.Pair(st.Char)
+			}
+		case alphabet.Split:
+			observed, ok = w.obs.UnionCode(st.Glyph, 2)
+			target = w.target.Codes[st.Char]
+		case alphabet.Split3:
+			observed, ok = w.obs.UnionCode(st.Glyph, 3)
+			target = w.target.Codes[st.Char]
+		}
+		if !ok || observed == nil || target == nil {
+			return "unit_letter_unverified:" + string(text[letter])
+		}
+		if encoder.NormalizedDistance(observed, target, bits) > 0.45 {
+			return "unit_letter_unmatched:" + string(text[letter])
+		}
+	}
+	for _, b := range run {
+		if !covered[b] {
+			return "number_glyph_unexplained"
+		}
+	}
+	return ""
+}
+
+// pathTrace renders a winning alignment step by step, for the trace.
+func pathTrace(w *scored, bits int) string {
+	var parts []string
+	for _, st := range w.path {
+		ch := "-"
+		if st.Char < len(w.target.Text) {
+			ch = string(w.target.Text[st.Char])
+		}
+		d := ""
+		if st.Kind == alphabet.Match && st.Glyph < len(w.obs.Codes) && st.Char < len(w.target.Codes) && w.target.Codes[st.Char] != nil {
+			d = fmt.Sprintf("=%.2f", encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], bits))
+		}
+		box := ""
+		if st.Kind != alphabet.Delete && st.Glyph < len(w.obs.Boxes) {
+			box = fmt.Sprintf("@%d", w.obs.Boxes[st.Glyph].Min.X)
+		}
+		parts = append(parts, fmt.Sprintf("%s:%s%s%s", st.Kind, ch, box, d))
+	}
+	return strings.Join(parts, " ")
 }
