@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"sync"
 
 	"treasury/internal/bitcode"
 	"treasury/internal/bitmap"
@@ -88,11 +89,27 @@ func (h Hash) Name() string {
 
 // smooth box-blurs a w×h field in place with the given radius, clamping at
 // the edges.
+// scratch pools the float buffers the encoder needs per frame: an
+// integral image and a smoothing pass for every glyph the decoder scores,
+// which as fresh allocations were a third of the encoder's time in
+// clearing and collecting memory.
+var scratch = sync.Pool{New: func() any { b := make([]float64, 0, 4096); return &b }}
+
+// take returns a pooled buffer of length n; the caller zeroes what it needs.
+func take(n int) (*[]float64, []float64) {
+	p := scratch.Get().(*[]float64)
+	if cap(*p) < n {
+		*p = make([]float64, n)
+	}
+	return p, (*p)[:n]
+}
+
 func smooth(f []float64, w, h, r int) {
 	if r <= 0 {
 		return
 	}
-	tmp := make([]float64, len(f))
+	pooled, tmp := take(len(f))
+	defer scratch.Put(pooled)
 	for y := range h {
 		for x := range w {
 			sum, n := 0.0, 0
@@ -216,7 +233,69 @@ func cropPadded(b *bitmap.Bitmap, r image.Rectangle) *bitmap.Bitmap {
 // Coverage area-averages the bitmap onto a w×h grid: each cell is the
 // fraction of its (fractional) source rectangle that is ink.
 func Coverage(b *bitmap.Bitmap, w, h int) []float64 {
-	return grid(b.W, b.H, func(x, y int) float64 { return float64(b.Pix[y*b.W+x]) }, w, h)
+	return coverage(b.Pix, b.W, b.H, w, h)
+}
+
+// coverage is grid over a bitmap's pixels with the lookups inlined: this
+// runs for every glyph frame the decoder scores, and the closure call per
+// pixel was most of the encoder's time. The arithmetic is grid's exactly,
+// so the codes are the same.
+func coverage(pix []uint8, sw, sh, w, h int) []float64 {
+	out := make([]float64, w*h)
+	if sw == 0 || sh == 0 {
+		return out
+	}
+	stride := sw + 1
+	pooled, s := take((sw + 1) * (sh + 1))
+	defer scratch.Put(pooled)
+	// Only the first row and column must be zero; the rest is written.
+	for i := range stride {
+		s[i] = 0
+	}
+	for y := 1; y <= sh; y++ {
+		s[y*stride] = 0
+	}
+	for y := 1; y <= sh; y++ {
+		var row float64
+		src := pix[(y-1)*sw : y*sw]
+		prev := s[(y-1)*stride : y*stride]
+		cur := s[y*stride : (y+1)*stride]
+		for x := 1; x <= sw; x++ {
+			row += float64(src[x-1])
+			cur[x] = prev[x] + row
+		}
+	}
+	S := func(fx, fy float64) float64 {
+		ix, iy := int(fx), int(fy)
+		if ix >= sw {
+			ix, fx = sw, float64(sw)
+		}
+		if iy >= sh {
+			iy, fy = sh, float64(sh)
+		}
+		ax, ay := fx-float64(ix), fy-float64(iy)
+		v := s[iy*stride+ix]
+		if ax > 0 {
+			v += ax * (s[iy*stride+ix+1] - s[iy*stride+ix])
+		}
+		if ay > 0 {
+			v += ay * (s[(iy+1)*stride+ix] - s[iy*stride+ix])
+		}
+		if ax > 0 && ay > 0 {
+			v += ax * ay * float64(pix[iy*sw+ix])
+		}
+		return v
+	}
+	cw, ch := float64(sw)/float64(w), float64(sh)/float64(h)
+	for j := range h {
+		y0, y1 := float64(j)*ch, float64(j+1)*ch
+		for i := range w {
+			x0, x1 := float64(i)*cw, float64(i+1)*cw
+			sum := S(x1, y1) - S(x0, y1) - S(x1, y0) + S(x0, y0)
+			out[j*w+i] = sum / (cw * ch)
+		}
+	}
+	return out
 }
 
 // GrayGrid area-averages the grayscale image onto a w×h grid.

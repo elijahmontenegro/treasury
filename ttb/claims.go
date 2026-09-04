@@ -37,46 +37,45 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 	return refs, claims
 }
 
-// ABVClaim enumerates alcohol content from 0.5 to 95 percent in half-percent
+// ABVClaim describes alcohol content as a number read off the label:
+// the legal values in half-percent steps are the valid set, and the
+// printed forms, including proof at twice the percentage, are the formats.
+//
+// ABVClaim formerly enumerated alcohol content from 0.5 to 95 percent in half-percent
 // steps, in the forms labels print it, including proof.
 func ABVClaim(expected float64, required bool) verify.Claim {
-	c := verify.Claim{Name: "abv", Expected: Num(expected), Required: required, Radius: 0.15}
+	valid := make([]float64, 0, 190)
 	for v := 0.5; v <= 95.0+1e-9; v += 0.5 {
-		n := Num(v)
-		proof := Num(2 * v)
-		for _, text := range []string{
-			n + "% Alc./Vol.", n + "% ALC./VOL.", n + "% ABV", "ALC. " + n + "% BY VOL.", n + "% alc/vol",
-			proof + " Proof", "(" + proof + " Proof)", proof + " PROOF",
-		} {
-			c.Candidates = append(c.Candidates, verify.Candidate{Text: text, Value: n})
-		}
+		valid = append(valid, v)
 	}
-	return c
+	return verify.Claim{
+		Name: "abv", Expected: Num(expected), Required: required, Radius: 0.15,
+		Numeric: &verify.Numeric{
+			Formats: []verify.NumericFormat{
+				{Template: "{n}% Alc./Vol.", Scale: 1}, {Template: "{n}% ALC./VOL.", Scale: 1}, {Template: "{n}% ABV", Scale: 1},
+				{Template: "ALC. {n}% BY VOL.", Scale: 1}, {Template: "{n}% alc/vol", Scale: 1},
+				{Template: "{n} Proof", Scale: 0.5}, {Template: "({n} Proof)", Scale: 0.5}, {Template: "{n} PROOF", Scale: 0.5},
+			},
+			Valid: valid, Tolerance: 0.05,
+		},
+	}
 }
 
-// NetClaim enumerates the standard net-contents sizes in millilitre, litre,
-// and fluid-ounce forms with and without periods.
+// NetClaim describes net contents: the standard sizes in millilitres are
+// the valid set; millilitre, litre, and fluid-ounce forms with and without
+// periods are the printed formats.
 func NetClaim(expectedML float64) verify.Claim {
-	c := verify.Claim{Name: "net", Expected: Num(expectedML), Required: true, Radius: 0.15}
-	for _, ml := range []float64{50, 100, 187, 200, 375, 500, 700, 750, 1000, 1750} {
-		value := Num(ml)
-		var texts []string
-		if ml >= 1000 {
-			l := Num(ml / 1000)
-			texts = append(texts, l+" L", l+"L", l+" Liter", l+" LITER", l+" Litre")
-		} else {
-			m := Num(ml)
-			texts = append(texts, m+" mL", m+" ml", m+" ML", m+"mL", m+"ml")
-		}
-		oz := Num(roundTo(ml/29.5735, 0.1))
-		texts = append(texts, oz+" FL OZ", oz+" FL. OZ.", oz+" fl oz", oz+" fl. oz.")
-		for _, t := range texts {
-			c.Candidates = append(c.Candidates, verify.Candidate{Text: t, Value: value})
-		}
+	const flOz = 29.5735
+	return verify.Claim{
+		Name: "net", Expected: Num(expectedML), Required: true, Radius: 0.15,
+		Numeric: &verify.Numeric{
+			Formats: []verify.NumericFormat{
+				{Template: "{n} mL", Scale: 1}, {Template: "{n} ml", Scale: 1}, {Template: "{n} ML", Scale: 1}, {Template: "{n}mL", Scale: 1}, {Template: "{n}ml", Scale: 1},
+				{Template: "{n} L", Scale: 1000}, {Template: "{n}L", Scale: 1000}, {Template: "{n} Liter", Scale: 1000}, {Template: "{n} LITER", Scale: 1000}, {Template: "{n} Litre", Scale: 1000},
+				{Template: "{n} FL OZ", Scale: flOz}, {Template: "{n} FL. OZ.", Scale: flOz}, {Template: "{n} fl oz", Scale: flOz}, {Template: "{n} fl. oz.", Scale: flOz},
+			},
+			Valid:     []float64{50, 100, 187, 200, 375, 500, 700, 750, 1000, 1750},
+			Tolerance: 5, // a fluid-ounce figure rounds to a tenth, 3 mL
+		},
 	}
-	return c
-}
-
-func roundTo(v, step float64) float64 {
-	return float64(int64(v/step+0.5)) * step
 }

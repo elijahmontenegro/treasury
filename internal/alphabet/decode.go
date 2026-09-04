@@ -241,7 +241,11 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], code)
 			}
 		case Merge3:
-			st.Structural++
+			// Three characters in one glyph: two extra characters are
+			// explained by one shape, so it counts as two structural steps;
+			// otherwise a candidate two units longer than the region fits
+			// it for a quarter glyph.
+			st.Structural += 2
 			if code := tripleCode(s.Char); code != nil {
 				st.Hamming += bitcode.Distance(obs.Codes[s.Glyph], code)
 			}
@@ -253,6 +257,9 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 				}
 			}
 		case Split, Split3:
+			// A glyph in pieces is one structural step however many pieces:
+			// the cutter made them, and they are not evidence against the
+			// candidate.
 			st.Structural++
 			k := 2
 			if s.Kind == Split3 {

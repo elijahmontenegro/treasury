@@ -2,7 +2,10 @@ package verify_test
 
 import (
 	"context"
+	"encoding/json"
 	"image"
+	_ "image/png"
+	"os"
 	"strings"
 	"testing"
 
@@ -358,4 +361,40 @@ func TestDumpPairsSerif(t *testing.T) {
 // TestSerifClaims prints claim evidence with competitors on the PT Serif label.
 func TestSerifClaims(t *testing.T) {
 	run(t, variant(t, ttb.Variant{BodyFace: "PTSerif Regular", HeavyFace: "PTSerif Bold"}, nil), ttb.Sample())
+}
+
+// TestOtherBodyFaceTrace prints the numeric readings on the PT Serif label.
+func TestOtherBodyFaceTrace(t *testing.T) {
+	verify.SetNumericTrace(func(format string, args ...any) { t.Logf(format, args...) })
+	defer verify.SetNumericTrace(nil)
+	run(t, variant(t, ttb.Variant{BodyFace: "PTSerif Regular", HeavyFace: "PTSerif Bold"}, nil), ttb.Sample())
+}
+
+// TestSynthTrace runs one generated label with the numeric trace on:
+// SYNTH_LABEL names the label's path without extension.
+func TestSynthTrace(t *testing.T) {
+	base := os.Getenv("SYNTH_LABEL")
+	if base == "" {
+		t.Skip("set SYNTH_LABEL=path/to/label (without extension)")
+	}
+	var exp ttb.Expected
+	b, err := os.ReadFile(base + ".json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(b, &exp); err != nil {
+		t.Fatal(err)
+	}
+	f, err := os.Open(base + ".png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	img, _, err := image.Decode(f)
+	if err != nil {
+		t.Fatal(err)
+	}
+	verify.SetNumericTrace(func(format string, args ...any) { t.Logf(format, args...) })
+	defer verify.SetNumericTrace(nil)
+	run(t, img, exp)
 }

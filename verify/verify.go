@@ -10,6 +10,7 @@ import (
 	"image"
 
 	"treasury/internal/alphabet"
+	"treasury/internal/digits"
 	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
 	"treasury/internal/region"
@@ -41,8 +42,9 @@ type Claim struct {
 	Expected   string      // the value the caller asserts
 	Candidates []Candidate // every value the claim could decode to; free text has one
 	Required   bool
-	Radius     float64 // Hamming radius as a fraction of the code length; 0 uses the default
-	Variants   bool    // also spell casing, quote, and weight variants of each candidate; for free text
+	Radius     float64  // Hamming radius as a fraction of the code length; 0 uses the default
+	Variants   bool     // also spell casing, quote, and weight variants of each candidate; for free text
+	Numeric    *Numeric // when set, the claim is read as a number and Candidates is ignored
 }
 
 // Status is a verdict.
@@ -92,6 +94,10 @@ type Evidence struct {
 	Spread         float64         `json:"spread,omitempty"`    // the alphabet's within-character spread, which sets the tie margin
 	Relearned      bool            `json:"relearned,omitempty"` // decided on the second pass, after glyphs learned from verified claims
 	LowConfidence  bool            `json:"low_confidence"`
+
+	// Numeric claims.
+	Reading         string  `json:"reading,omitempty"`          // the digit run as the classifier read it
+	DigitConfidence float64 `json:"digit_confidence,omitempty"` // the least certain digit's probability
 
 	// Reference rows.
 	Matched         int                `json:"matched,omitempty"`
@@ -213,12 +219,17 @@ type Engine struct {
 	faces    []*render.Face
 	lineEnc  encoder.Encoder
 	glyphEnc encoder.Encoder
+	digits   *digits.Model // the embedded digit classifier
 }
 
 // New builds an engine.
 func New(o Options) (*Engine, error) {
 	o = o.withDefaults()
 	faces, err := render.Bundled()
+	if err != nil {
+		return nil, err
+	}
+	model, err := digits.Load()
 	if err != nil {
 		return nil, err
 	}
@@ -233,7 +244,7 @@ func New(o Options) (*Engine, error) {
 	default:
 		return nil, fmt.Errorf("verify: unknown encoder %q", o.Encoder)
 	}
-	return &Engine{opt: o, faces: faces, lineEnc: encoder.Line(), glyphEnc: glyph}, nil
+	return &Engine{opt: o, faces: faces, lineEnc: encoder.Line(), glyphEnc: glyph, digits: model}, nil
 }
 
 // Verify decodes the image. It learns the alphabet from the first reference;
@@ -280,12 +291,13 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	encoded := encodeRegions(pre, regions, e.lineEnc, e.opt.GlareFraction)
 	res.Claims = make([]Verdict, len(claims))
+	cache := newCallCache()
 	winners := make([]*scored, len(claims))
 	for i, c := range claims {
 		if err := ctx.Err(); err != nil {
 			return Result{}, err
 		}
-		res.Claims[i], winners[i] = e.decide(c, sp, pre, encoded)
+		res.Claims[i], winners[i] = e.decideClaim(c, sp, pre, encoded, cache)
 	}
 	// A claim that verified decisively is known text too: its glyphs teach
 	// the characters the reference lacked, digits and capitals above all.
@@ -301,7 +313,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			if err := ctx.Err(); err != nil {
 				return Result{}, err
 			}
-			res.Claims[i], _ = e.decide(c, sp, pre, encoded)
+			res.Claims[i], _ = e.decideClaim(c, sp, pre, encoded, cache)
 			if res.Claims[i].Evidence != nil {
 				res.Claims[i].Evidence.Relearned = true
 			}

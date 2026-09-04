@@ -110,6 +110,41 @@ Emphasis: correct on 144/198 labels (compliant headers verified and regular-weig
 
 Labels without an alphabet fell from 70 to 16 (6.4 percent). Among the 180 labels that already learned one, free-text recall is unchanged (0.915 against 0.92); the 54 newly recovered labels verify 30 percent of their free text, because their claim lines are as fused or as faint as their warnings were. Per-character acceptance produced two `char_unlearned` reviews in 250 labels. The alphabet gates on the sample hold at 99.2, 99.2, and 99.3 percent.
 
+### Digits: a classifier, not an encoder (amendment step 2, 2026-09-03)
+
+The reference never contains digits, so the engine carried none of their shapes and read them through glyphs synthesized in a bundled face. That is a ten-class prior-knowledge problem, and it is now a small convolutional network: three blocks of two 3×3 convolutions (16, 32, 48 channels), 51,902 parameters, fourteen classes (0–9, %, period, comma, other). The training data comes from the engine's own channel: `cmd/digits gen` renders the classes and other characters in every installed face and the bundled ones at x-heights 10, 14, and 20, runs the label generator's augmentation and the engine's preprocessing (resize, hysteresis threshold, deskew), and cuts gray frames at the truth positions with the geometry jittered as the engine will estimate it. A frame is 1.6 by 2.2 x-heights on the row's baseline, ink bright, scaled by the patch's own contrast. Families are held out by a hash of their name: 57 of 226. Batch norm is folded at export; the weights are embedded and run in plain Go (3 ms a frame, no cgo), with the same network behind the `onnx` build tag through onnxruntime for parity, which holds to 4e-6 in the logits and to the frame in held-out counts.
+
+Two findings from the first runs. The frame normalization took its ink level from the 5th percentile of the patch, which for a period or a comma, under two percent of the patch, lands in the background; the third darkest cell is the ink now. And letters shaped like digits in many faces (O, l, I, S, B, Z, g, q, b, D) were training the other class and capping digit recall at 96 percent on unseen faces; the classifier says which digit a glyph is, and whether it is a digit at all is the engine's call from context, so those letters left the set. Half the training frames are condensed, extended, or slanted to stand in for faces the installed set covers thinly.
+
+Held-out digit accuracy after three runs: 96.3, 96.1, 96.7 percent, against the amendment's gate of 98. The gate is not met. Thirty-four of the 57 held-out families are at or above 98 percent and the tail is display type: Gill Sans Extra Condensed Bold 65, Palace Script 69, Magneto 75, Rage Italic 78, Freestyle Script 80, Vermin Vibes 89, Bauhaus 93 90, Broadway 92, Wide Latin 93, Ravie 93. The remaining confusions are 1 read as 7 (137 of 3,586), comma as period and period as comma (319 of 10,444), and 7 as other (63). The pure-Go forward pass and onnxruntime give the same 48,859 of 50,546 and agree in every logit to 4e-6. A label's alcohol and net fields are set in text faces, where the classifier is at or above the gate; the number reported is the honest one on the split as drawn.
+
+### Numeric fields are read, not enumerated (amendment step 3, 2026-09-03)
+
+Alcohol content and net contents were decoded against enumerations, 1,520 and 100 candidate texts, and the enumeration did the reading. Now a numeric claim carries its printed formats with a placeholder for the number and a scale into the claim's unit (proof is half a percent, a litre a thousand millilitres), a set of valid values, and a tolerance. The engine classifies the components of every region on a line short enough to be a field, skipping lowercase-height components, and takes as the reading the longest run of digit classes that stands as a word: bounded by word gaps, at most an opening paren before it and an attached unit after it. Each format instantiated with the reading, and with the runner-up class of the least certain digit, becomes a candidate, and the candidates are decided exactly as free text is: aligned glyph by glyph against the region with the alphabet's letters for the unit, the same radius, tie, and peer rules, the same evidence. The decided value is then judged in the claim's unit: within tolerance of the claim VERIFIED, a valid other value MISMATCH naming it, a value the field cannot take REVIEW. The valid set is a validity check on a reading, not a codebook. Two rules changed on the way: a competitor beyond the radius is not a competitor, since a candidate of another format differs in most of its glyphs and demanded a margin no gap could meet; and a three-way merge counts for the two extra characters it absorbs, since two of them fitted "fl. oz." over "mL" for half a glyph.
+
+Tracing the first run's alcohol misses found the readings wrong or absent rather than the alignments far. A percent sign is often three components, two circles about a slash, and the classifier knows the slash; the circles are absorbed by it. A glyph too small to classify between two digits is a decimal point or a thousands comma by where it sits. And line grouping used the global median glyph height and width, which a label's smallest type sets, for its centre and gap tolerances, so on a line of tall type every period became a line of its own and every space split the line; a band's own median now sets them. The radius for numeric claims, re-tuned on half A with the classifier reading the digits, stays at 0.15.
+
+Half B, single-threaded, the same 250 labels as above:
+
+250 labels, 15 without an alphabet, latency median 2.7s p95 4.1s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 137 | 0.99 | 0.79 | 0.01 | 0/1 | 0 |
+| class | 250 | 1.00 | 0.73 | 0.00 | 0/5 | 1 |
+| producer_1 | 250 | 1.00 | 0.75 | 0.00 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.76 | 0.00 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.72 | 0.00 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.59 | 0.13 | 3/8 | 3 |
+| net | 250 | 1.00 | 0.56 | 0.22 | 2/3 | 2 |
+| brand (display face) | 113 | 0.98 | 0.77 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 83/208 (73 reviewed, 52 failed); wording and title-case errors caught 6/9.
+Emphasis: correct on 145/199 labels (compliant headers verified and regular-weight headers caught).
+
+The gate was latency: median 2.7 s and p95 4.1 s against 5.0 and 7.0 (it was 8 to 10 s a label single-threaded before this step). Alcohol content went from recall 0.31 to 0.59 at precision 1.00, with review down from 0.41 to 0.13 and three of eight wrong values named; net contents from 0.53 to 0.56. Of the alcohol misses that remain, 52 are NOT_FOUND: on 15 no alphabet was learned, and on the rest the line was read but its unit, set in capitals the reference never teaches and synthesized in a foreign face, aligned outside the radius. Net's reviews are mostly `too_few_glyphs`: "1 L" is two glyphs and cannot decide anything on its own.
+
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

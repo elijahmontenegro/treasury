@@ -597,7 +597,7 @@ func tuned(records []Record, enc string) string {
 	}
 	best, bestF := override{0.12, 0.15, 0.02}, -1.0
 	for _, free := range []float64{0.08, 0.10, 0.12, 0.15, 0.18} {
-		for _, enum := range []float64{0.10, 0.12, 0.15, 0.18} {
+		for _, enum := range []float64{0.10, 0.12, 0.15, 0.18, 0.20, 0.22} {
 			for _, tie := range []float64{0.01, 0.02, 0.03, 0.05} {
 				o := override{free, enum, tie}
 				f := f1(a, o)

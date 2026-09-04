@@ -269,9 +269,13 @@ func Filter(cs []Component, imgH int, p Params) []Component {
 			hs = append(hs, h)
 		}
 	}
+	// Specks are one to three pixels; a period on a line of tall type is
+	// four or five. An eighth of the median height keeps the period (at a
+	// median of 28 the floor is 3) and still drops the specks of a small
+	// line's JPEG noise.
 	minRel := 0
 	if len(hs) > 0 {
-		minRel = median(hs) / 5
+		minRel = median(hs) / 8
 	}
 	for _, c := range cs {
 		h := c.Box.Dy()
@@ -301,29 +305,42 @@ func Lines(cs []Component, p Params) ([]Line, []image.Rectangle) {
 
 	sorted := append([]Component(nil), cs...)
 	sort.Slice(sorted, func(i, j int) bool { return cy(sorted[i]) < cy(sorted[j]) })
+	// The centre tolerance is the global one, which the label's smallest
+	// type sets, or the band's own: on a line of tall type a period's
+	// centre sits farther from the line's than the small type allows, and
+	// it must still join. The band's own tolerance only applies to a
+	// component that overlaps the band's vertical extent, so a small line
+	// set close below a title is not swallowed by it.
 	type band struct {
-		comps []Component
-		sumCy float64
+		comps       []Component
+		sumCy       float64
+		top, bottom int
+		hs          []int
 	}
 	var bands []band
 	for _, c := range sorted {
 		y := cy(c)
-		best, bestD := -1, vThr
+		best, bestD := -1, math.Inf(1)
 		for i := range bands {
-			d := y - bands[i].sumCy/float64(len(bands[i].comps))
-			if d < 0 {
-				d = -d
+			b := &bands[i]
+			d := math.Abs(y - b.sumCy/float64(len(b.comps)))
+			thr := vThr
+			if overlap := min(c.Box.Max.Y, b.bottom) - max(c.Box.Min.Y, b.top); overlap*2 >= c.Box.Dy() {
+				thr = math.Max(thr, p.VCenterFrac*float64(median(b.hs)))
 			}
-			if d < bestD {
+			if d < thr && d < bestD {
 				best, bestD = i, d
 			}
 		}
 		if best < 0 {
-			bands = append(bands, band{comps: []Component{c}, sumCy: y})
+			bands = append(bands, band{comps: []Component{c}, sumCy: y, top: c.Box.Min.Y, bottom: c.Box.Max.Y, hs: []int{c.Box.Dy()}})
 			continue
 		}
-		bands[best].comps = append(bands[best].comps, c)
-		bands[best].sumCy += y
+		b := &bands[best]
+		b.comps = append(b.comps, c)
+		b.sumCy += y
+		b.top, b.bottom = min(b.top, c.Box.Min.Y), max(b.bottom, c.Box.Max.Y)
+		b.hs = append(b.hs, c.Box.Dy())
 	}
 
 	var lines []Line
@@ -336,9 +353,16 @@ func Lines(cs []Component, p Params) ([]Line, []image.Rectangle) {
 			bbox = bbox.Union(c.Box)
 		}
 		boxes = append(boxes, bbox)
+		// A band of tall type has wider word gaps than the global median
+		// width allows; its own median width sets its threshold.
+		ws := make([]int, len(comps))
+		for i, c := range comps {
+			ws[i] = c.Box.Dx()
+		}
+		bandThr := math.Max(hThr, p.HGapFrac*float64(median(ws)))
 		start, maxX := 0, comps[0].Box.Max.X
 		for i := 1; i <= len(comps); i++ {
-			if i < len(comps) && float64(comps[i].Box.Min.X-maxX) <= hThr {
+			if i < len(comps) && float64(comps[i].Box.Min.X-maxX) <= bandThr {
 				maxX = max(maxX, comps[i].Box.Max.X)
 				continue
 			}

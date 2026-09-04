@@ -28,6 +28,7 @@ type encodedRegion struct {
 	comps         []image.Rectangle // component boxes, left to right
 	baselines     []int             // per component, from the fitted baseline
 	baseline      int
+	line          int // the line the region is a run of; -1 for bands
 	lowConfidence bool
 }
 
@@ -42,7 +43,7 @@ func encodeRegions(pre *preprocess.Result, regions []region.Region, enc encoder.
 		gray := image.NewGray(image.Rect(0, 0, ink.Dx(), ink.Dy()))
 		draw.Draw(gray, gray.Rect, pre.Gray, ink.Min, draw.Src)
 		p := encoder.Patch{Bin: pre.Bin.Crop(ink), Gray: gray}
-		er := encodedRegion{box: r.Box, ink: ink, code: enc.Encode(p), patch: p, lowConfidence: r.Glare > glareFrac}
+		er := encodedRegion{box: r.Box, ink: ink, code: enc.Encode(p), patch: p, line: r.Line, lowConfidence: r.Glare > glareFrac}
 		for _, c := range r.Comps {
 			er.comps = append(er.comps, c.Box)
 		}
@@ -180,8 +181,12 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	// Observed frames per region and geometry, shared across candidates.
 	type obsKey struct{ region, xh10, dy int }
 	cache := map[obsKey]alphabet.Observed{}
+	// Framings are shared to the quarter pixel of x-height: candidates of
+	// one claim differ in their extents by less than that, and each
+	// framing encodes every component of the region.
 	observed := func(ri int, xh float64, dy int) alphabet.Observed {
-		k := obsKey{ri, int(math.Round(xh * 10)), dy}
+		xh = math.Round(xh*4) / 4
+		k := obsKey{ri, int(math.Round(xh * 4)), dy}
 		if o, ok := cache[k]; ok {
 			return o
 		}
@@ -239,13 +244,21 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 			}
 			return lineScore(ri, wi)
 		}
+		// Coordinate descent over the geometry: the baseline first at the
+		// nominal scale (which the nominal pass already framed), then the
+		// scale at the better baseline. Five framings where the full grid
+		// took nine, and each framing encodes every component.
 		best, found := lineScore(ri, wi), false
 		xh0 := nominalXH(ri, wi)
-		for _, scale := range []float64{1, 0.96, 1.04} {
-			for _, dy := range []int{0, -1, 1} {
-				if f, ok := score(ri, wi, observed(ri, xh0*scale, dy)); ok && (!found || f.dist < best.dist) {
-					best, found = f, true
-				}
+		bestDy := 0
+		for _, dy := range []int{0, -1, 1} {
+			if f, ok := score(ri, wi, observed(ri, xh0, dy)); ok && (!found || f.dist < best.dist) {
+				best, found, bestDy = f, true, dy
+			}
+		}
+		for _, scale := range []float64{0.96, 1.04} {
+			if f, ok := score(ri, wi, observed(ri, xh0*scale, bestDy)); ok && (!found || f.dist < best.dist) {
+				best, found = f, true
 			}
 		}
 		return best
@@ -331,7 +344,11 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	// noise of one glyph comparison and a difference under it is not
 	// evidence. Line-wise it is the doc's fraction of the code length.
 	decisive := func(p, comp scored) bool {
-		if comp.region < 0 {
+		// A competitor outside the radius could not have been decoded
+		// as the value; it is no competitor. Without this, a candidate
+		// of a different format, differing in most of its glyphs, would
+		// demand a margin no real gap could supply.
+		if comp.region < 0 || comp.dist > radius {
 			return true
 		}
 		var margin float64
@@ -394,6 +411,9 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		}
 		read[p.region] = true
 		comp := competitor(p)
+		if numericTrace != nil {
+			numericTrace("%s: reading region %d %v text %q dist %.4f glyphs %d refined %v; competitor %q dist %.4f; decisive %v", c.Name, p.region, regions[p.region].box, p.word_.Text, p.dist, p.glyphs, p.refined, comp.word_.Text, comp.dist, decisive(p, comp))
+		}
 		if p.refined && p.glyphs >= e.opt.MinGlyphs && decisive(p, comp) {
 			if len(decided) == 0 {
 				v.Evidence = evidence(p, comp)

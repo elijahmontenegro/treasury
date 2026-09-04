@@ -65,3 +65,7 @@ func DigitDistances(fn func(line string)) {
 func SetProbe(box image.Rectangle, text string) {
 	debugProbe = &probe{box: box, text: text}
 }
+
+// SetNumericTrace makes numeric claims report their readings and the
+// candidates instantiated from them.
+func SetNumericTrace(fn func(format string, args ...any)) { numericTrace = fn }
