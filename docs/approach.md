@@ -149,6 +149,40 @@ The gate was latency: median 2.7 s and p95 4.1 s against 5.0 and 7.0 (it was 8 t
 
 Ten approvals completed 20 to 26 August 2026 were taken from the TTB public COLA registry, four spirits, three wines, three malt beverages, each from a different permittee, with the brand, class, applicant, and origin from the application form and the alcohol content and net contents transcribed from the label images, which the form does not carry. Front, back, and neck images were stacked into one image (`cmd/stack`); the set is `real/`, with the TTB IDs and source URLs in each truth file. The images are the artwork as submitted, 96 to 300 dpi, clean: no blur, no glare, no compression to speak of.
 
+**Step 4 as specified: the engine at the step 3 commit, unchanged, on the ten labels** (`real/table_step4_baseline.md`, `real/records_step4_baseline.json`):
+
+10 labels, 9 without an alphabet, latency median 0.3s p95 4.6s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 10 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| class | 10 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| producer_1 | 10 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| producer_2 | 6 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| origin | 3 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| abv | 10 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| net | 10 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 0/10 (9 reviewed, 1 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 1/1 labels (compliant headers verified and regular-weight headers caught).
+
+Nine of ten learn no alphabet; the tenth, Seelbach's, learns one from its letterspaced warning and verifies nothing, every claim aligning at 18 to 20 percent against radii of 12 and 15. Read against the labels, the causes are these, and none of them is in the synthetic channel:
+
+1. **The reference is set in capitals on half of real labels** (five of ten). The generator never did that, and a mixed-case reference aligned to capitals is rejected every time.
+2. **Type is set light on dark, and the warning runs vertically** (two labels each). The generator never did either.
+3. **The warning sits inside a taller block of similar rows**: ingredients, importer, and producer lines in the same size directly above or below it (0003, 0010). The generator isolated the warning with leading.
+4. **The claims are in other faces.** On synthetic labels the class, producer, and origin lines were set in the warning's face and matched at 3 to 8 percent. On real labels only the warning is in the warning's face; the claims are in two to four others.
+5. **Numbers are printed in forms the list lacked**: "ALC 19% by Vol.", "20% Alc by Vol", "ALC. BY VOL. 5%", "60 % ALC/VOL", and malt-beverage fills and strengths outside the wine and spirits sets (355 mL, 3.75%, 4.1%).
+
+**The synthetic channel is gentler than reality in every way that matters and harsher in the one that does not.** Harsher: it blurs, rotates, warps, and compresses, and registry artwork has none of that; every real label thresholds cleanly. Gentler: it set the warning in mixed case, dark on light, horizontal, alone, and set the claims in the warning's face.
+
+### Step 4b: mechanisms for what the real labels showed (2026-09-03)
+
+This step was not in the amendment. It changed the engine while step 4 was being measured, and its reason is recorded here after the fact, against the amendment's rule; the step 4 table above was re-measured afterwards from the step 3 commit so that both numbers stand. Its gate, also stated after the fact: more of the ten learn an alphabet than the one above, and the synthetic half B does not regress beyond noise.
+
+The mechanisms, each general: the reference is also tried in capitals, with the block's x-height estimate divided by the cap-to-x ratio since an all-capitals block has no x-height to measure, and which casing the label printed is read off the block's glyph heights (capitals stand uniformly tall; matched counts and violation fractions both preferred capitals on mixed-case blocks, because with the scaled x-height every glyph measures tall and contradicts nothing). The image is tried inverted and in the other three orientations when no alphabet is learned, and no further. Clusters larger than the reference are searched by windows of consecutive rows. A numeric claim is decided only on regions holding a digit run. The regulation's alcohol-statement forms and the malt-beverage fills, with a tenth-percent step for beer, are in the `ttb` data.
+
 10 labels, 4 without an alphabet, latency median 3.6s p95 5.6s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
@@ -165,34 +199,28 @@ Ten approvals completed 20 to 26 August 2026 were taken from the TTB public COLA
 Reference rows: compliant labels with every row verified 1/10 (4 reviewed, 5 failed); wording and title-case errors caught 0/0.
 Emphasis: correct on 5/6 labels (compliant headers verified and regular-weight headers caught).
 
-Per label (V verified, M mismatch, R review, dash not found, s skipped):
+Per label, step 4 against 4b (V verified, M mismatch, R review, dash not found, s skipped):
 
-| label | TTB ID | taken | reference | matched | brand class producer abv net | what the label is like |
-|---|---|---|---|---|---|---|
-| 0001 | 26027001000487 | as_is | — | 23/150 | brand — class — produ — abv — net — | light type on black; warning in condensed caps |
-| 0002 | 26044001000617 | rot90 | upper | 49/264 | brand — class — produ — abv — net — | warning vertical; brand in script; class in display face |
-| 0003 | 26051001000586 | as_is | — | 52/224 | brand — class — produ — abv — net — | clean; class and warning large |
-| 0004 | 26166001000601 | as_is | as_given | 218/243 | brand — class — produ — abv — net — | warning letterspaced with items on separate lines; producer magenta on dark band |
-| 0005 | 26054001000022 | as_is | upper | 196/233 | brand V class — produ V abv R net — | warning condensed caps; label prints "WITHE WINE" |
-| 0006 | 26146001000213 | as_is | — | 95/236 | brand — class — produ — abv — net — | warning condensed caps on back; "ALC 19% by Vol." |
-| 0007 | 26188001000248 | inverted | upper | 122/231 | brand R class — produ R abv R net V | single strip label, warning boxed |
-| 0008 | 26033001000372 | as_is | — | 67/172 | brand — class — produ — abv — net — | can wrap; warning condensed caps in a column; beer fill 355 mL |
-| 0009 | 26202001000918 | inverted_rot90 | upper | 84/247 | brand — class — produ — abv s net — | light type on dark blue; warning vertical and tiny |
-| 0010 | 25132001000733 | as_is | as_given | 183/245 | brand — class — produ — abv s net M | gold gradient; warning centered with items on their own lines; "ALC. BY VOL. 5%" |
+| label | TTB ID | step 4 matched | step 4 claims | 4b taken, casing | 4b matched | 4b claims | what the label is like |
+|---|---|---|---|---|---|---|---|
+| 0001 | 26027001000487 | —/— | no alphabet | as_is, — | 23/150 | no alphabet | light type on black; warning in condensed caps |
+| 0002 | 26044001000617 | —/— | no alphabet | rot90, upper | 49/264 | brand — class — produ — abv — net — | warning vertical; brand in script; class in display face |
+| 0003 | 26051001000586 | 60/327 | no alphabet | as_is, — | 52/224 | no alphabet | clean; class and warning large |
+| 0004 | 26166001000601 | 218/243 | brand — class — produ — abv — net — | as_is, as_given | 218/243 | brand — class — produ — abv — net — | warning letterspaced with items on separate lines; producer magenta on dark band |
+| 0005 | 26054001000022 | 30/160 | no alphabet | as_is, upper | 196/233 | brand V class — produ V abv R net — | warning condensed caps; label prints "WITHE WINE" |
+| 0006 | 26146001000213 | 28/145 | no alphabet | as_is, — | 95/236 | no alphabet | warning condensed caps on back; "ALC 19% by Vol." |
+| 0007 | 26188001000248 | —/— | no alphabet | inverted, upper | 122/231 | brand R class — produ R abv R net V | single strip label, warning boxed |
+| 0008 | 26033001000372 | 67/172 | no alphabet | as_is, — | 67/172 | no alphabet | can wrap; warning condensed caps in a column; beer fill 355 mL |
+| 0009 | 26202001000918 | —/— | no alphabet | inverted_rot90, upper | 84/247 | brand — class — produ — abv s net — | light type on dark blue; warning vertical and tiny |
+| 0010 | 25132001000733 | 73/433 | no alphabet | as_is, as_given | 183/245 | brand — class — produ — abv s net M | gold gradient; warning centered with items on their own lines; "ALC. BY VOL. 5%" |
 
-**The synthetic channel is gentler than reality in every way that matters and harsher in the one that does not.** Harsher: it blurs, rotates, warps, and compresses, and registry artwork has none of that; every real label thresholds cleanly. Gentler, in order of cost:
+Six of ten learn an alphabet against one. The two labels whose claims are in the warning's face verify them: EDDA's brand, producer, and origin at 5 to 10 percent, while it refuses the class line, which the printer set as "WITHE WINE" (`docs/evidence/edda_back.png`); THE AUSTIN WINERY's net contents, with its brand and producer at 8 to 9 percent held at review because the block's S samples disagreed (the per-character acceptance from step 1). Everything set in another face still aligns at 17 to 21 percent, right or wrong: the 0.12 and 0.15 radii tuned on the synthetic set sit at the noise floor of cross-face alignment, where a wrong "1 Litre" on 0010 lands at 15 percent next to right answers at 13 to 17. 0001 (reversed condensed capitals on black), 0003 (a distressed face that breaks glyphs), 0006, and 0008 (condensed capitals, 0008 in a narrow column) still learn nothing.
 
-1. **The reference is set in capitals on half of real labels** (five of ten). The generator never did that, and the engine aligned the mixed-case reference to capitals and rejected the block every time. The reference is now also tried in capitals, with the block's x-height estimate divided by the cap-to-x ratio, since an all-capitals block has no x-height to measure; which casing the label printed is read off the block's glyph heights (capitals stand uniformly tall). That turned 0002, 0005, 0007, and 0009 from no alphabet into one.
-2. **Type is set light on dark, and the warning runs vertically** (two labels each). The generator never did either. The image is now tried inverted and in the other three orientations when no alphabet is learned; 0002 (vertical) and 0009 (vertical and reversed) learn one. 0001 (reversed condensed capitals on black) still does not.
-3. **The warning sits inside a taller block of similar rows**: ingredients, importer, and producer lines in the same size directly above or below it (0003, 0010). The generator isolated the warning with leading. Clusters larger than the reference are now searched by windows of consecutive rows, which is how 0010 learns.
-4. **The claims are in other faces.** On synthetic labels the class, producer, and origin lines were set in the warning's face and matched at 3 to 8 percent. On real labels only the warning is in the warning's face; the claims are in two to four others, and everything the alphabet has to synthesize aligns at 17 to 21 percent, beyond the 12 percent free-text radius, right or wrong (0002, 0004, 0009, 0010). The two labels whose claims are in the warning's face verify them: EDDA's brand, producer, and origin at 5 to 10 percent, while it refuses the class line, which the printer set as "WITHE WINE" (`docs/evidence/edda_back.png`); THE AUSTIN WINERY's net contents, with its brand and producer at 8 to 9 percent held at review because the block's S samples disagreed. The 0.12 and 0.15 radii tuned on the synthetic set sit at the noise floor of cross-face alignment, where a wrong "1 Litre" on 0010 lands at 15 percent next to right answers at 13 to 17.
-5. **Numbers are printed in forms the list lacked**: "ALC 19% by Vol.", "20% Alc by Vol", "ALC. BY VOL. 5%", "60 % ALC/VOL", and malt-beverage fills and strengths outside the wine and spirits sets (355 mL, 3.75%, 4.1%). The regulation's forms and the malt-beverage fills are in the `ttb` data now, with a tenth-percent step for beer.
+Synthetic half B, re-run with these mechanisms: alcohol 0.59, net 0.55, brand 0.79, 17 of 250 without an alphabet against 15 before, median 2.8 s and p95 3.9 s single-threaded. The gate holds.
 
-Evidence crops in `docs/evidence/`: `edda_warning_caps.png` (the capitals warning aligned, matched glyphs in green), `edda_back.png` ("WITHE WINE"), `gaul_warning_vertical.png` (reversed, vertical, 5 px type), `seelbachs_warning.png` and `seelbachs_class.png` (the warning's letterspaced sans against the class line's bold serif), `boojies_block.png` (a clean large warning under two rows of the same size that the alignment still does not isolate: its distressed face breaks glyphs into pieces).
+Evidence crops in `docs/evidence/`: `edda_warning_caps.png` (the capitals warning aligned, matched glyphs in green), `edda_back.png` ("WITHE WINE"), `gaul_warning_vertical.png` (reversed, vertical, 5 px type), `seelbachs_warning.png` and `seelbachs_class.png` (the warning's letterspaced sans against the class line's bold serif), `boojies_block.png` (a clean large warning under two rows of the same size that the alignment still does not isolate).
 
-What this changes about the plan: step 5's contrastive encoder was conditioned on free-text recall on augmented synthetic labels, and that recall is 0.72 to 0.79 with the misses mostly blur. The real labels say the limiting factor is not the channel but the face: an alphabet learned from one face does not carry to a claim in another, and the bundled faces do not stand in. The synthetic generator should set claims in faces other than the body face before any encoder is trained on it, or the encoder will be trained for the wrong problem.
-
-The synthetic half B, re-run with the casing, orientation, and row-window mechanisms in place: alcohol 0.59, net 0.55, brand 0.79, 17 of 250 without an alphabet against 15 before, median 2.8 s and p95 3.9 s single-threaded.
+What this changes about the plan: step 5's contrastive encoder was conditioned on free-text recall on augmented synthetic labels, and that recall is 0.72 to 0.79 with the misses mostly blur. The real labels say the limiting factor is the face: an alphabet learned from one face does not carry to a claim in another, and the bundled faces do not stand in. That is what a contrastive encoder trained on cross-face pairs would learn to ignore, and the current generator, which sets claims in the body face, would teach it nothing about it. The sequence is therefore: the generator sets claims in faces other than the body face, the table is re-run to measure the gap, and the encoder is trained on that data.
 
 ## What the numbers say
 

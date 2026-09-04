@@ -1,0 +1,1231 @@
+[
+ {
+  "label": "0001",
+  "encoder": "dual",
+  "printed": {
+   "family": "spirits",
+   "brand": "MR. \u0026 MRS.",
+   "class": "RYE WHISKEY",
+   "producer": [
+    "BOTTLED BY MMBC",
+    "HARRODSBURG, KY 40330"
+   ],
+   "origin": "",
+   "abv": 64,
+   "abv_text": "64 % ALC/VOL",
+   "net_ml": 750,
+   "net_text": "750 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 282777500,
+  "reason": "no_alphabet",
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "MR. \u0026 MRS."
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "RYE WHISKEY"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "BOTTLED BY MMBC"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "HARRODSBURG, KY 40330"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "64"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "750"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0002",
+  "encoder": "dual",
+  "printed": {
+   "family": "spirits",
+   "brand": "Breckenridge",
+   "class": "Bourbon Whiskeys",
+   "producer": [
+    "Produced by Breckenridge Distillery,",
+    "Breckenridge, Colorado USA"
+   ],
+   "origin": "",
+   "abv": 43,
+   "abv_text": "43% ALC/VOL (86 PROOF)",
+   "net_ml": 50,
+   "net_text": "50 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 116269100,
+  "reason": "no_alphabet",
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Breckenridge"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Bourbon Whiskeys"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Produced by Breckenridge Distillery,"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Breckenridge, Colorado USA"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "43"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "50"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0003",
+  "encoder": "dual",
+  "printed": {
+   "family": "spirits",
+   "brand": "UNCLE BOOJIE'S",
+   "class": "Kentucky Straight Bourbon Whiskey",
+   "producer": [
+    "Filled by Whiskey Thief Distilling Company, Frankfort, Kentucky"
+   ],
+   "origin": "",
+   "abv": 50,
+   "abv_text": "50% ALC BY VOL",
+   "net_ml": 750,
+   "net_text": "750 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 250819700,
+  "reason": "no_alphabet",
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 86,
+     "Y": 754
+    },
+    "Max": {
+     "X": 1487,
+     "Y": 1418
+    }
+   },
+   "glyphs": 327,
+   "matched": 60,
+   "unexplained": 1,
+   "violations": 0.1825726141078838,
+   "recovered": 0,
+   "spread": 0.05797371031746033,
+   "characters": "(,.abcefhilmnorstu",
+   "face": "",
+   "x_height": 44,
+   "cap_height": 72,
+   "letter_gap": 3,
+   "word_gap": 10,
+   "rows": null
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "UNCLE BOOJIE'S"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Kentucky Straight Bourbon Whiskey"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Filled by Whiskey Thief Distilling Company, Frankfort, Kentucky"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "50"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "750"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0004",
+  "encoder": "dual",
+  "printed": {
+   "family": "spirits",
+   "brand": "SEELBACH'S",
+   "class": "Kentucky Straight Bourbon Whiskey",
+   "producer": [
+    "Manifest Distilling in Jacksonville, FL"
+   ],
+   "origin": "",
+   "abv": 60,
+   "abv_text": "60 % ALC/VOL",
+   "net_ml": 750,
+   "net_text": "750ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 4610259200,
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 235,
+     "Y": 1392
+    },
+    "Max": {
+     "X": 503,
+     "Y": 1531
+    }
+   },
+   "glyphs": 243,
+   "matched": 218,
+   "unexplained": 0,
+   "violations": 0.02074688796680498,
+   "recovered": 0,
+   "spread": 0.051087772231405475,
+   "characters": "(),12ACGSabcdefghiklmnoprstuvy",
+   "face": "Go Bold",
+   "x_height": 7,
+   "cap_height": 10,
+   "letter_gap": 2,
+   "word_gap": 6,
+   "rows": null
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "expected": "SEELBACH'S",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 232,
+       "Y": 1436
+      },
+      "Max": {
+       "X": 305,
+       "Y": 1456
+      }
+     },
+     "text": "Seelbach's",
+     "params": {
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "'",
+      "face": "Go Bold"
+     },
+     "d1": 3430,
+     "d2": -1,
+     "radius": 2150,
+     "bits": 17920,
+     "refined": true,
+     "glyphs": 10,
+     "penalized": 3,
+     "spread": 0.051087772231405475,
+     "low_confidence": false
+    }
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "expected": "Kentucky Straight Bourbon Whiskey",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 124,
+       "Y": 589
+      },
+      "Max": {
+       "X": 435,
+       "Y": 608
+      }
+     },
+     "text": "KENTUCKY STRAIGHT BOURBON WHISKEY",
+     "params": {
+      "casing": "upper",
+      "weight": "heavy",
+      "synthesized": "KUCKYSHBUBHSKY",
+      "emphasis": "ENTTRAIGTORONWIE",
+      "face": "Go Medium"
+     },
+     "d1": 9547,
+     "d2": -1,
+     "radius": 6451,
+     "bits": 53760,
+     "refined": true,
+     "glyphs": 30,
+     "penalized": 6,
+     "spread": 0.051087772231405475,
+     "low_confidence": false
+    }
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "expected": "Manifest Distilling in Jacksonville, FL",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 232,
+       "Y": 1404
+      },
+      "Max": {
+       "X": 494,
+       "Y": 1425
+      }
+     },
+     "text": "Manifest Distilling In Jacksonville, Fl",
+     "params": {
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "DJF",
+      "emphasis": "MI",
+      "face": "Go Bold"
+     },
+     "d1": 12835,
+     "d2": -1,
+     "radius": 7526,
+     "bits": 62720,
+     "refined": true,
+     "glyphs": 35,
+     "penalized": 12,
+     "spread": 0.051087772231405475,
+     "low_confidence": false
+    }
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "expected": "60",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 232,
+       "Y": 1436
+      },
+      "Max": {
+       "X": 305,
+       "Y": 1456
+      }
+     },
+     "text": "(11 Proof)",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "P",
+      "face": "Go Bold"
+     },
+     "d1": 3092,
+     "d2": 3231,
+     "radius": 2419,
+     "bits": 16128,
+     "refined": true,
+     "glyphs": 9,
+     "penalized": 2,
+     "competitor": "44",
+     "competitor_text": "(88 Proof)",
+     "spread": 0.051087772231405475,
+     "low_confidence": false,
+     "reading": "11",
+     "digit_confidence": 0.8989818320170322
+    }
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "expected": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 309,
+       "Y": 557
+      },
+      "Max": {
+       "X": 324,
+       "Y": 575
+      }
+     },
+     "text": "1L",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "L",
+      "face": "Go Bold"
+     },
+     "d1": 721,
+     "d2": -1,
+     "radius": 538,
+     "bits": 3584,
+     "refined": true,
+     "glyphs": 2,
+     "penalized": 0,
+     "spread": 0.051087772231405475,
+     "low_confidence": false,
+     "reading": "1",
+     "digit_confidence": 0.7700372047006538
+    }
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference_row_1",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 235,
+       "Y": 1392
+      },
+      "Max": {
+       "X": 452,
+       "Y": 1402
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 17,
+     "mean_distance": 0.023634453781512604
+    }
+   },
+   {
+    "claim": "reference_row_2",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 236,
+       "Y": 1408
+      },
+      "Max": {
+       "X": 490,
+       "Y": 1421
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 30,
+     "prior_violations": 2,
+     "mean_distance": 0.04347098214285715
+    }
+   },
+   {
+    "claim": "reference_row_3",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 235,
+       "Y": 1424
+      },
+      "Max": {
+       "X": 462,
+       "Y": 1434
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 25,
+     "mean_distance": 0.052946428571428575
+    }
+   },
+   {
+    "claim": "reference_row_4",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 236,
+       "Y": 1440
+      },
+      "Max": {
+       "X": 482,
+       "Y": 1452
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 31,
+     "mean_distance": 0.0615639400921659
+    }
+   },
+   {
+    "claim": "reference_row_5",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 235,
+       "Y": 1456
+      },
+      "Max": {
+       "X": 414,
+       "Y": 1465
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 18,
+     "mean_distance": 0.06711929563492064
+    }
+   },
+   {
+    "claim": "reference_row_6",
+    "status": "MISMATCH",
+    "reason": "shape_class",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 236,
+       "Y": 1471
+      },
+      "Max": {
+       "X": 503,
+       "Y": 1484
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 26,
+     "prior_violations": 3,
+     "mean_distance": 0.0557391826923077
+    }
+   },
+   {
+    "claim": "reference_row_7",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 236,
+       "Y": 1487
+      },
+      "Max": {
+       "X": 479,
+       "Y": 1499
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 31,
+     "mean_distance": 0.05085325460829493
+    }
+   },
+   {
+    "claim": "reference_row_8",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 235,
+       "Y": 1503
+      },
+      "Max": {
+       "X": 464,
+       "Y": 1515
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 28,
+     "mean_distance": 0.05723852040816326
+    }
+   },
+   {
+    "claim": "reference_row_9",
+    "status": "VERIFIED",
+    "expected": "",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 236,
+       "Y": 1519
+      },
+      "Max": {
+       "X": 343,
+       "Y": 1531
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 0,
+     "d2": 0,
+     "radius": 0,
+     "bits": 0,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "matched": 12,
+     "mean_distance": 0.06212797619047619
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "emphasis_1",
+    "status": "VERIFIED",
+    "expected": "GOVERNMENT WARNING:",
+    "observed": "heavy",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 235,
+       "Y": 1392
+      },
+      "Max": {
+       "X": 452,
+       "Y": 1402
+      }
+     },
+     "text": "",
+     "params": {},
+     "d1": 495,
+     "d2": 995,
+     "radius": 614,
+     "bits": 4096,
+     "refined": false,
+     "glyphs": 0,
+     "penalized": 0,
+     "low_confidence": false,
+     "stroke_ratio": 1.5483870908199313
+    }
+   }
+  ]
+ },
+ {
+  "label": "0005",
+  "encoder": "dual",
+  "printed": {
+   "family": "wine",
+   "brand": "EDDA",
+   "class": "White Wine",
+   "producer": [
+    "CANTINE SAN MARZANO",
+    "San Marzano di S.G. - ITALIA"
+   ],
+   "origin": "PRODUCT OF ITALY",
+   "abv": 14,
+   "abv_text": "14% ALC./VOL.",
+   "net_ml": 750,
+   "net_text": "750 mL",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 246089900,
+  "reason": "no_alphabet",
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 35,
+     "Y": 590
+    },
+    "Max": {
+     "X": 853,
+     "Y": 731
+    }
+   },
+   "glyphs": 160,
+   "matched": 30,
+   "unexplained": 4,
+   "violations": 0.6919831223628692,
+   "recovered": 0,
+   "spread": 0.07023499503968253,
+   "characters": ",.Sabcdefilorstvy",
+   "face": "",
+   "x_height": 15,
+   "cap_height": 14,
+   "letter_gap": 1,
+   "word_gap": 2,
+   "rows": null
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "EDDA"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "White Wine"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "CANTINE SAN MARZANO"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "San Marzano di S.G. - ITALIA"
+   },
+   {
+    "claim": "origin",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "PRODUCT OF ITALY"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "14"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "750"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0006",
+  "encoder": "dual",
+  "printed": {
+   "family": "wine",
+   "brand": "STOKELAN",
+   "class": "Dessert Red Wine",
+   "producer": [
+    "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055"
+   ],
+   "origin": "New Jersey",
+   "abv": 19,
+   "abv_text": "ALC 19% by Vol.",
+   "net_ml": 750,
+   "net_text": "750ml",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 307056900,
+  "reason": "no_alphabet",
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 305,
+     "Y": 1406
+    },
+    "Max": {
+     "X": 840,
+     "Y": 1490
+    }
+   },
+   "glyphs": 145,
+   "matched": 28,
+   "unexplained": 5,
+   "violations": 0.7627118644067796,
+   "recovered": 0,
+   "spread": 0.06875,
+   "characters": ",abcdefghinoprsty",
+   "face": "",
+   "x_height": 17,
+   "cap_height": 0,
+   "letter_gap": 2,
+   "word_gap": 3,
+   "rows": null
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "STOKELAN"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Dessert Red Wine"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055"
+   },
+   {
+    "claim": "origin",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "New Jersey"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "19"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "750"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0007",
+  "encoder": "dual",
+  "printed": {
+   "family": "wine",
+   "brand": "THE AUSTIN WINERY",
+   "class": "Dessert Wine",
+   "producer": [
+    "THE AUSTIN WINERY",
+    "AUSTIN, TEXAS"
+   ],
+   "origin": "",
+   "abv": 20,
+   "abv_text": "20% Alc by Vol",
+   "net_ml": 375,
+   "net_text": "375ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 60109400,
+  "reason": "no_alphabet",
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "THE AUSTIN WINERY"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Dessert Wine"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "THE AUSTIN WINERY"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "AUSTIN, TEXAS"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "20"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "375"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0008",
+  "encoder": "dual",
+  "printed": {
+   "family": "beer",
+   "brand": "FIELDCRAFT",
+   "class": "Malt Beverage",
+   "producer": [
+    "BY FIELDCRAFT,",
+    "NORTHGLENN, CO"
+   ],
+   "origin": "",
+   "abv": 3.75,
+   "abv_text": "3.75% ALC/VOL",
+   "net_ml": 355,
+   "net_text": "12 FL OZ (355 ML)",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 285616400,
+  "reason": "no_alphabet",
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 93,
+     "Y": 178
+    },
+    "Max": {
+     "X": 1134,
+     "Y": 509
+    }
+   },
+   "glyphs": 172,
+   "matched": 67,
+   "unexplained": 1,
+   "violations": 0.5166666666666667,
+   "recovered": 0,
+   "spread": 0.08973461036200193,
+   "characters": ".CGabcdeghkmnoprstuvwy",
+   "face": "",
+   "x_height": 14,
+   "cap_height": 18,
+   "letter_gap": 2,
+   "word_gap": 4,
+   "rows": null,
+   "unlearned": "E"
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "FIELDCRAFT"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Malt Beverage"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "BY FIELDCRAFT,"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "NORTHGLENN, CO"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "3.75"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "355"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0009",
+  "encoder": "dual",
+  "printed": {
+   "family": "beer",
+   "brand": "GAUL",
+   "class": "Lager",
+   "producer": [
+    "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY"
+   ],
+   "origin": "",
+   "abv": 4.1,
+   "abv_text": "4.1% ALC/VOL",
+   "net_ml": 355,
+   "net_text": "12 FL OZ",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 113900700,
+  "reason": "no_alphabet",
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "GAUL"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Lager"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "4.1"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "355"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ },
+ {
+  "label": "0010",
+  "encoder": "dual",
+  "printed": {
+   "family": "beer",
+   "brand": "Gallo",
+   "class": "Beer",
+   "producer": [
+    "Imported by Latin American Traders LLC",
+    "8859 NW 102nd Ct, Doral, FL 33178"
+   ],
+   "origin": "Product of Guatemala",
+   "abv": 5,
+   "abv_text": "ALC. BY VOL. 5%",
+   "net_ml": 350,
+   "net_text": "NET CONT. 350 ML / 12 FL OZ",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": ""
+  },
+  "augmented": false,
+  "latency": 473928300,
+  "reason": "no_alphabet",
+  "alphabet": {
+   "block": {
+    "Min": {
+     "X": 161,
+     "Y": 956
+    },
+    "Max": {
+     "X": 524,
+     "Y": 1248
+    }
+   },
+   "glyphs": 433,
+   "matched": 73,
+   "unexplained": 6,
+   "violations": 0.13692946058091288,
+   "recovered": 0,
+   "spread": 0.08332469706632653,
+   "characters": "(.abdeghilmnoptuvy",
+   "face": "",
+   "x_height": 9,
+   "cap_height": 11,
+   "letter_gap": 1,
+   "word_gap": 5,
+   "rows": null,
+   "unlearned": "Ncfrs"
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Gallo"
+   },
+   {
+    "claim": "class",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Beer"
+   },
+   {
+    "claim": "producer_1",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Imported by Latin American Traders LLC"
+   },
+   {
+    "claim": "producer_2",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "8859 NW 102nd Ct, Doral, FL 33178"
+   },
+   {
+    "claim": "origin",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "Product of Guatemala"
+   },
+   {
+    "claim": "abv",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "5"
+   },
+   {
+    "claim": "net",
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "350"
+   }
+  ],
+  "reference": null,
+  "emphasis": null
+ }
+]
