@@ -1,0 +1,12 @@
+{
+ "beverage": "wine",
+ "brand": "THE AUSTIN WINERY",
+ "class": "Dessert Wine",
+ "producer": [
+  "THE AUSTIN WINERY",
+  "AUSTIN, TEXAS"
+ ],
+ "origin": "",
+ "abv": 20,
+ "net_ml": 375
+}

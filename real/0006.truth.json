@@ -1,0 +1,22 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "STOKELAN",
+  "class": "Dessert Red Wine",
+  "producer": [
+   "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055"
+  ],
+  "origin": "New Jersey",
+  "abv": 19,
+  "abv_text": "ALC 19% by Vol.",
+  "net_ml": 750,
+  "net_text": "750ml",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26146001000213",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26146001000213",
+ "note": "warning condensed caps on back; \"ALC 19% by Vol.\""
+}

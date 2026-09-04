@@ -64,6 +64,8 @@ type Record struct {
 	Augmented bool                   `json:"augmented"`
 	Latency   time.Duration          `json:"latency"`
 	Reason    string                 `json:"reason,omitempty"`
+	Orient    string                 `json:"orientation,omitempty"`
+	Casing    string                 `json:"reference_casing,omitempty"`
 	Alphabet  *verify.AlphabetReport `json:"alphabet,omitempty"`
 	Claims    []verify.Verdict       `json:"claims"`
 	Reference []verify.Verdict       `json:"reference"`
@@ -223,7 +225,7 @@ func one(eng *verify.Engine, enc, truthPath string) (Record, error) {
 	}
 	rec := Record{
 		Label: filepath.Base(base), Encoder: enc, Printed: t.Printed, Augmented: len(t.Aug) > 0,
-		Latency: time.Since(start), Reason: res.Reason, Alphabet: res.Alphabet, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
+		Latency: time.Since(start), Reason: res.Reason, Orient: res.Orientation, Casing: res.ReferenceCasing, Alphabet: res.Alphabet, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
 	}
 	if rec.Alphabet != nil {
 		rec.Alphabet.Rows = nil

@@ -1,0 +1,12 @@
+{
+ "beverage": "beer",
+ "brand": "FIELDCRAFT",
+ "class": "Malt Beverage",
+ "producer": [
+  "BY FIELDCRAFT,",
+  "NORTHGLENN, CO"
+ ],
+ "origin": "",
+ "abv": 3.75,
+ "net_ml": 355
+}

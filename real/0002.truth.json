@@ -1,0 +1,23 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "Breckenridge",
+  "class": "Bourbon Whiskeys",
+  "producer": [
+   "Produced by Breckenridge Distillery,",
+   "Breckenridge, Colorado USA"
+  ],
+  "origin": "",
+  "abv": 43,
+  "abv_text": "43% ALC/VOL (86 PROOF)",
+  "net_ml": 50,
+  "net_text": "50 ML",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26044001000617",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26044001000617",
+ "note": "warning vertical; brand in script; class in display face"
+}

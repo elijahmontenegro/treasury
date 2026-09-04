@@ -138,3 +138,44 @@ func JPEGRoundTrip(g *image.Gray, quality int) (*image.Gray, error) {
 	}
 	return ToGray(img), nil
 }
+
+// Invert returns the negative of g: light type on a dark ground becomes
+// dark type on light, which is what thresholding expects.
+func Invert(g *image.Gray) *image.Gray {
+	out := image.NewGray(g.Rect)
+	for i, v := range g.Pix {
+		out.Pix[i] = 255 - v
+	}
+	return out
+}
+
+// Rotate90 rotates g by quarter turns clockwise, exactly, with no
+// resampling; the canvas changes shape with the image.
+func Rotate90(g *image.Gray, quarters int) *image.Gray {
+	quarters = ((quarters % 4) + 4) % 4
+	if quarters == 0 {
+		return g
+	}
+	w, h := g.Rect.Dx(), g.Rect.Dy()
+	var out *image.Gray
+	switch quarters {
+	case 2:
+		out = image.NewGray(image.Rect(0, 0, w, h))
+	default:
+		out = image.NewGray(image.Rect(0, 0, h, w))
+	}
+	for y := range h {
+		for x := range w {
+			v := g.Pix[(y+g.Rect.Min.Y-g.Rect.Min.Y)*g.Stride+x]
+			switch quarters {
+			case 1:
+				out.Pix[x*out.Stride+(h-1-y)] = v
+			case 2:
+				out.Pix[(h-1-y)*out.Stride+(w-1-x)] = v
+			case 3:
+				out.Pix[(w-1-x)*out.Stride+y] = v
+			}
+		}
+	}
+	return out
+}

@@ -1,0 +1,12 @@
+{
+ "beverage": "wine",
+ "brand": "EDDA",
+ "class": "White Wine",
+ "producer": [
+  "CANTINE SAN MARZANO",
+  "San Marzano di S.G. - ITALIA"
+ ],
+ "origin": "PRODUCT OF ITALY",
+ "abv": 14,
+ "net_ml": 750
+}

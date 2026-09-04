@@ -1,0 +1,23 @@
+{
+ "printed": {
+  "family": "beer",
+  "brand": "FIELDCRAFT",
+  "class": "Malt Beverage",
+  "producer": [
+   "BY FIELDCRAFT,",
+   "NORTHGLENN, CO"
+  ],
+  "origin": "",
+  "abv": 3.75,
+  "abv_text": "3.75% ALC/VOL",
+  "net_ml": 355,
+  "net_text": "12 FL OZ (355 ML)",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26033001000372",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26033001000372",
+ "note": "can wrap; warning condensed caps in a column; beer fill 355 mL"
+}

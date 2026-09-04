@@ -1,0 +1,12 @@
+{
+ "beverage": "spirits",
+ "brand": "Breckenridge",
+ "class": "Bourbon Whiskeys",
+ "producer": [
+  "Produced by Breckenridge Distillery,",
+  "Breckenridge, Colorado USA"
+ ],
+ "origin": "",
+ "abv": 43,
+ "net_ml": 50
+}

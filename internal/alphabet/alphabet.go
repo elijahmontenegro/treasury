@@ -165,6 +165,15 @@ func adjacent(a, b region.Line) bool {
 // Extract builds a Block from a cluster of lines: rows by baseline, glyphs
 // left to right within a row, frame codes from enc.
 func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image.Gray, enc encoder.Encoder) *Block {
+	return extract(cluster, lines, bin, gray, enc, 1)
+}
+
+// extract is Extract with the x-height estimate scaled: the estimate is the
+// most common glyph height of a row, which is the x-height of lowercase
+// text and the cap height of text set in capitals; a reference without
+// lowercase is aligned with the estimate divided by the usual cap-to-x
+// ratio, so its capitals measure tall against their priors.
+func extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image.Gray, enc encoder.Encoder, xhScale float64) *Block {
 	sorted := append([]int(nil), cluster...)
 	sort.Slice(sorted, func(a, b int) bool {
 		la, lb := lines[sorted[a]], lines[sorted[b]]
@@ -224,13 +233,14 @@ func Extract(cluster []int, lines []region.Line, bin *bitmap.Bitmap, gray *image
 			break
 		}
 	}
+	blockXH *= xhScale
 	if blockXH < 3 {
 		blockXH = 3
 	}
 
 	b := &Block{XHeight: blockXH, bin: bin, enc: enc}
 	for ri, rd := range rows {
-		row := Row{Baseline: rd.baseline, XHeight: rd.xh}
+		row := Row{Baseline: rd.baseline, XHeight: rd.xh * xhScale}
 		prevMax := 0
 		for k, c := range rd.comps {
 			gi := len(b.Glyphs)

@@ -227,6 +227,27 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		return notFound("no_number_parsed")
 	}
 	sort.Slice(inner.Candidates, func(i, j int) bool { return inner.Candidates[i].Text < inner.Candidates[j].Text })
+	// A candidate instantiated from a reading can only be decided on a
+	// region that holds a digit run: elsewhere it is a string of letters
+	// matching a word by chance, as "1 Litre" once did on a real label at
+	// the radius's edge.
+	holds := make([]bool, len(regions))
+	for _, r := range readings {
+		holds[r.region] = true
+		rb := regions[r.region].box
+		for i := range regions {
+			if regions[i].box.Overlaps(rb) {
+				holds[i] = true
+			}
+		}
+	}
+	var withRuns []encodedRegion
+	for i, reg := range regions {
+		if holds[i] {
+			withRuns = append(withRuns, reg)
+		}
+	}
+	regions = withRuns
 
 	if numericTrace != nil {
 		var texts []string

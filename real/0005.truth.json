@@ -1,0 +1,23 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "EDDA",
+  "class": "White Wine",
+  "producer": [
+   "CANTINE SAN MARZANO",
+   "San Marzano di S.G. - ITALIA"
+  ],
+  "origin": "PRODUCT OF ITALY",
+  "abv": 14,
+  "abv_text": "14% ALC./VOL.",
+  "net_ml": 750,
+  "net_text": "750 mL",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26054001000022",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26054001000022",
+ "note": "warning condensed caps; label prints \"WITHE WINE\""
+}

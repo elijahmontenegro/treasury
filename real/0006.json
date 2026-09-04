@@ -1,0 +1,11 @@
+{
+ "beverage": "wine",
+ "brand": "STOKELAN",
+ "class": "Dessert Red Wine",
+ "producer": [
+  "Bottled by Stokelan Estate Winery, 50 Eayrestown Road, Medford, NJ, 08055"
+ ],
+ "origin": "New Jersey",
+ "abv": 19,
+ "net_ml": 750
+}

@@ -8,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"strings"
+	"treasury/internal/imgops"
 
 	"treasury/internal/alphabet"
 	"treasury/internal/digits"
@@ -144,13 +146,15 @@ type AlphabetReport struct {
 
 // Result is everything Verify found.
 type Result struct {
-	DeskewDeg float64         `json:"deskew_deg"`
-	Regions   int             `json:"regions"`
-	Alphabet  *AlphabetReport `json:"alphabet,omitempty"`
-	Reason    string          `json:"reason,omitempty"`
-	Reference []Verdict       `json:"reference,omitempty"` // one per row of the reference block
-	Emphasis  []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
-	Claims    []Verdict       `json:"claims"`
+	Orientation     string          `json:"orientation,omitempty"`      // how the image was taken: as_is, inverted, rot90, rot270, or both
+	ReferenceCasing string          `json:"reference_casing,omitempty"` // as_given or upper: how the reference was printed
+	DeskewDeg       float64         `json:"deskew_deg"`
+	Regions         int             `json:"regions"`
+	Alphabet        *AlphabetReport `json:"alphabet,omitempty"`
+	Reason          string          `json:"reason,omitempty"`
+	Reference       []Verdict       `json:"reference,omitempty"` // one per row of the reference block
+	Emphasis        []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
+	Claims          []Verdict       `json:"claims"`
 }
 
 // Options tune the engine. Zero values take the defaults.
@@ -253,13 +257,6 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	if len(refs) == 0 {
 		return Result{}, errors.New("verify: at least one reference is required")
 	}
-	pre, err := preprocess.Run(img, preprocess.Default())
-	if err != nil {
-		return Result{}, err
-	}
-	lines, regions := region.Propose(pre.Bin, pre.Glare, region.Default())
-	res := Result{DeskewDeg: pre.AngleDeg, Regions: len(regions)}
-
 	spans := make([]alphabet.Span, len(refs[0].Emphasis))
 	for i, s := range refs[0].Emphasis {
 		spans[i] = alphabet.Span{Start: s.Start, End: s.End}
@@ -267,10 +264,79 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	opt := alphabet.DefaultOptions()
 	opt.Encoder = e.glyphEnc
 	opt.MaxCharSpread = e.opt.MaxCharSpread
-	a, err := alphabet.Find(lines, pre.Bin, pre.Gray, refs[0].Text, spans, opt)
-	if err != nil && !errors.Is(err, alphabet.ErrNoBlock) {
-		return Result{}, err
+
+	// The image is taken as it comes first; when no alphabet can be
+	// learned from it, it is tried inverted (light type on a dark ground)
+	// and in the other three orientations, since labels print the
+	// reference vertically and in reverse. The reference is tried as
+	// given and in capitals, since labels set it in either.
+	gray := imgops.ToGray(img)
+	type attempt struct {
+		name     string
+		quarters int
+		invert   bool
 	}
+	attempts := []attempt{{"as_is", 0, false}, {"inverted", 0, true}, {"rot90", 1, false}, {"rot270", 3, false}, {"inverted_rot90", 1, true}, {"inverted_rot270", 3, true}}
+	var pre *preprocess.Result
+	var lines []region.Line
+	var regions []region.Region
+	var a *alphabet.Alphabet
+	var err error
+	var found attempt
+	casing := ""
+	for _, at := range attempts {
+		g := imgops.Rotate90(gray, at.quarters)
+		if at.invert {
+			g = imgops.Invert(g)
+		}
+		if pre, err = preprocess.Run(g, preprocess.Default()); err != nil {
+			return Result{}, err
+		}
+		lines, regions = region.Propose(pre.Bin, pre.Glare, region.Default())
+		var candidates []*alphabet.Alphabet
+		for _, c := range []struct{ name, text string }{{"as_given", refs[0].Text}, {"upper", strings.ToUpper(refs[0].Text)}} {
+			b, ferr := alphabet.Find(lines, pre.Bin, pre.Gray, c.text, spans, opt)
+			if ferr != nil && !errors.Is(ferr, alphabet.ErrNoBlock) {
+				return Result{}, ferr
+			}
+			if b == nil {
+				continue
+			}
+			candidates = append(candidates, b)
+			// Between the two casings, the one whose glyphs contradict
+			// their characters least is the one the label printed; matched
+			// counts alone favoured capitals on mixed-case warnings.
+			// When both casings align, the block's own glyph heights say
+			// which the label printed: capitals stand uniformly tall.
+			better := func(x, y *alphabet.Alphabet, xName string) bool {
+				if y == nil || !y.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+					return true
+				}
+				uniform := x.HeightUniformity() >= 0.7
+				return (xName == "upper") == uniform
+			}
+			if b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) && better(b, a, c.name) {
+				a, casing = b, c.name
+			}
+		}
+		if a != nil && a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+			found = at
+			break
+		}
+		// Keep the best rejected alignment of the first attempt for the report.
+		if a == nil && len(candidates) > 0 {
+			a = candidates[0]
+		}
+		if at.name == "as_is" {
+			found = at
+		}
+	}
+	if a == nil {
+		err = alphabet.ErrNoBlock
+	} else {
+		err = nil
+	}
+	res := Result{DeskewDeg: pre.AngleDeg, Regions: len(regions), Orientation: found.name, ReferenceCasing: casing}
 	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 		res.Reason = "no_alphabet"
 		if a != nil {

@@ -1,0 +1,22 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "SEELBACH'S",
+  "class": "Kentucky Straight Bourbon Whiskey",
+  "producer": [
+   "Manifest Distilling in Jacksonville, FL"
+  ],
+  "origin": "",
+  "abv": 60,
+  "abv_text": "60 % ALC/VOL",
+  "net_ml": 750,
+  "net_text": "750ML",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26166001000601",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26166001000601",
+ "note": "warning letterspaced with items on separate lines; producer magenta on dark band"
+}

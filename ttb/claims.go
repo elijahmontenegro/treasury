@@ -2,6 +2,7 @@ package ttb
 
 import (
 	"fmt"
+	"math"
 
 	"treasury/verify"
 )
@@ -29,10 +30,18 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 	}
 	free("origin", exp.Origin, false)
 	if exp.ABV > 0 {
-		claims = append(claims, ABVClaim(exp.ABV, exp.Beverage != "beer"))
+		if exp.Beverage == "beer" {
+			claims = append(claims, abvClaim(exp.ABV, false, 0.1))
+		} else {
+			claims = append(claims, ABVClaim(exp.ABV, true))
+		}
 	}
 	if exp.NetML > 0 {
-		claims = append(claims, NetClaim(exp.NetML))
+		if exp.Beverage == "beer" {
+			claims = append(claims, netClaim(exp.NetML, beerNet))
+		} else {
+			claims = append(claims, NetClaim(exp.NetML))
+		}
 	}
 	return refs, claims
 }
@@ -44,20 +53,35 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 // ABVClaim formerly enumerated alcohol content from 0.5 to 95 percent in half-percent
 // steps, in the forms labels print it, including proof.
 func ABVClaim(expected float64, required bool) verify.Claim {
-	valid := make([]float64, 0, 190)
-	for v := 0.5; v <= 95.0+1e-9; v += 0.5 {
-		valid = append(valid, v)
+	return abvClaim(expected, required, 0.5)
+}
+
+// abvClaim builds the alcohol-content claim with the given step between
+// valid values: half a percent for wine and spirits, a tenth for malt
+// beverages, which state 3.75 or 4.1.
+func abvClaim(expected float64, required bool, step float64) verify.Claim {
+	var valid []float64
+	for v := step; v <= 95.0+1e-9; v += step {
+		valid = append(valid, math.Round(v*100)/100)
+	}
+	// The printed forms 27 CFR 5.65, 4.36, and 7.71 allow, in the casings
+	// labels use, and proof at twice the percentage.
+	var formats []verify.NumericFormat
+	for _, t := range []string{
+		"{n}% Alc./Vol.", "{n}% ALC./VOL.", "{n}% alc./vol.", "{n}% Alc/Vol", "{n}% ALC/VOL", "{n}% alc/vol", "{n} % ALC/VOL",
+		"{n}% ABV", "{n}% abv",
+		"ALC. {n}% BY VOL.", "Alc. {n}% by Vol.", "ALC {n}% BY VOL", "Alc {n}% by Vol.", "ALC {n}% BY VOL.",
+		"{n}% ALC BY VOL", "{n}% Alc by Vol", "{n}% alc. by vol.", "{n}% ALC. BY VOL.",
+		"ALC. BY VOL. {n}%", "Alc. by Vol. {n}%", "ALCOHOL {n}% BY VOLUME", "Alcohol {n}% by volume",
+	} {
+		formats = append(formats, verify.NumericFormat{Template: t, Scale: 1})
+	}
+	for _, t := range []string{"{n} Proof", "({n} Proof)", "{n} PROOF", "({n} PROOF)", "PROOF {n}"} {
+		formats = append(formats, verify.NumericFormat{Template: t, Scale: 0.5})
 	}
 	return verify.Claim{
 		Name: "abv", Expected: Num(expected), Required: required, Radius: 0.15,
-		Numeric: &verify.Numeric{
-			Formats: []verify.NumericFormat{
-				{Template: "{n}% Alc./Vol.", Scale: 1}, {Template: "{n}% ALC./VOL.", Scale: 1}, {Template: "{n}% ABV", Scale: 1},
-				{Template: "ALC. {n}% BY VOL.", Scale: 1}, {Template: "{n}% alc/vol", Scale: 1},
-				{Template: "{n} Proof", Scale: 0.5}, {Template: "({n} Proof)", Scale: 0.5}, {Template: "{n} PROOF", Scale: 0.5},
-			},
-			Valid: valid, Tolerance: 0.05,
-		},
+		Numeric: &verify.Numeric{Formats: formats, Valid: valid, Tolerance: 0.05},
 	}
 }
 
@@ -65,17 +89,28 @@ func ABVClaim(expected float64, required bool) verify.Claim {
 // the valid set; millilitre, litre, and fluid-ounce forms with and without
 // periods are the printed formats.
 func NetClaim(expectedML float64) verify.Claim {
+	return netClaim(expectedML, []float64{50, 100, 187, 200, 375, 500, 700, 750, 1000, 1750})
+}
+
+// netClaim builds the net-contents claim over the given standards of fill.
+func netClaim(expectedML float64, valid []float64) verify.Claim {
 	const flOz = 29.5735
 	return verify.Claim{
 		Name: "net", Expected: Num(expectedML), Required: true, Radius: 0.15,
 		Numeric: &verify.Numeric{
 			Formats: []verify.NumericFormat{
-				{Template: "{n} mL", Scale: 1}, {Template: "{n} ml", Scale: 1}, {Template: "{n} ML", Scale: 1}, {Template: "{n}mL", Scale: 1}, {Template: "{n}ml", Scale: 1},
+				{Template: "{n} mL", Scale: 1}, {Template: "{n} ml", Scale: 1}, {Template: "{n} ML", Scale: 1}, {Template: "{n}mL", Scale: 1}, {Template: "{n}ml", Scale: 1}, {Template: "{n}ML", Scale: 1},
+				{Template: "({n} ML)", Scale: 1}, {Template: "({n} mL)", Scale: 1}, {Template: "({n} ml)", Scale: 1},
 				{Template: "{n} L", Scale: 1000}, {Template: "{n}L", Scale: 1000}, {Template: "{n} Liter", Scale: 1000}, {Template: "{n} LITER", Scale: 1000}, {Template: "{n} Litre", Scale: 1000},
-				{Template: "{n} FL OZ", Scale: flOz}, {Template: "{n} FL. OZ.", Scale: flOz}, {Template: "{n} fl oz", Scale: flOz}, {Template: "{n} fl. oz.", Scale: flOz},
+				{Template: "{n} FL OZ", Scale: flOz}, {Template: "{n} FL. OZ.", Scale: flOz}, {Template: "{n} fl oz", Scale: flOz}, {Template: "{n} fl. oz.", Scale: flOz}, {Template: "{n} Fl. Oz.", Scale: flOz},
 			},
-			Valid:     []float64{50, 100, 187, 200, 375, 500, 700, 750, 1000, 1750},
+			Valid:     valid,
 			Tolerance: 5, // a fluid-ounce figure rounds to a tenth, 3 mL
 		},
 	}
 }
+
+// beerNet are the fills malt beverages come in, in millilitres: 7, 8, 10,
+// 11.2, 12, 16, 19.2, 22, 24, 25.4, and 32 fluid ounces and the metric
+// cans and bottles.
+var beerNet = []float64{207, 237, 296, 330, 331, 350, 355, 375, 473, 500, 568, 650, 710, 750, 946, 1000}

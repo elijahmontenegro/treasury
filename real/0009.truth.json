@@ -1,0 +1,22 @@
+{
+ "printed": {
+  "family": "beer",
+  "brand": "GAUL",
+  "class": "Lager",
+  "producer": [
+   "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY"
+  ],
+  "origin": "",
+  "abv": 4.1,
+  "abv_text": "4.1% ALC/VOL",
+  "net_ml": 355,
+  "net_text": "12 FL OZ",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26202001000918",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26202001000918",
+ "note": "light type on dark blue; warning vertical and tiny"
+}

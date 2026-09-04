@@ -1,0 +1,23 @@
+{
+ "printed": {
+  "family": "beer",
+  "brand": "Gallo",
+  "class": "Beer",
+  "producer": [
+   "Imported by Latin American Traders LLC",
+   "8859 NW 102nd Ct, Doral, FL 33178"
+  ],
+  "origin": "Product of Guatemala",
+  "abv": 5,
+  "abv_text": "ALC. BY VOL. 5%",
+  "net_ml": 350,
+  "net_text": "NET CONT. 350 ML / 12 FL OZ",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "25132001000733",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=25132001000733",
+ "note": "gold gradient; warning centered with items on their own lines; \"ALC. BY VOL. 5%\""
+}

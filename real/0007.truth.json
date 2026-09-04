@@ -1,0 +1,23 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "THE AUSTIN WINERY",
+  "class": "Dessert Wine",
+  "producer": [
+   "THE AUSTIN WINERY",
+   "AUSTIN, TEXAS"
+  ],
+  "origin": "",
+  "abv": 20,
+  "abv_text": "20% Alc by Vol",
+  "net_ml": 375,
+  "net_text": "375ML",
+  "error": "",
+  "body_face": "",
+  "heavy_face": "",
+  "brand_face": ""
+ },
+ "ttbid": "26188001000248",
+ "source": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26188001000248",
+ "note": "single strip label, warning boxed"
+}

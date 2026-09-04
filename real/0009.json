@@ -1,0 +1,11 @@
+{
+ "beverage": "beer",
+ "brand": "GAUL",
+ "class": "Lager",
+ "producer": [
+  "BREWED AND CANNED IN PHILADELPHIA, PA BY SERRA BEVERAGE COMPANY"
+ ],
+ "origin": "",
+ "abv": 4.1,
+ "net_ml": 355
+}

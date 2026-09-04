@@ -5,6 +5,7 @@ import (
 	"image"
 	"math"
 	"sort"
+	"strings"
 	"unicode"
 
 	"treasury/internal/bitcode"
@@ -133,18 +134,65 @@ func Find(lines []region.Line, bin *bitmap.Bitmap, gray *image.Gray, ref string,
 			need++
 		}
 	}
+	// Text set in capitals has no x-height to measure; see extract.
+	const capToX = 1.45
+	xhScale := 1.0
+	if !strings.ContainsFunc(ref, unicode.IsLower) {
+		xhScale = 1 / capToX
+	}
 	var best *Alphabet
-	for _, cl := range Locate(lines, 3) {
-		blk := Extract(cl, lines, bin, gray, opt.Encoder)
+	try := func(cl []int) {
+		blk := extract(cl, lines, bin, gray, opt.Encoder, xhScale)
 		if float64(len(blk.Glyphs)) < opt.MinGlyphs*float64(need) {
-			continue
+			return
 		}
 		a, err := learn(blk, gray, ref, spans, opt)
 		if err != nil {
-			continue
+			return
 		}
 		if best == nil || a.Cost < best.Cost {
 			best = a
+		}
+	}
+	for _, cl := range Locate(lines, 3) {
+		count := 0
+		for _, i := range cl {
+			count += len(lines[i].Comps)
+		}
+		if float64(count) <= 1.3*float64(need) {
+			try(cl)
+			continue
+		}
+		// The cluster holds more than the reference: rows of other text
+		// set in the same size, above or below it. The windows of
+		// consecutive rows nearest the reference's glyph count are
+		// aligned, at most eight, and the cheapest alignment wins; a
+		// window missing rows pays in deletions, one with extra rows in
+		// insertions.
+		type window struct {
+			i, j int
+			miss float64
+		}
+		var windows []window
+		for i := range cl {
+			n := 0
+			for j := i; j < len(cl); j++ {
+				n += len(lines[cl[j]].Comps)
+				if float64(n) < 0.7*float64(need) {
+					continue
+				}
+				if float64(n) > 1.3*float64(need) {
+					break
+				}
+				windows = append(windows, window{i, j, math.Abs(float64(n) - float64(need))})
+			}
+		}
+		sort.Slice(windows, func(a, b int) bool { return windows[a].miss < windows[b].miss })
+		if len(windows) > 8 {
+			windows = windows[:8]
+		}
+		for _, w := range windows {
+			try(cl[w.i : w.j+1])
 		}
 	}
 	if best == nil {
@@ -783,4 +831,30 @@ func (a *Alphabet) ViolationFraction() float64 {
 // characters were learned is decided per character, not here.
 func (a *Alphabet) OK(maxUnexplained, maxViolations float64) bool {
 	return a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations
+}
+
+// HeightUniformity is the share of the block's glyphs standing at least
+// four fifths as tall as its tall glyphs (the 90th percentile of heights).
+// Text set in capitals is uniform, about nine tenths; mixed-case text,
+// with its x-height letters, is about a third. It tells which casing of a
+// reference a block printed, which the alignment alone cannot: read as
+// capitals with the x-height scaled to match, every glyph of a
+// mixed-case block measures tall and contradicts nothing.
+func (a *Alphabet) HeightUniformity() float64 {
+	if a == nil || a.Block == nil || len(a.Block.Glyphs) == 0 {
+		return 0
+	}
+	hs := make([]int, 0, len(a.Block.Glyphs))
+	for _, g := range a.Block.Glyphs {
+		hs = append(hs, g.Box.Dy())
+	}
+	sort.Ints(hs)
+	tall := float64(hs[len(hs)*9/10])
+	n := 0
+	for _, h := range hs {
+		if float64(h) >= 0.8*tall {
+			n++
+		}
+	}
+	return float64(n) / float64(len(hs))
 }
