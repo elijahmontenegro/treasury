@@ -2,11 +2,13 @@
 // of the approach doc: per claim, precision and recall of VERIFIED against
 // what was printed, the share of REVIEW, error detection, and latency.
 //
-//	eval -set synth [-encoders dual,pos16] [-workers 8] [-allow-leak] [-tune]
+//	eval -set synth [-encoders dual,pos16] [-workers 8] [-tune]
 //
-// A set drawn from the bundled faces would match synthesized glyphs for the
-// wrong reason; eval refuses such a set unless -allow-leak is given, and
-// then stamps the table LEAKED. Records of every verdict's evidence are
+// A set drawn from a face the models learned from reports their training
+// data back as accuracy, and one drawn from a bundled face matches
+// synthesized glyphs by the face that synthesized them; a set naming any
+// family outside the evaluation partition is refused rather than evaluated.
+// Records of every verdict's evidence are
 // written to records.json so that -tune can sweep radii and the tie margin
 // without re-running the engine: half A (even labels) picks the values,
 // half B (odd labels) is reported.
@@ -30,7 +32,7 @@ import (
 	"time"
 
 	"treasury/internal/alphabet"
-	"treasury/internal/render"
+	"treasury/internal/fontset"
 	"treasury/ttb"
 	"treasury/verify"
 )
@@ -41,12 +43,11 @@ func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
 	workers := flag.Int("workers", runtime.NumCPU(), "parallel verifications")
-	allowLeak := flag.Bool("allow-leak", false, "evaluate a set drawn from the bundled faces anyway")
 	tune := flag.Bool("tune", false, "sweep radii and tie margin on half A of the records, report on half B")
 	limit := flag.Int("n", 0, "evaluate only the first n labels")
 	half := flag.String("half", "", "evaluate only half A (even labels) or B (odd labels)")
 	flag.Parse()
-	if err := run(*set, strings.Split(*encoders, ","), *workers, *allowLeak, *tune, *limit, *half); err != nil {
+	if err := run(*set, strings.Split(*encoders, ","), *workers, *tune, *limit, *half); err != nil {
 		fmt.Fprintln(os.Stderr, "eval:", err)
 		os.Exit(1)
 	}
@@ -74,13 +75,13 @@ type Record struct {
 	Emphasis  []verify.Verdict       `json:"emphasis"`
 }
 
-func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit int, half string) error {
+func run(dir string, encoders []string, workers int, tune bool, limit int, half string) error {
 	leaked, err := checkLeak(dir)
 	if err != nil {
 		return err
 	}
-	if leaked != "" && !allowLeak {
-		return fmt.Errorf("set %s draws on bundled faces (%s); pass -allow-leak to evaluate it anyway", dir, leaked)
+	if leaked != "" {
+		return fmt.Errorf("set %s draws on faces the models trained on (%s); it cannot be evaluated", dir, leaked)
 	}
 	labels, err := filepath.Glob(filepath.Join(dir, "*.truth.json"))
 	if err != nil {
@@ -117,9 +118,6 @@ func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit
 		return err
 	}
 	var out strings.Builder
-	if leaked != "" {
-		out.WriteString("# LEAKED: this set draws on bundled faces (" + leaked + "); the digits are matched by the same face that synthesized them\n\n")
-	}
 	for _, enc := range encoders {
 		var recs []Record
 		for _, r := range records {
@@ -136,7 +134,10 @@ func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit
 	return os.WriteFile(filepath.Join(dir, "table.md"), []byte(out.String()), 0o644)
 }
 
-// checkLeak returns the families a set shares with the bundled faces.
+// checkLeak returns the families of a set that may not appear in an
+// evaluated image: everything outside the evaluation partition, which is
+// every face the models may have learned from and every bundled face that
+// synthesizes the characters a label never taught.
 func checkLeak(dir string) (string, error) {
 	b, err := os.ReadFile(filepath.Join(dir, "manifest.json"))
 	if err != nil {
@@ -148,21 +149,7 @@ func checkLeak(dir string) (string, error) {
 	if err := json.Unmarshal(b, &m); err != nil {
 		return "", err
 	}
-	faces, err := render.Bundled()
-	if err != nil {
-		return "", err
-	}
-	bundled := map[string]bool{}
-	for _, f := range faces {
-		bundled[f.Family] = true
-	}
-	var shared []string
-	for _, f := range m.Families {
-		if bundled[f] {
-			shared = append(shared, f)
-		}
-	}
-	return strings.Join(shared, ", "), nil
+	return strings.Join(fontset.Leaked(m.Families), ", "), nil
 }
 
 func evaluate(eng *verify.Engine, enc string, labels []string, workers int) ([]Record, error) {
@@ -694,30 +681,100 @@ func tuned(records []Record, enc string) string {
 			bHalf = append(bHalf, r)
 		}
 	}
-	best, bestF := override{0.12, 0.15, 0.02}, -1.0
+	// The objective is a stated exchange rate: a verdict that names
+	// something untrue costs FalseAssertionCost claims left unverified.
+	// Mean F1 trades one against one, and on this set that bought a
+	// hundredth of numeric recall for six more false verdicts; minimizing
+	// false verdicts alone trades the other way and takes every radius to
+	// its floor. Both were run and are recorded in the doc.
+	enumRadius := verify.DefaultNumericRadius
+	best, bestScore, bestF := override{0.12, enumRadius, 0.02}, math.Inf(-1), -1.0
 	for _, free := range []float64{0.08, 0.10, 0.12, 0.15, 0.18} {
-		for _, enum := range []float64{0.10, 0.12, 0.15, 0.18, 0.20, 0.22} {
-			for _, tie := range []float64{0.01, 0.02, 0.03, 0.05} {
-				o := override{free, enum, tie}
-				f := f1(a, o)
-				if f > bestF {
-					best, bestF = o, f
+		for _, tie := range []float64{0.01, 0.02, 0.03, 0.05} {
+			{
+				o := override{free, enumRadius, tie}
+				sc, f := score(a, o), f1(a, o)
+				if sc > bestScore {
+					best, bestScore, bestF = o, sc, f
 				}
 			}
 		}
 	}
 	var rows strings.Builder
+	// The numeric radius is not swept. The sweep re-derives a verdict from
+	// the distances recorded for a claim, and since a numeric verdict also
+	// has to explain every glyph of the run it was read from, that model
+	// now predicts false assertions the engine does not make: 77 at 0.15
+	// on half A against the two the engine produced on half B. It is
+	// chosen by running half A at candidate values instead, and the run is
+	// in the approach doc.
+	fmt.Fprintf(&rows, "Numeric radius %.2f, not swept: chosen by running half A, since the re-derivation below cannot model a numeric verdict.\n\n", enumRadius)
 	fmt.Fprintf(&rows, "Reference row fail threshold (anomaly weight), half A → half B:\n\n| threshold | errors caught (A) | compliant false fails (A) | errors caught (B) | compliant false fails (B) |\n|---|---|---|---|---|\n")
 	for _, fail := range []float64{1, 1.5, 2, 3, 4} {
 		_, ca, ea, fa, na := rowScore(a, fail)
 		_, cb, eb, fb, nb := rowScore(bHalf, fail)
 		fmt.Fprintf(&rows, "| %.1f | %d/%d | %d/%d | %d/%d | %d/%d |\n", fail, ca, ea, fa, na, cb, eb, fb, nb)
 	}
-	return fmt.Sprintf("## Tuning on half A (%d labels): mean F1 %.3f\n\n", len(a), bestF) + table(enc, bHalf, &best) + rows.String() + "\n"
+	return fmt.Sprintf("## Tuning on half A (%d labels): %d false assertions, mean F1 %.3f\n\n", len(a), falseAssertions(a, best), bestF) + table(enc, bHalf, &best) + rows.String() + "\n"
 }
 
 // f1 is the mean F1 of VERIFIED over the claims, with a penalty for wrong
 // values that go unflagged.
+// falseAssertions counts the verdicts that name something untrue under o:
+// a claim verified on a label that prints another value, or a mismatch on a
+// label that prints the right one.
+// FalseAssertionCost is how many claims left unverified one false verdict
+// is worth. The engine's verdicts carry its authority: a wrong value named
+// on a correct label is a rejection the reader will act on, where a miss is
+// work the reader was doing anyway.
+const FalseAssertionCost = 10
+
+// score is the tuner's objective: verified claims that are right, less the
+// exchange rate times the verdicts that name something untrue, over the
+// claims judged.
+func score(recs []Record, o override) float64 {
+	tallies := map[string]*tally{}
+	for _, r := range recs {
+		for _, v := range r.Claims {
+			t := tallies[v.Claim]
+			if t == nil {
+				t = &tally{}
+				tallies[v.Claim] = t
+			}
+			t.add(rederive(v, o), want(r.Printed, v.Claim))
+		}
+	}
+	tp, fp, n := 0, 0, 0
+	for _, t := range tallies {
+		tp += t.tp + t.mismatchHit
+		fp += t.fp
+		n += t.n
+	}
+	if n == 0 {
+		return 0
+	}
+	return float64(tp-FalseAssertionCost*fp) / float64(n)
+}
+
+func falseAssertions(recs []Record, o override) int {
+	tallies := map[string]*tally{}
+	for _, r := range recs {
+		for _, v := range r.Claims {
+			t := tallies[v.Claim]
+			if t == nil {
+				t = &tally{}
+				tallies[v.Claim] = t
+			}
+			t.add(rederive(v, o), want(r.Printed, v.Claim))
+		}
+	}
+	n := 0
+	for _, t := range tallies {
+		n += t.fp
+	}
+	return n
+}
+
 func f1(recs []Record, o override) float64 {
 	tallies := map[string]*tally{}
 	for _, r := range recs {

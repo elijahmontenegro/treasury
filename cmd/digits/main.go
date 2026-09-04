@@ -5,7 +5,7 @@
 //
 //	digits gen -fontdir C:\Windows\Fonts -out python/digits/data [-seed 1] [-limit N]
 //
-// Families whose name hashes to a fifth of the space are held out; the
+// Families of the evaluation partition are held out; the
 // bundled faces always train. Frames are written as raw Side×Side bytes with
 // one label byte per frame and a little-endian uint16 family index per
 // frame, plus a manifest and a montage for the eye.
@@ -15,7 +15,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"hash/fnv"
 	"image"
 	"image/color"
 	"image/png"
@@ -28,6 +27,7 @@ import (
 	"sync"
 
 	"treasury/internal/digits"
+	"treasury/internal/fontset"
 	"treasury/internal/imgops"
 	"treasury/internal/preprocess"
 	"treasury/internal/render"
@@ -40,7 +40,7 @@ func main() {
 		os.Exit(2)
 	}
 	fs := flag.NewFlagSet("gen", flag.ExitOnError)
-	fontdir := fs.String("fontdir", "", "directory of TTF/OTF faces (held-out split is drawn from these)")
+	fontdir := fs.String("fontdir", "", "directory of TTF/OTF faces (the evaluation partition of these is held out)")
 	out := fs.String("out", "python/digits/data", "output directory")
 	seed := fs.Int64("seed", 1, "random seed")
 	limit := fs.Int("limit", 0, "use at most this many faces (0 = all)")
@@ -80,7 +80,7 @@ func run(fontdir, out string, seed int64, limit, workers int) error {
 		}
 		fmt.Fprintf(os.Stderr, "loaded %d faces from %s (%d skipped)\n", len(dir), fontdir, len(skipped))
 		for _, f := range dir {
-			sets = append(sets, faceSet{face: f, heldout: heldoutFamily(f.Family)})
+			sets = append(sets, faceSet{face: f, heldout: fontset.Evaluation(f.Family)})
 		}
 	}
 	sort.Slice(sets, func(i, j int) bool { return sets[i].face.Name < sets[j].face.Name })
@@ -172,12 +172,6 @@ func run(fontdir, out string, seed int64, limit, workers int) error {
 	fmt.Fprintf(os.Stderr, "train %d frames from %d families, heldout %d frames from %d families, %d faces unusable\n",
 		len(train), len(families[false]), len(held), len(families[true]), unusable)
 	return nil
-}
-
-func heldoutFamily(family string) bool {
-	h := fnv.New32a()
-	h.Write([]byte(strings.ToLower(family)))
-	return h.Sum32()%5 == 0
 }
 
 func counts(s []sample) map[string]int {

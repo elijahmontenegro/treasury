@@ -557,7 +557,22 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 	// character; its samples go, and the character is flagged. A pool of one
 	// sample has no spread and stays, since the alignment as a whole has
 	// already passed the unexplained and shape-class checks.
-	for key, s := range distSum {
+	// In a fixed order: the spread is a sum over characters, floating-point
+	// addition is not associative, and map iteration is ordered differently
+	// in every process, so the same image would otherwise measure a
+	// slightly different alphabet each run.
+	spreadKeys := make([]Key, 0, len(distSum))
+	for key := range distSum {
+		spreadKeys = append(spreadKeys, key)
+	}
+	sort.Slice(spreadKeys, func(i, j int) bool {
+		if spreadKeys[i].Span != spreadKeys[j].Span {
+			return spreadKeys[i].Span < spreadKeys[j].Span
+		}
+		return spreadKeys[i].R < spreadKeys[j].R
+	})
+	for _, key := range spreadKeys {
+		s := distSum[key]
 		if s[1] < 2 {
 			continue
 		}
@@ -595,6 +610,18 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 		box, _ := unionBox(sg.glyph, k)
 		return b.enc.Encode(Frame(b.bin, box, b.Glyphs[sg.glyph].Baseline, b.XHeight))
 	}
+	// Named in a fixed order: two centroids at exactly the same distance
+	// would otherwise be reported by whichever the map yielded first.
+	centroidKeys := make([]Key, 0, len(centroids))
+	for k := range centroids {
+		centroidKeys = append(centroidKeys, k)
+	}
+	sort.Slice(centroidKeys, func(i, j int) bool {
+		if centroidKeys[i].Span != centroidKeys[j].Span {
+			return centroidKeys[i].Span < centroidKeys[j].Span
+		}
+		return centroidKeys[i].R < centroidKeys[j].R
+	})
 	for i, ds := range rowDist {
 		for _, sg := range ds {
 			if sg.d <= outlier {
@@ -603,10 +630,11 @@ func learn(b *Block, gray *image.Gray, ref string, spans []Span, opt Options) (*
 			own := Key{chars[sg.char], spanOf(sg.char)}
 			code := codeOf(sg)
 			nearest, nearestD := "", math.Inf(1)
-			for k, cen := range centroids {
+			for _, k := range centroidKeys {
 				if k == own {
 					continue
 				}
+				cen := centroids[k]
 				if d := encoder.NormalizedDistance(code, cen, bits); d < nearestD {
 					nearest, nearestD = string(k.R), d
 				}

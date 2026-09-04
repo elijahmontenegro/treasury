@@ -162,6 +162,11 @@ type Result struct {
 }
 
 // Options tune the engine. Zero values take the defaults.
+// DefaultNumericRadius is the radius a numeric claim is decided at under
+// the learned code. Chosen by running half A at 0.10, 0.15 and 0.22: 262,
+// 299 and 300 correct verifications against 1, 1 and 7 false assertions.
+const DefaultNumericRadius = 0.15
+
 type Options struct {
 	Encoder              string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
 	ClaimEncoder         string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
@@ -199,7 +204,7 @@ func (o Options) withDefaults() Options {
 		o.LearnedTie = 0.01 // tuned on half A (7a): with partial reads undecided at the source, the tuner no longer trades decisions for reviews
 	}
 	if o.LearnedNumericRadius == 0 {
-		o.LearnedNumericRadius = 0.15 // the tuner with false mismatches counted as false positives keeps 0.15
+		o.LearnedNumericRadius = DefaultNumericRadius // chosen by running half A at 0.10, 0.15, 0.22 (8a): 262, 299, 300 correct numeric verifications against 1, 1, 7 false assertions
 	}
 	if o.MaxCharSpread == 0 {
 		o.MaxCharSpread = 0.12

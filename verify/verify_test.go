@@ -463,3 +463,36 @@ func TestSynthLearned(t *testing.T) {
 		t.Logf("%-12s %-9s observed=%q", v.Claim, v.Status, v.Observed)
 	}
 }
+
+// TestDeterministic verifies one label three times and requires the results
+// to be identical. Go orders map iteration differently on every range, and
+// three sums that ran in map order (face scores, the alphabet's spread, the
+// nearest centroid to an anomaly) made the same image give a different
+// verdict about one label in five.
+func TestDeterministic(t *testing.T) {
+	exp := ttb.Sample()
+	img := label(t, exp, nil)
+	eng, err := verify.New(verify.Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	refs, claims := ttb.Inputs(exp)
+	var first string
+	for i := range 3 {
+		res, err := eng.Verify(context.Background(), img, refs, claims)
+		if err != nil {
+			t.Fatal(err)
+		}
+		b, err := json.Marshal(res)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if i == 0 {
+			first = string(b)
+			continue
+		}
+		if string(b) != first {
+			t.Fatalf("run %d differs from run 1", i+1)
+		}
+	}
+}

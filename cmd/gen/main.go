@@ -21,6 +21,7 @@ import (
 	"sort"
 
 	"treasury/internal/bitmap"
+	"treasury/internal/fontset"
 	"treasury/internal/imgops"
 	"treasury/internal/render"
 	"treasury/internal/synth"
@@ -116,6 +117,22 @@ func set(dir string, n int, seed int64, fontdir string, errorRate, cleanRate flo
 	}
 	if err != nil {
 		return err
+	}
+	if fontdir != "" {
+		// Only the evaluation partition may set an evaluated label: a
+		// model trained on a face that sets one reports its own training
+		// data back as accuracy.
+		var kept []*render.Face
+		for _, f := range faces {
+			if fontset.Evaluation(f.Family) {
+				kept = append(kept, f)
+			}
+		}
+		if len(kept) == 0 {
+			return fmt.Errorf("no face in %q is in the evaluation partition", fontdir)
+		}
+		fmt.Printf("%d of %d faces are in the evaluation partition\n", len(kept), len(faces))
+		faces = kept
 	}
 	pool := ttb.NewFacePool(faces)
 	if len(pool.Body) == 0 {

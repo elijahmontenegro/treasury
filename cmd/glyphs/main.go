@@ -7,7 +7,7 @@
 //
 //	glyphs gen -fontdir C:\Windows\Fonts -out python/encoder/data [-seed 1] [-limit N]
 //
-// Families whose name hashes to a fifth of the space are held out, the
+// Families of the evaluation partition are held out, the
 // same split as the digit classifier's; the bundled faces always train.
 package main
 
@@ -15,7 +15,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"hash/fnv"
 	"image"
 	"math"
 	"math/rand"
@@ -27,6 +26,7 @@ import (
 
 	"treasury/internal/alphabet"
 	"treasury/internal/encoder"
+	"treasury/internal/fontset"
 	"treasury/internal/imgops"
 	"treasury/internal/preprocess"
 	"treasury/internal/render"
@@ -89,7 +89,7 @@ func run(fontdir, out string, seed int64, limit, workers int) error {
 		}
 		fmt.Fprintf(os.Stderr, "loaded %d faces from %s (%d skipped)\n", len(dir), fontdir, len(skipped))
 		for _, f := range dir {
-			sets = append(sets, faceSet{face: f, heldout: heldoutFamily(f.Family)})
+			sets = append(sets, faceSet{face: f, heldout: fontset.Evaluation(f.Family)})
 		}
 	}
 	sort.Slice(sets, func(i, j int) bool { return sets[i].face.Name < sets[j].face.Name })
@@ -174,12 +174,6 @@ func run(fontdir, out string, seed int64, limit, workers int) error {
 	fmt.Fprintf(os.Stderr, "train %d frames from %d families, heldout %d frames from %d families, %d faces unusable\n",
 		len(train), len(families[false]), len(held), len(families[true]), unusable)
 	return nil
-}
-
-func heldoutFamily(family string) bool {
-	h := fnv.New32a()
-	h.Write([]byte(strings.ToLower(family)))
-	return h.Sum32()%5 == 0
 }
 
 // sheets renders the face at three x-heights, clean and augmented.

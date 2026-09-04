@@ -208,13 +208,21 @@ func recoded(a *alphabet.Alphabet, enc encoder.Encoder, cache *Cache) *alphabet.
 		}
 		return out
 	}
-	for r, samples := range a.Samples {
-		c.Samples[r] = pool(samples)
+	// In a fixed order, for the same reason the alphabet's own spread is
+	// summed in one: the mean below is a sum over characters.
+	for _, r := range sortedRunes(a.Samples) {
+		c.Samples[r] = pool(a.Samples[r])
 	}
-	for span, m := range a.Emphasis {
+	spans := make([]int, 0, len(a.Emphasis))
+	for span := range a.Emphasis {
+		spans = append(spans, span)
+	}
+	sort.Ints(spans)
+	for _, span := range spans {
+		m := a.Emphasis[span]
 		c.Emphasis[span] = map[rune][]alphabet.Glyph{}
-		for r, samples := range m {
-			c.Emphasis[span][r] = pool(samples)
+		for _, r := range sortedRunes(m) {
+			c.Emphasis[span][r] = pool(m[r])
 		}
 	}
 	if len(spreads) > 0 {
@@ -299,10 +307,26 @@ func FaceScores(a *alphabet.Alphabet, faces []*render.Face, glyphEnc encoder.Enc
 	if span >= 0 {
 		stroke = a.SpanStroke(span)
 	}
+	// The centroids are summed in a fixed order. Map iteration is ordered
+	// differently in every process, and floating-point addition is not
+	// associative, so the same label scored two faces differently between
+	// runs and occasionally chose the other one: the same image gave a
+	// different verdict.
+	keys := make([]alphabet.Key, 0, len(a.Centroid))
+	for key := range a.Centroid {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		if keys[i].Span != keys[j].Span {
+			return keys[i].Span < keys[j].Span
+		}
+		return keys[i].R < keys[j].R
+	})
 	var out []FaceScore
 	for _, f := range faces {
 		sum, n := 0.0, 0
-		for key, cen := range a.Centroid {
+		for _, key := range keys {
+			cen := a.Centroid[key]
 			if key.Span != span || !unicode.IsLetter(key.R) || (span < 0 && !unicode.IsLower(key.R)) {
 				continue
 			}
@@ -727,4 +751,15 @@ func (s *Speller) spell(text, value string, heavy bool, letterGap, wordGap float
 		}
 	}
 	return cw, nil
+}
+
+// sortedRunes is a map's characters in code-point order, so that what is
+// summed over them does not depend on the run.
+func sortedRunes(m map[rune][]alphabet.Glyph) []rune {
+	out := make([]rune, 0, len(m))
+	for r := range m {
+		out = append(out, r)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i] < out[j] })
+	return out
 }

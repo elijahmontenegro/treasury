@@ -143,6 +143,13 @@ def main():
     torch.manual_seed(args.seed)
     data = Path(args.data)
     man = json.loads((data / "manifest.json").read_text())
+    # The partition is the protocol: a family that may set an evaluated label
+    # must never be trained on. Read the same file the generators read.
+    part = json.loads((Path(__file__).resolve().parents[2] / "internal" / "fontset" / "partition.json").read_text())
+    evaluation = set(part["evaluation"])
+    leaked = sorted(evaluation.intersection(man["train_families"]))
+    if leaked:
+        raise SystemExit("training data draws on evaluation families: " + ", ".join(leaked))
     side, classes = man["side"], man["classes"]
     xtr, ytr, _ = load(data, "train", side)
     xhe, yhe, _ = load(data, "heldout", side)

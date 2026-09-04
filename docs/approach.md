@@ -621,6 +621,93 @@ Convention coverage (free-text recall over brand, class, producer, origin):
 | crowded warning | 0 | 0 | 0.00 |
 | none of these | 10 | 3 | 0.23 |
 
+### Step 8a: the evaluation protocol (2026-09-04)
+
+Gate, stated before the run: the leak check passes by construction on a regenerated set and fails on the old one; half B and the ten real labels re-run with retrained models and reported beside the previous table; the doc states what the earlier numbers were measured on.
+
+**Every learned-mechanism number before this step was measured on faces the models had trained on.** The label set was drawn from the machine's installed families and both models were trained on the machine's installed families, with a fifth held out for the models' own accuracy test and no relation between that split and the labels'. Of the 80 families in the set the tables from step 2 through step 7a report, 53 were in both models' training data and 27 were not. The rule this build was given at the start, that held-out faces are mandatory for the reported table, was satisfied only for the bundled faces that synthesize characters a label never taught.
+
+The fix is one partition, recorded once. `internal/fontset/partition.json` names an evaluation partition of 41 families and a training partition of 199, built by a rule the file states: a family that can set a label goes to one side or the other by an even split on a hash of its name, and every family that cannot set a label, with every bundled synthesis face, goes to training. It is embedded, so every tool built from this tree reads the same one. The label generator draws only from the evaluation partition; both model data generators learn only from the training partition and report their held-out accuracy on the evaluation partition, which is now the same set of faces the labels use; the Python trainers read the file and refuse data that names an evaluation family; and `cmd/eval` refuses a set naming any family outside the evaluation partition, with no flag to override it. Pointed at the old set it says so and exits.
+
+Retrained on the training partition alone: the digit classifier on 173,847 frames from 185 families, the glyph encoder on 151,942 frames from 185. The evaluation set is 500 labels from 38 families, ['Arial Bold', 'Arial Regular', 'Calibri Bold', 'Calibri Regular', 'Cascadia Code Regular', 'Comic Sans MS Bold', 'Comic Sans MS Regular', 'Consolas Bold', 'Consolas Regular', 'Dubai Bold', 'Dubai Light Regular', 'Dubai Regular', 'Ebrima Regular', 'Gadugi Bold', 'Gadugi Regular', 'Microsoft PhagsPa Bold', 'Microsoft PhagsPa Regular', 'Mongolian Baiti Regular', 'NanumBarunGothic Bold', 'NanumBarunGothic Regular', 'Open Sans Semibold Regular', 'Palatino Linotype Bold', 'Palatino Linotype Regular', 'SWComp Regular', 'SWGothe Regular', 'SWGothg Regular', 'SWIsop1 Regular', 'SWIsop2 Regular', 'SWIsop3 Regular', 'SWIsot2 Regular', 'SWIsot3 Regular', 'SWItal Regular', 'SWItalc Regular', 'SWItalt Regular', 'SWLink Regular', 'SWMap Regular', 'SWMono Regular', 'SWSimp Regular', 'Segoe Print Bold', 'Segoe Print Regular', 'Segoe Script Bold', 'Segoe Script Regular', 'Segoe UI Black Regular', 'Segoe UI Emoji Regular', 'Segoe UI Light Regular', 'Segoe UI Semilight Regular', 'Segoe UI Symbol Regular', 'SimSun-ExtG Regular', 'Tungsten Semibold Regular'] faces, none of them seen by either model.
+
+Two numbers move for the better and both are honest. The digit classifier reaches **0.9842** on its held-out families where step 2's gate reported 0.967 and recorded a miss: the gate's number was measured on a random fifth of everything installed, including symbol, script and CJK faces no label sets, and the same architecture on the faces a label can be set in meets the 0.98 the gate asked for. The encoder scores 0.77 nearest-prototype in Go against 0.82 before, on a different and more label-like held-out set.
+
+**The engine was not deterministic, and the same image gave a different verdict about one label in five.** Comparing two half-B runs of one binary showed three claims out of 1,750 disagreeing; one label verified its alcohol content in one run and returned NOT_FOUND in four others, choosing a different candidate each way. Three sums ran in Go map order, which is randomized per process, and floating-point addition is not associative: the face scores, the alphabet's spread, and the name of the nearest centroid to an anomaly. All three now iterate in a fixed key order and `TestDeterministic` verifies one label three times and requires identical results. What was said about this engine's determinism before today was wrong.
+
+**The tuner's objective was wrong in the same way the tally had been.** On the clean set the mean-F1 objective chose a numeric radius of 0.22, which on half B cost alcohol precision 0.99 to 0.98 and net 1.00 to 0.97, eight verdicts naming a wrong value on a correct label against two, and bought one hundredth of recall: in F1 a false assertion trades evenly against a miss. Preferring precision instead put one claim's floor in charge of every setting, since the expected brand printed inside the producer line is a false positive no radius removes. Minimizing false assertions alone took every radius to its floor. The objective is now a stated exchange rate, one false verdict against ten claims left unverified, and it is applied to the free-text radius and the tie margin only. The numeric radius is no longer swept at all: the sweep re-derives a verdict from the distances recorded for a claim, and since step 7a a numeric verdict must also explain every glyph of the run it was read from, so the model predicted 77 false assertions at 0.15 on half A where the engine produced two on half B. It is chosen by running half A at each candidate, which gives 262, 299 and 300 correct numeric verifications at 0.10, 0.15 and 0.22 against 1, 1 and 7 false assertions; 0.15 is shipped.
+
+Half B, single-threaded, claims decoded with the learned encoder, on faces neither model has seen:
+
+250 labels, 17 without an alphabet, latency median 3.8s p95 4.9s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 139 | 0.99 | 0.90 | 0.01 | 0/3 | 0 |
+| class | 250 | 1.00 | 0.79 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.71 | 0.02 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.70 | 0.01 | 0/0 | 0 |
+| abv | 250 | 0.99 | 0.64 | 0.02 | 2/5 | 7 |
+| net | 250 | 1.00 | 0.60 | 0.02 | 2/2 | 3 |
+| brand (display face) | 111 | 0.96 | 0.82 | 0.03 | | |
+
+Reference rows: compliant labels with every row verified 77/201 (67 reviewed, 57 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.84 | 177 | 0.77 |
+| producer_1 | 56 | 0.61 | 194 | 0.74 |
+| producer_2 | 56 | 0.71 | 194 | 0.74 |
+| origin | 68 | 0.71 | 182 | 0.70 |
+| abv | 49 | 0.69 | 189 | 0.62 |
+| net | 58 | 0.62 | 187 | 0.59 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 1 | 0.83 |
+| light on dark | 40 | 3 | 0.76 |
+| vertical warning | 52 | 3 | 0.72 |
+| crowded warning | 56 | 6 | 0.74 |
+| none of these | 68 | 6 | 0.72 |
+
+Beside the previous table, which was measured with two thirds of its families inside the models' training data: brand 0.86, class 0.82, producer 0.73/0.74, origin 0.69, alcohol 0.68 at precision 1.00, net 0.56 at precision 1.00, median 3.7 s, p95 5.0 s, 13 of 250 without an alphabet. The clean protocol, same engine: brand 0.90, class 0.79, producer 0.71/0.74, origin 0.70, alcohol 0.64 at precision 0.99, net 0.60 at precision 1.00, median 3.7 s, p95 4.8 s, 17 of 250 without an alphabet. As shipped, with the three ordering fixes: brand 0.90, class 0.79, producer 0.71/0.74, origin 0.70, alcohol 0.64 at precision 0.99, net 0.60 at precision 1.00, median 3.8 s, p95 4.9 s, 17 of 250 without an alphabet.
+
+The leak was not inflating the numbers. Recall moves a few points in both directions and no claim loses systematically; brand rises, class and alcohol fall, net rises. That agrees with the reanalysis done before the step, which split the old half B by whether the claim's face was in the encoder's training data and found recall no worse on the held-out families, with no false positive in either group. The protocol is fixed because a measurement should not depend on that having been true.
+
+The ten real labels, retrained models: 7 of ten with an alphabet, 12 claims verified, 0 mismatches.
+
+10 labels, 3 without an alphabet, latency median 5.4s p95 8.5s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 10 | 1.00 | 0.30 | 0.10 | 0/0 | 0 |
+| class | 10 | 1.00 | 0.10 | 0.00 | 0/0 | 0 |
+| producer_1 | 10 | 1.00 | 0.20 | 0.10 | 0/0 | 0 |
+| producer_2 | 6 | 1.00 | 0.17 | 0.17 | 0/0 | 0 |
+| origin | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
+| abv | 10 | 1.00 | 0.10 | 0.10 | 0/0 | 0 |
+| net | 10 | 1.00 | 0.20 | 0.00 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 1/10 (3 reviewed, 6 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 6/7 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 10 | 3 | 0.23 |
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
