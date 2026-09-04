@@ -54,6 +54,7 @@ type Speller struct {
 	HeavyFace *render.Face // bundled face nearest the emphasis samples, or the body face's bold sibling
 	Enc       encoder.Encoder
 	GlyphEnc  encoder.Encoder
+	Spread    float64 // the alphabet's within-character spread in GlyphEnc's code
 
 	letterGap, wordGap int
 	bodyStroke         float64 // learned body stroke width in px; synthesized glyphs are brought to it
@@ -67,8 +68,23 @@ type Speller struct {
 
 // New picks the nearest faces and prepares the medoid sample per character.
 func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Speller {
-	glyphEnc := a.Block.Encoder()
-	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}, altCodes: map[rune][]bitcode.Code{}}
+	return NewWith(a, faces, enc, nil)
+}
+
+// NewWith is New with the glyph encoder claims are decoded with. When it
+// differs from the alphabet's own, every sample is recoded under it from
+// its crop, so medoids, targets, and observed frames all live in the same
+// code, and the spread is measured in that code too. The alphabet itself,
+// and the reference verdicts drawn from it, keep the encoder it was
+// learned with.
+func NewWith(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.Encoder) *Speller {
+	if glyphEnc == nil {
+		glyphEnc = a.Block.Encoder()
+	}
+	if glyphEnc != a.Block.Encoder() {
+		a = recoded(a, glyphEnc)
+	}
+	s := &Speller{A: a, Enc: enc, GlyphEnc: glyphEnc, Spread: a.Spread, medoids: map[alphabet.Key]alphabet.Glyph{}, synth: map[rune]piece{}, heavySynth: map[rune]piece{}, altCodes: map[rune][]bitcode.Code{}}
 	s.bodyStroke = a.BodyStroke()
 	s.heavyStroke = 1.25 * s.bodyStroke
 	if len(a.Emphasis) > 0 {
@@ -115,6 +131,57 @@ func New(a *alphabet.Alphabet, faces []*render.Face, enc encoder.Encoder) *Spell
 // HasEmphasis reports whether the alphabet learned a heavier pool, so that
 // heavy spellings mean something.
 func (s *Speller) HasEmphasis() bool { return len(s.A.Emphasis) > 0 }
+
+// recoded is a copy of a whose samples carry enc's codes, with the
+// within-character spread measured in that code.
+func recoded(a *alphabet.Alphabet, enc encoder.Encoder) *alphabet.Alphabet {
+	c := *a
+	c.Samples = map[rune][]alphabet.Glyph{}
+	c.Emphasis = map[int]map[rune][]alphabet.Glyph{}
+	bits := enc.Bits()
+	var spreads []float64
+	pool := func(samples []alphabet.Glyph) []alphabet.Glyph {
+		out := make([]alphabet.Glyph, len(samples))
+		for i, g := range samples {
+			g.Code = a.Recode(g, enc)
+			out[i] = g
+		}
+		if len(out) >= 2 {
+			cen := bitcode.Majority(codesOf(out), bits)
+			sum := 0.0
+			for _, g := range out {
+				sum += encoder.NormalizedDistance(g.Code, cen, bits)
+			}
+			spreads = append(spreads, sum/float64(len(out)))
+		}
+		return out
+	}
+	for r, samples := range a.Samples {
+		c.Samples[r] = pool(samples)
+	}
+	for span, m := range a.Emphasis {
+		c.Emphasis[span] = map[rune][]alphabet.Glyph{}
+		for r, samples := range m {
+			c.Emphasis[span][r] = pool(samples)
+		}
+	}
+	if len(spreads) > 0 {
+		sum := 0.0
+		for _, v := range spreads {
+			sum += v
+		}
+		c.Spread = sum / float64(len(spreads))
+	}
+	return &c
+}
+
+func codesOf(gs []alphabet.Glyph) []bitcode.Code {
+	out := make([]bitcode.Code, len(gs))
+	for i, g := range gs {
+		out[i] = g.Code
+	}
+	return out
+}
 
 // medoid is the sample nearest all the others by frame code; samples that
 // are components of their own are preferred over ones cut from merged pairs.

@@ -858,3 +858,9 @@ func (a *Alphabet) HeightUniformity() float64 {
 	}
 	return float64(n) / float64(len(hs))
 }
+
+// Recode is g's frame code under another encoder, at the alphabet's
+// x-height, from the glyph's own crop.
+func (a *Alphabet) Recode(g Glyph, enc encoder.Encoder) bitcode.Code {
+	return enc.Encode(FrameCrop(g.Bin, g.Box, g.Baseline, a.XHeight))
+}

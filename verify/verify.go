@@ -160,6 +160,7 @@ type Result struct {
 // Options tune the engine. Zero values take the defaults.
 type Options struct {
 	Encoder           string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
+	ClaimEncoder      string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
 	DefaultRadius     float64 // fraction of code length; 0.15
 	TieMargin         float64 // glyph-wise: fraction of a glyph code per differing glyph; 0.01 (tuned on half A of the synthetic set; the spread term usually dominates)
 	LineTieMargin     float64 // line-wise fallback: fraction of the line code; 0.04
@@ -223,7 +224,8 @@ type Engine struct {
 	faces    []*render.Face
 	lineEnc  encoder.Encoder
 	glyphEnc encoder.Encoder
-	digits   *digits.Model // the embedded digit classifier
+	claimEnc encoder.Encoder // the code claims are decoded in; nil means glyphEnc
+	digits   *digits.Model   // the embedded digit classifier
 }
 
 // New builds an engine.
@@ -248,7 +250,17 @@ func New(o Options) (*Engine, error) {
 	default:
 		return nil, fmt.Errorf("verify: unknown encoder %q", o.Encoder)
 	}
-	return &Engine{opt: o, faces: faces, lineEnc: encoder.Line(), glyphEnc: glyph, digits: model}, nil
+	var claim encoder.Encoder
+	switch o.ClaimEncoder {
+	case "", "same":
+	case "learned":
+		if claim, err = encoder.NewLearned(); err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("verify: unknown claim encoder %q", o.ClaimEncoder)
+	}
+	return &Engine{opt: o, faces: faces, lineEnc: encoder.Line(), glyphEnc: glyph, claimEnc: claim, digits: model}, nil
 }
 
 // Verify decodes the image. It learns the alphabet from the first reference;
@@ -350,7 +362,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	if err := ctx.Err(); err != nil {
 		return Result{}, err
 	}
-	sp := spell.New(a, e.faces, e.lineEnc)
+	sp := spell.NewWith(a, e.faces, e.lineEnc, e.claimEnc)
 	res.Reference = e.referenceVerdicts(a)
 	for i := range spans {
 		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
@@ -371,7 +383,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// undecided are read again.
 	learned := e.harvest(a, pre, winners)
 	if len(learned) > 0 {
-		sp = spell.New(a, e.faces, e.lineEnc)
+		sp = spell.NewWith(a, e.faces, e.lineEnc, e.claimEnc)
 		for i, c := range claims {
 			if res.Claims[i].Status == Verified {
 				continue
@@ -415,7 +427,7 @@ func (e *Engine) harvest(a *alphabet.Alphabet, pre *preprocess.Result, winners [
 			}
 			// Only a glyph that matched its own code closely teaches: a
 			// piece of a bad cut or a blurred glyph would poison the pool.
-			if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], e.glyphEnc.Bits()) > e.opt.MaxCharSpread {
+			if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], w.obs.Enc.Bits()) > e.opt.MaxCharSpread {
 				continue
 			}
 			if span < 0 && len(a.Samples[r]) > 0 {

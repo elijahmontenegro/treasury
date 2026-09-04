@@ -214,13 +214,64 @@ Per label, step 4 against 4b (V verified, M mismatch, R review, dash not found, 
 | 0009 | 26202001000918 | —/— | no alphabet | inverted_rot90, upper | 84/247 | brand — class — produ — abv s net — | light type on dark blue; warning vertical and tiny |
 | 0010 | 25132001000733 | 73/433 | no alphabet | as_is, as_given | 183/245 | brand — class — produ — abv s net M | gold gradient; warning centered with items on their own lines; "ALC. BY VOL. 5%" |
 
-Six of ten learn an alphabet against one. The two labels whose claims are in the warning's face verify them: EDDA's brand, producer, and origin at 5 to 10 percent, while it refuses the class line, which the printer set as "WITHE WINE" (`docs/evidence/edda_back.png`); THE AUSTIN WINERY's net contents, with its brand and producer at 8 to 9 percent held at review because the block's S samples disagreed (the per-character acceptance from step 1). Everything set in another face still aligns at 17 to 21 percent, right or wrong: the 0.12 and 0.15 radii tuned on the synthetic set sit at the noise floor of cross-face alignment, where a wrong "1 Litre" on 0010 lands at 15 percent next to right answers at 13 to 17. 0001 (reversed condensed capitals on black), 0003 (a distressed face that breaks glyphs), 0006, and 0008 (condensed capitals, 0008 in a narrow column) still learn nothing.
+Six of ten learn an alphabet against one. The step 4 table says something the augmented synthetic table could not: the synthetic channel was not wrong about noise, it was wrong about conventions. Capital warnings, light type on dark, vertical text, and claims in other faces are choices printers make, not degradations, and no amount of blur, rotation, or compression in the generator stood in for them. The two labels whose claims are in the warning's face verify them: EDDA's brand, producer, and origin at 5 to 10 percent, while it refuses the class line, which the printer set as "WITHE WINE" (`docs/evidence/edda_back.png`); THE AUSTIN WINERY's net contents, with its brand and producer at 8 to 9 percent held at review because the block's S samples disagreed (the per-character acceptance from step 1). Everything set in another face still aligns at 17 to 21 percent, right or wrong: the 0.12 and 0.15 radii tuned on the synthetic set sit at the noise floor of cross-face alignment, where a wrong "1 Litre" on 0010 lands at 15 percent next to right answers at 13 to 17. 0001 (reversed condensed capitals on black), 0003 (a distressed face that breaks glyphs), 0006, and 0008 (condensed capitals, 0008 in a narrow column) still learn nothing.
 
 Synthetic half B, re-run with these mechanisms: alcohol 0.59, net 0.55, brand 0.79, 17 of 250 without an alphabet against 15 before, median 2.8 s and p95 3.9 s single-threaded. The gate holds.
 
 Evidence crops in `docs/evidence/`: `edda_warning_caps.png` (the capitals warning aligned, matched glyphs in green), `edda_back.png` ("WITHE WINE"), `gaul_warning_vertical.png` (reversed, vertical, 5 px type), `seelbachs_warning.png` and `seelbachs_class.png` (the warning's letterspaced sans against the class line's bold serif), `boojies_block.png` (a clean large warning under two rows of the same size that the alignment still does not isolate).
 
 What this changes about the plan: step 5's contrastive encoder was conditioned on free-text recall on augmented synthetic labels, and that recall is 0.72 to 0.79 with the misses mostly blur. The real labels say the limiting factor is the face: an alphabet learned from one face does not carry to a claim in another, and the bundled faces do not stand in. That is what a contrastive encoder trained on cross-face pairs would learn to ignore, and the current generator, which sets claims in the body face, would teach it nothing about it. The sequence is therefore: the generator sets claims in faces other than the body face, the table is re-run to measure the gap, and the encoder is trained on that data.
+
+### Step 5a: the generator learns the real conventions (2026-09-03)
+
+Gate, stated before the run: regenerate the 500 labels with claims set in faces other than the warning's and the conventions the real labels showed, at their real frequencies; re-run half B single-threaded and the ten real labels with the engine unchanged from step 4b; report the cross-face gap and the convention coverage with both numbers. No recall threshold, since 5a measures the gap 5b must close.
+
+The generator now sets each of class, producer, origin, alcohol, and net in a body face of another family with probability 0.75; the warning in capitals with probability 0.5; the label light on dark 0.2; the warning vertical along the left side 0.2; rows of other text in the warning's size against it 0.2. On half B the set carries them at 47%, 16%, 21%, and 22% of labels, and 76% of claims are in another face. The real ten had 5, 2, 2, and 2 of 10 and every claim in another face.
+
+Half B before, claims in the warning's face, no conventions (step 4b's engine on the old set): brand 0.79, class 0.73, producer 0.76, origin 0.72, alcohol 0.59, net 0.55, 17 of 250 without an alphabet, median 2.8 s. Half B after, same engine, the new set:
+
+250 labels, 15 without an alphabet, latency median 3.1s p95 4.5s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 142 | 0.98 | 0.59 | 0.01 | 0/4 | 0 |
+| class | 250 | 1.00 | 0.40 | 0.00 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.39 | 0.01 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.44 | 0.01 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.41 | 0.00 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.41 | 0.06 | 1/5 | 7 |
+| net | 250 | 1.00 | 0.38 | 0.16 | 2/2 | 3 |
+| brand (display face) | 108 | 0.95 | 0.51 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 71/201 (66 reviewed, 64 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/194 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.51 | 177 | 0.36 |
+| producer_1 | 56 | 0.48 | 194 | 0.37 |
+| producer_2 | 56 | 0.50 | 194 | 0.42 |
+| origin | 68 | 0.53 | 182 | 0.37 |
+| abv | 49 | 0.45 | 189 | 0.40 |
+| net | 58 | 0.43 | 187 | 0.36 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 7 | 0.48 |
+| light on dark | 40 | 1 | 0.41 |
+| vertical warning | 52 | 1 | 0.00 |
+| crowded warning | 56 | 6 | 0.43 |
+| none of these | 68 | 4 | 0.53 |
+
+The ten real labels, same engine: unchanged from step 4b, six of ten with an alphabet, brand, producer, and origin verified on EDDA and net on THE AUSTIN WINERY.
+
+What the two tables say. The cross-face gap on synthetic labels is about a tenth: 0.43 to 0.53 same-face against 0.36 to 0.42 cross-face. It is smaller than the real labels' gap, which is everything, because the generator's other faces are regular text faces of other families and the nearest bundled face stands in for those tolerably, while real claims are set in bold, condensed, serif, and display faces the bundled set does not cover. The conventions cost more than the faces: labels with a vertical warning verify no free text at all, and that is a mechanism gap, not a decoding one. The engine learns the alphabet in the rotated image and then searches for claims in that same image, where every other line of the label is now vertical. Capitals cost five points (0.48 against 0.53 without any convention): the alphabet learned is capitals only, and lowercase claims are then synthesized. Light on dark costs twelve. Crowding costs ten and six of its 56 labels their alphabet. The alcohol and net readings fell from 0.59 and 0.55 to 0.41 and 0.38, since their units are now synthesized as often as any other claim.
+
+Step 5b therefore has two parts to measure against these numbers: claims searched in the image's original orientation when the alphabet was learned in a rotated one, and the contrastive encoder for the cross-face distance.
 
 ## What the numbers say
 

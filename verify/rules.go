@@ -354,7 +354,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		var margin float64
 		if p.refined && comp.refined {
 			k := differing([]rune(p.word_.Text), []rune(comp.word_.Text))
-			per := math.Max(e.opt.TieMargin, 1.5*sp.A.Spread)
+			per := math.Max(e.opt.TieMargin, 1.5*sp.Spread)
 			margin = per * float64(k) / float64(max(1, p.glyphs))
 		} else {
 			margin = e.opt.LineTieMargin
@@ -367,7 +367,7 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 			Region: reg.box, Crop: reg.patch.Gray, Codeword: p.word_.Patch,
 			Text: p.word_.Text, Params: p.word_.Params,
 			D1: p.raw, D2: -1, Radius: int(math.Round(radius * float64(p.bits))), Bits: p.bits,
-			Refined: p.refined, Glyphs: p.glyphs, Penalized: p.penalized, Spread: sp.A.Spread,
+			Refined: p.refined, Glyphs: p.glyphs, Penalized: p.penalized, Spread: sp.Spread,
 			LowConfidence: reg.lowConfidence,
 		}
 		if comp.region >= 0 {

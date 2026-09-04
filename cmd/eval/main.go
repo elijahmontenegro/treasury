@@ -35,6 +35,8 @@ import (
 	"treasury/verify"
 )
 
+var claimEnc = flag.String("claim-encoder", "", "the code claims are decoded in: same (default) or learned")
+
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
@@ -101,7 +103,7 @@ func run(dir string, encoders []string, workers int, allowLeak, tune bool, limit
 	}
 	var records []Record
 	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc})
+		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc})
 		if err != nil {
 			return err
 		}
@@ -404,6 +406,94 @@ func differing(a, b string) int {
 
 // table renders the report for one encoder; with o set, claim verdicts are
 // re-derived from evidence under those thresholds.
+// crossFaceAndConventions reports recall split by whether a claim's face is
+// the warning's (the cross-face gap) and, per convention the real labels
+// showed, how many labels carry it and how they fare.
+func crossFaceAndConventions(recs []Record, o *override) string {
+	type split struct{ same, cross tally }
+	splits := map[string]*split{}
+	order := []string{"class", "producer_1", "producer_2", "origin", "abv", "net"}
+	for _, name := range order {
+		splits[name] = &split{}
+	}
+	anyFaces := false
+	for _, r := range recs {
+		if r.Printed.ClaimFaces == nil {
+			continue
+		}
+		anyFaces = true
+		for _, v := range r.Claims {
+			sp, ok := splits[v.Claim]
+			if !ok {
+				continue
+			}
+			w := want(r.Printed, v.Claim)
+			if w != "correct" {
+				continue
+			}
+			st := v.Status
+			if o != nil {
+				st = rederive(v, *o)
+			}
+			base := strings.TrimSuffix(strings.TrimSuffix(v.Claim, "_1"), "_2")
+			if r.Printed.ClaimFaces[base] == r.Printed.BodyFace {
+				sp.same.add(st, w)
+			} else {
+				sp.cross.add(st, w)
+			}
+		}
+	}
+	var b strings.Builder
+	if anyFaces {
+		fmt.Fprintf(&b, "Cross-face gap (correct claims only; same-face = set in the warning's face):\n\n| claim | same-face n | same-face recall | cross-face n | cross-face recall |\n|---|---|---|---|---|\n")
+		for _, name := range order {
+			sp := splits[name]
+			fmt.Fprintf(&b, "| %s | %d | %.2f | %d | %.2f |\n", name, sp.same.n, sp.same.recall(), sp.cross.n, sp.cross.recall())
+		}
+		b.WriteString("\n")
+	}
+	type conv struct {
+		name string
+		has  func(ttb.Printed) bool
+	}
+	convs := []conv{
+		{"warning in capitals", func(p ttb.Printed) bool { return p.WarningCaps }},
+		{"light on dark", func(p ttb.Printed) bool { return p.Inverted }},
+		{"vertical warning", func(p ttb.Printed) bool { return p.Vertical }},
+		{"crowded warning", func(p ttb.Printed) bool { return p.Crowded }},
+		{"none of these", func(p ttb.Printed) bool { return !p.WarningCaps && !p.Inverted && !p.Vertical && !p.Crowded }},
+	}
+	fmt.Fprintf(&b, "Convention coverage (free-text recall over brand, class, producer, origin):\n\n| convention | labels | no alphabet | free-text recall |\n|---|---|---|---|\n")
+	for _, c := range convs {
+		n, noAlpha := 0, 0
+		var t tally
+		for _, r := range recs {
+			if !c.has(r.Printed) {
+				continue
+			}
+			n++
+			if r.Reason == "no_alphabet" {
+				noAlpha++
+			}
+			for _, v := range r.Claims {
+				switch v.Claim {
+				case "brand", "class", "producer_1", "producer_2", "origin":
+					if w := want(r.Printed, v.Claim); w == "correct" {
+						st := v.Status
+						if o != nil {
+							st = rederive(v, *o)
+						}
+						t.add(st, w)
+					}
+				}
+			}
+		}
+		fmt.Fprintf(&b, "| %s | %d | %d | %.2f |\n", c.name, n, noAlpha, t.recall())
+	}
+	b.WriteString("\n")
+	return b.String()
+}
+
 func table(enc string, recs []Record, o *override) string {
 	claims := []string{"brand", "class", "producer_1", "producer_2", "origin", "abv", "net"}
 	tallies := map[string]*tally{}
@@ -509,6 +599,7 @@ func table(enc string, recs []Record, o *override) string {
 	fmt.Fprintf(&b, "| brand (display face) | %d | %.2f | %.2f | %.2f | | |\n", brandDisplay.n, brandDisplay.precision(), brandDisplay.recall(), float64(brandDisplay.review)/math.Max(1, float64(brandDisplay.n)))
 	fmt.Fprintf(&b, "\nReference rows: compliant labels with every row verified %d/%d (%d reviewed, %d failed); wording and title-case errors caught %d/%d.\n", rowClean.tp, rowClean.n, rowClean.review, rowClean.fp, rowErr.tp, rowErr.n)
 	fmt.Fprintf(&b, "Emphasis: correct on %d/%d labels (compliant headers verified and regular-weight headers caught).\n\n", emph.tp, emph.n)
+	b.WriteString(crossFaceAndConventions(recs, o))
 	return b.String()
 }
 

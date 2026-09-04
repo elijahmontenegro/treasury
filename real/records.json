@@ -18,10 +18,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 2611636700,
+  "latency": 2663569400,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -109,10 +113,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 5599147800,
+  "latency": 4942363900,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -131,7 +139,7 @@
    "unexplained": 1,
    "violations": 0.03734439834024896,
    "recovered": 0,
-   "spread": 0.07292382097069595,
+   "spread": 0.07292382097069597,
    "characters": "()12ACDEFHIKLNOPRSTUY",
    "face": "Go Regular",
    "x_height": 11.724137931034484,
@@ -171,7 +179,7 @@
      "refined": true,
      "glyphs": 12,
      "penalized": 4,
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false
     }
    },
@@ -204,7 +212,7 @@
      "refined": true,
      "glyphs": 15,
      "penalized": 6,
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false
     }
    },
@@ -237,7 +245,7 @@
      "refined": true,
      "glyphs": 33,
      "penalized": 13,
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false
     }
    },
@@ -271,7 +279,7 @@
      "refined": true,
      "glyphs": 24,
      "penalized": 9,
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false
     }
    },
@@ -304,7 +312,7 @@
      "penalized": 1,
      "competitor": "1.5",
      "competitor_text": "PROOF 3",
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false,
      "reading": "2",
      "digit_confidence": 0.9858610801014445
@@ -339,7 +347,7 @@
      "refined": true,
      "glyphs": 4,
      "penalized": 1,
-     "spread": 0.07292382097069595,
+     "spread": 0.07292382097069597,
      "low_confidence": false,
      "reading": "55",
      "digit_confidence": 0.5510186342603662
@@ -540,10 +548,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 3620885000,
+  "latency": 3476012000,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -624,10 +636,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 5415218500,
+  "latency": 4836320800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -646,7 +662,7 @@
    "unexplained": 0,
    "violations": 0.02074688796680498,
    "recovered": 0,
-   "spread": 0.05108777223140547,
+   "spread": 0.05108777223140549,
    "characters": "(),12ACGSabcdefghiklmnoprstuvy",
    "face": "Go Bold",
    "x_height": 7,
@@ -685,7 +701,7 @@
      "refined": true,
      "glyphs": 10,
      "penalized": 3,
-     "spread": 0.05108777223140547,
+     "spread": 0.05108777223140549,
      "low_confidence": false
     }
    },
@@ -719,7 +735,7 @@
      "refined": true,
      "glyphs": 30,
      "penalized": 6,
-     "spread": 0.05108777223140547,
+     "spread": 0.05108777223140549,
      "low_confidence": false
     }
    },
@@ -753,7 +769,7 @@
      "refined": true,
      "glyphs": 35,
      "penalized": 12,
-     "spread": 0.05108777223140547,
+     "spread": 0.05108777223140549,
      "low_confidence": false
     }
    },
@@ -788,7 +804,7 @@
      "penalized": 0,
      "competitor": "5.5",
      "competitor_text": "(11 Proof)",
-     "spread": 0.05108777223140547,
+     "spread": 0.05108777223140549,
      "low_confidence": false,
      "reading": "2",
      "digit_confidence": 0.5211597072683576
@@ -823,7 +839,7 @@
      "refined": true,
      "glyphs": 2,
      "penalized": 0,
-     "spread": 0.05108777223140547,
+     "spread": 0.05108777223140549,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.7700372047006538
@@ -1147,10 +1163,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 3945852400,
+  "latency": 3715599900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1169,7 +1189,7 @@
    "unexplained": 0,
    "violations": 0.016597510373443983,
    "recovered": 0,
-   "spread": 0.02500381098316366,
+   "spread": 0.025003810983163666,
    "characters": "),.ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 13.793103448275863,
@@ -1207,7 +1227,7 @@
      "refined": true,
      "glyphs": 4,
      "penalized": 0,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false
     }
    },
@@ -1238,7 +1258,7 @@
      "refined": true,
      "glyphs": 9,
      "penalized": 2,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false
     }
    },
@@ -1272,7 +1292,7 @@
      "refined": true,
      "glyphs": 17,
      "penalized": 1,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false
     }
    },
@@ -1305,7 +1325,7 @@
      "refined": true,
      "glyphs": 23,
      "penalized": 8,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false
     }
    },
@@ -1337,7 +1357,7 @@
      "refined": true,
      "glyphs": 14,
      "penalized": 2,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false
     }
    },
@@ -1376,7 +1396,7 @@
      "penalized": 2,
      "competitor": "70",
      "competitor_text": "70 % ALC/VOL",
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false,
      "reading": "11",
      "digit_confidence": 0.7545918424795266
@@ -1411,7 +1431,7 @@
      "refined": true,
      "glyphs": 2,
      "penalized": 0,
-     "spread": 0.02500381098316366,
+     "spread": 0.025003810983163666,
      "low_confidence": false,
      "reading": "1",
      "digit_confidence": 0.5557768702391077
@@ -1588,10 +1608,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 2983708300,
+  "latency": 2828513300,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -1610,7 +1634,7 @@
    "unexplained": 1,
    "violations": 0.24896265560165975,
    "recovered": 0,
-   "spread": 0.08633861797924298,
+   "spread": 0.08633861797924297,
    "characters": "(,.ACGabcefghimnoprsuvwy",
    "face": "",
    "x_height": 12,
@@ -1680,10 +1704,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 3615838000,
+  "latency": 3198253400,
   "orientation": "inverted",
   "reference_casing": "upper",
   "alphabet": {
@@ -1702,7 +1730,7 @@
    "unexplained": 0,
    "violations": 0.03734439834024896,
    "recovered": 0,
-   "spread": 0.054992146941013266,
+   "spread": 0.05499214694101325,
    "characters": "(),7ABCDEGHIKLMOPRTUVWY",
    "face": "Go Regular",
    "x_height": 8.275862068965518,
@@ -1749,7 +1777,7 @@
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "relearned": true,
      "low_confidence": false
     }
@@ -1784,7 +1812,7 @@
      "refined": true,
      "glyphs": 11,
      "penalized": 1,
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "relearned": true,
      "low_confidence": false
     }
@@ -1824,7 +1852,7 @@
      "refined": true,
      "glyphs": 15,
      "penalized": 0,
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "relearned": true,
      "low_confidence": false
     }
@@ -1864,7 +1892,7 @@
      "refined": true,
      "glyphs": 12,
      "penalized": 1,
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "relearned": true,
      "low_confidence": false
     }
@@ -1904,7 +1932,7 @@
      "penalized": 1,
      "competitor": "8",
      "competitor_text": "8% Alc by Vol",
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "relearned": true,
      "low_confidence": false,
      "reading": "20%",
@@ -1943,7 +1971,7 @@
      "penalized": 0,
      "competitor": "1000",
      "competitor_text": "1 Liter",
-     "spread": 0.054992146941013266,
+     "spread": 0.05499214694101325,
      "low_confidence": false,
      "reading": "375",
      "digit_confidence": 0.9268858659364061
@@ -2217,10 +2245,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 1651174100,
+  "latency": 1611228700,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -2239,7 +2271,7 @@
    "unexplained": 1,
    "violations": 0.5166666666666667,
    "recovered": 0,
-   "spread": 0.08973461036200193,
+   "spread": 0.08973461036200192,
    "characters": ".CGabcdeghkmnoprstuvwy",
    "face": "",
    "x_height": 14,
@@ -2308,10 +2340,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 2731858000,
+  "latency": 2608871700,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2722,10 +2758,14 @@
    "error": "",
    "body_face": "",
    "heavy_face": "",
-   "brand_face": ""
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
   },
   "augmented": false,
-  "latency": 4852496300,
+  "latency": 4513919900,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {

@@ -21,6 +21,7 @@ import (
 	"sort"
 
 	"treasury/internal/bitmap"
+	"treasury/internal/imgops"
 	"treasury/internal/render"
 	"treasury/internal/synth"
 	"treasury/ttb"
@@ -133,7 +134,14 @@ func set(dir string, n int, seed int64, fontdir string, errorRate, cleanRate flo
 		if err != nil {
 			return fmt.Errorf("label %d: %w", i, err)
 		}
-		for _, f := range []string{pr.BodyFace, pr.HeavyFace, pr.BrandFace} {
+		if pr.Inverted {
+			img = imgops.Invert(img)
+		}
+		names := []string{pr.BodyFace, pr.HeavyFace, pr.BrandFace}
+		for _, f := range pr.ClaimFaces {
+			names = append(names, f)
+		}
+		for _, f := range names {
 			used[f] = true
 			if face, ok := render.Find(faces, f); ok {
 				families[face.Family] = true

@@ -68,14 +68,18 @@ func NetText(ml float64) string {
 // Variant is a deliberate deviation of a generated label from the default
 // compliant layout: an error to catch, or a change of type.
 type Variant struct {
-	HeaderTitleCase bool   // "Government Warning:" instead of capitals
-	HeaderRegular   bool   // header in the body weight
-	Wording         string // replaces the statutory text when set
-	NoWarning       bool   // omit the warning block entirely
-	BrandText       string // print this instead of the application's brand
-	BodyFace        string // face for body text; default Go Regular
-	HeavyFace       string // face for the header; default Go Bold
-	BrandFace       string // face for the brand line; default the heavy face
+	HeaderTitleCase bool              // "Government Warning:" instead of capitals
+	HeaderRegular   bool              // header in the body weight
+	Wording         string            // replaces the statutory text when set
+	NoWarning       bool              // omit the warning block entirely
+	BrandText       string            // print this instead of the application's brand
+	BodyFace        string            // face for body text; default Go Regular
+	HeavyFace       string            // face for the header; default Go Bold
+	BrandFace       string            // face for the brand line; default the heavy face
+	ClaimFaces      map[string]string // face per claim (class, producer, origin, abv, net); default the body face
+	WarningCaps     bool              // the warning set in capitals, as half of real labels do
+	Vertical        bool              // the warning set vertically along a side
+	Crowded         bool              // rows of other text in the warning's size directly above and below it
 }
 
 // LabelDocument lays exp out as a compliant spirits label for the generator.

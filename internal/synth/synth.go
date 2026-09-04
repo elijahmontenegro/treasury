@@ -12,6 +12,7 @@ import (
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 
+	"treasury/internal/imgops"
 	"treasury/internal/render"
 )
 
@@ -41,6 +42,7 @@ type Block struct {
 	Width     int
 	Leading   float64 // line pitch as a multiple of Px; 0 means 1.3
 	Claim     string
+	Quarters  int // quarter turns clockwise; a block set vertically along a side. X, Y then place the rotated block's top-left corner
 }
 
 // Document is what Render draws.
@@ -86,41 +88,91 @@ func Render(doc Document, faces []*render.Face) (*image.Gray, *Truth, error) {
 		drawRun(img, face, it.Text, x, it.Y, it.Claim, false, 0, t)
 	}
 	for _, b := range doc.Blocks {
-		regular, err := faceAt(faces, b.Face, b.Px)
-		if err != nil {
-			return nil, nil, err
-		}
-		heavy := regular
-		if b.HeavyFace != "" {
-			if heavy, err = faceAt(faces, b.HeavyFace, b.Px); err != nil {
+		if b.Quarters%4 == 0 {
+			if err := drawBlock(img, b, faces, t, 0, 0); err != nil {
 				return nil, nil, err
 			}
+			continue
 		}
-		leading := b.Leading
-		if leading == 0 {
-			leading = 1.3
+		// Draw the block upright on its own canvas, rotate it, and lay it
+		// at (X, Y); its glyph boxes turn with it.
+		pad := int(b.Px) + 4
+		tmp := image.NewGray(image.Rect(0, 0, b.Width+2*pad, b.Width+2*pad))
+		for i := range tmp.Pix {
+			tmp.Pix[i] = 255
 		}
-		space := advance(regular, ' ')
-		words := splitWords(b.Text, b.Heavy)
-		y := b.Y
-		x := b.X
-		line := 0
-		for i, w := range words {
-			f := regular
-			if w.heavy {
-				f = heavy
+		var tt Truth
+		if err := drawBlock(tmp, b, faces, &tt, -b.X+pad, -b.Y+pad+int(b.Px)); err != nil {
+			return nil, nil, err
+		}
+		if len(tt.Glyphs) == 0 {
+			continue
+		}
+		ink := tt.Glyphs[0].Box
+		for _, g := range tt.Glyphs[1:] {
+			ink = ink.Union(g.Box)
+		}
+		ink = ink.Inset(-pad / 2).Intersect(tmp.Rect)
+		crop := image.NewGray(image.Rect(0, 0, ink.Dx(), ink.Dy()))
+		draw.Draw(crop, crop.Rect, tmp, ink.Min, draw.Src)
+		rot := imgops.Rotate90(crop, b.Quarters)
+		dst := image.Rect(b.X, b.Y, b.X+rot.Rect.Dx(), b.Y+rot.Rect.Dy())
+		draw.Draw(img, dst, rot, image.Point{}, draw.Over)
+		w, h := crop.Rect.Dx(), crop.Rect.Dy()
+		for _, g := range tt.Glyphs {
+			bx := g.Box.Sub(ink.Min)
+			var r image.Rectangle
+			switch ((b.Quarters % 4) + 4) % 4 {
+			case 1:
+				r = image.Rect(h-bx.Max.Y, bx.Min.X, h-bx.Min.Y, bx.Max.X)
+			case 2:
+				r = image.Rect(w-bx.Max.X, h-bx.Max.Y, w-bx.Min.X, h-bx.Min.Y)
+			default:
+				r = image.Rect(bx.Min.Y, w-bx.Max.X, bx.Max.Y, w-bx.Min.X)
 			}
-			width := measure(f, w.text)
-			if i > 0 && x+width > b.X+b.Width {
-				y += int(math.Round(b.Px * leading))
-				x = b.X
-				line++
-			}
-			drawRun(img, f, w.text, x, y, b.Claim, w.heavy, line, t)
-			x += width + space
+			g.Box = r.Add(image.Pt(b.X, b.Y))
+			t.Glyphs = append(t.Glyphs, g)
 		}
 	}
 	return img, t, nil
+}
+
+// drawBlock draws b wrapped to its width at (X+dx, Y+dy), recording glyphs.
+func drawBlock(img *image.Gray, b Block, faces []*render.Face, t *Truth, dx, dy int) error {
+	regular, err := faceAt(faces, b.Face, b.Px)
+	if err != nil {
+		return err
+	}
+	heavy := regular
+	if b.HeavyFace != "" {
+		if heavy, err = faceAt(faces, b.HeavyFace, b.Px); err != nil {
+			return err
+		}
+	}
+	leading := b.Leading
+	if leading == 0 {
+		leading = 1.3
+	}
+	space := advance(regular, ' ')
+	words := splitWords(b.Text, b.Heavy)
+	y := b.Y + dy
+	x := b.X + dx
+	line := 0
+	for i, w := range words {
+		f := regular
+		if w.heavy {
+			f = heavy
+		}
+		width := measure(f, w.text)
+		if i > 0 && x+width > b.X+dx+b.Width {
+			y += int(math.Round(b.Px * leading))
+			x = b.X + dx
+			line++
+		}
+		drawRun(img, f, w.text, x, y, b.Claim, w.heavy, line, t)
+		x += width + space
+	}
+	return nil
 }
 
 type word struct {

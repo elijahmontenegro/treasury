@@ -295,6 +295,24 @@ func rowXHeightFit(comps []region.Component, slope, intercept float64) float64 {
 	return float64(mode(hs))
 }
 
+// FrameCrop is Frame for a glyph held as its own crop: the crop is the
+// ink at box, wherever the box lies. A sample's frame can thus be rebuilt
+// under another encoder without the image it came from.
+func FrameCrop(crop *bitmap.Bitmap, box image.Rectangle, baseline int, xh float64) encoder.Patch {
+	side := max(8, int(math.Ceil(2.2*xh)))
+	top := baseline - int(math.Round(1.6*xh))
+	left := (box.Min.X+box.Max.X)/2 - side/2
+	canvas := bitmap.New(side, side)
+	for y := range crop.H {
+		for x := range crop.W {
+			if crop.Pix[y*crop.W+x] != 0 {
+				canvas.Set(box.Min.X+x-left, box.Min.Y+y-top, 1)
+			}
+		}
+	}
+	return encoder.Patch{Bin: canvas}
+}
+
 // Frame places a glyph inside a square frame of side 2.2 x-heights whose top
 // is 1.6 x-heights above the baseline and whose centre column is the glyph's
 // centre, so size and vertical position become part of the code.

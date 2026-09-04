@@ -2,6 +2,7 @@ package ttb
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"strings"
 
@@ -26,6 +27,14 @@ type Printed struct {
 	BodyFace  string   `json:"body_face"`
 	HeavyFace string   `json:"heavy_face"`
 	BrandFace string   `json:"brand_face"`
+
+	// The conventions real labels showed (amendment step 5a), at the
+	// frequencies seen in ten registry labels.
+	ClaimFaces  map[string]string `json:"claim_faces,omitempty"` // face per claim; a claim set in the body face shares the warning's alphabet
+	WarningCaps bool              `json:"warning_caps"`          // the warning in capitals (5 of 10)
+	Inverted    bool              `json:"inverted"`              // light type on a dark ground (2 of 10)
+	Vertical    bool              `json:"vertical_warning"`      // the warning along a side (2 of 10)
+	Crowded     bool              `json:"crowded"`               // rows of other text in the warning's size against it (2 of 10)
 }
 
 // FacePool is the type available to the generator: families with both a
@@ -146,11 +155,27 @@ func Generate(rng *rand.Rand, pool FacePool, errorRate float64) (synth.Document,
 	if rng.Intn(2) == 0 && len(pool.Display) > 0 {
 		brandFace = pool.Display[rng.Intn(len(pool.Display))]
 	}
+	// Three of four claims are set in a face other than the warning's,
+	// as on real labels, where only the warning is in the warning's face.
+	claimFaces := map[string]string{}
+	for _, c := range []string{"class", "producer", "origin", "abv", "net"} {
+		face := body
+		if rng.Float64() < 0.75 {
+			face = otherBody(rng, pool, body)
+		}
+		claimFaces[c] = face.Name
+	}
+	caps := rng.Float64() < 0.5
+	inverted := rng.Float64() < 0.2
+	vertical := rng.Float64() < 0.2
+	crowded := rng.Float64() < 0.2
 	pr := Printed{
 		Family: family, Brand: exp.Brand, Class: exp.Class, Producer: exp.Producer, Origin: exp.Origin,
 		ABV: exp.ABV, NetML: exp.NetML, BodyFace: body.Name, HeavyFace: heavy.Name, BrandFace: brandFace.Name,
+		ClaimFaces: claimFaces, WarningCaps: caps, Inverted: inverted, Vertical: vertical, Crowded: crowded,
 	}
-	v := Variant{BodyFace: body.Name, HeavyFace: heavy.Name, BrandFace: brandFace.Name}
+	v := Variant{BodyFace: body.Name, HeavyFace: heavy.Name, BrandFace: brandFace.Name,
+		ClaimFaces: claimFaces, WarningCaps: caps, Vertical: vertical, Crowded: crowded}
 	if rng.Float64() < errorRate {
 		switch pr.Error = []string{"wrong_abv", "wrong_net", "title_header", "regular_header", "wording", "missing_abv", "missing_net", "missing_class", "wrong_brand", "wrong_class"}[rng.Intn(10)]; pr.Error {
 		case "wrong_brand":
@@ -208,6 +233,21 @@ func Generate(rng *rand.Rand, pool FacePool, errorRate float64) (synth.Document,
 	return layout(rng, pr, v), exp, pr
 }
 
+// otherBody picks a body face from another family than body, or body when
+// the pool has no other.
+func otherBody(rng *rand.Rand, pool FacePool, body *render.Face) *render.Face {
+	var others []*render.Face
+	for _, f := range pool.Body {
+		if f.Family != body.Family {
+			others = append(others, f)
+		}
+	}
+	if len(others) == 0 {
+		return body
+	}
+	return others[rng.Intn(len(others))]
+}
+
 func titleWords(words []string) string {
 	out := make([]string, len(words))
 	for i, w := range words {
@@ -243,7 +283,16 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 	w := 1000 + rng.Intn(400)
 	h := 1400 + rng.Intn(400)
 	cx := w / 2
+	if v.Vertical {
+		cx = (w + 260) / 2 // the warning takes the left side
+	}
 	doc := synth.Document{W: w, H: h}
+	face := func(claim string) string {
+		if f, ok := v.ClaimFaces[claim]; ok && f != "" {
+			return f
+		}
+		return v.BodyFace
+	}
 	item := func(text, face string, px float64, y int, claim string) {
 		if text == "" {
 			return
@@ -257,7 +306,7 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		item([]string{"SMALL BATCH", "ESTATE BOTTLED", "LIMITED RELEASE", "CRAFT BREWED"}[rng.Intn(4)], v.HeavyFace, 30+float64(rng.Intn(10)), y, "")
 		y += 70 + rng.Intn(30)
 	}
-	item(pr.Class, v.BodyFace, 36+float64(rng.Intn(12)), y, "class")
+	item(pr.Class, face("class"), 36+float64(rng.Intn(12)), y, "class")
 	y += 70 + rng.Intn(30)
 	if rng.Intn(2) == 0 {
 		item([]string{"AGED 8 YEARS", "Batch No. 12 - Est. 1887", "Distilled from grain", "Vintage 2019", "Unfiltered"}[rng.Intn(5)], v.BodyFace, 26+float64(rng.Intn(8)), y, "")
@@ -266,49 +315,81 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 	px := 28 + float64(rng.Intn(10))
 	if pr.ABVText != "" && pr.NetText != "" && rng.Intn(2) == 0 {
 		doc.Items = append(doc.Items,
-			synth.Item{Text: pr.ABVText, Face: v.BodyFace, Px: px, X: w / 10, Y: y, Claim: "abv"},
-			synth.Item{Text: pr.NetText, Face: v.BodyFace, Px: px, X: w * 3 / 4, Y: y, Claim: "net"},
+			synth.Item{Text: pr.ABVText, Face: face("abv"), Px: px, X: w / 10, Y: y, Claim: "abv"},
+			synth.Item{Text: pr.NetText, Face: face("net"), Px: px, X: w * 3 / 4, Y: y, Claim: "net"},
 		)
 		y += 70 + rng.Intn(30)
 	} else {
-		item(pr.ABVText, v.BodyFace, px, y, "abv")
+		item(pr.ABVText, face("abv"), px, y, "abv")
 		if pr.ABVText != "" {
 			y += 50 + rng.Intn(20)
 		}
-		item(pr.NetText, v.BodyFace, px, y, "net")
+		item(pr.NetText, face("net"), px, y, "net")
 		if pr.NetText != "" {
 			y += 70 + rng.Intn(30)
 		}
 	}
 	ppx := 24 + float64(rng.Intn(8))
 	for _, line := range pr.Producer {
-		item(line, v.BodyFace, ppx, y, "producer")
+		item(line, face("producer"), ppx, y, "producer")
 		y += int(ppx * 1.4)
 	}
-	item(pr.Origin, v.BodyFace, ppx, y, "origin")
+	item(pr.Origin, face("origin"), ppx, y, "origin")
 	y += 90 + rng.Intn(60)
 	text := Statute
 	if v.Wording != "" {
 		text = v.Wording
 	}
+	if v.WarningCaps {
+		text = strings.ToUpper(text)
+	}
 	if v.HeaderTitleCase {
 		text = "Government Warning:" + text[HeaderLen:]
 	}
 	wpx := 20 + float64(rng.Intn(7))
+	leading := 1.25 + rng.Float64()*0.2
+	pitch := int(math.Round(wpx * leading))
+	crowd := []string{
+		"INGREDIENTS: WATER, BARLEY MALT, HOPS, YEAST.", "Imported by Ridge Imports LLC, 8859 NW 102nd Ct, Doral, FL 33178",
+		"Contains sulfites. Return for refund where applicable.", "Produced and bottled under license. Store in a cool dry place.",
+	}
+	if v.Vertical {
+		// Along the left side, reading upward, as labels set it.
+		width := int(float64(h) * (0.55 + rng.Float64()*0.1))
+		doc.Blocks = append(doc.Blocks, synth.Block{
+			Text: text, Heavy: []synth.Span{{Start: 0, End: HeaderLen}}, Face: v.BodyFace, HeavyFace: v.HeavyFace,
+			Px: wpx, X: 40, Y: (h - width) / 2, Width: width, Leading: leading, Claim: "reference", Quarters: 3,
+		})
+		if y+80 < h {
+			item([]string{"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated."}[rng.Intn(3)], v.BodyFace, 22+float64(rng.Intn(6)), y+40, "")
+		}
+		return doc
+	}
 	width := int(float64(w) * (0.7 + rng.Float64()*0.15))
+	left := (w - width) / 2
+	if v.Crowded {
+		for range 1 + rng.Intn(2) {
+			doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: ""})
+			y += pitch
+		}
+	}
 	doc.Blocks = append(doc.Blocks, synth.Block{
 		Text:      text,
 		Heavy:     []synth.Span{{Start: 0, End: HeaderLen}},
 		Face:      v.BodyFace,
 		HeavyFace: v.HeavyFace,
 		Px:        wpx,
-		X:         (w - width) / 2,
+		X:         left,
 		Y:         y,
 		Width:     width,
-		Leading:   1.25 + rng.Float64()*0.2,
+		Leading:   leading,
 		Claim:     "reference",
 	})
-	y += int(wpx*1.4) * 6
+	y += pitch * 6
+	if v.Crowded {
+		doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: ""})
+		y += pitch
+	}
 	if y+80 < h {
 		item([]string{"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated."}[rng.Intn(3)], v.BodyFace, 22+float64(rng.Intn(6)), y+40, "")
 	}
