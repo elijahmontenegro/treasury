@@ -1,5 +1,5 @@
 out/
-synth/
+/synth/
 *.test
 python/digits/data/
 python/digits/model.pt
