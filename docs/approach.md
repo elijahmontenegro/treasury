@@ -1504,6 +1504,45 @@ Precision holds at 1.00 on every claim. Recall falls by 0.01 to 0.03 on three of
 
 **A defect the step exposed, reported and not fixed.** The learned code of a component is cached per image and box at the first framing any claim asks for, so it depends on which claim, and which candidate, asked first. Adding the registry's second name to 0047's producer claim — a claim that does not verify either way — moved that label's alcohol content from verified to not found, because the harvest then taught different characters. Keying the cache exactly removes the coupling and verifies it again, at 34 seconds a label against 7. The two verifications lost above, 0038's brand and 0047's alcohol content, are that coupling rather than any rule adopted here. It needs its own step: a canonical framing per region costs nothing in time but changes every code in the build.
 
+### Step 12c: alphabet acceptance considers coverage (2026-09-05)
+
+Gate, stated before the run: the three false-block labels refused, the no-alphabet rate and per-claim recall on the real set and half B reported before and after, precision unmoved.
+
+**What was missing.** Acceptance counted the ink an alignment could not explain and the glyphs whose shape contradicted their character, and never asked how much of the reference had been read. 11a showed what that lets through: on three labels whose warning is upright, the engine accepted an alphabet from a block that is not the warning, reading a quarter of the statute or less, because the capitals pass makes almost every glyph measure tall and the violations of a wrong block fall from about 0.45 to just inside the bound.
+
+**What is added.** `Alphabet.Coverage` is the share of the reference's own characters that a glyph was matched to, and acceptance requires it.
+
+**The bound is chosen on the corpus, not on the fifty.** Of half B's 206 labels that learn an alphabet, none that verifies a claim aligns less than 0.30 of the statute, while 46 that verify none fall below it. The bound is 0.30. On the real set, which had no say in choosing it, the three false blocks sit at 0.15, 0.26 and 0.27, and the lowest label that verifies anything at 0.32 — the Grapevine labels, whose own warning is misprinted, sit at 0.46 to 0.51.
+
+**The three false blocks are refused.** 0002, 0037 and 0039 no longer learn an alphabet, so they no longer search their claims in a rotated frame.
+
+**Recall, before and after.**
+
+| | the fifty, before | after | half B, before | after |
+|---|---|---|---|---|
+| labels without an alphabet | 10 of 50 | 18 of 50 | 44 of 250 | 79 of 250 |
+| brand | 0.04 | 0.04 | 0.19 | 0.19 |
+| class | 0.00 | 0.00 | 0.19 | 0.20 |
+| producer_1 | 0.11 | 0.11 | 0.14 | 0.14 |
+| origin | 0.43 | 0.43 | 0.21 | 0.21 |
+| abv | 0.02 | 0.02 | 0.13 | 0.13 |
+| net | 0.10 | 0.10 | 0.20 | 0.20 |
+
+**Precision, before and after.**
+
+| claim | the fifty, before | after | half B, before | after |
+|---|---|---|---|---|
+| brand | 1.00 | 1.00 | 1.00 | 1.00 |
+| class | -- | -- | 1.00 | 1.00 |
+| producer_1 | 1.00 | 1.00 | 1.00 | 1.00 |
+| origin | 1.00 | 1.00 | 1.00 | 1.00 |
+| abv | 1.00 | 1.00 | 1.00 | 1.00 |
+| net | 1.00 | 1.00 | 1.00 | 1.00 |
+
+Precision does not move: 1.00 on every claim on both sets, before and after. Neither does any recall figure on the fifty, though 8 labels lose their alphabet (0001 at 0.28, 0002 at 0.27, 0024 at 0.29, 0037 at 0.26, 0039 at 0.15, 0041 at 0.27, 0042 at 0.24, 0046 at 0.25): every claim they might have verified was already failing. On half B thirty-five more labels are refused and three figures rise — class 0.19 to 0.20, brand in a display face 0.25 to 0.27, cross-face class 0.23 to 0.25 — because the orientation ladder no longer stops at the first alphabet it can accept and sometimes goes on to find the real one. Latency is unchanged at 6.1 seconds median on the fifty and 7.1 on half B.
+
+**What it costs.** Thirty-five labels of half B and eight of the fifty now report no alphabet where they reported one, and their claims come back `no_alphabet` rather than not found. That is the honest reading: an alphabet learned from a quarter of the statute was never the label's alphabet, and every claim resting on it was already a miss.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

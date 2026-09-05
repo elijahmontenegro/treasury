@@ -277,7 +277,15 @@ func (o Options) withDefaults() Options {
 	if o.ViolationFraction == 0 {
 		o.ViolationFraction = 0.15 // retuned (10c): +7 claims, and labels with no alphabet 20 to 8 on the sweep subset
 	}
-	// MinCoverage is step 12c's; step 12b measures without it.
+	if o.MinCoverage == 0 {
+		// Chosen on the corpus (12c): of half B's 206 labels that learn
+		// an alphabet, none that verifies a claim aligns less than 0.30
+		// of the statute, while 46 that verify none fall below it. The
+		// three real labels that accept an alphabet from a block that is
+		// not the warning sit at 0.15, 0.26 and 0.27, and the lowest
+		// real label that verifies anything at 0.32.
+		o.MinCoverage = 0.30
+	}
 	if o.RowFailAnomalies == 0 {
 		o.RowFailAnomalies = 2
 	}
