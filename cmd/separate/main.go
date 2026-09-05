@@ -10,6 +10,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"image"
@@ -39,19 +40,20 @@ var colours = map[string]color.RGBA{
 func main() {
 	out := flag.String("out", "out/separation", "directory for the evidence images")
 	list := flag.Int("list", 0, "also print this many rejected pieces, tallest first")
+	stats := flag.Bool("stats", false, "print one line of JSON per image: what the population is made of")
 	flag.Parse()
 	if err := os.MkdirAll(*out, 0o755); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 	for _, path := range flag.Args() {
-		if err := one(path, *out, *list); err != nil {
+		if err := one(path, *out, *list, *stats); err != nil {
 			fmt.Fprintln(os.Stderr, path, err)
 		}
 	}
 }
 
-func one(path, out string, list int) error {
+func one(path, out string, list int, stats bool) error {
 	f, err := os.Open(path)
 	if err != nil {
 		return err
@@ -62,6 +64,7 @@ func one(path, out string, list int) error {
 		return err
 	}
 	p := preprocess.Default()
+	p.Separate = true // this command exists to show the separation
 	res, err := preprocess.Run(img, p)
 	if err != nil {
 		return err
@@ -96,6 +99,9 @@ func one(path, out string, list int) error {
 		}
 	}
 	name := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
+	if stats {
+		return report(name, res, img)
+	}
 	if err := bitmap.WritePNG(filepath.Join(out, name+".png"), rgba); err != nil {
 		return err
 	}
@@ -129,4 +135,76 @@ func outline(dst *image.RGBA, r image.Rectangle, c color.RGBA) {
 		dst.SetRGBA(r.Min.X, y, c)
 		dst.SetRGBA(r.Max.X-1, y, c)
 	}
+}
+
+// report prints what one label is made of, for drawing a corpus from the
+// population rather than from assumption.
+func report(name string, res *preprocess.Result, src image.Image) error {
+	type out struct {
+		Label      string    `json:"label"`
+		LongSide   int       `json:"long_side"`
+		Kept       int       `json:"kept"`
+		LightShare float64   `json:"light_share"`  // kept pieces that are light on dark
+		Contrast   []float64 `json:"contrast"`     // p10, p50, p90 of ink against its own ring
+		Ground     []float64 `json:"ground"`       // p10, p50, p90 of the ring's grey, dark-ink pieces
+		LightGnd   []float64 `json:"light_ground"` // the same for light-ink pieces
+		Busy       []float64 `json:"busy"`         // p50, p90 of the ring's own variation: text over something structured
+		Height     []float64 `json:"height"`       // p10, p50, p90 of kept piece height in pixels
+		Stroke     []float64 `json:"stroke"`
+		Barcode    int       `json:"barcode_bars"`
+		Rules      int       `json:"rules"`
+	}
+	o := out{Label: name, LongSide: max(src.Bounds().Dx(), src.Bounds().Dy())}
+	var contrast, ground, lightGnd, busy, height, strokes []float64
+	light := 0
+	for _, pc := range res.Pieces {
+		switch pc.Reason {
+		case "a bar of a barcode":
+			o.Barcode++
+		case "a rule or a border":
+			o.Rules++
+		}
+		if !pc.Kept {
+			continue
+		}
+		o.Kept++
+		if !pc.Dark {
+			light++
+			lightGnd = append(lightGnd, pc.Ground)
+		} else {
+			ground = append(ground, pc.Ground)
+		}
+		contrast = append(contrast, pc.Contrast)
+		busy = append(busy, pc.Busy)
+		height = append(height, float64(pc.Box.Dy()))
+		strokes = append(strokes, pc.Stroke)
+	}
+	if o.Kept > 0 {
+		o.LightShare = float64(light) / float64(o.Kept)
+	}
+	o.Contrast = quantiles(contrast, 0.1, 0.5, 0.9)
+	o.Ground = quantiles(ground, 0.1, 0.5, 0.9)
+	o.LightGnd = quantiles(lightGnd, 0.1, 0.5, 0.9)
+	o.Busy = quantiles(busy, 0.5, 0.9)
+	o.Height = quantiles(height, 0.1, 0.5, 0.9)
+	o.Stroke = quantiles(strokes, 0.1, 0.5, 0.9)
+	b, err := json.Marshal(o)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(b))
+	return nil
+}
+
+func quantiles(v []float64, qs ...float64) []float64 {
+	if len(v) == 0 {
+		return make([]float64, len(qs))
+	}
+	sort.Float64s(v)
+	out := make([]float64, 0, len(qs))
+	for _, q := range qs {
+		i := int(q * float64(len(v)-1))
+		out = append(out, v[i])
+	}
+	return out
 }

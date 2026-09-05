@@ -2,6 +2,7 @@ package ttb
 
 import (
 	"fmt"
+	"image"
 	"math"
 	"math/rand"
 	"strings"
@@ -278,15 +279,90 @@ func netForms(ml float64) []string {
 	return []string{m + " mL", m + " ml", m + "mL", m + " ML"}
 }
 
-// layout places the printed label with modest randomness in size and position.
+// layout places the printed label over artwork, at the population's own
+// sizes and type scale.
+//
+// A generated label is what the fifty real ones are: a ground with panels,
+// rules, a pattern and a barcode, and text composited over it at the
+// contrast the fifty keep. Every number it draws from is in population.go
+// with the measurement it came from.
 func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
-	w := 1000 + rng.Intn(400)
-	h := 1400 + rng.Intn(400)
+	pop := Measured()
+	w, h := Size(rng.Intn(len(Sizes)))
+	long := max(w, h)
+	doc := synth.Document{W: w, H: h}
+
+	// Type is sized from the population: the median glyph stood 0.0059 of
+	// the label's longer side, and everything else is set relative to the
+	// warning, which is the smallest type a label carries.
+	glyph := (pop.GlyphFracLow + rng.Float64()*(pop.GlyphFracHigh-pop.GlyphFracLow)) * float64(long)
+	wpx := math.Max(5, glyph/0.80) // the rendered glyph stands taller than the fraction asks; measured back against the population
+	size := func(mult float64) float64 { return wpx * mult }
+
+	// The ground, and one panel of the other polarity. A third of the marks
+	// on a real label are light on dark, and they are light because they
+	// sit on a band or a block, not because the label is inverted.
+	art := &synth.Art{Ground: pop.DarkGround, Angle: rng.Float64() * 3.14159}
+	if rng.Float64() < pop.Gradient {
+		art.Gradient = 0.10 + rng.Float64()*0.25
+	}
+	if rng.Float64() < pop.Texture {
+		art.Texture = 0.006 + rng.Float64()*0.014
+	}
+	if rng.Float64() < pop.Pattern {
+		cell := max(6, long/120)
+		art.Pattern = &synth.Pattern{Cell: cell, Radius: max(1, cell/4), Grey: shift(art.Ground, -10-rng.Intn(22)), Rect: image.Rect(0, 0, w, h)}
+	}
+	if rng.Float64() < pop.Rules {
+		t := max(2, long/400)
+		pad := long / 40
+		art.Rules = append(art.Rules,
+			synth.Panel{Rect: image.Rect(pad, pad, w-pad, pad+t), Grey: shift(art.Ground, -120)},
+			synth.Panel{Rect: image.Rect(pad, h-pad-t, w-pad, h-pad), Grey: shift(art.Ground, -120)},
+			synth.Panel{Rect: image.Rect(pad, pad, pad+t, h-pad), Grey: shift(art.Ground, -120)},
+			synth.Panel{Rect: image.Rect(w-pad-t, pad, w-pad, h-pad), Grey: shift(art.Ground, -120)})
+	}
+	if rng.Float64() < pop.Barcode {
+		bw, bh := long/6, long/12
+		art.Barcode = &synth.Barcode{Rect: image.Rect(w-bw-long/30, h-bh-long/30, w-long/30, h-long/30), Grey: 20}
+	}
+	// The panel the warning may sit on, and the ink for each polarity at
+	// the contrast the population keeps.
+	dark := pop.ContrastLow + rng.Float64()*(pop.ContrastHigh-pop.ContrastLow)
+	// The contrast measured on the population is what survives the
+	// engine's resize, not what was printed: small type blends with its
+	// ground. Ink is drawn well clear of it and the corpus is measured
+	// back against the fifty.
+	inkOnLight := shift(art.Ground, -int(150+dark*220))
+	inkOnDark := shift(pop.LightGround, +int(150+dark*220))
+	// The panel covers a band that text actually falls in, since that is
+	// how a third of a real label's marks come to be light on dark.
+	// The panel is decided here and placed once the text's own extent is
+	// known, since a third of a real label's marks are light on dark and
+	// that only happens where the panel is under the words.
+	panel := image.Rectangle{}
+	onPanel := rng.Float64() < pop.LightOnDark
+	// Ornament the text may overlap: a seal, a crest, a wash.
+	for range rng.Intn(3) {
+		ow := long / (6 + rng.Intn(6))
+		x0, y0 := rng.Intn(max(1, w-ow)), rng.Intn(max(1, h-ow))
+		art.Ornaments = append(art.Ornaments, synth.Ornament{
+			Rect: image.Rect(x0, y0, x0+ow, y0+ow), Grey: shift(art.Ground, -30-rng.Intn(40)), Round: rng.Intn(2) == 0,
+		})
+	}
+	doc.Art = art
+
+	inkAt := func(y int) uint8 {
+		if onPanel && y >= panel.Min.Y && y < panel.Max.Y {
+			return inkOnDark
+		}
+		return inkOnLight
+	}
+
 	cx := w / 2
 	if v.Vertical {
-		cx = (w + 260) / 2 // the warning takes the left side
+		cx = (w + long/6) / 2 // the warning takes the left side
 	}
-	doc := synth.Document{W: w, H: h}
 	face := func(claim string) string {
 		if f, ok := v.ClaimFaces[claim]; ok && f != "" {
 			return f
@@ -297,51 +373,52 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		if text == "" {
 			return
 		}
-		doc.Items = append(doc.Items, synth.Item{Text: text, Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim})
+		doc.Items = append(doc.Items, synth.Item{Text: text, Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim, Ink: inkAt(y)})
 	}
-	y := 120 + rng.Intn(80)
-	item(pr.Brand, v.BrandFace, 60+float64(rng.Intn(30)), y, "brand")
-	y += 90 + rng.Intn(40)
+	step := func(mult float64) int { return int(math.Round(wpx * mult * (0.9 + rng.Float64()*0.3))) }
+
+	y := int(float64(h)*0.06) + rng.Intn(max(1, h/20))
+	item(pr.Brand, v.BrandFace, size(3.0+rng.Float64()), y, "brand")
+	y += step(4.5)
 	if rng.Intn(2) == 0 {
-		item([]string{"SMALL BATCH", "ESTATE BOTTLED", "LIMITED RELEASE", "CRAFT BREWED"}[rng.Intn(4)], v.HeavyFace, 30+float64(rng.Intn(10)), y, "")
-		y += 70 + rng.Intn(30)
+		item([]string{"SMALL BATCH", "ESTATE BOTTLED", "LIMITED RELEASE", "CRAFT BREWED"}[rng.Intn(4)], v.HeavyFace, size(1.5), y, "")
+		y += step(3)
 	}
-	item(pr.Class, face("class"), 36+float64(rng.Intn(12)), y, "class")
-	y += 70 + rng.Intn(30)
+	item(pr.Class, face("class"), size(1.8+rng.Float64()*0.6), y, "class")
+	y += step(3.2)
 	if rng.Intn(2) == 0 {
-		item([]string{"AGED 8 YEARS", "Batch No. 12 - Est. 1887", "Distilled from grain", "Vintage 2019", "Unfiltered"}[rng.Intn(5)], v.BodyFace, 26+float64(rng.Intn(8)), y, "")
-		y += 60 + rng.Intn(30)
+		item([]string{"AGED 8 YEARS", "Batch No. 12 - Est. 1887", "Distilled from grain", "Vintage 2019", "Unfiltered"}[rng.Intn(5)], v.BodyFace, size(1.3), y, "")
+		y += step(2.8)
 	}
-	px := 28 + float64(rng.Intn(10))
+	npx := size(1.4 + rng.Float64()*0.4)
 	if pr.ABVText != "" && pr.NetText != "" && rng.Intn(2) == 0 {
 		left := w / 10
 		if v.Vertical {
-			// Right of the warning along the left side, which the row's
-			// old start overprinted: a "4.5%" lost its "4." under it.
-			left = 300
+			left = long / 5
 		}
 		doc.Items = append(doc.Items,
-			synth.Item{Text: pr.ABVText, Face: face("abv"), Px: px, X: left, Y: y, Claim: "abv"},
-			synth.Item{Text: pr.NetText, Face: face("net"), Px: px, X: w * 3 / 4, Y: y, Claim: "net"},
+			synth.Item{Text: pr.ABVText, Face: face("abv"), Px: npx, X: left, Y: y, Claim: "abv", Ink: inkAt(y)},
+			synth.Item{Text: pr.NetText, Face: face("net"), Px: npx, X: w * 3 / 4, Y: y, Claim: "net", Ink: inkAt(y)},
 		)
-		y += 70 + rng.Intn(30)
+		y += step(3.2)
 	} else {
-		item(pr.ABVText, face("abv"), px, y, "abv")
+		item(pr.ABVText, face("abv"), npx, y, "abv")
 		if pr.ABVText != "" {
-			y += 50 + rng.Intn(20)
+			y += step(2.4)
 		}
-		item(pr.NetText, face("net"), px, y, "net")
+		item(pr.NetText, face("net"), npx, y, "net")
 		if pr.NetText != "" {
-			y += 70 + rng.Intn(30)
+			y += step(3.2)
 		}
 	}
-	ppx := 24 + float64(rng.Intn(8))
+	ppx := size(1.2 + rng.Float64()*0.3)
 	for _, line := range pr.Producer {
 		item(line, face("producer"), ppx, y, "producer")
 		y += int(ppx * 1.4)
 	}
 	item(pr.Origin, face("origin"), ppx, y, "origin")
-	y += 90 + rng.Intn(60)
+	y += step(4)
+
 	text := Statute
 	if v.Wording != "" {
 		text = v.Wording
@@ -352,7 +429,6 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 	if v.HeaderTitleCase {
 		text = "Government Warning:" + text[HeaderLen:]
 	}
-	wpx := 20 + float64(rng.Intn(7))
 	leading := 1.25 + rng.Float64()*0.2
 	pitch := int(math.Round(wpx * leading))
 	crowd := []string{
@@ -360,22 +436,36 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		"Contains sulfites. Return for refund where applicable.", "Produced and bottled under license. Store in a cool dry place.",
 	}
 	if v.Vertical {
-		// Along the left side, reading upward, as labels set it.
 		width := int(float64(h) * (0.55 + rng.Float64()*0.1))
+		side := long / 40
+		ground := art.Ground
+		ink := inkOnLight
+		if onPanel && rng.Intn(2) == 0 {
+			// The warning runs down a dark band of its own.
+			art.Panels = append(art.Panels, synth.Panel{Rect: image.Rect(0, 0, long/6, h), Grey: pop.LightGround})
+			ground, ink = pop.LightGround, inkOnDark
+		}
 		doc.Blocks = append(doc.Blocks, synth.Block{
 			Text: text, Heavy: []synth.Span{{Start: 0, End: HeaderLen}}, Face: v.BodyFace, HeavyFace: v.HeavyFace,
-			Px: wpx, X: 40, Y: (h - width) / 2, Width: width, Leading: leading, Claim: "reference", Quarters: 3,
+			Px: wpx, X: side, Y: (h - width) / 2, Width: width, Leading: leading, Claim: "reference", Quarters: 3,
+			Ink: ink, Ground: ground,
 		})
-		if y+80 < h {
-			item([]string{"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated."}[rng.Intn(3)], v.BodyFace, 22+float64(rng.Intn(6)), y+40, "")
+		if y+int(wpx*4) < h {
+			item([]string{"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated."}[rng.Intn(3)], v.BodyFace, size(1.1), y+int(wpx*2), "")
 		}
 		return doc
 	}
 	width := int(float64(w) * (0.7 + rng.Float64()*0.15))
 	left := (w - width) / 2
+	if onPanel {
+		// Over the warning and what follows it, which is where a real
+		// label puts its dark band.
+		panel = image.Rect(0, y-pitch, w, min(h, y+pitch*9))
+		art.Panels = append(art.Panels, synth.Panel{Rect: panel, Grey: pop.LightGround})
+	}
 	if v.Crowded {
 		for range 1 + rng.Intn(2) {
-			doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: ""})
+			doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: "", Ink: inkAt(y)})
 			y += pitch
 		}
 	}
@@ -390,16 +480,41 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		Width:     width,
 		Leading:   leading,
 		Claim:     "reference",
+		Ink:       inkAt(y),
 	})
 	y += pitch * 6
 	if v.Crowded {
-		doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: ""})
+		doc.Items = append(doc.Items, synth.Item{Text: crowd[rng.Intn(len(crowd))], Face: v.BodyFace, Px: wpx, X: left, Y: y, Claim: "", Ink: inkAt(y)})
 		y += pitch
 	}
-	if y+80 < h {
-		item([]string{"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated."}[rng.Intn(3)], v.BodyFace, 22+float64(rng.Intn(6)), y+40, "")
+	// The rest of what a label carries. A real label of this size holds
+	// about twice the text the old corpus drew, so the filler is the
+	// difference between a mock-up and a label.
+	filler := []string{
+		"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated.",
+		"CONTAINS SULFITES", "ME-MA-VT-CT-NY-DE-LA-OR-COL 5c, MI 10c REFUND",
+		"INGREDIENTS: WATER, MALTED BARLEY, HOPS, YEAST.",
+		"Serving Facts   Serving size 12 FL. OZ. (355mL)   Servings per container 1",
+		"Bottled under license. Store in a cool dry place, away from sunlight.",
+		"www.example-brand.com", "Certified sustainable. Recycle where facilities exist.",
+	}
+	for y+int(wpx*3) < h {
+		doc.Items = append(doc.Items, synth.Item{Text: filler[rng.Intn(len(filler))], Face: v.BodyFace, Px: size(0.9 + rng.Float64()*0.5), X: left, Y: y + int(wpx*2), Claim: "", Ink: inkAt(y + int(wpx*2))})
+		y += int(wpx * (2.2 + rng.Float64()))
 	}
 	return doc
+}
+
+// shift moves a grey by d, clamped.
+func shift(g uint8, d int) uint8 {
+	v := int(g) + d
+	if v < 0 {
+		v = 0
+	}
+	if v > 255 {
+		v = 255
+	}
+	return uint8(v)
 }
 
 // String renders the error for tables.

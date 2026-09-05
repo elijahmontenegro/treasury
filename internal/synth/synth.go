@@ -5,8 +5,10 @@ package synth
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
 	"math"
+	"math/rand"
 	"strings"
 
 	"golang.org/x/image/font"
@@ -29,6 +31,7 @@ type Item struct {
 	X, Y   int  // left edge (or centre when Center) and baseline
 	Center bool // X is the centre of the text
 	Claim  string
+	Ink    uint8 // the text's own grey; 0 is black, which is what plain type is
 }
 
 // Block is wrapped text; Heavy spans are drawn in HeavyFace.
@@ -42,12 +45,15 @@ type Block struct {
 	Width     int
 	Leading   float64 // line pitch as a multiple of Px; 0 means 1.3
 	Claim     string
-	Quarters  int // quarter turns clockwise; a block set vertically along a side. X, Y then place the rotated block's top-left corner
+	Quarters  int   // quarter turns clockwise; a block set vertically along a side. X, Y then place the rotated block's top-left corner
+	Ink       uint8 // the block's own grey
+	Ground    uint8 // what a rotated block is drawn over before it is turned, so light type keeps its panel
 }
 
 // Document is what Render draws.
 type Document struct {
 	W, H   int
+	Art    *Art // the label under the text; nil is a blank page
 	Items  []Item
 	Blocks []Block
 }
@@ -72,9 +78,7 @@ type Truth struct {
 // Render draws doc in black on white.
 func Render(doc Document, faces []*render.Face) (*image.Gray, *Truth, error) {
 	img := image.NewGray(image.Rect(0, 0, doc.W, doc.H))
-	for i := range img.Pix {
-		img.Pix[i] = 255
-	}
+	doc.Art.Draw(img, rand.New(rand.NewSource(int64(doc.W)*7919+int64(doc.H))))
 	t := &Truth{W: doc.W, H: doc.H}
 	for _, it := range doc.Items {
 		face, err := faceAt(faces, it.Face, it.Px)
@@ -85,7 +89,7 @@ func Render(doc Document, faces []*render.Face) (*image.Gray, *Truth, error) {
 		if it.Center {
 			x -= measure(face, it.Text) / 2
 		}
-		drawRun(img, face, it.Text, x, it.Y, it.Claim, false, 0, t)
+		drawRun(img, face, it.Text, x, it.Y, it.Claim, false, 0, it.Ink, t)
 	}
 	for _, b := range doc.Blocks {
 		if b.Quarters%4 == 0 {
@@ -98,8 +102,12 @@ func Render(doc Document, faces []*render.Face) (*image.Gray, *Truth, error) {
 		// at (X, Y); its glyph boxes turn with it.
 		pad := int(b.Px) + 4
 		tmp := image.NewGray(image.Rect(0, 0, b.Width+2*pad, b.Width+2*pad))
+		ground := b.Ground
+		if ground == 0 {
+			ground = 255
+		}
 		for i := range tmp.Pix {
-			tmp.Pix[i] = 255
+			tmp.Pix[i] = ground
 		}
 		var tt Truth
 		if err := drawBlock(tmp, b, faces, &tt, -b.X+pad, -b.Y+pad+int(b.Px)); err != nil {
@@ -169,7 +177,7 @@ func drawBlock(img *image.Gray, b Block, faces []*render.Face, t *Truth, dx, dy 
 			x = b.X + dx
 			line++
 		}
-		drawRun(img, f, w.text, x, y, b.Claim, w.heavy, line, t)
+		drawRun(img, f, w.text, x, y, b.Claim, w.heavy, line, b.Ink, t)
 		x += width + space
 	}
 	return nil
@@ -242,7 +250,7 @@ func measure(face font.Face, s string) int {
 
 // drawRun draws s with its left edge at x and baseline at y, recording every
 // non-space glyph's ink box.
-func drawRun(dst *image.Gray, face font.Face, s string, x, y int, claim string, heavy bool, line int, t *Truth) {
+func drawRun(dst *image.Gray, face font.Face, s string, x, y int, claim string, heavy bool, line int, ink uint8, t *Truth) {
 	dot := fixed.P(x, y)
 	prev := rune(-1)
 	for _, r := range s {
@@ -251,7 +259,7 @@ func drawRun(dst *image.Gray, face font.Face, s string, x, y int, claim string, 
 		}
 		dr, mask, maskp, adv, ok := face.Glyph(dot, r)
 		if ok {
-			draw.DrawMask(dst, dr, image.Black, image.Point{}, mask, maskp, draw.Over)
+			draw.DrawMask(dst, dr, image.NewUniform(color.Gray{Y: ink}), image.Point{}, mask, maskp, draw.Over)
 			if r != ' ' && !dr.Empty() {
 				t.Glyphs = append(t.Glyphs, Glyph{Char: string(r), Box: dr, Claim: claim, Heavy: heavy, Line: line})
 			}

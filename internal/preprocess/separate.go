@@ -37,6 +37,7 @@ type Piece struct {
 	Spread   float64 // the stroke's own variation, its standard deviation over its mean
 	Contrast float64 // the ink's grey against the ring just outside it, over 255
 	Ground   float64 // the grey of the ring in the image as taken, which says which polarity can be right
+	Busy     float64 // how much the ring's grey varies: text over a pattern or a photograph, rather than over a flat panel
 	Kept     bool
 	Reason   string // why it was rejected, empty when kept
 	pix      []int32
@@ -159,7 +160,7 @@ func candidates(src, orig *image.Gray, bin *bitmap.Bitmap, dark bool, sp SepPara
 			// narrow letter a solid blob.
 			pc.Ratio = pc.Stroke / float64(max(bw, bh))
 			pc.Contrast = contrast(src, pc)
-			pc.Ground = ringGrey(orig, pc)
+			pc.Ground, pc.Busy = ringGrey(orig, pc)
 			switch {
 			case pc.Spread > sp.MaxSpread:
 				pc.Reason = "stroke is not one width"
@@ -538,7 +539,7 @@ func label(b *bitmap.Bitmap) (boxes []image.Rectangle, areas []int, pix [][]int3
 // as taken. White type sits on a dark ground and dark type on a light one;
 // a piece whose surround contradicts its polarity is the background of the
 // other pass, not a letter.
-func ringGrey(g *image.Gray, pc Piece) float64 {
+func ringGrey(g *image.Gray, pc Piece) (mean, spread float64) {
 	w := g.Rect.Dx()
 	in := make(map[int32]bool, len(pc.pix))
 	for _, off := range pc.pix {
@@ -557,7 +558,18 @@ func ringGrey(g *image.Gray, pc Piece) float64 {
 		}
 	}
 	if n == 0 {
-		return 128
+		return 128, 0
 	}
-	return sum / float64(n)
+	mean = sum / float64(n)
+	varsum := 0.0
+	for y := ring.Min.Y; y < ring.Max.Y; y++ {
+		for x := ring.Min.X; x < ring.Max.X; x++ {
+			if in[int32(y*w+x)] {
+				continue
+			}
+			d := float64(g.Pix[y*w+x]) - mean
+			varsum += d * d
+		}
+	}
+	return mean, math.Sqrt(varsum/float64(n)) / 255
 }

@@ -1029,6 +1029,99 @@ That is the honest headline. **Separation fixes the stage that was failing outri
 
 Evidence: `docs/evidence/separation/` holds twelve of the fifty, with what was kept in black and what was rejected outlined in colour, red for a rule or a border, orange for a solid rather than a stroke, blue for a stroke of no single width, green for no contrast with its surround, brown for a bar of a barcode, grey for a mark with no line of type around it. The full fifty are written by `cmd/separate`.
 
+### Step 10b: the corpus rebuilt from the population (2026-09-05)
+
+Gate, stated before the run: the synthetic table predicts the real table within a stated tolerance per claim, and says so plainly if it does not. Tolerance stated before the run: a claim predicts if its synthetic recall is within 0.15 of the real one, and likewise the rate of labels that learn no alphabet.
+
+The old generator drew text on blank paper. A label is artwork with text composited over it, so the generator now draws one: a ground, a gradient, panels of the other polarity, a repeated pattern, printed texture, rules and borders, ornament the text may overlap, and a barcode, with the text set over all of it in its own ink, and a rotated block carrying its own ground so light type keeps its panel when it turns.
+
+**Every parameter is measured, not chosen.** `separate -stats` reports what a label is made of, and `ttb/population.go` records each number with the measurement it came from. What that measurement said, and what the old corpus had assumed:
+
+- The labels' own pixel sizes, taken as a list of the fifty rather than a range. The old corpus drew about a thousand pixels across; the median real label is 2,227.
+- Type at 0.0038 to 0.0106 of the longer side. The old corpus drew two to three times that, so its type was large and clean where real type is small.
+- A third of the marks on a label are light on dark, and 45 of the 50 carry some. The transcription had counted 23, because it looked at the front panel; the pixel measurement counts the back, and the measurement drives the corpus.
+- Local contrast of 0.22 to 0.50 after the engine's resize, not the 0.8 that black on white gives.
+- Text over something structured on 49 of 50 labels, a barcode on 24, rules or borders on 21.
+- The conventions keep their transcribed rates: capitals 34, crowded 33, vertical 14, a display brand 41, one label upside down.
+
+The corpus measured back against the population with the same tool:
+
+| measured on both | the fifty | the corpus |
+|---|---|---|
+| kept marks per label | 808 | 744 |
+| light-on-dark share | 0.344 | 0.286 |
+| contrast of ink to ring | 0.353 | 0.247 |
+| glyph height px | 9.500 | 11.000 |
+| stroke px | 2.000 | 2.000 |
+| ring variation | 0.096 | 0.062 |
+| long side px | 2227 | 2227 |
+| labels with a barcode | 0.480 | 0.460 |
+| labels with rules | 0.420 | 0.740 |
+
+It is close on the piece count, the polarity mix, the type size, the stroke, the resolution and the barcode rate. It is still gentler than reality on two: local contrast, where the corpus draws 0.25 against the population's 0.35, and the variation of what text sits on, 0.062 against 0.096. It over-draws rules, on three quarters of labels against two fifths. Those are named here rather than hidden, and they are what a further round would close.
+
+**Does it predict the population?** Both tables under the same engine, single-threaded, claims decoded with the learned encoder, text separation on:
+
+| claim | rebuilt corpus | the fifty | difference | within 0.15 |
+|---|---|---|---|---|
+| brand | 0.17 | 0.04 | 0.13 | yes |
+| class | 0.16 | 0.00 | 0.16 | **no** |
+| producer, first line | 0.14 | 0.04 | 0.10 | yes |
+| producer, second line | 0.18 | 0.00 | 0.18 | **no** |
+| origin | 0.18 | 0.14 | 0.04 | yes |
+| alcohol content | 0.12 | 0.00 | 0.12 | yes |
+| net contents | 0.12 | 0.12 | 0.00 | yes |
+| labels without an alphabet | 0.35 | 0.36 | 0.01 | yes |
+
+**Five of the seven claims and the alphabet rate predict within the stated tolerance.** The rate of labels that learn no alphabet, which is the stage everything else waits on, is 0.35 on the corpus against 0.36 on the fifty: the corpus now fails in the same proportion as the population, where the old one failed on 17/250 of its labels against 18 of 50 real ones. Latency agrees too, 7.0 seconds against 6.4.
+
+The two that miss are class and producer, second line, and both miss for the same reason, which is not the corpus: the real ground truth for those two fields is not printed on the label. The registry's class is a code description like "OTHER SPECIALTIES & PROPRIETARIES", and the filed producer address is a street the label does not carry, so their real recall is 0.00 by construction, as step 9d recorded. On the fields whose truth is on the label, brand, origin, alcohol content and net contents, the corpus predicts within 0.13, 0.04, 0.12 and 0.00.
+
+What this replaces: the old corpus said brand 0.90, class 0.79, alcohol 0.68, net 0.60, and 17 of 250 labels without an alphabet, against a population that gives 0.04, 0.00, 0.00, 0.12 and 18 of 50. It was wrong about every one of them, and the engine has been tuned against it for eight steps.
+
+The rebuilt corpus, half B:
+
+250 labels, 88 without an alphabet, latency median 7.0s p95 11.8s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 131 | 1.00 | 0.17 | 0.02 | 0/6 | 0 |
+| class | 250 | 1.00 | 0.16 | 0.01 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.14 | 0.01 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.18 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.18 | 0.01 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.12 | 0.02 | 1/5 | 3 |
+| net | 250 | 0.90 | 0.12 | 0.04 | 1/5 | 4 |
+| brand (display face) | 119 | 1.00 | 0.24 | 0.01 | | |
+
+Reference rows: compliant labels with every row verified 20/205 (86 reviewed, 99 failed); wording and title-case errors caught 3/7.
+Emphasis: correct on 85/136 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 52 | 0.23 | 192 | 0.14 |
+| producer_1 | 55 | 0.20 | 195 | 0.13 |
+| producer_2 | 55 | 0.22 | 195 | 0.17 |
+| origin | 58 | 0.14 | 192 | 0.20 |
+| abv | 65 | 0.14 | 177 | 0.11 |
+| net | 64 | 0.13 | 176 | 0.11 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 121 | 35 | 0.19 |
+| light on dark | 48 | 20 | 0.21 |
+| vertical warning | 41 | 6 | 0.25 |
+| crowded warning | 46 | 20 | 0.19 |
+| none of these | 72 | 28 | 0.14 |
+
+One thing to carry into 10c: net contents on the rebuilt corpus asserts one wrong value, precision 0.90, where the fifty give 1.00. The corpus is now hard enough to break something the old one never touched.
+
+**What is carried over unexamined.** Every threshold in the engine is still a fit to the old corpus, and 10c retunes them rather than treating them as constants: the shape-class bound of 10 percent and its dead bands, the alphabet's acceptance at 10 percent unexplained and a spread of 0.12, the free-text radius 0.12, the numeric radius 0.15, the tie margin 0.01, the per-letter unit bound at 1.6 times the radius, the region grouping's gap fractions, the fused-glyph cutter's thresholds, the emphasis gate 0.15 and heavy factor 1.25, the digit classifier's frame at 1.6 by 2.2 x-heights, the encoder's union gap of 0.15, and every bound in `preprocess.DefaultSep`.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
