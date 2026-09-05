@@ -461,9 +461,16 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 				uniform := x.HeightUniformity() >= 0.7
 				return (xName == "upper") == uniform
 			}
+			if AttemptTrace != nil {
+				AttemptTrace(at.name, c.name, b.Block.Box, len(b.Block.Glyphs), b.Matched, b.Unexplained,
+					b.ViolationFraction(), b.Spread, b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction))
+			}
 			if b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) && better(b, a, c.name) {
 				a, casing = b, c.name
 			}
+		}
+		if AttemptTrace != nil && len(candidates) == 0 {
+			AttemptTrace(at.name, "", image.Rectangle{}, 0, 0, 0, 0, 0, false)
 		}
 		if a != nil && a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 			found = at
@@ -637,6 +644,16 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 	}
 	return learned
 }
+
+// AttemptTrace, when set, reports every attempt of the orientation ladder
+// and every casing tried within it: which orientation, which casing, the
+// block it located, how many glyphs it held and how many were matched,
+// what was left unexplained, the fraction of characters contradicting
+// their shape class, the alphabet's spread, and whether it was accepted. A
+// label that fails can then be attributed to the stage that failed rather
+// than to the last thing tried. It is a diagnostic; the engine does not
+// set it.
+var AttemptTrace func(orientation, casing string, block image.Rectangle, glyphs, matched, unexplained int, violations, spread float64, accepted bool)
 
 // stamp writes the build fingerprint onto every verdict a result carries.
 func stamp(res *Result) {

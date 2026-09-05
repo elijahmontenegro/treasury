@@ -1,0 +1,1134 @@
+{
+ "0001": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "same",
+   "n"
+  ],
+  "warning": "back label, small condensed grotesque, all caps"
+ },
+ "0002": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "same",
+   "n"
+  ],
+  "warning": "back red panel, plain grotesque, justified"
+ },
+ "0003": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "y"
+  ],
+  "producer_2": [
+   "same",
+   "n"
+  ],
+  "warning": "middle panel set vertically, plain grotesque"
+ },
+ "0004": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, plain grotesque, bold lead-in"
+ },
+ "0005": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, plain grotesque, bold lead-in"
+ },
+ "0006": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "middle panel, condensed grotesque caps, green on light green"
+ },
+ "0007": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "left edge set vertically, small condensed grotesque"
+ },
+ "0008": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps, white on navy"
+ },
+ "0009": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps, white on navy"
+ },
+ "0010": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps, white on navy"
+ },
+ "0011": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps, white on navy"
+ },
+ "0013": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "middle panel, condensed grotesque caps, red on pink"
+ },
+ "0019": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "middle panel, condensed grotesque caps, green on light green"
+ },
+ "0020": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "middle panel, condensed grotesque caps, orange on amber"
+ },
+ "0021": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "middle panel, condensed grotesque caps, red on pink"
+ },
+ "0023": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "left column, condensed grotesque caps, black on cream"
+ },
+ "0024": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "left column, condensed grotesque caps, black on cream"
+ },
+ "0025": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "left column, condensed grotesque caps, black on cream"
+ },
+ "0027": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "n"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, plain grotesque caps, black on white"
+ },
+ "0028": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "other",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "right edge set vertically, condensed grotesque caps, light on navy"
+ },
+ "0029": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "origin": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, humanist sans, sentence case, black on white"
+ },
+ "0030": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "origin": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, humanist sans, sentence case, black on white"
+ },
+ "0031": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "origin": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, humanist sans, sentence case, black on white"
+ },
+ "0032": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "origin": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, humanist sans, sentence case, black on white"
+ },
+ "0033": {
+  "abv": [
+   "same",
+   "n"
+  ],
+  "brand": [
+   "same",
+   "n"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, bold grotesque, one block"
+ },
+ "0034": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "other",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "right edge set vertically, condensed grotesque caps, white on purple"
+ },
+ "0035": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps"
+ },
+ "0036": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back arch, small sans, sentence case, white on black"
+ },
+ "0037": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "same",
+   "y"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "same",
+   "n"
+  ],
+  "warning": "back label, condensed grotesque bold caps, white on green"
+ },
+ "0038": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, transitional serif, sentence case; the whole label is one serif family"
+ },
+ "0039": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "front label, small condensed grotesque, centred"
+ },
+ "0040": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps, black on white"
+ },
+ "0041": {
+  "abv": [
+   "other",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "other",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed sans, sentence case, black on grey"
+ },
+ "0042": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, small serif, sentence case"
+ },
+ "0044": {
+  "abv": [
+   "same",
+   "n"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "n"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "right edge set vertically, small sans, sentence case"
+ },
+ "0046": {
+  "abv": [
+   "same",
+   "n"
+  ],
+  "brand": [
+   "same",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "none",
+   "-"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "back label, condensed grotesque caps"
+ },
+ "0047": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "y"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "bottom strip, bold grotesque caps, black on white"
+ },
+ "0048": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "n"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "bottom strip, bold grotesque caps, black on white"
+ },
+ "0049": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "n"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "bottom strip, bold grotesque caps, black on white"
+ },
+ "0050": {
+  "abv": [
+   "same",
+   "y"
+  ],
+  "brand": [
+   "other",
+   "n"
+  ],
+  "class": [
+   "none",
+   "-"
+  ],
+  "net": [
+   "same",
+   "y"
+  ],
+  "origin": [
+   "same",
+   "y"
+  ],
+  "producer_1": [
+   "same",
+   "n"
+  ],
+  "producer_2": [
+   "none",
+   "-"
+  ],
+  "warning": "bottom strip, bold grotesque caps, black on white"
+ }
+}

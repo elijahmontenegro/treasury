@@ -1,0 +1,36 @@
+{
+ "note": "Every claim the engine verified on the real fifty, checked by cropping the region it names and reading it. One is false: the eval cannot see it because it scores against the registry's filed permittee, not against what the label prints.",
+ "false": {
+  "0027": {
+   "claim": "producer_1",
+   "expected": "THINK GLOBAL LLC",
+   "printed": "IMPORTED BY: THINK GLOBAL WINES, SANTA BARBARA, CA, USA.",
+   "region_holds": "THINK GLOBAL W"
+  }
+ },
+ "genuine": [
+  "0003 producer_1",
+  "0027 origin",
+  "0033 origin",
+  "0033 net",
+  "0035 brand",
+  "0035 net",
+  "0038 brand",
+  "0038 abv",
+  "0040 brand",
+  "0044 origin",
+  "0047 origin",
+  "0047 abv",
+  "0047 net",
+  "0048 origin",
+  "0048 net",
+  "0049 origin",
+  "0049 net"
+ ],
+ "verified_in_a_second_face": {
+  "0035": {
+   "claim": "brand",
+   "note": "the brand is printed twice: in the warning's own sans, in the line VINTED & BOTTLED BY SVP WINERY ... FOR McKELVEY VINEYARDS, and again in the back's serif body copy. The region the engine matched is the serif copy, so this one verification did cross a face."
+  }
+ }
+}

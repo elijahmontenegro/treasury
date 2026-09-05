@@ -1257,6 +1257,125 @@ The excluded two, for completeness and not as a measure of the engine: class 0.2
 
 **Where the corpus is still not the population.** Measured with the same tool on both: it is close on marks per label, polarity mix, type size, stroke, resolution and barcode rate, and still gentler on local contrast, 0.25 against 0.35, and on the variation of what text sits over, 0.062 against 0.096, and it over-draws rules, on three quarters of labels against two fifths. Beyond the pixels, three things it does not model at all: the fifty include a label printed upside down and thirteen more whose warning runs vertically, which the corpus draws but the engine still mostly fails; real display faces are further from the encoder's training than the generator's brand faces; and the corpus cannot model the case that dominates the real class row, an expected string that is not printed on the label.
 
+### Step 11a: vertical warnings, by the stage that fails (2026-09-05)
+
+Gate, stated before the run: for every real label with a vertical warning, which stage fails and why — the block never located, the alignment rejected for unexplained glyphs, the alignment rejected for characters contradicting their shape class, or the orientation chosen wrongly — counted by cause, with the largest identified. No fix in this step.
+
+The engine reports only the attempt it settled on, so a label that fails is otherwise attributed to the last thing tried. `verify.AttemptTrace` reports every attempt of the orientation ladder and `cmd/attempts` prints them, which is what makes the attribution possible.
+
+**A correction to the population first.** The fourteen labels the 9d transcription marked "vertical" were marked for carrying vertical text, not for setting the warning vertically. Looking at each image again: eleven set the statutory warning itself vertically, one of them (0026) upside down as well; on the other three the warning is upright and it is the ingredients line, an edge statement or a side panel that runs vertically. The gate is reported over the eleven, and the three are reported beside them because of what the engine did with them.
+
+**The eleven labels that set the warning vertically.**
+
+| label | ladder attempts | block located | best violations | alphabet accepted in | claims searched in | verified | stage that failed |
+|---|---|---|---|---|---|---|---|
+| 0003 | 2 | yes | 0.02 | rot90, as_given | rot90 | 1 of 4 | alphabet learned, claims read (1 verified, 0.91 of the warning matched) |
+| 0007 | 3 | yes | 0.02 | inverted_rot90, upper | inverted | 0 of 4 | alphabet learned, no claim verified (0.81 of the warning matched, spread 0.041) |
+| 0012 | 12 | yes | 0.40 | **none** | rot90 | 0 of 4 | characters contradict their shape class (0.40 against a bound of 0.15) |
+| 0015 | 8 | **no** | -- | **none** | rot90 | 0 of 4 | block never located (--) |
+| 0016 | 10 | yes | 0.95 | **none** | inverted | 0 of 4 | characters contradict their shape class (0.95 against a bound of 0.15) |
+| 0017 | 8 | **no** | -- | **none** | rot90 | 0 of 4 | block never located (--) |
+| 0026 | 14 | yes | 0.20 | **none** | as_is | 0 of 4 | characters contradict their shape class (0.20 against a bound of 0.15) |
+| 0028 | 3 | yes | 0.02 | inverted_rot90, upper | inverted | 0 of 4 | alphabet learned, no claim verified (0.35 of the warning matched, spread 0.063) |
+| 0034 | 2 | yes | 0.08 | inverted_rot90, upper | inverted | 0 of 4 | alphabet learned, no claim verified (0.39 of the warning matched, spread 0.081) |
+| 0043 | 16 | yes | 0.32 | **none** | as_is | 0 of 4 | characters contradict their shape class (0.32 against a bound of 0.15) |
+| 0044 | 2 | yes | 0.13 | inverted_rot90, upper | inverted_rot90 | 1 of 5 | alphabet learned, claims read (1 verified, 0.73 of the warning matched) |
+
+| stage | labels | which |
+|---|---|---|
+| characters contradict their shape class | 4 | 0012 0016 0026 0043 |
+| alphabet learned, no claim verified | 3 | 0007 0028 0034 |
+| alphabet learned, claims read | 2 | 0003 0044 |
+| block never located | 2 | 0015 0017 |
+
+**The largest cause is the shape-class bound: four of the eleven.** The alignment is found and then refused because 20 to 95 percent of the characters contradict the class their shape implies, against a bound of 0.15. Two more never locate a block at all, both of them the same design (Wasatch cans, the warning set in a narrow justified column of 6-pixel type against a coloured panel). Five learn an alphabet, and two of those verify a claim; the three that verify nothing are the subject of 11b rather than of the orientation ladder.
+
+**Orientation is not the failing stage on any of the eleven.** Every label that learns an alphabet learns it in the orientation its warning is actually set in, and the claims are then searched in the frame where the label's other text stands upright — which is what step 6a built. Where the ladder does cost something it is time: 0043 makes sixteen attempts and 0026 fourteen, every one of them refused.
+
+**The three my transcription had counted with them, whose warning is in fact upright.**
+
+| label | ladder attempts | block located | best violations | alphabet accepted in | claims searched in | verified | stage that failed |
+|---|---|---|---|---|---|---|---|
+| 0002 | 2 | yes | 0.13 | rot90, upper | rot90 | 0 of 4 | alphabet learned, no claim verified (0.27 of the warning matched, spread 0.129) |
+| 0037 | 6 | yes | 0.12 | rot180, upper | rot180 | 0 of 4 | alphabet learned, no claim verified (0.26 of the warning matched, spread 0.125) |
+| 0039 | 2 | yes | 0.13 | as_is, upper | as_is | 0 of 4 | alphabet learned, no claim verified (0.15 of the warning matched, spread 0.115) |
+
+| stage | labels | which |
+|---|---|---|
+| alphabet learned, no claim verified | 3 | 0002 0037 0039 |
+
+**These three are a different defect, and it is the more serious one.** Each accepts an alphabet from a block whose alignment explains a quarter or less of the warning — 66 characters of 241 on 0002, 62 on 0037, 36 on 0039 — with a spread of 0.115 to 0.129 where a genuine alignment on this set runs 0.02 to 0.04. Two of the three accept it in a rotated frame, and the claims are then searched rotated as well, which is why 0002 reads claims in `rot90` and 0037 in `rot180` although both labels set everything upright. The mechanism is the capitals pass: dividing the x-height estimate by 1.45 makes almost every glyph measure tall, so the shape-class violations of a wrong block fall from 0.37–0.50 to 0.12–0.13, just inside the bound, while the number of characters matched barely moves. Acceptance counts unexplained ink and shape violations and never asks how much of the reference was matched.
+
+**How far that reaches, measured on the whole set.** Of the forty labels that learn an alphabet, nine explain half or more of the warning and thirty-one explain less:
+
+| labels | matched fraction of the warning | spread | claims verified |
+|---|---|---|---|
+| 9 | 0.46 to 0.98 | 0.020 to 0.100 | 11 |
+| 31 | 0.15 to 0.48 | 0.036 to 0.129 | 7 |
+
+Not every low fraction is a wrong block: the four Grapevine labels sit at 0.46 to 0.51 because their warning is misprinted ("GOVERMENT WARNING", "ACOHOLIC BEVERAGES"), and they verify seven claims between them. But the number separates what works from what does not better than anything else the engine records, and nothing in the acceptance test looks at it.
+
+### Step 11b: cross-face reach, measured (2026-09-05)
+
+Gate, stated before the run: real-label recall split by whether a claim is set in the warning's own face or another, per claim, with a stated finding on how much of the remaining loss is cross-face.
+
+**Method.** The face relation is not in the registry and cannot be taken from the engine's own verdicts without circularity, so it is transcribed by eye from the images. The sample is all forty labels that learn an alphabet — a label without one attempts no claim — and it is the whole population rather than a sample of it, because only eighteen claims verify on the fifty and a subsample would leave the numerator too thin to split. Two of the forty (0030 and 0031) were recorded from their siblings 0029 and 0032, the same series in the same design. The transcription is in `real2/face_relation.json`, one line per claim.
+
+Two rules, stated because they decide rows: where a claim is printed more than once, in the warning's face and in another, it is counted in the same-face column, since the engine searches the whole image and reachability is the question; and a claim whose expected string appears nowhere on the label in any form is counted in neither column and reported separately, since it measures the registry rather than the engine.
+
+**The two columns.** Class and the producer's second line are excluded as in 10c and reported below.
+
+| claim | same face n | verified | recall | other face n | verified | recall | not printed n | verified |
+|---|---|---|---|---|---|---|---|---|
+| brand | 16 | 3 | 0.19 | 24 | 0 | 0.00 | 0 | 0 |
+| producer_1 | 25 | 1 | 0.04 | 2 | 0 | 0.00 | 13 | 0 |
+| origin | 9 | 6 | 0.67 | 4 | 0 | 0.00 | 0 | 0 |
+| abv | 30 | 2 | 0.07 | 10 | 0 | 0.00 | 0 | 0 |
+| net | 26 | 5 | 0.19 | 14 | 0 | 0.00 | 0 | 0 |
+| **all five** | 106 | 17 | **0.16** | 54 | 0 | **0.00** | 13 | 0 |
+
+**Not one claim set only in a face other than the warning's was verified: 0 of 54.** Every one of the seventeen genuine verifications on the fifty is a claim the label prints in the warning's own face. Origin, which 10c reported at 0.43 and which is nearly always set in the same plain type as the warning, reads at 0.67 in that column; brand, which is set in a display face on twenty-four of the forty labels, reads at 0.19 where it is in the warning's face and 0.00 where it is not.
+
+**How much of the remaining loss is cross-face.** Claims not verified, by cause: 89 set in the warning's face, 54 in another, 13 not printed at all; 156 in total. Cross-face share of the loss: 0.35; not-printed share: 0.08; same-face share: 0.57. So a third of what the engine fails to verify is beyond its reach by face, and more than half is claims it could see in the reference's own type and still did not read.
+
+That second half has an explanation the same transcription supplies. Within the same-face column, splitting by whether what is printed matches the expected string exactly:
+
+| printed as expected | n | verified | recall |
+|---|---|---|---|
+| yes | 77 | 17 | 0.22 |
+| no, differs in wording or punctuation | 29 | 0 | 0.00 |
+
+Twenty-nine of the 106 same-face claims are printed in a form the expected string does not match — an importer named "OZ Trading Group, Inc." against a filed "OZ TRADING GROUP INC", an address written with periods, a permittee filed as two names joined by a comma, an alcohol statement set with a comma for a decimal point. None of them verify, and none of them can: the engine is asked for a string the label does not carry. Of the 77 same-face claims printed as expected, 17 verify, 0.22.
+
+**The excluded two, reported separately with the same reason as 10c:**
+
+| claim | same face n | verified | recall | other face n | verified | recall | not printed n | verified |
+|---|---|---|---|---|---|---|---|---|
+| class | 1 | 0 | 0.00 | 0 | 0 | -- | 39 | 0 |
+| producer_2 | 4 | 0 | 0.00 | 0 | 0 | -- | 35 | 0 |
+| **both** | 5 | 0 | **0.00** | 0 | 0 | **--** | 74 | 0 |
+
+Thirty-nine of forty labels do not print the registry's class description and thirty-five do not print the filed street address, so those rows measure the application form.
+
+### An audit of the verifications, and one false assertion (2026-09-05)
+
+Transcribing what each label prints made it possible to check the engine's verdicts against the image rather than against the registry, so every claim it verified on the fifty was checked by cropping the region it names and reading it. Seventeen of the eighteen are genuine. One is not:
+
+- **0027, producer's first line.** The engine reports VERIFIED, expected and observed "THINK GLOBAL LLC". The region it names, 131 by 27 pixels, holds "THINK GLOBAL W" — the label prints "IMPORTED BY: THINK GLOBAL WINES, SANTA BARBARA, CA, USA." The alignment took three penalized steps to fit "LLC" onto "WINES" and landed at 0.089 against a radius of 0.12. The evidence crop is in `docs/evidence/audit`.
+
+The eval cannot see this, because it scores a claim against the registry's filed permittee, and "THINK GLOBAL LLC" is what the registry filed. **Against the registry the real set's precision is 1.00 as reported; against what the labels actually print it is 17 of 18, 0.94**, and the real producer recall is 1 of 40 rather than 2. The table as scored, for comparison:
+
+| claim | same face n | verified | recall | other face n | verified | recall | not printed n | verified |
+|---|---|---|---|---|---|---|---|---|
+| brand | 16 | 3 | 0.19 | 24 | 0 | 0.00 | 0 | 0 |
+| producer_1 | 25 | 2 | 0.08 | 2 | 0 | 0.00 | 13 | 0 |
+| origin | 9 | 6 | 0.67 | 4 | 0 | 0.00 | 0 | 0 |
+| abv | 30 | 2 | 0.07 | 10 | 0 | 0.00 | 0 | 0 |
+| net | 26 | 5 | 0.19 | 14 | 0 | 0.00 | 0 | 0 |
+| **all five** | 106 | 18 | **0.17** | 54 | 0 | **0.00** | 13 | 0 |
+
+One other thing the audit showed: on 0035 the brand verifies through a second copy of the string, set in the back's serif body text rather than in the warning's sans, on a label that prints it in both. So the reach across faces is not exactly zero — it is one instance in eighteen, on a label where the claim was also available in the reference's own face.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

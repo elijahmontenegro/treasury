@@ -1,0 +1,5 @@
+{
+ "note": "The fourteen labels my 9d transcription marked 'vertical'. Looking at each image again for 11a: eleven set the statutory warning itself vertically (0026 sets it upside down as well); on the other three the warning is upright and it is other text that runs vertically. The 11a gate is stated over the eleven, and the three are reported beside them because of what the engine did with them.",
+ "warning_vertical": ["0003", "0007", "0012", "0015", "0016", "0017", "0026", "0028", "0034", "0043", "0044"],
+ "warning_upright": ["0002", "0037", "0039"]
+}
