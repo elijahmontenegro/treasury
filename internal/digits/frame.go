@@ -23,7 +23,7 @@ const Other = len(Classes) - 1
 // FrameW and FrameH are the frame's extent in x-heights: the alphabet
 // frame's height (1.6 above the baseline to 0.6 below) but narrower, so
 // the glyph fills the patch and its neighbours stay at the edges.
-const (
+var (
 	FrameW = 1.6
 	FrameH = 2.2
 )

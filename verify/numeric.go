@@ -378,7 +378,7 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		out, w := e.decide(one, sp, pre, sub, cache)
 		if w != nil {
 			w.region = back[w.region]
-			if why := numberAligned(w, r.run, sp.GlyphEnc.Bits(), e.radiusFor(one)); why != "" {
+			if why := numberAligned(w, r.run, sp.GlyphEnc.Bits(), e.radiusFor(one), e.unitBound()); why != "" {
 				if numericTrace != nil {
 					numericTrace("%s: reading %q not decided on %q: %s", c.Name, r.text, w.target.Text, why)
 				}
@@ -579,13 +579,13 @@ func (e *Engine) radiusFor(c Claim) float64 {
 // 12" matched "No. 12" on two perfect digits and five letters consumed by
 // structural steps that compared nothing; and "201ml" matched the bare
 // "201" of a zip code with its unit deleted.
-func numberAligned(w *scored, run []image.Rectangle, bits int, radius float64) string {
+func numberAligned(w *scored, run []image.Rectangle, bits int, radius, mult float64) string {
 	// A letter of the unit is that letter or the reading is not this
 	// field. The bound follows the claim's own scale: at a numeric radius
 	// of 0.15 a glyph 0.45 away is not the letter, and taking it for one
 	// let the "45" of a brand name pass as a fill of 45 mL with "TH" for
 	// "ML".
-	bound := math.Max(0.25, 1.6*radius)
+	bound := math.Max(0.25, mult*radius)
 	if !w.refined {
 		return ""
 	}
@@ -732,4 +732,13 @@ func pathTrace(w *scored, bits int) string {
 		parts = append(parts, fmt.Sprintf("%s:%s%s%s", st.Kind, ch, box, d))
 	}
 	return strings.Join(parts, " ")
+}
+
+// unitBound is how far a letter of a unit may sit from its own code, as a
+// multiple of the claim's radius.
+func (e *Engine) unitBound() float64 {
+	if e.opt.UnitBound > 0 {
+		return e.opt.UnitBound
+	}
+	return 1.6
 }

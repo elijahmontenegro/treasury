@@ -22,9 +22,9 @@ type Params struct {
 	GlareQuantile float64 // pixels at or above this intensity quantile are glare
 	GlareMinGap   int     // the glare level must exceed the median by this much, else no mask
 	// Separate turns on text separation: ink is what a line of type is
-	// made of rather than whatever is dark. Off through step 10a, which
-	// built and measured it; the corpus it would be tuned against is
-	// rebuilt in 10b and the default is decided in 10c.
+	// made of rather than whatever is dark. On since step 10c, where the
+	// corpus that everything is tuned against became one that models the
+	// population it is meant to predict.
 	Separate bool
 	Sep      SepParams
 }
@@ -32,7 +32,7 @@ type Params struct {
 // Default returns the spec's parameters.
 func Default() Params {
 	return Params{LongSide: 1600, Window: 31, K: 0.2, WeakK: 0.1, CoreFrac: 0.5, R: 128, MaxSkewDeg: 15, GlareQuantile: 0.99, GlareMinGap: 16,
-		Separate: false, Sep: DefaultSep()}
+		Separate: true, Sep: DefaultSep()}
 }
 
 // Result is the preprocessed image. Gray and Bin share coordinates.

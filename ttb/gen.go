@@ -490,11 +490,19 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 	// The rest of what a label carries. A real label of this size holds
 	// about twice the text the old corpus drew, so the filler is the
 	// difference between a mock-up and a label.
+	// A serving-facts line states the container's own fill, as a real
+	// label's does. Stating a different one made the label say two fills
+	// and the engine was right to call the difference: the corpus was
+	// wrong, not the reading.
+	serving := "Serving Facts   Servings per container 1"
+	if pr.NetText != "" {
+		serving = "Serving Facts   Serving size " + pr.NetText + "   Servings per container 1"
+	}
 	filler := []string{
 		"Please drink responsibly.", "Enjoy responsibly.", "Keep refrigerated.",
 		"CONTAINS SULFITES", "ME-MA-VT-CT-NY-DE-LA-OR-COL 5c, MI 10c REFUND",
 		"INGREDIENTS: WATER, MALTED BARLEY, HOPS, YEAST.",
-		"Serving Facts   Serving size 12 FL. OZ. (355mL)   Servings per container 1",
+		serving,
 		"Bottled under license. Store in a cool dry place, away from sunlight.",
 		"www.example-brand.com", "Certified sustainable. Recycle where facilities exist.",
 	}

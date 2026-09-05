@@ -1122,6 +1122,141 @@ One thing to carry into 10c: net contents on the rebuilt corpus asserts one wron
 
 **What is carried over unexamined.** Every threshold in the engine is still a fit to the old corpus, and 10c retunes them rather than treating them as constants: the shape-class bound of 10 percent and its dead bands, the alphabet's acceptance at 10 percent unexplained and a spread of 0.12, the free-text radius 0.12, the numeric radius 0.15, the tie margin 0.01, the per-letter unit bound at 1.6 times the radius, the region grouping's gap fractions, the fused-glyph cutter's thresholds, the emphasis gate 0.15 and heavy factor 1.25, the digit classifier's frame at 1.6 by 2.2 x-heights, the encoder's union gap of 0.15, and every bound in `preprocess.DefaultSep`.
 
+### Step 10c: retuning on the corpus that models the population (2026-09-05)
+
+Gate, stated before the run: both tables side by side, the transfer gap per claim, and a plain statement of where the corpus is still not the population. Three constraints: precision is a constraint and not a term to trade, class and the producer's second line are excluded from the objective and the transfer measurement, and every constant carried over is retuned and reported with what its change bought.
+
+**The defect first, and it was the corpus.** The rebuilt corpus produced three verdicts naming a wrong fill: a label declaring 500 mL, printing "500 ML", and getting a mismatch observing 355. The cause was the filler added in 10b, which printed a serving-facts line stating a different fill from the one the label declared. The label therefore said two fills and the engine was right to call the difference. A real label's serving line states its own container's fill, and now so does the corpus.
+
+**How the sweeps were run.** Each constant is overridden by name through `Options.Tune`, so a sweep is reproducible rather than an edit, and scored on a fixed 48-label subset of half A. The objective counts claims verified correctly, excluding class and the producer's second line, subject to a hard constraint: a setting that produces any verdict naming something untrue is disqualified whatever it buys. The first sweep of all thirty-three constants reported every one as perfectly insensitive, which was the harness and not the engine: the overrides that live in the engine's own options were not being applied. That is worth recording, because a tuning run that reports no effect is more likely broken than informative.
+
+| constant | was | is | what the change bought |
+|---|---|---|---|
+| `free_radius` | 0.12 | 0.12 | reverted: 0.15 bought 8 but verified a brand on two labels printing a different one |
+| `numeric_radius` | 0.15 | 0.15 | reverted: 0.20 bought 7 but asserted 5% for a label printing 46.5% |
+| `tie` | 0.01 | 0.01 | insensitive (0.005→+0, 0.03→+0) |
+| `char_spread` | 0.12 | **0.18** | the sweep gained +2 claims on the subset |
+| `unexplained` | 0.10 | 0.10 | insensitive (0.05→+0, 0.20→+0) |
+| `violation` | 0.10 | **0.15** | 0.20 bought 7 and eight more alphabets, but let a label with no warning learn one; 0.15 keeps the guard |
+| `line_threshold` | 0.08 | 0.08 | insensitive (0.05→+0, 0.12→+0) |
+| `emphasis_gate` | 0.15 | 0.15 | insensitive (0.10→+0, 0.22→+0) |
+| `heavy_factor` | 1.25 | 1.25 | insensitive (1.15→+0, 1.40→+0) |
+| `min_glyphs` | 3 | 3 | insensitive (2→+0, 4→+0) |
+| `unit_bound` | 1.6 | **2.2** | the sweep gained +5 claims on the subset |
+| `block_floor` | 0.40 | 0.40 | insensitive (0.25→+0, 0.55→+0) |
+| `union_gap` | 0.15 | 0.15 | gained +1, kept out of the shipped set (0.10→+1, 0.25→+1) |
+| `class_bands` | 1.0 | 1.0 | insensitive (0.5→-6, 2.0→-2) |
+| `digit_frame_w` | 1.6 | 1.6 | insensitive (1.3→-1, 2.0→-1) |
+| `digit_frame_h` | 2.2 | 2.2 | insensitive (1.8→-1, 2.6→-1) |
+| `region_hgap` | 1.5 | **2.0** | the sweep gained +1 claims on the subset |
+| `region_vcenter` | 0.6 | **0.8** | the sweep gained +2 claims on the subset |
+| `region_words` | 5 | 5 | insensitive (3→+0, 7→+0) |
+| `region_fused` | 1.6 | 1.6 | insensitive (1.3→-2, 2.0→-3) |
+| `region_min_area` | 4 | 4 | insensitive (2→+0, 8→+0) |
+| `sep_max_ratio` | 0.55 | 0.55 | insensitive (0.45→+0, 0.70→+0) |
+| `sep_max_spread` | 0.62 | **0.50** | the sweep gained +11 claims on the subset |
+| `sep_min_contrast` | 0.10 | **0.16** | the sweep gained +2 claims on the subset |
+| `sep_solid` | 1.6 | 1.6 | insensitive (1.3→+0, 2.2→+0) |
+| `sep_min_run` | 3 | 3 | insensitive (2→-1, 4→+0) |
+| `sep_run_height` | 0.45 | 0.45 | insensitive (0.35→+0, 0.60→+0) |
+| `sep_dark_ground` | 90 | **120** | the sweep gained +4 claims on the subset |
+| `sep_light_ground` | 165 | 165 | reverted: 140 bought 11 alone and asserted falsely in combination |
+| `sep_bar_field` | 8 | 8 | insensitive (5→+0, 12→+0) |
+| `sep_min_height` | 2 | 2 | insensitive (3→+0, 4→-5) |
+| `sep_max_height` | 0.25 | 0.25 | insensitive (0.15→+0, 0.40→+0) |
+| `sep_max_width` | 0.6 | **0.40** | the sweep gained +6 claims on the subset |
+| `sep_min_area` | 4 | **3** | the sweep gained +2 claims on the subset |
+
+**Three values were bought and then given back, because precision is a constraint.** The free-text radius at 0.15 gained eight claims on the subset and then verified a brand on two labels that print a different one, the declared brand standing in their producer line. The numeric radius at 0.20 gained seven and then read 46.5% as 5% and asserted it. The separation's light-ground bound at 140 gained eleven alone and asserted falsely in combination. All three are back where they were. The shape-class bound went to 0.15 rather than the 0.20 the sweep preferred: at 0.20 a label carrying no warning at all learns an alphabet from other text, which the no-reference test catches, and that is a false assertion about the reference itself.
+
+**Separation is now the default.** The corpus that everything is tuned against models the population, so the pipeline that reads artwork is the one that ships. Two assertions written against the clean corpus are pinned to the pipeline they were written for, a blurred sample's net contents and a display-face brand in a casing variant, and say so in the test file.
+
+The rebuilt corpus, half B, retuned:
+
+250 labels, 44 without an alphabet, latency median 6.8s p95 11.5s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 131 | 1.00 | 0.22 | 0.00 | 0/6 | 0 |
+| class | 250 | 1.00 | 0.20 | 0.00 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.16 | 0.00 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.20 | 0.00 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.21 | 0.00 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.13 | 0.00 | 1/5 | 3 |
+| net | 250 | 1.00 | 0.20 | 0.04 | 1/5 | 5 |
+| brand (display face) | 119 | 1.00 | 0.26 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 18/205 (55 reviewed, 132 failed); wording and title-case errors caught 5/7.
+Emphasis: correct on 95/173 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 52 | 0.25 | 192 | 0.19 |
+| producer_1 | 55 | 0.20 | 195 | 0.15 |
+| producer_2 | 55 | 0.24 | 195 | 0.19 |
+| origin | 58 | 0.14 | 192 | 0.23 |
+| abv | 65 | 0.14 | 177 | 0.13 |
+| net | 64 | 0.16 | 176 | 0.22 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 121 | 17 | 0.22 |
+| light on dark | 48 | 11 | 0.25 |
+| vertical warning | 41 | 5 | 0.23 |
+| crowded warning | 46 | 12 | 0.20 |
+| none of these | 72 | 14 | 0.17 |
+
+The fifty real labels, same engine:
+
+50 labels, 10 without an alphabet, latency median 6.4s p95 9.5s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 50 | 1.00 | 0.06 | 0.00 | 0/0 | 0 |
+| class | 50 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| producer_1 | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| producer_2 | 49 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| origin | 14 | 1.00 | 0.43 | 0.00 | 0/0 | 0 |
+| abv | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| net | 50 | 1.00 | 0.10 | 0.02 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 2/50 (13 reviewed, 35 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 21/40 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 50 | 10 | 0.05 |
+
+**The transfer gap.** Class and the producer's second line are excluded, because the registry's class is a code description and the filed street address is not printed, so both measure the registry rather than the engine; they are reported below on their own.
+
+| claim | rebuilt corpus | the fifty | difference | within 0.15 |
+|---|---|---|---|---|
+| brand | 0.22 | 0.06 | 0.16 | **no** |
+| producer, first line | 0.16 | 0.04 | 0.12 | yes |
+| origin | 0.21 | 0.43 | 0.22 | **no** |
+| alcohol content | 0.13 | 0.04 | 0.09 | yes |
+| net contents | 0.20 | 0.10 | 0.10 | yes |
+| labels without an alphabet | 0.18 | 0.20 | 0.02 | yes |
+
+Three of the five claims and the alphabet rate transfer within the stated tolerance. The corpus predicts the rate of labels that learn no alphabet to two points, 0.18 against 0.20. Brand misses by 0.16 and origin by 0.22, in opposite directions: the corpus over-predicts brand, whose real display faces are further from anything the encoder has seen, and under-predicts origin, where the real fourteen that carry one print it in the same plain type as the warning.
+
+**What the retuning bought on the population.** Against the same engine before 10c: labels without an alphabet 18 of 50 to 10, brand 0.04 to 0.06, origin 0.14 to 0.43, alcohol 0.00 to 0.04, net 0.12 to 0.10, with precision 1.00 on every claim on both corpora and no mismatch anywhere in the fifty.
+
+The excluded two, for completeness and not as a measure of the engine: class 0.20 on the corpus against 0.00 on the fifty, and the producer's second line 0.20 against 0.00. Both real figures are what they must be when the expected string is not on the label.
+
+**Where the corpus is still not the population.** Measured with the same tool on both: it is close on marks per label, polarity mix, type size, stroke, resolution and barcode rate, and still gentler on local contrast, 0.25 against 0.35, and on the variation of what text sits over, 0.062 against 0.096, and it over-draws rules, on three quarters of labels against two fifths. Beyond the pixels, three things it does not model at all: the fifty include a label printed upside down and thirteen more whose warning runs vertically, which the corpus draws but the engine still mostly fails; real display faces are further from the encoder's training than the generator's brand faces; and the corpus cannot model the case that dominates the real class row, an expected string that is not printed on the label.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

@@ -9,6 +9,10 @@ import (
 	"treasury/internal/encoder"
 )
 
+// UnionGap is how close two components must be, in x-heights, before they
+// are considered pieces of one glyph. Fitted to the old corpus at 0.15.
+var UnionGap = 0.15
+
 // Observed is a run of components in reading order with their frame codes.
 // Union codes of neighbouring components, which depend on the run alone,
 // are computed on demand and shared by every alignment of the run.
@@ -56,7 +60,7 @@ func (o Observed) unionCode(g, k int) (bitcode.Code, bool) {
 	// apart by their normal spacing, a tenth of an x-height and more, are
 	// not one glyph, and their union would only cost an encoding.
 	for i := g + 1; i < g+k; i++ {
-		if o.Gaps[i] > 0.15 {
+		if o.Gaps[i] > UnionGap {
 			return nil, false
 		}
 	}

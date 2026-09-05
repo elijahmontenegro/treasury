@@ -173,8 +173,10 @@ type Result struct {
 
 // Options tune the engine. Zero values take the defaults.
 // DefaultNumericRadius is the radius a numeric claim is decided at under
-// the learned code. Chosen by running half A at 0.10, 0.15 and 0.22: 262,
-// 299 and 300 correct verifications against 1, 1 and 7 false assertions.
+// the learned code. In step 10c, 0.20 bought seven claims on the sweep
+// subset and then asserted 5% for a label printing 46.5%, a partial read
+// the wider radius accepts; precision is a constraint, so it stays at
+// 0.15.
 const DefaultNumericRadius = 0.15
 
 // How a numeric field's value is obtained.
@@ -204,6 +206,12 @@ type Options struct {
 	// Separate turns text separation on or off; nil means on. Off is the
 	// pipeline as it stood through step 9, where ink is whatever is dark.
 	Separate *bool
+	// UnitBound is the per-letter bound on a numeric claim's unit, as a
+	// multiple of the claim's radius; 0 means 1.6.
+	UnitBound float64
+	// Tune overrides a constant by name, for the sweeps of step 10c. The
+	// names are in tune.go.
+	Tune map[string]float64
 	// Without names rules to remove, so that the cost of deleting one can
 	// be measured rather than argued: "invalid-tie" sends a tie between
 	// values a field cannot hold to review instead of returning nothing,
@@ -246,10 +254,10 @@ func (o Options) withDefaults() Options {
 		o.LearnedTie = 0.01 // tuned on half A (7a): with partial reads undecided at the source, the tuner no longer trades decisions for reviews
 	}
 	if o.LearnedNumericRadius == 0 {
-		o.LearnedNumericRadius = DefaultNumericRadius // chosen by running half A at 0.10, 0.15, 0.22 (8a): 262, 299, 300 correct numeric verifications against 1, 1, 7 false assertions
+		o.LearnedNumericRadius = DefaultNumericRadius
 	}
 	if o.MaxCharSpread == 0 {
-		o.MaxCharSpread = 0.12
+		o.MaxCharSpread = 0.18 // retuned on the rebuilt corpus (10c): +2 claims
 	}
 	if o.MaxUnexplained == 0 {
 		o.MaxUnexplained = 0.10
@@ -257,8 +265,15 @@ func (o Options) withDefaults() Options {
 	if o.LineThreshold == 0 {
 		o.LineThreshold = 0.08
 	}
+	if o.LearnedRadius == 0 {
+		// 0.15 buys eight claims on the sweep subset, and on the whole
+		// corpus it verifies a brand on two labels that print a different
+		// one, because the declared brand also stands in the producer
+		// line. Precision is a constraint, so it stays at 0.12.
+		o.LearnedRadius = 0.12
+	}
 	if o.ViolationFraction == 0 {
-		o.ViolationFraction = 0.1
+		o.ViolationFraction = 0.15 // retuned (10c): +7 claims, and labels with no alphabet 20 to 8 on the sweep subset
 	}
 	if o.RowFailAnomalies == 0 {
 		o.RowFailAnomalies = 2
@@ -290,6 +305,7 @@ type Engine struct {
 
 // New builds an engine.
 func New(o Options) (*Engine, error) {
+	o = applyOptions(o)
 	o = o.withDefaults()
 	faces, err := render.Bundled()
 	if err != nil {
@@ -334,6 +350,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		spans[i] = alphabet.Span{Start: s.Start, End: s.End}
 	}
 	opt := alphabet.DefaultOptions()
+	_, _, opt = applyTune(e.opt.Tune, preprocess.Default(), region.Default(), opt)
 	opt.Encoder = e.glyphEnc
 	opt.MaxCharSpread = e.opt.MaxCharSpread
 
@@ -375,11 +392,14 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		if e.opt.Separate != nil {
 			pp.Separate = *e.opt.Separate
 		}
+		rp := region.Default()
+		ao := alphabet.DefaultOptions()
+		pp, rp, _ = applyTune(e.opt.Tune, pp, rp, ao)
 		pre, err := preprocess.Run(g, pp)
 		if err != nil {
 			return prepared{}, err
 		}
-		lines, regions := region.Propose(pre.Bin, pre.Glare, region.Default())
+		lines, regions := region.Propose(pre.Bin, pre.Glare, rp)
 		p := prepared{pre, lines, regions}
 		done[at] = p
 		return p, nil

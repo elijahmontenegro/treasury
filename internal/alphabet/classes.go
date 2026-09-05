@@ -96,6 +96,16 @@ func charPrior(r rune) prior {
 }
 
 // measured reads the features and width of a box relative to its row.
+// ClassBands scales the width of the shape classes' dead bands, where a
+// feature neither confirms nor contradicts. Fitted to the old corpus at 1.
+var ClassBands = 1.0
+
+// graded is grade with the dead band widened or narrowed about its centre.
+func graded(v, lo, hi float64) int8 {
+	mid := (lo + hi) / 2
+	return grade(v, mid+(lo-mid)*ClassBands, mid+(hi-mid)*ClassBands)
+}
+
 func measured(box image.Rectangle, baseline int, xh float64) (feat, float64) {
 	above := float64(baseline-box.Min.Y) / xh
 	below := float64(box.Max.Y-baseline) / xh
@@ -104,9 +114,9 @@ func measured(box image.Rectangle, baseline int, xh float64) (feat, float64) {
 	// at a small x-height could put it on either side; there it is "either"
 	// and neither confirms nor contradicts a character.
 	return feat{
-		tall:  grade(above, 1.12, 1.3),
-		desc:  grade(below, 0.15, 0.35),
-		small: grade(-h, -0.6, -0.4),
+		tall:  graded(above, 1.12, 1.3),
+		desc:  graded(below, 0.15, 0.35),
+		small: graded(-h, -0.6, -0.4),
 	}, float64(box.Dx()) / xh
 }
 

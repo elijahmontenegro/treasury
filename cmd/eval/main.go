@@ -27,6 +27,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -43,7 +44,9 @@ var digitMode = flag.String("digits", "", "how numeric fields are read: classifi
 
 var without = flag.String("without", "", "comma-separated rules to remove, to measure the cost of deleting them")
 
-var separate = flag.Bool("separate", false, "separate text from artwork before decoding rather than taking whatever is dark as ink")
+var tuneSet = flag.String("tune-set", "", "override constants by name, as name=value pairs separated by commas")
+
+var separate = flag.Bool("separate", true, "separate text from artwork before decoding rather than taking whatever is dark as ink")
 
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
@@ -110,7 +113,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	}
 	var records []Record
 	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without), Separate: separate})
+		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without), Separate: separate, Tune: tuneMap(*tuneSet)})
 		if err != nil {
 			return err
 		}
@@ -829,4 +832,24 @@ func rules(s string) []string {
 		return nil
 	}
 	return strings.Split(s, ",")
+}
+
+// tuneMap parses -tune-set.
+func tuneMap(s string) map[string]float64 {
+	if s == "" {
+		return nil
+	}
+	out := map[string]float64{}
+	for _, part := range strings.Split(s, ",") {
+		k, v, ok := strings.Cut(part, "=")
+		if !ok {
+			continue
+		}
+		f, err := strconv.ParseFloat(strings.TrimSpace(v), 64)
+		if err != nil {
+			continue
+		}
+		out[strings.TrimSpace(k)] = f
+	}
+	return out
 }
