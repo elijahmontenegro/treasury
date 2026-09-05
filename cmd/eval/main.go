@@ -39,6 +39,8 @@ import (
 
 var claimEnc = flag.String("claim-encoder", "", "the code claims are decoded in: same (default) or learned")
 
+var digitMode = flag.String("digits", "", "how numeric fields are read: classifier (default), image, or synthetic")
+
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
@@ -104,7 +106,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	}
 	var records []Record
 	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc})
+		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode})
 		if err != nil {
 			return err
 		}

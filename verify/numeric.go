@@ -36,6 +36,12 @@ type Numeric struct {
 	Formats   []NumericFormat
 	Valid     []float64 // empty accepts any value
 	Tolerance float64
+	// Enumerable marks a field whose vocabulary is small enough to decode
+	// by spelling every value it may take. The engine uses it only when it
+	// cannot read digits: such a field is then the label's second known
+	// string, and the glyphs its winner explains teach the alphabet the
+	// digits the reference never contained.
+	Enumerable bool
 }
 
 // reading is a run of digit-class glyphs in a region as the classifier read
@@ -99,10 +105,49 @@ var numericTrace func(format string, args ...any)
 
 // decideClaim decides a claim by its kind.
 func (e *Engine) decideClaim(c Claim, sp *spell.Speller, pre *preprocess.Result, regions []encodedRegion, cache *callCache) (Verdict, *scored) {
-	if c.Numeric != nil {
+	if c.Numeric == nil {
+		return e.decide(c, sp, pre, regions, cache)
+	}
+	if e.opt.Digits == DigitsClassifier || (!c.Numeric.Enumerable && e.opt.Digits != DigitsImageEnum) {
 		return e.decideNumeric(c, sp, pre, regions, cache)
 	}
-	return e.decide(c, sp, pre, regions, cache)
+	// A field the engine cannot read is decoded by its own vocabulary:
+	// every value it may legally take, in every printed format, spelled
+	// with the learned alphabet and aligned as an ordinary claim. The
+	// winner's digit glyphs then teach the alphabet through the harvest,
+	// and the fields that could not be read for want of digits are read
+	// again in the second pass.
+	v, w := e.decide(enumerate(c), sp, pre, regions, cache)
+	v.Claim, v.Expected = c.Name, c.Expected
+	return v, w
+}
+
+// enumerate turns a numeric claim into the enumeration of its field: every
+// valid value in every printed format, with the value each stands for.
+func enumerate(c Claim) Claim {
+	spec := c.Numeric
+	out := c
+	out.Numeric = nil
+	out.numericInner = true
+	out.Candidates = nil
+	seen := map[string]bool{}
+	for _, v := range spec.Valid {
+		for _, f := range spec.Formats {
+			scale := f.Scale
+			if scale == 0 {
+				scale = 1
+			}
+			n := v / scale
+			text := strings.Replace(f.Template, "{n}", strconv.FormatFloat(n, 'f', -1, 64), 1)
+			if seen[text] {
+				continue
+			}
+			seen[text] = true
+			out.Candidates = append(out.Candidates, Candidate{Text: text, Value: strconv.FormatFloat(v, 'f', -1, 64)})
+		}
+	}
+	sort.Slice(out.Candidates, func(i, j int) bool { return out.Candidates[i].Text < out.Candidates[j].Text })
+	return out
 }
 
 // decideNumeric reads the claim's number off the label and then verifies
@@ -182,7 +227,7 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		if regions[ri].kind != region.KindLine {
 			continue
 		}
-		for _, r := range e.readAll(regions[ri], ri, cache) {
+		for _, r := range e.readAll(regions[ri], ri, sp, cache) {
 			key := [2]image.Rectangle{r.boxes[0], r.boxes[1]}
 			if seen[key] {
 				continue

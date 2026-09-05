@@ -8,7 +8,11 @@ import (
 	"sort"
 	"strings"
 
+	"treasury/internal/alphabet"
+	"treasury/internal/bitcode"
 	"treasury/internal/digits"
+	"treasury/internal/encoder"
+	"treasury/internal/spell"
 )
 
 // readAll classifies a line's components and returns every run of digit
@@ -23,7 +27,7 @@ import (
 // construction and wrong: "12%" split at the tabular gap after its 1 gave a
 // run "2%" that was read, decided, and named as the value on labels that
 // were right.
-func (e *Engine) readAll(reg encodedRegion, ri int, cache *callCache) []reading {
+func (e *Engine) readAll(reg encodedRegion, ri int, sp *spell.Speller, cache *callCache) []reading {
 	// A number and its unit are three glyphs at the least; a region of
 	// one or two is a fragment, and a rotated warning's glyphs in the
 	// upright image are hundreds of them.
@@ -45,14 +49,42 @@ func (e *Engine) readAll(reg encodedRegion, ri int, cache *callCache) []reading 
 	}
 	sort.Float64s(heights)
 	tall := heights[len(heights)*9/10]
+	// Without the classifier the digits come from the label: each frame is
+	// compared with the alphabet's own samples of the digit characters,
+	// which a field the engine could decode by its vocabulary has taught
+	// it. Where nothing taught them they are synthesized, as any character
+	// the reference lacks is.
+	byImage := e.opt.Digits != DigitsClassifier
+	var samples map[byte]bitcode.Code
+	if byImage {
+		samples = map[byte]bitcode.Code{}
+		for i := range len(digits.Classes) {
+			r := digits.Classes[i]
+			if r == '?' {
+				continue
+			}
+			t, _, _, err := sp.Target(string(r), false)
+			if err != nil || len(t.Codes) == 0 || t.Codes[0] == nil {
+				continue
+			}
+			samples[r] = t.Codes[0]
+		}
+		if len(samples) == 0 {
+			return nil
+		}
+	}
 	glyphs := make([]glyphClass, n)
 	for i, box := range reg.comps {
-		if g, ok := cache.classes[box]; ok {
+		if g, ok := cache.classes[box]; ok && !byImage {
 			glyphs[i] = g
 			continue
 		}
 		if h := float64(box.Dy()); h < 0.8*tall && h > 0.35*tall {
 			glyphs[i] = glyphClass{class: digits.Other, prob: 1, second: -1}
+			continue
+		}
+		if byImage {
+			glyphs[i] = readByImage(reg, i, xh, sp, cache, samples)
 			continue
 		}
 		logits := e.digits.Logits(digits.Frame(reg.pre.Gray, box, reg.baselines[i], xh))
@@ -272,4 +304,44 @@ func (e *Engine) readAll(reg encodedRegion, ri int, cache *callCache) []reading 
 		out = append(out, r)
 	}
 	return out
+}
+
+// readByImage names one component by the nearest of the alphabet's digit
+// and punctuation samples, in the code claims are decoded in. The margin to
+// the runner-up stands in for the classifier's probability: a glyph that
+// two characters explain equally is no reading.
+func readByImage(reg encodedRegion, i int, xh float64, sp *spell.Speller, cache *callCache, samples map[byte]bitcode.Code) glyphClass {
+	box := reg.comps[i]
+	var code bitcode.Code
+	if coder := cache.coder(sp.GlyphEnc, reg.pre); coder != nil {
+		code = coder(box, reg.baselines[i], xh)
+	} else {
+		code = sp.GlyphEnc.Encode(alphabet.FrameCrop(reg.pre.Bin, box, reg.baselines[i], xh))
+	}
+	bits := sp.GlyphEnc.Bits()
+	best, second := byte('?'), byte('?')
+	bestD, secondD := math.Inf(1), math.Inf(1)
+	for r, c := range samples {
+		d := encoder.NormalizedDistance(code, c, bits)
+		if d < bestD {
+			second, secondD = best, bestD
+			best, bestD = r, d
+		} else if d < secondD {
+			second, secondD = r, d
+		}
+	}
+	g := glyphClass{class: digits.ClassOf(rune(best)), second: digits.ClassOf(rune(second))}
+	// A distance is not a probability. What matters to the run rules is
+	// whether the reading is safe to act on, so the margin over the
+	// runner-up, relative to the winner's own distance, stands in for one.
+	switch {
+	case bestD > 0.35:
+		return glyphClass{class: digits.Other, prob: 1, second: -1}
+	case secondD <= bestD:
+		g.prob, g.secondProb = 0.5, 0.5
+	default:
+		g.prob = math.Min(0.99, (secondD-bestD)/secondD+0.5)
+		g.secondProb = 1 - g.prob
+	}
+	return g
 }

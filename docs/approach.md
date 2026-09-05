@@ -708,6 +708,65 @@ Convention coverage (free-text recall over brand, class, producer, origin):
 | crowded warning | 0 | 0 | 0.00 |
 | none of these | 10 | 3 | 0.23 |
 
+### Step 8b: digits from the image (2026-09-04)
+
+Gate, stated before the run: on the clean half B and the ten real labels, alcohol recall and precision with image-taught digits alone, the classifier disabled, against 8a's 0.64 at precision 0.99.
+
+The alphabet has no digits because the statutory warning contains none, and every numeric mechanism in this build descends from that hole. The net contents statement is the second known string a label carries, and its vocabulary is closed by regulation: a dozen standards of fill, where an alcohol content is one of 190 values. So the fill is decoded by its own vocabulary, every value in every printed format spelled with the learned alphabet and aligned by the same glyph-wise machinery as any other claim, and the digit glyphs its winner explains enter the alphabet as samples of their characters through the harvest that already teaches every character a decisive claim printed. The alcohol content, which cannot be read in the first pass for want of digits, is read in the second against the digits the label itself supplied: each frame named by the nearest of the alphabet's own digit samples, with the margin over the runner-up standing in for the classifier's probability.
+
+It works as a mechanism. 202 of the 233 labels that learn an alphabet learn at least one digit from their own fill statement, and the fill's recall rises above the classifier's, since a closed vocabulary aligned whole is a better decoder of it than a digit run read and re-instantiated. What it does not do is replace the classifier: **the alcohol content is read half as often.**
+
+| numeric path | alcohol recall | alcohol precision | net recall | net precision | median | p95 |
+|---|---|---|---|---|---|---|
+| classifier, as shipped | 0.64 | 0.99 | 0.60 | 1.00 | 3.8 s | 4.9 s |
+| image-taught digits, no classifier | 0.31 | 0.96 | 0.66 | 0.98 | 4.3 s | 6.2 s |
+| every numeric field enumerated | 0.68 | 0.93 | 0.63 | 0.96 | 29.2 s | 176.7 s |
+
+Half B with image-taught digits, single-threaded:
+
+250 labels, 17 without an alphabet, latency median 4.3s p95 6.2s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 139 | 0.99 | 0.90 | 0.01 | 0/3 | 0 |
+| class | 250 | 1.00 | 0.79 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.71 | 0.02 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.70 | 0.01 | 0/0 | 0 |
+| abv | 250 | 0.96 | 0.31 | 0.01 | 1/5 | 7 |
+| net | 250 | 0.98 | 0.66 | 0.24 | 1/2 | 2 |
+| brand (display face) | 111 | 0.96 | 0.82 | 0.03 | | |
+
+Reference rows: compliant labels with every row verified 77/201 (67 reviewed, 57 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.84 | 177 | 0.77 |
+| producer_1 | 56 | 0.61 | 194 | 0.74 |
+| producer_2 | 56 | 0.71 | 194 | 0.74 |
+| origin | 68 | 0.71 | 182 | 0.70 |
+| abv | 49 | 0.30 | 189 | 0.31 |
+| net | 58 | 0.61 | 187 | 0.67 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 1 | 0.83 |
+| light on dark | 40 | 3 | 0.76 |
+| vertical warning | 52 | 3 | 0.72 |
+| crowded warning | 56 | 6 | 0.74 |
+| none of these | 68 | 6 | 0.72 |
+
+Where the recall goes: a label teaches only the digits its fill statement printed, three or four of the ten, and an alcohol content needs the others. "750 mL" teaches 7, 5 and 0, and says nothing about the 1 and the 3 of "13% ABV"; the characters the label did not teach are synthesized from the nearest bundled face, which is what the digits were before step 2 and is why they were the first thing a classifier was asked to fix. The third row shows the other way out: spelling all 1,520 alcohol values and aligning them recovers the recall and more, at seven times the latency and at a precision of 0.93, since among 1,520 candidates something fits.
+
+7 verdicts name a wrong value on a correct label, against 2 for the classifier. Two of them are the monospaced defect step 8a left open, where a full advance around a decimal point splits "40.5%" into words; the enumeration arm gets those right, because it aligns a whole candidate rather than reading a run.
+
+The ten real labels: alcohol 0.00 recall, net 0.22 at precision 0.67. Real labels rarely teach digits at all, because the fill has to be decoded first and only seven of the ten learn an alphabet.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

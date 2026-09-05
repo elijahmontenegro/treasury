@@ -11,6 +11,8 @@ import (
 	"strings"
 	"treasury/internal/imgops"
 
+	"unicode"
+
 	"treasury/internal/alphabet"
 	"treasury/internal/bitmap"
 	"treasury/internal/digits"
@@ -167,7 +169,31 @@ type Result struct {
 // 299 and 300 correct verifications against 1, 1 and 7 false assertions.
 const DefaultNumericRadius = 0.15
 
+// How a numeric field's value is obtained.
+const (
+	// DigitsClassifier reads the digits with the embedded classifier and
+	// instantiates the printed formats with the reading.
+	DigitsClassifier = ""
+	// DigitsImage uses no classifier: the field's enumeration is decided
+	// as an ordinary claim, and the winner's digit glyphs teach the
+	// alphabet the label's own digits for the claims read afterwards.
+	DigitsImage = "image"
+	// DigitsImageEnum decodes every numeric field by its enumeration, not
+	// only the fields whose vocabulary is small: the alcohol content's
+	// 1,520 spellings as well as the fill's. Kept so the cost of deleting
+	// the alcohol enumeration can be measured against it.
+	DigitsImageEnum = "image-enum"
+	// DigitsSynthetic is DigitsImage with the harvest forbidden to teach
+	// digits, so every digit compared is one synthesized from a bundled
+	// face: the engine as it stood before the classifier.
+	DigitsSynthetic = "synthetic"
+)
+
 type Options struct {
+	// Digits is how numeric fields are read: DigitsClassifier (default),
+	// DigitsImage, or DigitsSynthetic.
+	Digits string
+
 	Encoder              string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
 	ClaimEncoder         string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
 	LearnedRadius        float64 // free-text radius when claims are decoded with the learned encoder; 0 keeps DefaultRadius
@@ -542,6 +568,9 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 			}
 			r := w.target.Text[st.Char]
 			if r == ' ' || w.target.Codes[st.Char] == nil {
+				continue
+			}
+			if e.opt.Digits == DigitsSynthetic && unicode.IsDigit(r) {
 				continue
 			}
 			// Only a glyph that matched its own code closely teaches: a

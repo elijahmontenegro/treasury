@@ -106,6 +106,9 @@ func netClaim(expectedML float64, valid []float64) verify.Claim {
 			},
 			Valid:     valid,
 			Tolerance: 5, // a fluid-ounce figure rounds to a tenth, 3 mL
+			// The standards of fill are a closed list in the regulation:
+			// a dozen values, where an alcohol content is one of 190.
+			Enumerable: true,
 		},
 	}
 }
