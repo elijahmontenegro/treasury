@@ -1,0 +1,42 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "20 SURCOS",
+  "class": "MEZCAL FB",
+  "producer": [
+   "MEX-CAL, INC.",
+   "979 O ST STE B FIREBAUGH CA 93622"
+  ],
+  "origin": "MADE IN MEXICO",
+  "abv": 45,
+  "abv_text": "45% ALC. BY VOL",
+  "net_ml": 750,
+  "net_text": "NET. CONT. 750 ML",
+  "error": ""
+ },
+ "note": "capitals, light-on-dark, crowded",
+ "ttbid": "26129001000091",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26129001000091",
+ "images": [
+  {
+   "name": "TEPEZTATE FRENTE .png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TEPEZTATE%20FRENTE%20.png&filetype=l"
+  },
+  {
+   "name": "TEPEZTATE BACK .png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TEPEZTATE%20BACK%20.png&filetype=l"
+  }
+ ],
+ "abv_text": "45% ALC. BY VOL",
+ "net_text": "NET. CONT. 750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

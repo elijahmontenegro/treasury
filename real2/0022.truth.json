@@ -1,0 +1,37 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "OWL'S BREW",
+  "class": "VODKA SPECIALTIES",
+  "producer": [
+   "Zumbiel Beverage Services, LLC",
+   "1611 AIR PARK DR Farmington MO 63640"
+  ],
+  "origin": "",
+  "abv": 5,
+  "abv_text": "5% ALC/VOL",
+  "net_ml": 355,
+  "net_text": "355mL (12 FL OZ)",
+  "error": ""
+ },
+ "note": "capitals, crowded, display",
+ "ttbid": "26042001000333",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26042001000333",
+ "images": [
+  {
+   "name": "ob sunteastrawVA front.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=ob%20sunteastrawVA%20front.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "5% ALC/VOL",
+ "net_text": "355mL (12 FL OZ)",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

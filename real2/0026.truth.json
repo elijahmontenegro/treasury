@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "DANCING PANDA",
+  "class": "STRAIGHT BOURBON WHISKY",
+  "producer": [
+   "Dynasty Spirits Brands LLC",
+   "4865 CALVERT ST Dallas TX 75247"
+  ],
+  "origin": "",
+  "abv": 50,
+  "abv_text": "50% ALC/VOL",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "rotated-180, vertical, display, light-on-dark",
+ "ttbid": "26070001000425",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26070001000425",
+ "images": [
+  {
+   "name": "dancing panda 8 yr front.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=dancing%20panda%208%20yr%20front.jpg&filetype=l"
+  },
+  {
+   "name": "dancing panda 8 yr back.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=dancing%20panda%208%20yr%20back.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "50% ALC/VOL",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

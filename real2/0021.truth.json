@@ -1,0 +1,37 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "SUPER LYTE",
+  "class": "OTHER SPECIALTIES & PROPRIETARIES",
+  "producer": [
+   "Prime Beverage Group, LLC",
+   "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
+  ],
+  "origin": "",
+  "abv": 4.5,
+  "abv_text": "4.5% ALC. BY VOL.",
+  "net_ml": 355,
+  "net_text": "12 FL. OZ. (355mL)",
+  "error": ""
+ },
+ "note": "capitals, crowded, display",
+ "ttbid": "26041001000477",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26041001000477",
+ "images": [
+  {
+   "name": "FP.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=FP.png&filetype=l"
+  }
+ ],
+ "abv_text": "4.5% ALC. BY VOL.",
+ "net_text": "12 FL. OZ. (355mL)",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

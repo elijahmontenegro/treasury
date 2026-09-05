@@ -848,6 +848,99 @@ Convention coverage (free-text recall over brand, class, producer, origin):
 
 The ten real labels: alcohol 0.10, net 0.20, precision 1.00 on every claim.
 
+### Step 9a to 9c: determinism, identity, and a pipeline (2026-09-04)
+
+**9a. Determinism is now a test, not a claim.** `TestDeterminismSample` renders twenty labels from a fixed seed, verifies them five times in one process and five times in separate processes, and requires all ten digests over every verdict and every piece of evidence to be equal. It passes in 6 minutes 34 seconds. Reverting the three map-order fixes of step 8a and running it again fails on the tenth run, a separate process, with a different digest: the property is what the test measures, and the test would have caught the defect that shipped for six steps.
+
+**9b. A verdict names the weights that produced it.** `internal/buildid` reports the version, the commit and its time, whether the tree was modified, the Go version, and the SHA-256 of each embedded model file. The hashes are computed from the embedded bytes the binary actually runs rather than stamped beside them, so they cannot drift from the weights; the commit comes from the tool chain's own build information, so two builds of one commit report the same identity where a wall-clock build date would not. Every `Result` carries the identity and every `Verdict` carries a twelve-character fingerprint of it. Both halves of the gate were run: two builds of one commit printed byte-identical identities, and swapping the step 5b encoder in place of the current one changed `encoder.bin` from `b3d8128a7e22` to `dbe152d18596` and the fingerprint from `9a0faa2b335c` to `13f10dfdc313`, with the original restored exactly on rebuild.
+
+**9c. Continuous integration.** A workflow on every push and pull request runs `go vet`, a formatting check, the identity comparison, the suite, the leak check, and the determinism test. The leak check is a test rather than a script: it asserts that a set naming a training family is refused, that the bundled synthesis faces are never on the evaluation side, and that a family the partition does not name is treated as one the models may have learned from. The first run on this repository completed green in 9 minutes 29 seconds. A green build means the engine is deterministic, identified, and unable to evaluate on faces its models trained on.
+
+### Step 9d: fifty real labels (2026-09-04)
+
+Gate, stated before the run: thirty to fifty real label images with their true claim values, spanning the conventions the ten already showed, provenance recorded per label; the same table as half B, printed beside it, with a stated finding on how far the synthetic results transfer.
+
+The set is 50 approvals from the TTB public registry, completed 10 to 14 August 2026, from 28 permittees: 31 spirits, 13 wines, 6 malt beverages. Every label carries its registry identifier, the source URL, the image filenames as served, and which fields came from the application and which were transcribed from the image. Brand, class and the permittee are the application's; alcohol content and net contents are not fields on the form and were read off the image by eye; origin was transcribed only where the printed statement could be read verbatim, and left empty on the other 36, since a wrong ground truth costs more than a missing one. The conventions: capitals on 34, a display face for the brand on 41, crowded warnings on 33, light on dark on 23, a vertical warning on 14, and one label whose artwork is printed upside down.
+
+Synthetic half B, the engine as shipped:
+
+250 labels, 17 without an alphabet, latency median 3.6s p95 4.7s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 139 | 0.99 | 0.90 | 0.01 | 0/3 | 0 |
+| class | 250 | 1.00 | 0.79 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.71 | 0.02 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.70 | 0.01 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.68 | 0.05 | 3/5 | 7 |
+| net | 250 | 1.00 | 0.60 | 0.08 | 2/2 | 3 |
+| brand (display face) | 111 | 0.96 | 0.82 | 0.03 | | |
+
+Reference rows: compliant labels with every row verified 77/201 (67 reviewed, 57 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.84 | 177 | 0.77 |
+| producer_1 | 56 | 0.61 | 194 | 0.74 |
+| producer_2 | 56 | 0.71 | 194 | 0.74 |
+| origin | 68 | 0.71 | 182 | 0.70 |
+| abv | 49 | 0.80 | 189 | 0.65 |
+| net | 58 | 0.62 | 187 | 0.59 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 1 | 0.83 |
+| light on dark | 40 | 3 | 0.76 |
+| vertical warning | 52 | 3 | 0.72 |
+| crowded warning | 56 | 6 | 0.74 |
+| none of these | 68 | 6 | 0.72 |
+
+The fifty real labels, same engine, same command:
+
+50 labels, 24 without an alphabet, latency median 3.5s p95 9.4s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| class | 50 | 0.00 | 0.00 | 0.00 | 0/0 | 50 |
+| producer_1 | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| producer_2 | 49 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| origin | 14 | 1.00 | 0.14 | 0.07 | 0/0 | 0 |
+| abv | 50 | 0.00 | 0.00 | 0.06 | 0/0 | 46 |
+| net | 50 | 0.00 | 0.00 | 0.02 | 0/0 | 43 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 2/50 (29 reviewed, 19 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 14/26 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 50 | 24 | 0.04 |
+
+**The synthetic results do not transfer.** Free-text recall is 0.90 to 0.70 on half B and 0.04 to 0.14 on the real fifty; alcohol content 0.68 against 0.00; net contents 0.60 against 0.00. The engine learns no alphabet on 24 of 50 real labels, against 17 of 250 synthetic ones. Latency holds: 3.5 s median, 9.4 s p95, against 3.6 and 4.7.
+
+Three things are worth separating inside that number.
+
+**The engine still asserts nothing false.** Precision is 1.00 on every claim it decided, and there is not one mismatch on the fifty. What fails, fails as NOT_FOUND. That is the property the build has been protecting since step 6b, and it is the one that survives contact with reality.
+
+**Half the failures are before any claim is read.** Twenty-four of the fifty never learn an alphabet, so their claims cannot be attempted. By convention, an alphabet is learned on 21 of 34 labels in capitals, 16 of 23 light on dark, 20 of 41 with a display brand, 17 of 33 crowded, and only 5 of 14 whose warning runs vertically; the upside-down one fails. Among the 26 that do learn one, the claims still mostly fail: brand 2, producer 2, alcohol 1, net 6.
+
+**Part of the rest is the ground truth, not the engine.** The registry's class field is a code description, "OTHER SPECIALTIES & PROPRIETARIES" or "DESSERT /PORT/SHERRY/(COOKING) WINE", which no label prints, so every class claim is unverifiable by construction; a run with class and the filed street address removed leaves every other row unchanged, which shows those two fields cost nothing but also that they explain nothing. The filed brand is often not the printed brand: 0033 files "BODEGAS Y VINEDOS VEGA DE YUSO" and prints "TRESMATAS RESERVA". The one free-text field whose expected value was transcribed from the image rather than taken from the form, origin, has the highest free-text recall of the set at 0.14 against 0.04 for brand. On the labels where the filed string is the printed string the engine finds it: "THINK GLOBAL LLC" at 0.090, "OZ TRADING GROUP INC" at 0.095, "Product of Spain" at 0.023, "750 ML" at 0.031.
+
+What this says about the build: the synthetic set measures a channel and a set of conventions, and it has been improved until the engine handles them, but real registry artwork is a different distribution again, mostly in ways the generator never modelled, flat vector proofs at four times the resolution with warnings set at four-point type against illustration. Nothing above the engine should be built on the synthetic numbers.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

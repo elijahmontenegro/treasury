@@ -1,0 +1,37 @@
+{
+ "printed": {
+  "family": "beer",
+  "brand": "FAN ZONE DETROIT",
+  "class": "ALE",
+  "producer": [
+   "Ellicottville Brewing Co., S&W COMPANY, LLC",
+   "202 SECOND ST Little Valley NY 14755"
+  ],
+  "origin": "",
+  "abv": 5,
+  "abv_text": "ALC. 5% BY VOL.",
+  "net_ml": 473,
+  "net_text": "16 FL. OZ. / 1 PINT",
+  "error": ""
+ },
+ "note": "vertical, crowded, display",
+ "ttbid": "26035001000153",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26035001000153",
+ "images": [
+  {
+   "name": "Detroit Fan Zone.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Detroit%20Fan%20Zone.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "ALC. 5% BY VOL.",
+ "net_text": "16 FL. OZ. / 1 PINT",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

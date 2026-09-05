@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "APONA VINEYARDS",
+  "class": "TABLE WHITE WINE",
+  "producer": [
+   "Apona Vineyard, Apona Vineyards, LLC",
+   "25443 FLECK RD Veneta OR 97487"
+  ],
+  "origin": "",
+  "abv": 13.2,
+  "abv_text": "ALC. 13.2% BY VOL.",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "vertical, light-on-dark, capitals, crowded",
+ "ttbid": "26106001000855",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26106001000855",
+ "images": [
+  {
+   "name": "25ApApOpCh75dB.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=25ApApOpCh75dB.jpg&filetype=l"
+  },
+  {
+   "name": "25ApApOpCh75dF.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=25ApApOpCh75dF.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "ALC. 13.2% BY VOL.",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

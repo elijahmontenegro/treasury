@@ -1,0 +1,46 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "CHATEAU COTE DE BALEAU",
+  "class": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+  "producer": [
+   "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+   "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
+  ],
+  "origin": "PRODUCT OF FRANCE",
+  "abv": 14.5,
+  "abv_text": "14.5% ALC. BY VOL.",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "capitals, display",
+ "ttbid": "26183001000652",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26183001000652",
+ "images": [
+  {
+   "name": "REVISED FRONT LABEL.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=REVISED%20FRONT%20LABEL.png&filetype=l"
+  },
+  {
+   "name": "COTE DE BALEAU 2018 BACK LABEL.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=COTE%20DE%20BALEAU%202018%20BACK%20LABEL.png&filetype=l"
+  },
+  {
+   "name": "STRIP LABEL RED 14.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=STRIP%20LABEL%20RED%2014.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "14.5% ALC. BY VOL.",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

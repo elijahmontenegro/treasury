@@ -1,0 +1,42 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "KOI",
+  "class": "VODKA SPECIALTIES",
+  "producer": [
+   "LOVEMARK ADVANCED TRADING HOLDING LLC",
+   "304 E BAKER STREET STE D PLANT CITY FL 33563"
+  ],
+  "origin": "",
+  "abv": 40,
+  "abv_text": "Alc 40% by vol, 80 PROOF",
+  "net_ml": 700,
+  "net_text": "700 ml.",
+  "error": ""
+ },
+ "note": "crowded, vertical, display",
+ "ttbid": "26173001000954",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26173001000954",
+ "images": [
+  {
+   "name": "KOI etiqueta_tz_ENG brand.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=KOI%20etiqueta_tz_ENG%20brand.jpg&filetype=l"
+  },
+  {
+   "name": "KOI etiqueta_tz_ENG  2.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=KOI%20etiqueta_tz_ENG%20%202.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "Alc 40% by vol, 80 PROOF",
+ "net_text": "700 ml.",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ],
+ "remark": "very small type on a mostly empty sheet"
+}

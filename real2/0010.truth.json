@@ -1,0 +1,45 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "BRAHMAN",
+  "class": "TEQUILA FB",
+  "producer": [
+   "Cinco Agaves Imports LLC",
+   "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
+  ],
+  "origin": "",
+  "abv": 40,
+  "abv_text": "40% ALC/VOL",
+  "net_ml": 750,
+  "net_text": "NET.CONT. 750 ML",
+  "error": ""
+ },
+ "note": "capitals, light-on-dark, crowded, display",
+ "ttbid": "26028001000675",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26028001000675",
+ "images": [
+  {
+   "name": "Brahman Reposado - Front Label.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Reposado%20-%20Front%20Label.jpg&filetype=l"
+  },
+  {
+   "name": "Brahman Reposado - Back Label.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Reposado%20-%20Back%20Label.jpg&filetype=l"
+  },
+  {
+   "name": "Brahman Reposado - Strip Label.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Reposado%20-%20Strip%20Label.png&filetype=l"
+  }
+ ],
+ "abv_text": "40% ALC/VOL",
+ "net_text": "NET.CONT. 750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

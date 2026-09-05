@@ -1,0 +1,12 @@
+{
+ "beverage": "spirits",
+ "brand": "PEAKY BLINDERS",
+ "class": "WHISKY SPECIALTIES",
+ "producer": [
+  "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
+  "4263 BUCKEYE RD LANCASTER KY 40444"
+ ],
+ "origin": "",
+ "abv": 60,
+ "net_ml": 750
+}

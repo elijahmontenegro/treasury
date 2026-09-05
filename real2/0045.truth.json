@@ -1,0 +1,46 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "PASSIONE NATURA",
+  "class": "TABLE WHITE WINE",
+  "producer": [
+   "USA WINE WEST, LLC",
+   "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
+  ],
+  "origin": "PRODUCT OF ITALY",
+  "abv": 12.5,
+  "abv_text": "ALC. 12.5%BY VOL.",
+  "net_ml": 750,
+  "net_text": "NET CONT. 750 ML",
+  "error": ""
+ },
+ "note": "capitals, crowded, display",
+ "ttbid": "26182001000326",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26182001000326",
+ "images": [
+  {
+   "name": "BVC Passione Natura Sentieri Pecorino Abruzzo 2025 BACK.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=BVC%20Passione%20Natura%20Sentieri%20Pecorino%20Abruzzo%202025%20BACK.png&filetype=l"
+  },
+  {
+   "name": "BVC Passione Natura Sentieri Pecorino Abruzzo 2025 NECK.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=BVC%20Passione%20Natura%20Sentieri%20Pecorino%20Abruzzo%202025%20NECK.png&filetype=l"
+  },
+  {
+   "name": "BVC Passione Natura Sentieri Pecorino Abruzzo 2025 FRONT.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=BVC%20Passione%20Natura%20Sentieri%20Pecorino%20Abruzzo%202025%20FRONT.png&filetype=l"
+  }
+ ],
+ "abv_text": "ALC. 12.5%BY VOL.",
+ "net_text": "NET CONT. 750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

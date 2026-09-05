@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "ALPAS VINEYARDS",
+  "class": "TABLE WHITE WINE",
+  "producer": [
+   "Engelheim Vineyards, Engelheim Vineyards, LLC",
+   "127 LAKEVIEW RD Ellijay GA 30540"
+  ],
+  "origin": "",
+  "abv": 13.0,
+  "abv_text": "Alc. 13.0% by Vol.",
+  "net_ml": 750,
+  "net_text": "750 mL",
+  "error": ""
+ },
+ "note": "display",
+ "ttbid": "26175001000903",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26175001000903",
+ "images": [
+  {
+   "name": "AL2602 - VB - front.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=AL2602%20-%20VB%20-%20front.jpg&filetype=l"
+  },
+  {
+   "name": "VB - back REVISED - Alpas.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=VB%20-%20back%20REVISED%20-%20Alpas.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "Alc. 13.0% by Vol.",
+ "net_text": "750 mL",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

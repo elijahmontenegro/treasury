@@ -1,0 +1,12 @@
+{
+ "beverage": "wine",
+ "brand": "PASSIONE NATURA",
+ "class": "TABLE WHITE WINE",
+ "producer": [
+  "USA WINE WEST, LLC",
+  "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
+ ],
+ "origin": "PRODUCT OF ITALY",
+ "abv": 12.5,
+ "net_ml": 750
+}

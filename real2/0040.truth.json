@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "CASTILLO DE MENDOZA",
+  "class": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+  "producer": [
+   "Atlanta Improvement Company",
+   "3134 MARJAN DR Doraville GA 30340"
+  ],
+  "origin": "",
+  "abv": 14.1,
+  "abv_text": "Alc. by Vol. 14.1%",
+  "net_ml": 750,
+  "net_text": "750 ml.",
+  "error": ""
+ },
+ "note": "capitals, light-on-dark, display",
+ "ttbid": "26174001000903",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26174001000903",
+ "images": [
+  {
+   "name": "Castillo de Mendoza Reserva b2.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Castillo%20de%20Mendoza%20Reserva%20b2.jpg&filetype=l"
+  },
+  {
+   "name": "Castillo de Mendoza Riserva f2.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Castillo%20de%20Mendoza%20Riserva%20f2.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "Alc. by Vol. 14.1%",
+ "net_text": "750 ml.",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

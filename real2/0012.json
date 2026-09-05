@@ -1,0 +1,12 @@
+{
+ "beverage": "beer",
+ "brand": "FAN ZONE DETROIT",
+ "class": "ALE",
+ "producer": [
+  "Ellicottville Brewing Co., S&W COMPANY, LLC",
+  "202 SECOND ST Little Valley NY 14755"
+ ],
+ "origin": "",
+ "abv": 5,
+ "net_ml": 473
+}

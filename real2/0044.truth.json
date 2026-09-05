@@ -1,0 +1,39 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "NOTRE DAME WINES",
+  "class": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+  "producer": [
+   "VINOVAE, INC.",
+   "1620 CARNEROS MEADOWS LN STE 103 SONOMA CA 95476"
+  ],
+  "origin": "Product of USA",
+  "abv": 14.5,
+  "abv_text": "ALC. 14,5% BY VOL.",
+  "net_ml": 50,
+  "net_text": "50ML",
+  "error": ""
+ },
+ "note": "vertical, light-on-dark, capitals, display",
+ "ttbid": "26176001000828",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26176001000828",
+ "images": [
+  {
+   "name": "NOTRE DAME.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=NOTRE%20DAME.png&filetype=l"
+  }
+ ],
+ "abv_text": "ALC. 14,5% BY VOL.",
+ "net_text": "50ML",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ],
+ "remark": "decimal comma; net contents run on from the alcohol statement"
+}

@@ -1,0 +1,12 @@
+{
+ "beverage": "wine",
+ "brand": "CHATEAU RAYMOND-LAFON",
+ "class": "TABLE WHITE WINE",
+ "producer": [
+  "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+  "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
+ ],
+ "origin": "PRODUCT OF FRANCE",
+ "abv": 13.5,
+ "net_ml": 750
+}

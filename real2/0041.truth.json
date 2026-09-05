@@ -1,0 +1,42 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "PEAKY BLINDERS",
+  "class": "WHISKY SPECIALTIES",
+  "producer": [
+   "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
+   "4263 BUCKEYE RD LANCASTER KY 40444"
+  ],
+  "origin": "",
+  "abv": 60,
+  "abv_text": "60 % alc/vol. (120 Proof)",
+  "net_ml": 750,
+  "net_text": "750ml",
+  "error": ""
+ },
+ "note": "light-on-dark, display",
+ "ttbid": "26175001000354",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26175001000354",
+ "images": [
+  {
+   "name": "SINGLE BARREL FRONT.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=SINGLE%20BARREL%20FRONT.png&filetype=l"
+  },
+  {
+   "name": "BACK CORRECTION.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=BACK%20CORRECTION.png&filetype=l"
+  }
+ ],
+ "abv_text": "60 % alc/vol. (120 Proof)",
+ "net_text": "750ml",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ],
+ "remark": "proof and alcohol figures handwritten into blanks"
+}

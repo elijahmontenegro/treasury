@@ -1,0 +1,46 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "LEGACY RESERVE",
+  "class": "BOURBON WHISKY",
+  "producer": [
+   "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
+   "81 E WAYNE ST STE A Franklin IN 46131"
+  ],
+  "origin": "",
+  "abv": 50,
+  "abv_text": "50 %ALC./VOL",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "light-on-dark, crowded, display",
+ "ttbid": "26167001000930",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26167001000930",
+ "images": [
+  {
+   "name": "LR LABEL TOP.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=LR%20LABEL%20TOP.jpg&filetype=l"
+  },
+  {
+   "name": "LR LOWER 26-5.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=LR%20LOWER%2026-5.jpg&filetype=l"
+  },
+  {
+   "name": "LR REAR.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=LR%20REAR.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "50 %ALC./VOL",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ],
+ "remark": "the alcohol figure is handwritten into a blank box"
+}

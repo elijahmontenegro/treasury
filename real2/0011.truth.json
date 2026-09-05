@@ -1,0 +1,45 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "BRAHMAN",
+  "class": "TEQUILA FB",
+  "producer": [
+   "Cinco Agaves Imports LLC",
+   "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
+  ],
+  "origin": "",
+  "abv": 40,
+  "abv_text": "40% ALC/VOL",
+  "net_ml": 750,
+  "net_text": "NET.CONT. 750 ML",
+  "error": ""
+ },
+ "note": "capitals, light-on-dark, crowded, display",
+ "ttbid": "26028001000728",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26028001000728",
+ "images": [
+  {
+   "name": "Brahman Anejo - Front Label.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Anejo%20-%20Front%20Label.jpg&filetype=l"
+  },
+  {
+   "name": "Brahman Anejo - Back Label.jpeg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Anejo%20-%20Back%20Label.jpeg&filetype=l"
+  },
+  {
+   "name": "Brahman Anejo - Strip Label.jpeg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Brahman%20Anejo%20-%20Strip%20Label.jpeg&filetype=l"
+  }
+ ],
+ "abv_text": "40% ALC/VOL",
+ "net_text": "NET.CONT. 750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

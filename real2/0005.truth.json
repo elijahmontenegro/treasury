@@ -1,0 +1,53 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "PATR\u00d3N",
+  "class": "TEQUILA FB",
+  "producer": [
+   "BACARDI U.S.A., INC.",
+   "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134"
+  ],
+  "origin": "",
+  "abv": 40,
+  "abv_text": "40% alc./vol.",
+  "net_ml": 750,
+  "net_text": "750 ml",
+  "error": ""
+ },
+ "note": "display",
+ "ttbid": "25352001000057",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=25352001000057",
+ "images": [
+  {
+   "name": "PRBS BrndFrnt.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=PRBS%20BrndFrnt.jpg&filetype=l"
+  },
+  {
+   "name": "PRBS Bck.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=PRBS%20Bck.jpg&filetype=l"
+  },
+  {
+   "name": "PRBS Nck.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=PRBS%20Nck.jpg&filetype=l"
+  },
+  {
+   "name": "Medallion.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Medallion.jpg&filetype=l"
+  },
+  {
+   "name": "Closure.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Closure.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "40% alc./vol.",
+ "net_text": "750 ml",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

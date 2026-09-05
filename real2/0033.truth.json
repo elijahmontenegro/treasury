@@ -1,0 +1,43 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "BODEGAS Y VINEDOS VEGA DE YUSO",
+  "class": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+  "producer": [
+   "CROD TRADING CORP, CROD TRADING CO CORP.",
+   "1 KM 28.6 BO. RIO CANAS BLDG Carr #1 Km 28.6 Bo. Rio Canas CAGUAS PR 00725"
+  ],
+  "origin": "Product of Spain",
+  "abv": 14.5,
+  "abv_text": "Alc 14,5 % by Vol.",
+  "net_ml": 750,
+  "net_text": "750 ml",
+  "error": ""
+ },
+ "note": "capitals, light-on-dark, display",
+ "ttbid": "26131001000813",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26131001000813",
+ "images": [
+  {
+   "name": "TRES MATAS RESERVA BACK.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TRES%20MATAS%20RESERVA%20BACK.png&filetype=l"
+  },
+  {
+   "name": "TresMatasReservaFront.png",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TresMatasReservaFront.png&filetype=l"
+  }
+ ],
+ "abv_text": "Alc 14,5 % by Vol.",
+ "net_text": "750 ml",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ],
+ "remark": "decimal comma in the alcohol statement"
+}

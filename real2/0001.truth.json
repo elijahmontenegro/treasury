@@ -1,0 +1,46 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "PENUMBRA",
+  "class": "MEZCAL FB",
+  "producer": [
+   "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
+   "200 CONCOURSE BLVD SANTA ROSA CA 95403"
+  ],
+  "origin": "PRODUCT OF MEXICO",
+  "abv": 46,
+  "abv_text": "46% ALC/VOL (92 Proof)",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "display, light-on-dark, crowded",
+ "ttbid": "25183001000719",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=25183001000719",
+ "images": [
+  {
+   "name": "Penumbra Front TTB.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Penumbra%20Front%20TTB.jpg&filetype=l"
+  },
+  {
+   "name": "PenumbraJovenLabel_R6-BACK.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=PenumbraJovenLabel_R6-BACK.jpg&filetype=l"
+  },
+  {
+   "name": "Penumbra Neck TTB.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Penumbra%20Neck%20TTB.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "46% ALC/VOL (92 Proof)",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml",
+  "origin"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

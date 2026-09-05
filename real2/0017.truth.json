@@ -1,0 +1,37 @@
+{
+ "printed": {
+  "family": "beer",
+  "brand": "WASATCH BREWERY",
+  "class": "ALE",
+  "producer": [
+   "Monster Brewing Company LLC",
+   "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
+  ],
+  "origin": "",
+  "abv": 5,
+  "abv_text": "5% ALC. BY VOL.",
+  "net_ml": 355,
+  "net_text": "12 FL.OZ. (355 ML)",
+  "error": ""
+ },
+ "note": "vertical, crowded, display",
+ "ttbid": "26041001000134",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26041001000134",
+ "images": [
+  {
+   "name": "0a5beb0b-ac52-475f-932e-8581377aa91d.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=0a5beb0b-ac52-475f-932e-8581377aa91d.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "5% ALC. BY VOL.",
+ "net_text": "12 FL.OZ. (355 ML)",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

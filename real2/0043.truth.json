@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "TENHEAD",
+  "class": "OTHER GIN",
+  "producer": [
+   "Knowlton House Distillery, Mullins Distillery LLC",
+   "204575 COUNTY RD. DB Mosinee WI 54455"
+  ],
+  "origin": "",
+  "abv": 44,
+  "abv_text": "44% ALC. BY VOL. (88 PROOF)",
+  "net_ml": 1000,
+  "net_text": "1 LITER",
+  "error": ""
+ },
+ "note": "capitals, vertical, crowded, display",
+ "ttbid": "26176001000014",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26176001000014",
+ "images": [
+  {
+   "name": "TenHead-WoodlandGin-1Liter-Selected-LiveType.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TenHead-WoodlandGin-1Liter-Selected-LiveType.jpg&filetype=l"
+  },
+  {
+   "name": "TENHEAD NECKER - WOODLAND GIN.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=TENHEAD%20NECKER%20-%20WOODLAND%20GIN.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "44% ALC. BY VOL. (88 PROOF)",
+ "net_text": "1 LITER",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

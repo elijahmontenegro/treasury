@@ -1,0 +1,12 @@
+{
+ "beverage": "beer",
+ "brand": "WASATCH BREWERY",
+ "class": "ALE",
+ "producer": [
+  "Monster Brewing Company LLC",
+  "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
+ ],
+ "origin": "",
+ "abv": 6.5,
+ "net_ml": 355
+}

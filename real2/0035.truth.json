@@ -1,0 +1,41 @@
+{
+ "printed": {
+  "family": "wine",
+  "brand": "MCKELVEY VINEYARDS",
+  "class": "TABLE WHITE WINE",
+  "producer": [
+   "SVP Winery, SVP Winery, LLC",
+   "111 CLARK RD Shandon CA 93461"
+  ],
+  "origin": "",
+  "abv": 13.0,
+  "abv_text": "Alc. 13.0% By Vol",
+  "net_ml": 750,
+  "net_text": "750 ML",
+  "error": ""
+ },
+ "note": "capitals",
+ "ttbid": "26167001000445",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=26167001000445",
+ "images": [
+  {
+   "name": "McKelvey Vineyards 2025 Pinot Grigio Front 07142026.jpeg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=McKelvey%20Vineyards%202025%20Pinot%20Grigio%20Front%2007142026.jpeg&filetype=l"
+  },
+  {
+   "name": "new mckelvey back.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=new%20mckelvey%20back.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "Alc. 13.0% By Vol",
+ "net_text": "750 ML",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}

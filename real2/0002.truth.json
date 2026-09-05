@@ -1,0 +1,37 @@
+{
+ "printed": {
+  "family": "spirits",
+  "brand": "BARULLO",
+  "class": "OTHER SPECIALTIES & PROPRIETARIES",
+  "producer": [
+   "OZ TRADING GROUP INC",
+   "2806 E NOGAL AVE Hidalgo TX 78557"
+  ],
+  "origin": "",
+  "abv": 5,
+  "abv_text": "Alc. 5% by vol.",
+  "net_ml": 750,
+  "net_text": "Net Cont. 750 ml",
+  "error": ""
+ },
+ "note": "display, light-on-dark, vertical",
+ "ttbid": "25301001000219",
+ "url": "https://ttbonline.gov/colasonline/viewColaDetails.do?action=publicFormDisplay&ttbid=25301001000219",
+ "images": [
+  {
+   "name": "Barullo  Spicy Sandia 750 ml 3 - JPEG.jpg",
+   "url": "https://ttbonline.gov/colasonline/publicViewAttachment.do?filename=Barullo%20%20Spicy%20Sandia%20750%20ml%203%20-%20JPEG.jpg&filetype=l"
+  }
+ ],
+ "abv_text": "Alc. 5% by vol.",
+ "net_text": "Net Cont. 750 ml",
+ "transcribed": [
+  "abv",
+  "net_ml"
+ ],
+ "from_application": [
+  "brand",
+  "class",
+  "producer"
+ ]
+}
