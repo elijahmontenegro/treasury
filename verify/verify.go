@@ -15,6 +15,7 @@ import (
 
 	"treasury/internal/alphabet"
 	"treasury/internal/bitmap"
+	"treasury/internal/buildid"
 	"treasury/internal/digits"
 	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
@@ -120,7 +121,11 @@ type Evidence struct {
 
 // Verdict is the outcome for one claim.
 type Verdict struct {
-	Claim      string    `json:"claim"`
+	Claim string `json:"claim"`
+	// Engine is the fingerprint of the build and the weights that produced
+	// this verdict, so that a verdict separated from its result is still
+	// traceable to them.
+	Engine     string    `json:"engine,omitempty"`
 	Status     Status    `json:"status"`
 	Reason     string    `json:"reason,omitempty"`
 	Expected   string    `json:"expected"`
@@ -151,16 +156,19 @@ type AlphabetReport struct {
 
 // Result is everything Verify found.
 type Result struct {
-	Orientation       string          `json:"orientation,omitempty"`        // how the image was taken: as_is, inverted, rot90, rot270, or both
-	ReferenceCasing   string          `json:"reference_casing,omitempty"`   // as_given or upper: how the reference was printed
-	ClaimsOrientation string          `json:"claims_orientation,omitempty"` // the image the claims were searched in
-	DeskewDeg         float64         `json:"deskew_deg"`
-	Regions           int             `json:"regions"`
-	Alphabet          *AlphabetReport `json:"alphabet,omitempty"`
-	Reason            string          `json:"reason,omitempty"`
-	Reference         []Verdict       `json:"reference,omitempty"` // one per row of the reference block
-	Emphasis          []Verdict       `json:"emphasis,omitempty"`  // one per emphasis span
-	Claims            []Verdict       `json:"claims"`
+	// Engine is what produced this result: the version, the commit, and
+	// the hash of every model file the binary carries.
+	Engine            buildid.Identity `json:"engine"`
+	Orientation       string           `json:"orientation,omitempty"`        // how the image was taken: as_is, inverted, rot90, rot270, or both
+	ReferenceCasing   string           `json:"reference_casing,omitempty"`   // as_given or upper: how the reference was printed
+	ClaimsOrientation string           `json:"claims_orientation,omitempty"` // the image the claims were searched in
+	DeskewDeg         float64          `json:"deskew_deg"`
+	Regions           int              `json:"regions"`
+	Alphabet          *AlphabetReport  `json:"alphabet,omitempty"`
+	Reason            string           `json:"reason,omitempty"`
+	Reference         []Verdict        `json:"reference,omitempty"` // one per row of the reference block
+	Emphasis          []Verdict        `json:"emphasis,omitempty"`  // one per emphasis span
+	Claims            []Verdict        `json:"claims"`
 }
 
 // Options tune the engine. Zero values take the defaults.
@@ -497,7 +505,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		}
 		claimsRegions = kept
 	}
-	res := Result{DeskewDeg: pre.AngleDeg, Regions: len(claimsRegions), Orientation: found.name, ClaimsOrientation: claimsAt.name, ReferenceCasing: casing}
+	res := Result{Engine: buildid.Get(), DeskewDeg: pre.AngleDeg, Regions: len(claimsRegions), Orientation: found.name, ClaimsOrientation: claimsAt.name, ReferenceCasing: casing}
 	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
 		res.Reason = "no_alphabet"
 		if a != nil {
@@ -506,6 +514,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		for _, c := range claims {
 			res.Claims = append(res.Claims, Verdict{Claim: c.Name, Status: NotFound, Reason: "no_alphabet", Expected: c.Expected})
 		}
+		stamp(&res)
 		return res, nil
 	}
 	if err := ctx.Err(); err != nil {
@@ -549,6 +558,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	res.Alphabet = report(a, sp)
 	res.Alphabet.Learned = string(learned)
+	stamp(&res)
 	return res, nil
 }
 
@@ -599,6 +609,21 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 		}
 	}
 	return learned
+}
+
+// stamp writes the build fingerprint onto every verdict a result carries.
+func stamp(res *Result) {
+	f := buildid.Fingerprint()
+	res.Engine = buildid.Get()
+	for i := range res.Claims {
+		res.Claims[i].Engine = f
+	}
+	for i := range res.Reference {
+		res.Reference[i].Engine = f
+	}
+	for i := range res.Emphasis {
+		res.Emphasis[i].Engine = f
+	}
 }
 
 // without reports whether a named rule has been removed for measurement.

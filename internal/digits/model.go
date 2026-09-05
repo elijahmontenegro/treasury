@@ -6,6 +6,7 @@ import (
 	"math"
 	"sync"
 
+	"treasury/internal/buildid"
 	"treasury/internal/nn"
 )
 
@@ -20,6 +21,13 @@ var modelBin []byte
 
 //go:embed model.json
 var modelJSON []byte
+
+// The weights this binary carries identify it: a verdict about a digit is
+// only as traceable as the network that read it.
+func init() {
+	buildid.Register("digits.bin", modelBin)
+	buildid.Register("digits.json", modelJSON)
+}
 
 // Model is the classifier: a network over a Side×Side frame.
 type Model struct {

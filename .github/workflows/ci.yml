@@ -1,0 +1,57 @@
+name: ci
+
+# Every push and every pull request. A green build means three things about
+# the engine: it is deterministic, it says which weights produced a verdict,
+# and it cannot be evaluated on a face its models trained on.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the identity carries the commit
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+
+      - name: vet
+        run: go vet ./...
+
+      - name: formatting
+        run: |
+          unformatted=$(gofmt -l . | grep -v '^out/' || true)
+          if [ -n "$unformatted" ]; then
+            echo "not gofmt'd:"; echo "$unformatted"; exit 1
+          fi
+
+      - name: build identity
+        run: |
+          go build -o decode ./cmd/decode
+          ./decode -version
+          a=$(./decode -version)
+          go build -o decode2 ./cmd/decode
+          b=$(./decode2 -version)
+          if [ "$a" != "$b" ]; then
+            echo "two builds of one commit report different identities:"; echo "$a"; echo "$b"; exit 1
+          fi
+
+      # The suite, without the long determinism sample, which runs on its own
+      # below so that its failure is legible.
+      - name: test
+        run: go test -short -timeout 25m ./...
+
+      # The leak check and the identity are tests, so they run above too;
+      # named here because they are the gate, not an implementation detail.
+      - name: leak check and identity
+        run: go test -count=1 ./internal/fontset/ ./internal/buildid/ ./cmd/eval/
+
+      - name: determinism
+        run: go test -count=1 -timeout 40m -run TestDeterminismSample -v ./verify/

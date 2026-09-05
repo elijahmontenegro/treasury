@@ -10,3 +10,5 @@ python/encoder/model*.pt
 python/encoder/.venv/
 __pycache__/
 python/encoder/data*/
+/decode
+/decode2

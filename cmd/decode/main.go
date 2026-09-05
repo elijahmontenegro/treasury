@@ -22,6 +22,7 @@ import (
 
 	"treasury/internal/alphabet"
 	"treasury/internal/bitmap"
+	"treasury/internal/buildid"
 	"treasury/internal/preprocess"
 	"treasury/internal/region"
 	"treasury/internal/render"
@@ -30,11 +31,16 @@ import (
 )
 
 func main() {
+	version := flag.Bool("version", false, "print what this binary is, and the weights it carries")
 	debug := flag.String("debug", "", "write intermediate images to this directory")
 	ttbFile := flag.String("ttb", "", "label application JSON; uses the statutory warning as the reference")
 	ref := flag.String("ref", "", "reference text known to appear in the image")
 	trace := flag.Bool("trace", false, "print shape-class violations found while learning to stderr")
 	flag.Parse()
+	if *version {
+		fmt.Println(buildid.Get())
+		return
+	}
 	if *trace {
 		alphabet.Tracef = func(format string, args ...any) { fmt.Fprintln(os.Stderr, fmt.Sprintf(format, args...)) }
 	}

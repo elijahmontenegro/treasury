@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"treasury/internal/bitcode"
+	"treasury/internal/buildid"
 	"treasury/internal/nn"
 )
 
@@ -22,6 +23,11 @@ var learnedBin []byte
 
 //go:embed learned.json
 var learnedJSON []byte
+
+func init() {
+	buildid.Register("encoder.bin", learnedBin)
+	buildid.Register("encoder.json", learnedJSON)
+}
 
 // Learned is the embedded contrastive encoder.
 type Learned struct {
