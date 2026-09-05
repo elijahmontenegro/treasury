@@ -941,6 +941,94 @@ Three things are worth separating inside that number.
 
 What this says about the build: the synthetic set measures a channel and a set of conventions, and it has been improved until the engine handles them, but real registry artwork is a different distribution again, mostly in ways the generator never modelled, flat vector proofs at four times the resolution with warnings set at four-point type against illustration. Nothing above the engine should be built on the synthetic numbers.
 
+### Step 10a: separating text from artwork (2026-09-05)
+
+Gate, stated before the run: on the fifty real labels, the no-alphabet rate and the per-claim recall before and after, with per-label evidence images, and a statement of which labels still fail and why.
+
+What was there: the longer side resized to 1600, one Sauvola threshold with per-component hysteresis, and everything darker than the local threshold taken as ink. Sauvola is a local threshold, but the pipeline still assumed one polarity for the whole image and that dark meant text. On a label that is artwork, a border became one component of ten thousand pixels, a background pattern became hundreds, and white type inside a dark band was not ink at all until the orientation ladder inverted the whole image and tried again.
+
+What replaces it, in `internal/preprocess/separate.go`: text is separated by the properties that make it legible to a person rather than by luminance. Both polarities are thresholded and their components measured together, so a label with a dark band and a light panel gives up the text in both. Each candidate is measured for the width of its stroke and how much that width varies, for its contrast against the ring immediately outside it rather than against the image, and for the grey of that ring in the image as taken, which says which polarity can be right: white type sits on a dark ground, and a piece whose surround contradicts its polarity is the other pass's background. What survives is kept only where it sits in a run of others of its own height on a common baseline, and a mark too small to join a run, a full stop or the dot of an i, is kept when it falls inside a run's own band.
+
+Three things the first attempt got wrong, each found by looking at the evidence images rather than at the table:
+
+- **Solidity has to be judged at the text's own scale.** Measuring the stroke against the shorter side of a component calls every narrow letter a solid blob, since a stem is exactly one stroke wide. Measured against the longer side instead, and rejected only when the piece is also more than half again the height of the type around it: at ten pixels of type the counter of an O closes and the letter is genuinely solid, and an absolute test threw away every O, D, B and 0 on the label.
+- **A barcode passes all three tests.** Its bars are one stroke wide, they stand against their ground, and they keep company in a row. They are told apart by what letters never do, which is share a top and a bottom exactly, a dozen times over. Rejecting them as components rather than as whole lines matters: as lines they took the net contents statement printed beside them.
+- **The hole inside a letter is not a letter.** The counter of an O is light where the letter is dark, so the other polarity's pass finds it, and taking it for text inverts the middle of the glyph and destroys the digit under it. A piece inside a larger piece of the other polarity is rejected, but only when the enclosure is letter-sized: a panel that contains a word is not a letter and its words are not its holes.
+- **A loose unit check let a brand name through as a fill.** With the separation feeding more marginal ink to the decoder, the "45" of a brand set as "45TH PARALLEL" was read as a number and "TH" passed for "ML" at the fixed per-letter bound of 0.45, giving the first false assertion this build has produced since step 6b. The bound now follows the claim's own radius, and precision is 1.00 again.
+
+The fifty real labels, before and after, same engine otherwise, single-threaded:
+
+| claim | before | after |
+|---|---|---|
+| labels without an alphabet | 24 of 50 | 18 of 50 |
+| brand | 0.04 | 0.04 |
+| class | 0.00 | 0.00 |
+| producer, first line | 0.04 | 0.04 |
+| origin | 0.14 | 0.14 |
+| alcohol content | 0.02 | 0.00 |
+| net contents | 0.12 | 0.12 |
+| median latency | 3.6 s | 6.4 s |
+| p95 latency | 9.2 s | 9.9 s |
+
+After, in full:
+
+50 labels, 18 without an alphabet, latency median 6.4s p95 9.9s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| class | 50 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| producer_1 | 50 | 1.00 | 0.04 | 0.00 | 0/0 | 0 |
+| producer_2 | 49 | 0.00 | 0.00 | 0.00 | 0/0 | 0 |
+| origin | 14 | 1.00 | 0.14 | 0.07 | 0/0 | 0 |
+| abv | 50 | 0.00 | 0.00 | 0.06 | 0/0 | 0 |
+| net | 50 | 1.00 | 0.12 | 0.02 | 0/0 | 0 |
+| brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
+
+Reference rows: compliant labels with every row verified 2/50 (21 reviewed, 27 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 17/32 labels (compliant headers verified and regular-weight headers caught).
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 0 | 0 | 0.00 |
+| light on dark | 0 | 0 | 0.00 |
+| vertical warning | 0 | 0 | 0.00 |
+| crowded warning | 0 | 0 | 0.00 |
+| none of these | 50 | 18 | 0.03 |
+
+**What separation bought and what it cost.** A quarter of the alphabet failures are gone: 24 labels learned nothing before, 18 do now, nine labels that had no alphabet at all now have one and three that had one lost it. The claims barely move: one fill verifies that could not be attempted before and one that could is lost, one alcohol content is lost with its label's alphabet, and every other verdict is where it was. Latency rises from 3.6 to 6.4 seconds, since both polarities are thresholded and every candidate is measured.
+
+That is the honest headline. **Separation fixes the stage that was failing outright and leaves the decoder no better off**, because the decoder's radii, its tie margin and its shape classes are fitted to a corpus of clean type on blank ground, and the text separation hands them is real type over artwork. Which is the amendment's thesis, and what 10b and 10c are for.
+
+**It is not the default yet.** Turned on for the whole engine it costs two assertions on the old corpus: the net contents of the blurred, rotated, JPEG-50 sample, and a brand set in a display face in a casing variant. Making it the default now would be fitting the pipeline to neither corpus, so it is opt-in (`-separate` on the evaluation, `Options.Separate` on the engine) until the corpus is rebuilt in 10b and everything is retuned on it in 10c. The suite is green with it off.
+
+**Which labels still fail, and why.** Sixteen of the fifty still learn no alphabet. On two the warning was never located among the text at all. On the other fourteen the warning was found and aligned, and the alignment was then rejected because too many characters contradict their own shape class, between 19 and 68 percent against a bound of 10. Ten of the sixteen set the warning vertically, which the orientation ladder handles by rotating the whole image; separation has made the vertical text visible without making it upright.
+
+| label | conventions | why |
+|---|---|---|
+| 0002 | display, light on dark, vertical | aligned, then rejected: 37% of the characters contradict their own shape |
+| 0004 | display | aligned, then rejected: 20% of the characters contradict their own shape |
+| 0012 | vertical, crowded, display | aligned, then rejected: 58% of the characters contradict their own shape |
+| 0014 | capitals, crowded, display | aligned, then rejected: 38% of the characters contradict their own shape |
+| 0015 | vertical, crowded, light on dark, display | the warning was never located among the text |
+| 0016 | vertical, crowded, light on dark, display | aligned, then rejected: 95% of the characters contradict their own shape |
+| 0017 | vertical, crowded, display | the warning was never located among the text |
+| 0018 | capitals, crowded, display | aligned, then rejected: 41% of the characters contradict their own shape |
+| 0022 | capitals, crowded, display | aligned, then rejected: 66% of the characters contradict their own shape |
+| 0026 | rotated 180, vertical, display, light on dark | aligned, then rejected: 43% of the characters contradict their own shape |
+| 0037 | capitals, light on dark, vertical, display | aligned, then rejected: 50% of the characters contradict their own shape |
+| 0039 | crowded, vertical, display | aligned, then rejected: 41% of the characters contradict their own shape |
+| 0041 | light on dark, display | aligned, then rejected: 32% of the characters contradict their own shape |
+| 0042 | display | aligned, then rejected: 35% of the characters contradict their own shape |
+| 0043 | capitals, vertical, crowded, display | aligned, then rejected: 64% of the characters contradict their own shape |
+| 0044 | vertical, light on dark, capitals, display | aligned, then rejected: 18% of the characters contradict their own shape |
+| 0045 | capitals, crowded, display | aligned, then rejected: 56% of the characters contradict their own shape |
+| 0046 | capitals, crowded, display | aligned, then rejected: 56% of the characters contradict their own shape |
+
+Evidence: `docs/evidence/separation/` holds twelve of the fifty, with what was kept in black and what was rejected outlined in colour, red for a rule or a border, orange for a solid rather than a stroke, blue for a stroke of no single width, green for no contrast with its surround, brown for a bar of a barcode, grey for a mark with no line of type around it. The full fifty are written by `cmd/separate`.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

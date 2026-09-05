@@ -43,6 +43,8 @@ var digitMode = flag.String("digits", "", "how numeric fields are read: classifi
 
 var without = flag.String("without", "", "comma-separated rules to remove, to measure the cost of deleting them")
 
+var separate = flag.Bool("separate", false, "separate text from artwork before decoding rather than taking whatever is dark as ink")
+
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
@@ -108,7 +110,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	}
 	var records []Record
 	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without)})
+		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without), Separate: separate})
 		if err != nil {
 			return err
 		}

@@ -201,6 +201,9 @@ type Options struct {
 	// Digits is how numeric fields are read: DigitsClassifier (default),
 	// DigitsImage, or DigitsSynthetic.
 	Digits string
+	// Separate turns text separation on or off; nil means on. Off is the
+	// pipeline as it stood through step 9, where ink is whatever is dark.
+	Separate *bool
 	// Without names rules to remove, so that the cost of deleting one can
 	// be measured rather than argued: "invalid-tie" sends a tie between
 	// values a field cannot hold to review instead of returning nothing,
@@ -368,7 +371,11 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		if at.invert {
 			g = imgops.Invert(g)
 		}
-		pre, err := preprocess.Run(g, preprocess.Default())
+		pp := preprocess.Default()
+		if e.opt.Separate != nil {
+			pp.Separate = *e.opt.Separate
+		}
+		pre, err := preprocess.Run(g, pp)
 		if err != nil {
 			return prepared{}, err
 		}

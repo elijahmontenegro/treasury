@@ -21,11 +21,18 @@ type Params struct {
 	MaxSkewDeg    float64 // deskew sweep is ±MaxSkewDeg
 	GlareQuantile float64 // pixels at or above this intensity quantile are glare
 	GlareMinGap   int     // the glare level must exceed the median by this much, else no mask
+	// Separate turns on text separation: ink is what a line of type is
+	// made of rather than whatever is dark. Off through step 10a, which
+	// built and measured it; the corpus it would be tuned against is
+	// rebuilt in 10b and the default is decided in 10c.
+	Separate bool
+	Sep      SepParams
 }
 
 // Default returns the spec's parameters.
 func Default() Params {
-	return Params{LongSide: 1600, Window: 31, K: 0.2, WeakK: 0.1, CoreFrac: 0.5, R: 128, MaxSkewDeg: 15, GlareQuantile: 0.99, GlareMinGap: 16}
+	return Params{LongSide: 1600, Window: 31, K: 0.2, WeakK: 0.1, CoreFrac: 0.5, R: 128, MaxSkewDeg: 15, GlareQuantile: 0.99, GlareMinGap: 16,
+		Separate: false, Sep: DefaultSep()}
 }
 
 // Result is the preprocessed image. Gray and Bin share coordinates.
@@ -35,6 +42,7 @@ type Result struct {
 	Glare    *bitmap.Bitmap // 1 where the image is unreliable; nil when no mask applies
 	AngleDeg float64        // skew estimated on the binary; Rotate(gray, -AngleDeg) was applied
 	Scale    float64        // Gray size / input size
+	Pieces   []Piece        // what separation considered and what it kept; nil when separation is off
 }
 
 // ToInput maps a point in Result coordinates back to the input image: undo
@@ -58,16 +66,23 @@ func Run(img image.Image, p Params) (*Result, error) {
 		g = imgops.Resize(g, int(math.Round(float64(w)*scale)), int(math.Round(float64(h)*scale)))
 	}
 	glare := GlareMask(g, p.GlareQuantile, p.GlareMinGap)
-	bin := Threshold(g, p)
+	binOf := func(g *image.Gray) (*bitmap.Bitmap, *image.Gray, []Piece) {
+		if !p.Separate {
+			return Threshold(g, p), g, nil
+		}
+		t := SeparateText(g, p, p.Sep)
+		return t.Mask, t.Gray, t.Pieces
+	}
+	bin, gray, pieces := binOf(g)
 	angle := EstimateSkew(bin, p.MaxSkewDeg)
 	if math.Abs(angle) >= 0.05 {
 		g = imgops.Rotate(g, -angle, 255)
-		bin = Threshold(g, p)
+		bin, gray, pieces = binOf(g)
 		if glare != nil {
 			glare = bitmap.FromGray(imgops.Rotate(glare.ToGray(), -angle, 255), 128)
 		}
 	}
-	return &Result{Gray: g, Bin: bin, Glare: glare, AngleDeg: angle, Scale: scale}, nil
+	return &Result{Gray: gray, Bin: bin, Glare: glare, AngleDeg: angle, Scale: scale, Pieces: pieces}, nil
 }
 
 // Threshold binarizes g: Sauvola at p.K, and when p.WeakK is set, Sauvola
