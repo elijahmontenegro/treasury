@@ -12,7 +12,15 @@
   "abv_text": "40% ALC/VOL",
   "net_ml": 750,
   "net_text": "NET.CONT. 750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "CINCO AGAVES IMPORTS CHULA VISTA CA",
+   "producer_2": ""
+  }
  },
  "note": "capitals, light-on-dark, crowded, display",
  "ttbid": "26028001000728",

@@ -12,7 +12,15 @@
   "abv_text": "Alc. 4.5% by Vol.",
   "net_ml": 330,
   "net_text": "11.2 FL.OZ. 330 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "=",
+   "net": "=",
+   "producer_1": "IMPORTERS DIRECT WHOLESALE CO. INC.,",
+   "producer_2": "1944 Gardena Ave, Glendale, CA 91204, USA"
+  }
  },
  "note": "capitals, light-on-dark, vertical, display",
  "ttbid": "26170001000661",

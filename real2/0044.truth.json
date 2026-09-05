@@ -12,7 +12,16 @@
   "abv_text": "ALC. 14,5% BY VOL.",
   "net_ml": 50,
   "net_text": "50ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "ALC. 14,5% BY VOL.",
+   "brand": "=",
+   "class": "",
+   "net": "BY VOL.50ML",
+   "origin": "=",
+   "producer_1": "Vinovae",
+   "producer_2": ""
+  }
  },
  "note": "vertical, light-on-dark, capitals, display",
  "ttbid": "26176001000828",

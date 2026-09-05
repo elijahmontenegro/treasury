@@ -12,7 +12,15 @@
   "abv_text": "Alc. 5% by vol.",
   "net_ml": 475,
   "net_text": "Net Cont. 475 ml",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "=",
+   "producer_2": "2806 E. Nogal Ave. Hidalgo, TX 78557"
+  }
  },
  "note": "display, vertical",
  "ttbid": "25301001000221",

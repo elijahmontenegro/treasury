@@ -12,7 +12,16 @@
   "abv_text": "14.5% ALC. BY VOL.",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "Château LA GAFFELIÈRE",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+   "producer_2": ""
+  }
  },
  "note": "capitals, light-on-dark, display, crowded",
  "ttbid": "26183001000759",

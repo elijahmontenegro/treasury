@@ -19,13 +19,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "IMPORTED BY FOLEY FAMILY WINES AND SPIRITS, SANTA ROSA, CALIFORNIA 95403",
+    "producer_2": "SANTA ROSA, CALIFORNIA 95403"
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9290425000,
+  "latency": 12149366400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -548,13 +557,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "OZ Trading Group, Inc.",
+    "producer_2": "2806 E. Nogal Ave. Hidalgo, TX 78557"
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7195534800,
+  "latency": 9905092100,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -945,13 +962,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "=",
+    "producer_2": "2806 E. Nogal Ave. Hidalgo, TX 78557"
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7822663800,
+  "latency": 10910605500,
   "orientation": "rot90",
   "reference_casing": "as_given",
   "alphabet": {
@@ -1370,13 +1395,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4799255700,
+  "latency": 6729225900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1862,13 +1895,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4660653200,
+  "latency": 6539377800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -2570,13 +2611,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9204262100,
+  "latency": 12495060600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -3341,13 +3390,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6597715300,
+  "latency": 9282221900,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -4009,13 +4066,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "CINCO AGAVES IMPORTS CHULA VISTA CA",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3948436200,
+  "latency": 5335955100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4714,13 +4779,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "CINCO AGAVES IMPORTS CHULA VISTA CA",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4103802800,
+  "latency": 5698964700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -5570,13 +5643,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "CINCO AGAVES IMPORTS CHULA VISTA CA",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3624647200,
+  "latency": 5045304800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -6422,13 +6503,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "CINCO AGAVES IMPORTS CHULA VISTA CA",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3135598500,
+  "latency": 4063984800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -7281,13 +7370,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "DETROIT FAN ZONE",
+    "class": "=",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4445628700,
+  "latency": 5488172100,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -7382,13 +7479,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9088707800,
+  "latency": 12105523800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -8028,13 +8133,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6416281000,
+  "latency": 7947656500,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -8129,13 +8242,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "=",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6390533500,
+  "latency": 6301493600,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "claims": [
@@ -8205,13 +8326,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "=",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7279176500,
+  "latency": 6934201300,
   "reason": "no_alphabet",
   "orientation": "inverted_rot90",
   "alphabet": {
@@ -8306,13 +8435,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "=",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6517314600,
+  "latency": 8429129600,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "claims": [
@@ -8382,13 +8519,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 8534971700,
+  "latency": 11387077500,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -8484,13 +8629,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 8923153000,
+  "latency": 12160232100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -9127,13 +9280,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9870857800,
+  "latency": 13814782600,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -9793,13 +9954,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9120475100,
+  "latency": 12702976900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -10437,13 +10606,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9133053700,
+  "latency": 9483367300,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -10538,13 +10715,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6719047200,
+  "latency": 6244819300,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -11338,13 +11523,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9488960800,
+  "latency": 9388749900,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -11942,13 +12135,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7813650500,
+  "latency": 7544817000,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -12496,13 +12697,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "=",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 2093152400,
+  "latency": 1997176900,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -12598,13 +12807,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "Viña Salceda / LA RELLANILLA (two lines, two faces)",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "THINK GLOBAL WINES",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 5342828700,
+  "latency": 5266964100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -13080,13 +13298,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "APONA VINEYARDS, VENETA, OR",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 5310332800,
+  "latency": 5125129800,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -13713,13 +13939,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4820689100,
+  "latency": 4635622600,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -14508,13 +14743,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4537192100,
+  "latency": 4452670300,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15168,13 +15412,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4644234300,
+  "latency": 4547763700,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15896,13 +16149,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4602969600,
+  "latency": 4440450100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -16543,13 +16805,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "Alc 14,5 % by Vol.",
+    "brand": "BODEGAS Y VIÑEDOS VEGA DE YUSO",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "CROD TRADING CO.",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6164902000,
+  "latency": 6006889600,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -17071,13 +17342,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "The Crossing at Big Creek Brewery",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3169708900,
+  "latency": 2843528300,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -17419,13 +17698,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "SVP WINERY",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7750151200,
+  "latency": 9895278400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -17951,13 +18238,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "Haberdasher Artisan Distillery",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 9771921900,
+  "latency": 13661410600,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -18524,13 +18819,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "=",
+    "net": "=",
+    "producer_1": "IMPORTERS DIRECT WHOLESALE CO. INC.,",
+    "producer_2": "1944 Gardena Ave, Glendale, CA 91204, USA"
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 5828724400,
+  "latency": 7704616000,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -19166,13 +19469,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "45th Parallel Spirits, LLC",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 5580022500,
+  "latency": 7283790100,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -19696,13 +20007,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "Lovemark Advanced trading holding",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 1388041600,
+  "latency": 1889745700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -20469,13 +20788,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6378278800,
+  "latency": 7590647800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -20915,13 +21242,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "Bluegrass Bottling",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7134400700,
+  "latency": 8982445900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -21464,13 +21799,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "Engelheim Vineyards",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3826012200,
+  "latency": 4485043100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -22074,13 +22417,21 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "KNOWLTON HOUSE DISTILLERY",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6388174600,
+  "latency": 6558189300,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -22175,13 +22526,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "ALC. 14,5% BY VOL.",
+    "brand": "=",
+    "class": "",
+    "net": "BY VOL.50ML",
+    "origin": "=",
+    "producer_1": "Vinovae",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4938153300,
+  "latency": 4902590300,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -22677,13 +23037,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "ALC. 12.5%BY VOL.",
+    "brand": "=",
+    "class": "WHITE WINE",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 4069608700,
+  "latency": 4242315200,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -22785,13 +23154,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "ALC. 12%BY VOL.",
+    "brand": "=",
+    "class": "WHITE WINE",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 3734299900,
+  "latency": 4065728600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -23378,13 +23756,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 6861120900,
+  "latency": 7754174900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -23841,13 +24228,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "CHÂTEAU CÔTE DE BALEAU",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 8789794400,
+  "latency": 9698039700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -24310,13 +24706,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "Château LA GAFFELIÈRE",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 7331206900,
+  "latency": 7660058500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -24796,13 +25201,22 @@
    "body_face": "",
    "heavy_face": "",
    "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "CHATEAU RAYMOND - LAFON",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_2": ""
+   },
    "warning_caps": false,
    "inverted": false,
    "vertical_warning": false,
    "crowded": false
   },
   "augmented": false,
-  "latency": 5700027100,
+  "latency": 5947101900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {

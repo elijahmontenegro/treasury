@@ -11,7 +11,15 @@
   "abv_text": "42% Alcohol by Volume | 84 proof",
   "net_ml": 750,
   "net_text": "750 ml",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "45th Parallel Spirits, LLC",
+   "producer_2": ""
+  }
  },
  "note": "display",
  "ttbid": "26173001000021",

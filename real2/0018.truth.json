@@ -12,7 +12,15 @@
   "abv_text": "4.5% ALC. BY VOL.",
   "net_ml": 570,
   "net_text": "19.2 FL. OZ. (570mL)",
-  "error": ""
+  "error": "",
+  "carried": {
+   "brand": "=",
+   "class": "",
+   "producer_1": "",
+   "producer_2": "",
+   "abv": "=",
+   "net": "="
+  }
  },
  "note": "capitals, crowded, display",
  "ttbid": "26041001000459",

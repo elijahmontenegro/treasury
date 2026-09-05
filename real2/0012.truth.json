@@ -12,7 +12,15 @@
   "abv_text": "ALC. 5% BY VOL.",
   "net_ml": 473,
   "net_text": "16 FL. OZ. / 1 PINT",
-  "error": ""
+  "error": "",
+  "carried": {
+   "brand": "DETROIT FAN ZONE",
+   "class": "=",
+   "producer_1": "",
+   "producer_2": "",
+   "abv": "=",
+   "net": "="
+  }
  },
  "note": "vertical, crowded, display",
  "ttbid": "26035001000153",

@@ -12,7 +12,15 @@
   "abv_text": "5% ALC/VOL",
   "net_ml": 355,
   "net_text": "355mL (12 FL OZ)",
-  "error": ""
+  "error": "",
+  "carried": {
+   "brand": "=",
+   "class": "",
+   "producer_1": "",
+   "producer_2": "",
+   "abv": "=",
+   "net": "="
+  }
  },
  "note": "capitals, crowded, display",
  "ttbid": "26042001000333",

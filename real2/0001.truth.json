@@ -12,7 +12,16 @@
   "abv_text": "46% ALC/VOL (92 Proof)",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "IMPORTED BY FOLEY FAMILY WINES AND SPIRITS, SANTA ROSA, CALIFORNIA 95403",
+   "producer_2": "SANTA ROSA, CALIFORNIA 95403"
+  }
  },
  "note": "display, light-on-dark, crowded",
  "ttbid": "25183001000719",

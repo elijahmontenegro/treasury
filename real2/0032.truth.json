@@ -12,7 +12,16 @@
   "abv_text": "45% ALC. BY VOL",
   "net_ml": 750,
   "net_text": "NET. CONT. 750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+   "producer_2": ""
+  }
  },
  "note": "capitals, light-on-dark, crowded",
  "ttbid": "26129001000093",

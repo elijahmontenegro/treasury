@@ -1,7 +1,7 @@
 {
  "printed": {
   "family": "spirits",
-  "brand": "PATR\u00d3N",
+  "brand": "PATRÓN",
   "class": "TEQUILA FB",
   "producer": [
    "BACARDI U.S.A., INC.",
@@ -12,7 +12,15 @@
   "abv_text": "40% alc./vol.",
   "net_ml": 750,
   "net_text": "750 ml",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "",
+   "producer_2": ""
+  }
  },
  "note": "display",
  "ttbid": "25352001000057",

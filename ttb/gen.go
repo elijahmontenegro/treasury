@@ -29,6 +29,13 @@ type Printed struct {
 	HeavyFace string   `json:"heavy_face"`
 	BrandFace string   `json:"brand_face"`
 
+	// What the label actually prints for each claim, transcribed by eye
+	// (amendment step 12a). "=" is the filed value printed as filed, ""
+	// is not on the label at all, and anything else is what the label
+	// prints where the filed string does not match it. A set without it
+	// is scored against its filed values as before.
+	Carried map[string]string `json:"carried,omitempty"`
+
 	// The conventions real labels showed (amendment step 5a), at the
 	// frequencies seen in ten registry labels.
 	ClaimFaces  map[string]string `json:"claim_faces,omitempty"` // face per claim; a claim set in the body face shares the warning's alphabet

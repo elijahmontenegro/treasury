@@ -1376,6 +1376,68 @@ The eval cannot see this, because it scores a claim against the registry's filed
 
 One other thing the audit showed: on 0035 the brand verifies through a second copy of the string, set in the back's serif body text rather than in the warning's sans, on a label that prints it in both. So the reach across faces is not exactly zero — it is one instance in eighteen, on a label where the claim was also available in the reference's own face.
 
+### Step 12a: ground truth is what the label prints (2026-09-05)
+
+Gate, stated before the run: the real set rescored against the transcribed printed text rather than the filed registry values, every table stated since 10c republished with its corrected numbers beside the original, and the doc stating that precision on the real set was 0.94 rather than 1.00 and why the earlier figure was wrong.
+
+**What was wrong.** The real set was scored against the values filed with the registry. A verdict was counted correct when it named the filed value, whether or not the label carried it, and a NOT_FOUND was counted a miss whether or not there was anything to find. 11b found what that hides: on 0027 the engine reported VERIFIED for the producer "THINK GLOBAL LLC" over a region holding "THINK GLOBAL W" of "THINK GLOBAL WINES", and the eval scored it correct because that is the name on the application.
+
+**What replaces it.** For every claim of every one of the fifty labels, what the label actually prints is transcribed by eye and recorded in its truth file as `carried`: `=` for the filed value printed as filed, `""` for a claim the label does not carry, and otherwise the text the label prints where the filed string does not match it. `want` in the eval consults it before anything else, so a claim the label does not carry is `missing`: a NOT_FOUND on it is a correct absence report and a VERIFIED on it is a false assertion. The engine's input does not change — it is still asked for the filed value, because that is the compliance question — and neither does the engine. Only the scoring changes, so the verdicts below are the same verdicts 10c reported.
+
+**The same table both ways.**
+
+| claim | filed-value recall | printed-text recall | filed-value precision | printed-text precision |
+|---|---|---|---|---|
+| brand | 0.06 | 0.07 | 1.00 | 1.00 |
+| class | 0.00 | 0.00 | -- | -- |
+| producer_1 | 0.04 | 1.00 | 1.00 | 0.50 |
+| producer_2 | 0.00 | 0.00 | -- | -- |
+| origin | 0.43 | 0.43 | 1.00 | 1.00 |
+| abv | 0.04 | 0.04 | 1.00 | 1.00 |
+| net | 0.10 | 0.10 | 1.00 | 1.00 |
+
+Only one row moves, and it moves because the denominator was wrong rather than the engine: the producer's first line is carried as filed by exactly one of the fifty labels, and the engine verifies it, so recall is 1 of 1 rather than 2 of 50, and precision is 1 of 2 because the second verdict is the false one.
+
+**What the fifty actually carry.** The more useful table, because it separates what the engine failed to find from what was never there:
+
+| claim | carried as filed | verified | recall | not carried | absence reported | false assertions |
+|---|---|---|---|---|---|---|
+| brand | 44 | 3 | 0.07 | 6 | 6 | 0 |
+| class | 6 | 0 | 0.00 | 44 | 44 | 0 |
+| producer_1 | 1 | 1 | 1.00 | 49 | 48 | 1 |
+| producer_2 | 0 | 0 | -- | 49 | 49 | 0 |
+| origin | 14 | 6 | 0.43 | 0 | 0 | 0 |
+| abv | 46 | 2 | 0.04 | 4 | 4 | 0 |
+| net | 49 | 5 | 0.10 | 1 | 1 | 0 |
+| **all seven** | 160 | 17 | **0.11** | 153 | 152 | **1** |
+
+Of 313 claims the labels carry 160 in the filed form and do not carry 153. The engine finds 17 of the 160 and correctly reports the absence of 152 of the 153; the one exception is 0027. **Precision as an assertion about the image: 17 of 18, 0.94**, not the 1.00 stated since 10c. The earlier figure was wrong because the scorer could not see the difference between a label that carries the filed string and one that does not.
+
+**11b's two columns, over the claims the labels carry.** The cross-face finding does not move; the denominators shrink to the claims that are there to be found, which raises the same-face column from 0.16 to 0.22 and leaves the other at zero:
+
+| claim | same face | verified | recall | other face | verified | recall |
+|---|---|---|---|---|---|---|
+| brand | 15 | 3 | 0.20 | 20 | 0 | 0.00 |
+| producer_1 | 1 | 1 | 1.00 | 0 | 0 | -- |
+| origin | 9 | 6 | 0.67 | 4 | 0 | 0.00 |
+| abv | 27 | 2 | 0.07 | 10 | 0 | 0.00 |
+| net | 25 | 5 | 0.20 | 14 | 0 | 0.00 |
+| **all five** | 77 | 17 | **0.22** | 48 | 0 | **0.00** |
+
+**The transfer table, with the corrected real column.** The corpus column is unchanged, since the generator's truth is what it printed:
+
+| claim | rebuilt corpus | the fifty, printed-text scoring | difference | within 0.15 |
+|---|---|---|---|---|
+| brand | 0.22 | 0.07 | 0.15 | yes |
+| producer, first line | 195.00 | 1.00 | 194.00 | **no** |
+| origin | 192.00 | 0.43 | 191.57 | **no** |
+| alcohol content | 177.00 | 0.04 | 176.96 | **no** |
+| net contents | 176.00 | 0.10 | 175.90 | **no** |
+
+The producer row now compares a corpus figure over 250 labels with a real figure over one claim, so it is reported and not read as transfer. The rest is as 10c reported it.
+
+**What this does not change.** The engine, the corpus, every synthetic number, and the verdicts themselves. What it changes is what the real numbers mean: the fifty labels mostly do not carry the values filed for them, the engine mostly says so, and the recall figures published since 9d were measured against a denominator that included 153 claims no label prints.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

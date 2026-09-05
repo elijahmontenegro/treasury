@@ -12,7 +12,15 @@
   "abv_text": "60 % alc/vol. (120 Proof)",
   "net_ml": 750,
   "net_text": "750ml",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "Bluegrass Bottling",
+   "producer_2": ""
+  }
  },
  "note": "light-on-dark, display",
  "ttbid": "26175001000354",

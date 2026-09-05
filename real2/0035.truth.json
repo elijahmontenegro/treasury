@@ -12,7 +12,15 @@
   "abv_text": "Alc. 13.0% By Vol",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "SVP WINERY",
+   "producer_2": ""
+  }
  },
  "note": "capitals",
  "ttbid": "26167001000445",

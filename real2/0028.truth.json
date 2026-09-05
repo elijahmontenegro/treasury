@@ -12,7 +12,15 @@
   "abv_text": "ALC. 13.2% BY VOL.",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "APONA VINEYARDS, VENETA, OR",
+   "producer_2": ""
+  }
  },
  "note": "vertical, light-on-dark, capitals, crowded",
  "ttbid": "26106001000855",

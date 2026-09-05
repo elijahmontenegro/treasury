@@ -12,7 +12,16 @@
   "abv_text": "Alc 14,5 % by Vol.",
   "net_ml": 750,
   "net_text": "750 ml",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "Alc 14,5 % by Vol.",
+   "brand": "BODEGAS Y VIÑEDOS VEGA DE YUSO",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "CROD TRADING CO.",
+   "producer_2": ""
+  }
  },
  "note": "capitals, light-on-dark, display",
  "ttbid": "26131001000813",

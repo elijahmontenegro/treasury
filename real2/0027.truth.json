@@ -1,7 +1,7 @@
 {
  "printed": {
   "family": "wine",
-  "brand": "VI\u00d1A SALCEDA LA RELLANILLA",
+  "brand": "VIÑA SALCEDA LA RELLANILLA",
   "class": "DESSERT /PORT/SHERRY/(COOKING) WINE",
   "producer": [
    "THINK GLOBAL LLC",
@@ -12,7 +12,16 @@
   "abv_text": "ALC. 14.5% BY VOL.",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "Viña Salceda / LA RELLANILLA (two lines, two faces)",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "THINK GLOBAL WINES",
+   "producer_2": ""
+  }
  },
  "note": "capitals",
  "ttbid": "26093001000569",

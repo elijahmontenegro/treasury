@@ -245,6 +245,16 @@ func one(eng *verify.Engine, enc, truthPath string) (Record, error) {
 // application's value is on the label), "wrong" (another value is), or
 // "missing" (the claim is not printed).
 func want(p ttb.Printed, claim string) string {
+	// Step 12a: where the label's own text has been transcribed, that is
+	// the truth. A claim the label does not carry in the filed form is
+	// missing from the label whatever the registry filed, so a NOT_FOUND
+	// on it is a correct absence report and a VERIFIED is a false
+	// assertion.
+	if p.Carried != nil {
+		if v, ok := p.Carried[claim]; ok && v != "=" {
+			return "missing"
+		}
+	}
 	switch claim {
 	case "abv":
 		switch {

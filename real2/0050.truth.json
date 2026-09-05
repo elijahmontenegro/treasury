@@ -12,7 +12,16 @@
   "abv_text": "13.5% ALC. BY VOL.",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "CHATEAU RAYMOND - LAFON",
+   "class": "",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+   "producer_2": ""
+  }
  },
  "note": "capitals, display",
  "ttbid": "26184001000123",

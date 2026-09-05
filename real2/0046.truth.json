@@ -12,7 +12,16 @@
   "abv_text": "ALC. 12%BY VOL.",
   "net_ml": 750,
   "net_text": "NET CONT. 750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "ALC. 12%BY VOL.",
+   "brand": "=",
+   "class": "WHITE WINE",
+   "net": "=",
+   "origin": "=",
+   "producer_1": "",
+   "producer_2": ""
+  }
  },
  "note": "capitals, crowded, display",
  "ttbid": "26182001000333",

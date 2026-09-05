@@ -12,7 +12,15 @@
   "abv_text": "Alc 40% by vol, 80 PROOF",
   "net_ml": 700,
   "net_text": "700 ml.",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "Lovemark Advanced trading holding",
+   "producer_2": ""
+  }
  },
  "note": "crowded, vertical, display",
  "ttbid": "26173001000954",

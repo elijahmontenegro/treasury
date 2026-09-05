@@ -12,7 +12,15 @@
   "abv_text": "Alc. 13.0% by Vol.",
   "net_ml": 750,
   "net_text": "750 mL",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "Engelheim Vineyards",
+   "producer_2": ""
+  }
  },
  "note": "display",
  "ttbid": "26175001000903",

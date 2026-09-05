@@ -12,7 +12,15 @@
   "abv_text": "Alc. by Vol. 14.1%",
   "net_ml": 750,
   "net_text": "750 ml.",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "",
+   "producer_2": ""
+  }
  },
  "note": "capitals, light-on-dark, display",
  "ttbid": "26174001000903",

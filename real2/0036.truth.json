@@ -12,7 +12,15 @@
   "abv_text": "50 %ALC./VOL",
   "net_ml": 750,
   "net_text": "750 ML",
-  "error": ""
+  "error": "",
+  "carried": {
+   "abv": "=",
+   "brand": "=",
+   "class": "",
+   "net": "=",
+   "producer_1": "Haberdasher Artisan Distillery",
+   "producer_2": ""
+  }
  },
  "note": "light-on-dark, crowded, display",
  "ttbid": "26167001000930",
