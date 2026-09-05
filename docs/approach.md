@@ -767,6 +767,87 @@ Where the recall goes: a label teaches only the digits its fill statement printe
 
 The ten real labels: alcohol 0.00 recall, net 0.22 at precision 0.67. Real labels rarely teach digits at all, because the fill has to be decoded first and only seven of the ten learn an alphabet.
 
+### Step 8c: which domain rules earn their place (2026-09-04)
+
+Gate, stated before the runs: four rules removed one at a time by name through `Options.Without`, each re-run on the clean half B and the ten real labels, each kept only if its removal costs measured accuracy, with the cost recorded beside it.
+
+| rule | removed | kept | verdict |
+|---|---|---|---|
+| the alcohol enumeration as a decode source | alcohol 0.31 at precision 0.96, median 4.3 s | alcohol 0.68 at precision 0.93, median 29.2 s | already absent from the shipped path; costly to restore |
+| numbers read only from whole lines | alcohol 0.68 at precision 1.00, 0 false assertions | alcohol 0.64 at precision 0.99, 2 false assertions | **deleted**: removal gains accuracy |
+| a tie between impossible values is nothing, not a review | net review 0.09, absence reported 2/2 | net review 0.02, absence reported 2/2 | kept, at that cost |
+| the fill enumeration | net 0.44 at precision 1.00 | net 0.66 at precision 0.98 | kept: removal costs a fifth of the fill |
+
+**The rule that failed was step 7a's own.** After the twelve partial reads of step 6b, 7a stopped numbers being read from anything but a whole line, so that a reading could not begin inside a number. Removed here, alcohol recall rises from 0.64 to 0.68, precision from 0.99 to 1.00, and the false assertions fall from 2 to 0: both of the ones it left were the monospaced defect, where a face that puts a full advance around a decimal point splits "40.5%" across a whole line but not inside its own word. The other half of 7a, that a verdict must explain every glyph of the run it was read from and measure every letter of the unit, is what actually closed the partial reads, and it makes the line restriction unnecessary. It is deleted, and the shipped table below is the engine without it.
+
+The tie rule survives on a cost the recall column does not show: removing it leaves precision and recall untouched and turns 0.02 of net claims in review into 0.09, while the count of fields correctly reported absent falls from 2/2 to 2/2. It buys nothing and costs a reader work, so it stays.
+
+The two enumerations survive as decoders of the fields whose vocabulary is closed. The alcohol enumeration is not in the shipped path at all, and restoring it costs seven times the latency and a precision of 0.93 for 0.37 of recall.
+
+### Step 8d: what the learned parts carry (2026-09-04)
+
+Gate, stated before the run: the same clean half B three ways, differing in one thing at a time, and the doc stating what fraction of the accuracy is the learned components rather than the decoding.
+
+Geometry only is the current engine with both learned parts removed: claims decoded in the hash code, no classifier, the fill decoded by its vocabulary and the alcohol content read against digits synthesized from the nearest bundled face, with the harvest forbidden to teach a digit. It is not the engine of step 6, which had none of the conventions, orientations or alignment rules built since; it is what remains of today's engine when nothing learned is left in it.
+
+| claim | geometry only | plus image-taught digits | full system |
+|---|---|---|---|
+| brand | 0.80 | 0.80 | 0.90 |
+| class | 0.53 | 0.53 | 0.79 |
+| producer, first line | 0.46 | 0.46 | 0.71 |
+| producer, second line | 0.48 | 0.49 | 0.74 |
+| origin | 0.53 | 0.53 | 0.70 |
+| alcohol content | 0.19 at precision 0.88 | 0.20 at precision 0.96 | 0.68 at precision 1.00 |
+| net contents | 0.52 at precision 0.91 | 0.52 at precision 0.94 | 0.60 at precision 1.00 |
+| median latency | 3.5 s | 3.5 s | 3.6 s |
+
+Read down the columns. **The decoding carries most of the free text and almost none of the numbers.** Free-text recall averages 0.56 on geometry alone against 0.77 with both learned parts, so the encoder is worth about 27 percent of what the system verifies there and the alignment carries the other 73. The alcohol content is the opposite: 0.19 without the classifier against 0.68 with it, so about 72 percent of it is the classifier. The fill sits between: 0.52 against 0.60, since its closed vocabulary can be decoded without reading a digit at all.
+
+**Image-taught digits move recall by a hundredth and precision by a tenth.** Between the first two columns the only difference is whether the fill's own glyphs teach the alphabet its digits, and recall barely moves, while alcohol precision goes 0.88 to 0.96 and net 0.91 to 0.94. Digits in the label's own hand do not find more numbers; they stop the engine mistaking one number for another.
+
+**Precision is the learned parts' clearest contribution.** Without them the numeric claims assert wrongly at 0.88 and 0.91; with them, 1.00 and 1.00, with no verdict naming a wrong value on a correct label anywhere in half B or the ten real labels.
+
+The shipped engine, half B:
+
+250 labels, 17 without an alphabet, latency median 3.6s p95 4.7s
+
+| claim | n | precision | recall | review | mismatch found | not found on missing |
+|---|---|---|---|---|---|---|
+| brand | 139 | 0.99 | 0.90 | 0.01 | 0/3 | 0 |
+| class | 250 | 1.00 | 0.79 | 0.02 | 0/3 | 3 |
+| producer_1 | 250 | 1.00 | 0.71 | 0.02 | 0/0 | 0 |
+| producer_2 | 250 | 1.00 | 0.74 | 0.02 | 0/0 | 0 |
+| origin | 250 | 1.00 | 0.70 | 0.01 | 0/0 | 0 |
+| abv | 250 | 1.00 | 0.68 | 0.05 | 3/5 | 7 |
+| net | 250 | 1.00 | 0.60 | 0.08 | 2/2 | 3 |
+| brand (display face) | 111 | 0.96 | 0.82 | 0.03 | | |
+
+Reference rows: compliant labels with every row verified 77/201 (67 reviewed, 57 failed); wording and title-case errors caught 4/10.
+Emphasis: correct on 141/196 labels (compliant headers verified and regular-weight headers caught).
+
+Cross-face gap (correct claims only; same-face = set in the warning's face):
+
+| claim | same-face n | same-face recall | cross-face n | cross-face recall |
+|---|---|---|---|---|
+| class | 67 | 0.84 | 177 | 0.77 |
+| producer_1 | 56 | 0.61 | 194 | 0.74 |
+| producer_2 | 56 | 0.71 | 194 | 0.74 |
+| origin | 68 | 0.71 | 182 | 0.70 |
+| abv | 49 | 0.80 | 189 | 0.65 |
+| net | 58 | 0.62 | 187 | 0.59 |
+
+Convention coverage (free-text recall over brand, class, producer, origin):
+
+| convention | labels | no alphabet | free-text recall |
+|---|---|---|---|
+| warning in capitals | 118 | 1 | 0.83 |
+| light on dark | 40 | 3 | 0.76 |
+| vertical warning | 52 | 3 | 0.72 |
+| crowded warning | 56 | 6 | 0.74 |
+| none of these | 68 | 6 | 0.72 |
+
+The ten real labels: alcohol 0.10, net 0.20, precision 1.00 on every claim.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

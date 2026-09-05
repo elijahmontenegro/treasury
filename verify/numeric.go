@@ -14,7 +14,6 @@ import (
 	"treasury/internal/bitcode"
 	"treasury/internal/encoder"
 	"treasury/internal/preprocess"
-	"treasury/internal/region"
 	"treasury/internal/spell"
 )
 
@@ -108,7 +107,8 @@ func (e *Engine) decideClaim(c Claim, sp *spell.Speller, pre *preprocess.Result,
 	if c.Numeric == nil {
 		return e.decide(c, sp, pre, regions, cache)
 	}
-	if e.opt.Digits == DigitsClassifier || (!c.Numeric.Enumerable && e.opt.Digits != DigitsImageEnum) {
+	enumerable := c.Numeric.Enumerable && !e.without("fill-enumeration")
+	if e.opt.Digits == DigitsClassifier || (!enumerable && e.opt.Digits != DigitsImageEnum) {
 		return e.decideNumeric(c, sp, pre, regions, cache)
 	}
 	// A field the engine cannot read is decoded by its own vocabulary:
@@ -224,9 +224,6 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 	var readings []reading
 	seen := map[[2]image.Rectangle]bool{}
 	for ri := range regions {
-		if regions[ri].kind != region.KindLine {
-			continue
-		}
 		for _, r := range e.readAll(regions[ri], ri, sp, cache) {
 			key := [2]image.Rectangle{r.boxes[0], r.boxes[1]}
 			if seen[key] {
@@ -396,7 +393,7 @@ func (e *Engine) decideNumeric(c Claim, sp *spell.Speller, pre *preprocess.Resul
 		// runner-up "13") and worth a review; between values the field
 		// cannot take it is a zip code fitted as "94558 mL" and "94558 L"
 		// on a label whose fill was never read, and is nothing.
-		if w == nil && out.Status == Review && out.Reason == "" {
+		if w == nil && out.Status == Review && out.Reason == "" && !e.without("invalid-tie") {
 			valid := false
 			for _, cand := range cands {
 				valid = valid || instances[cand.Text].valid

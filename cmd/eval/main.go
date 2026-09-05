@@ -41,6 +41,8 @@ var claimEnc = flag.String("claim-encoder", "", "the code claims are decoded in:
 
 var digitMode = flag.String("digits", "", "how numeric fields are read: classifier (default), image, or synthetic")
 
+var without = flag.String("without", "", "comma-separated rules to remove, to measure the cost of deleting them")
+
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
@@ -106,7 +108,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	}
 	var records []Record
 	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode})
+		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without)})
 		if err != nil {
 			return err
 		}
@@ -817,4 +819,12 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	return os.WriteFile(path, append(b, '\n'), 0o644)
+}
+
+// rules splits the -without list.
+func rules(s string) []string {
+	if s == "" {
+		return nil
+	}
+	return strings.Split(s, ",")
 }

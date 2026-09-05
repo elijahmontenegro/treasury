@@ -193,6 +193,11 @@ type Options struct {
 	// Digits is how numeric fields are read: DigitsClassifier (default),
 	// DigitsImage, or DigitsSynthetic.
 	Digits string
+	// Without names rules to remove, so that the cost of deleting one can
+	// be measured rather than argued: "invalid-tie" sends a tie between
+	// values a field cannot hold to review instead of returning nothing,
+	// "fill-enumeration" stops the fill being decoded by its vocabulary.
+	Without []string
 
 	Encoder              string  // glyph encoder: "dual" (default; "hash" is accepted as its alias), "pos16" (positional view only), "sharp24" (24×24 binary, the naive grid)
 	ClaimEncoder         string  // the code claims are decoded in: "" or "same" for the glyph encoder, "learned" for the embedded contrastive encoder
@@ -594,6 +599,16 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 		}
 	}
 	return learned
+}
+
+// without reports whether a named rule has been removed for measurement.
+func (e *Engine) without(rule string) bool {
+	for _, r := range e.opt.Without {
+		if r == rule {
+			return true
+		}
+	}
+	return false
 }
 
 func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {

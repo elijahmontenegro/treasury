@@ -22,11 +22,13 @@ import (
 // word of letters, the O of FORK or the l of a batch code, is not a number.
 // A percent sign only ends a run.
 //
-// Only whole lines are read. A word run cut from a line at a wide gap can
-// begin inside a number, and a reading taken from it is complete by
-// construction and wrong: "12%" split at the tabular gap after its 1 gave a
-// run "2%" that was read, decided, and named as the value on labels that
-// were right.
+// Word runs are read as well as whole lines. Step 7a read only whole lines,
+// because a run cut from a line at a wide gap can begin inside a number and
+// a reading taken from it is complete by construction; the audit of step 8c
+// removed the restriction and found it cost accuracy rather than buying it,
+// since a verdict must in any case explain every glyph of the run it was
+// read from, and a monospaced face puts a full advance around a decimal
+// point, so a whole line splits "40.5%" where its own word run does not.
 func (e *Engine) readAll(reg encodedRegion, ri int, sp *spell.Speller, cache *callCache) []reading {
 	// A number and its unit are three glyphs at the least; a region of
 	// one or two is a fragment, and a rotated warning's glyphs in the
