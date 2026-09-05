@@ -4,7 +4,8 @@
   "brand": "45TH PARALLEL",
   "class": "OTHER SPECIALTIES & PROPRIETARIES",
   "producer": [
-   "45TH PARALLEL SPIRITS, LLC 1570 MADISON AVE NEW RICHMOND WI 54017"
+   "45TH PARALLEL SPIRITS, LLC",
+   "1570 MADISON AVE NEW RICHMOND WI 54017"
   ],
   "origin": "",
   "abv": 42,
@@ -17,7 +18,7 @@
    "brand": "=",
    "class": "",
    "net": "=",
-   "producer_1": "45th Parallel Spirits, LLC",
+   "producer_1": "=",
    "producer_2": ""
   }
  },

@@ -25,7 +25,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "IMPORTED BY FOLEY FAMILY WINES AND SPIRITS, SANTA ROSA, CALIFORNIA 95403",
+    "producer_1": "=",
     "producer_2": "SANTA ROSA, CALIFORNIA 95403"
    },
    "warning_caps": false,
@@ -34,7 +34,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12149366400,
+  "latency": 9224324100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -52,6 +52,7 @@
    "matched": 67,
    "unexplained": 0,
    "violations": 0.08713692946058091,
+   "coverage": 0.27800829875518673,
    "recovered": 0,
    "spread": 0.08888636997767857,
    "characters": "(),1ABCDEFGHIKLMNORSTUY",
@@ -140,28 +141,28 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 347,
-       "Y": 1015
+       "X": 544,
+       "Y": 1267
       },
       "Max": {
-       "X": 614,
-       "Y": 1038
+       "X": 638,
+       "Y": 1286
       }
      },
-     "text": "FOLEY FAMILY WINES, FOLEY FAMILY WINES, INC.",
+     "text": "FOLEY FAMILY WINES",
      "params": {
-      "casing": "upper",
+      "casing": "as_given",
       "weight": "regular",
-      "synthesized": "WW.",
+      "synthesized": "W",
       "face": "Go Regular"
      },
-     "d1": 2135,
+     "d1": 784,
      "d2": -1,
-     "radius": 1167,
-     "bits": 9728,
+     "radius": 492,
+     "bits": 4096,
      "refined": true,
-     "glyphs": 38,
-     "penalized": 20,
+     "glyphs": 16,
+     "penalized": 8,
      "spread": 0.15255126953124998,
      "low_confidence": false
     }
@@ -562,8 +563,8 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "OZ Trading Group, Inc.",
-    "producer_2": "2806 E. Nogal Ave. Hidalgo, TX 78557"
+    "producer_1": "=",
+    "producer_2": "="
    },
    "warning_caps": false,
    "inverted": false,
@@ -571,7 +572,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9905092100,
+  "latency": 6975714500,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -589,6 +590,7 @@
    "matched": 66,
    "unexplained": 0,
    "violations": 0.12863070539419086,
+   "coverage": 0.27385892116182575,
    "recovered": 2,
    "spread": 0.12855609791993722,
    "characters": ".ABCDEGHIKLMNOPRSTUVWY",
@@ -968,7 +970,7 @@
     "class": "",
     "net": "=",
     "producer_1": "=",
-    "producer_2": "2806 E. Nogal Ave. Hidalgo, TX 78557"
+    "producer_2": "="
    },
    "warning_caps": false,
    "inverted": false,
@@ -976,7 +978,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10910605500,
+  "latency": 7518897100,
   "orientation": "rot90",
   "reference_casing": "as_given",
   "alphabet": {
@@ -994,6 +996,7 @@
    "matched": 219,
    "unexplained": 0,
    "violations": 0.016597510373443983,
+   "coverage": 0.9087136929460581,
    "recovered": 0,
    "spread": 0.025023956597281342,
    "characters": "),.ACGSabcdefghiklmnoprstuvwy",
@@ -1409,7 +1412,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6729225900,
+  "latency": 4568104600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1427,6 +1430,7 @@
    "matched": 106,
    "unexplained": 0,
    "violations": 0.12863070539419086,
+   "coverage": 0.43983402489626555,
    "recovered": 4,
    "spread": 0.08992561000094483,
    "characters": "()2ABCDEFGHIKLMNOPRSTUVWY",
@@ -1909,7 +1913,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6539377800,
+  "latency": 4493092000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1927,6 +1931,7 @@
    "matched": 82,
    "unexplained": 0,
    "violations": 0.14107883817427386,
+   "coverage": 0.34024896265560167,
    "recovered": 0,
    "spread": 0.12754818073062557,
    "characters": "()1ABCDEFHIKLMNOPRSTUVWY",
@@ -2625,7 +2630,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12495060600,
+  "latency": 8827326100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -2643,6 +2648,7 @@
    "matched": 187,
    "unexplained": 1,
    "violations": 0.07883817427385892,
+   "coverage": 0.7759336099585062,
    "recovered": 2,
    "spread": 0.03775129770594157,
    "characters": "(),.2ABCDEFGHIKLMNOPRSTUVWY",
@@ -3404,7 +3410,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9282221900,
+  "latency": 6516969000,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -3422,6 +3428,7 @@
    "matched": 195,
    "unexplained": 2,
    "violations": 0.016597510373443983,
+   "coverage": 0.8091286307053942,
    "recovered": 0,
    "spread": 0.04103837708050877,
    "characters": "(),.12ABCDEFGHIKLMNOPRSTUVWY",
@@ -3510,29 +3517,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 200,
-       "Y": 706
+       "X": 382,
+       "Y": 518
       },
       "Max": {
-       "X": 1480,
-       "Y": 765
+       "X": 542,
+       "Y": 548
       }
      },
-     "text": "RTD SPECIALTIES, GORDON BIERSCH BREWING COMPANY",
+     "text": "RTD SPECIALTIES",
      "params": {
       "casing": "upper",
       "weight": "heavy",
-      "synthesized": "DSPCLS,DBSCHBCPY",
-      "emphasis": "RTEIATIEGORONIERREWINGOMAN",
+      "synthesized": "DSPCLS",
+      "emphasis": "RTEIATIE",
       "face": "FjallaOne Regular"
      },
-     "d1": 2895,
+     "d1": 814,
      "d2": -1,
-     "radius": 1290,
-     "bits": 10752,
+     "radius": 430,
+     "bits": 3584,
      "refined": true,
-     "glyphs": 42,
-     "penalized": 16,
+     "glyphs": 14,
+     "penalized": 6,
      "spread": 0.053365211177711175,
      "low_confidence": false
     }
@@ -4080,7 +4087,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5335955100,
+  "latency": 3747158700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4098,6 +4105,7 @@
    "matched": 96,
    "unexplained": 0,
    "violations": 0.08298755186721991,
+   "coverage": 0.3983402489626556,
    "recovered": 0,
    "spread": 0.10897519704997383,
    "characters": "()2ABCDEFGHIKLMNOPRSTUVY",
@@ -4793,7 +4801,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5698964700,
+  "latency": 3939670900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4811,6 +4819,7 @@
    "matched": 78,
    "unexplained": 0,
    "violations": 0.02074688796680498,
+   "coverage": 0.3236514522821577,
    "recovered": 0,
    "spread": 0.1091343470982143,
    "characters": "().2ABCDEFGHIKLMNOPRSTUY",
@@ -4975,9 +4984,12 @@
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "number_not_on_reading",
+    "status": "REVIEW",
+    "reason": "step_compared_nothing:merge3",
     "expected": "750",
+    "candidates": [
+     "45707"
+    ],
     "evidence": {
      "region": {
       "Min": {
@@ -4997,14 +5009,12 @@
       "face": "Go Regular"
      },
      "d1": 260,
-     "d2": 297,
+     "d2": -1,
      "radius": 269,
      "bits": 1792,
      "refined": true,
      "glyphs": 7,
      "penalized": 3,
-     "competitor": "3977000",
-     "competitor_text": "3977L",
      "spread": 0.1650105794270833,
      "low_confidence": false,
      "reading": "45707",
@@ -5657,7 +5667,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5045304800,
+  "latency": 3533286100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -5675,6 +5685,7 @@
    "matched": 78,
    "unexplained": 0,
    "violations": 0.02074688796680498,
+   "coverage": 0.3236514522821577,
    "recovered": 0,
    "spread": 0.1091343470982143,
    "characters": "().2ABCDEFGHIKLMNOPRSTUY",
@@ -6517,7 +6528,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4063984800,
+  "latency": 2939305000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -6535,6 +6546,7 @@
    "matched": 74,
    "unexplained": 0,
    "violations": 0.058091286307053944,
+   "coverage": 0.3070539419087137,
    "recovered": 0,
    "spread": 0.10600066931069305,
    "characters": "()1ABCDEFGHIKLMNOPRSTUY",
@@ -7384,7 +7396,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5488172100,
+  "latency": 4152413600,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -7402,6 +7414,7 @@
    "matched": 66,
    "unexplained": 1,
    "violations": 0.5791666666666667,
+   "coverage": 0.27385892116182575,
    "recovered": 0,
    "spread": 0.10417614441609976,
    "characters": ",Cabcdefghiklmnoprstuvy",
@@ -7493,7 +7506,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12105523800,
+  "latency": 8805481600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -7511,6 +7524,7 @@
    "matched": 92,
    "unexplained": 0,
    "violations": 0.03734439834024896,
+   "coverage": 0.3817427385892116,
    "recovered": 0,
    "spread": 0.0970307849702381,
    "characters": "(,ABCDEFGHIKLMNOPRSTUVWY",
@@ -8147,7 +8161,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7947656500,
+  "latency": 6162655200,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -8165,6 +8179,7 @@
    "matched": 43,
    "unexplained": 3,
    "violations": 0.38235294117647056,
+   "coverage": 0.17842323651452283,
    "recovered": 2,
    "spread": 0.12392998866213152,
    "characters": ",GSabcdefghimnorstwy",
@@ -8256,7 +8271,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6301493600,
+  "latency": 6063386900,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "claims": [
@@ -8340,7 +8355,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6934201300,
+  "latency": 6785592500,
   "reason": "no_alphabet",
   "orientation": "inverted_rot90",
   "alphabet": {
@@ -8358,6 +8373,7 @@
    "matched": 15,
    "unexplained": 16,
    "violations": 0.9511111111111111,
+   "coverage": 0.06224066390041494,
    "recovered": 0,
    "spread": 0.05541992187499999,
    "characters": ",.acilor",
@@ -8449,7 +8465,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8429129600,
+  "latency": 6150948700,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "claims": [
@@ -8533,7 +8549,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 11387077500,
+  "latency": 8346407700,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -8551,6 +8567,7 @@
    "matched": 54,
    "unexplained": 0,
    "violations": 0.4107883817427386,
+   "coverage": 0.22406639004149378,
    "recovered": 0,
    "spread": 0.13455894510582012,
    "characters": "(.GSabcdghiklmnostuwy",
@@ -8643,7 +8660,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12160232100,
+  "latency": 8423969600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -8661,6 +8678,7 @@
    "matched": 75,
    "unexplained": 0,
    "violations": 0.058091286307053944,
+   "coverage": 0.3112033195020747,
    "recovered": 0,
    "spread": 0.09640208134034862,
    "characters": "(.ABCDEFGHIKLMNOPRSTUVW",
@@ -9294,7 +9312,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13814782600,
+  "latency": 9532429200,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -9312,6 +9330,7 @@
    "matched": 80,
    "unexplained": 1,
    "violations": 0.06224066390041494,
+   "coverage": 0.33195020746887965,
    "recovered": 0,
    "spread": 0.09220470610119048,
    "characters": "()ABCDEGHIKLMNOPRSTUVY",
@@ -9968,7 +9987,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12702976900,
+  "latency": 8751720400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -9986,6 +10005,7 @@
    "matched": 92,
    "unexplained": 0,
    "violations": 0.03734439834024896,
+   "coverage": 0.3817427385892116,
    "recovered": 0,
    "spread": 0.0970307849702381,
    "characters": "(,ABCDEFGHIKLMNOPRSTUVWY",
@@ -10620,7 +10640,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9483367300,
+  "latency": 8749132400,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -10638,6 +10658,7 @@
    "matched": 53,
    "unexplained": 1,
    "violations": 0.6583333333333333,
+   "coverage": 0.21991701244813278,
    "recovered": 0,
    "spread": 0.08636916572184432,
    "characters": ",CGabcdefginoprtuvy",
@@ -10729,7 +10750,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6244819300,
+  "latency": 6179491800,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -10747,6 +10768,7 @@
    "matched": 89,
    "unexplained": 2,
    "violations": 0.0912863070539419,
+   "coverage": 0.36929460580912865,
    "recovered": 2,
    "spread": 0.12035978385323431,
    "characters": "(ABCDEFGHIKLMNOPRSTUY",
@@ -11537,7 +11559,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9388749900,
+  "latency": 9215687600,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -11555,6 +11577,7 @@
    "matched": 69,
    "unexplained": 1,
    "violations": 0.08298755186721991,
+   "coverage": 0.2863070539419087,
    "recovered": 0,
    "spread": 0.12114955357142859,
    "characters": ")ABCDEFGHILMNOPRSTWY",
@@ -12149,7 +12172,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7544817000,
+  "latency": 7438968200,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -12167,6 +12190,7 @@
    "matched": 75,
    "unexplained": 0,
    "violations": 0.04979253112033195,
+   "coverage": 0.3112033195020747,
    "recovered": 0,
    "spread": 0.12607607886904762,
    "characters": "(ABCDEGHIKLMNOPRSTVW",
@@ -12711,7 +12735,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1997176900,
+  "latency": 1959724300,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -12729,6 +12753,7 @@
    "matched": 29,
    "unexplained": 1,
    "violations": 0.42916666666666664,
+   "coverage": 0.12033195020746888,
    "recovered": 0,
    "spread": 0.0888671875,
    "characters": "abcdeghklmnprstuy",
@@ -12809,7 +12834,7 @@
    "brand_face": "",
    "carried": {
     "abv": "=",
-    "brand": "Viña Salceda / LA RELLANILLA (two lines, two faces)",
+    "brand": "=",
     "class": "",
     "net": "=",
     "origin": "=",
@@ -12822,7 +12847,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5266964100,
+  "latency": 5166374300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -12840,6 +12865,7 @@
    "matched": 232,
    "unexplained": 0,
    "violations": 0,
+   "coverage": 0.9626556016597511,
    "recovered": 0,
    "spread": 0.02658250928875174,
    "characters": "(),.12ABCDEFGHIKLMNOPRSTUVWY",
@@ -12923,9 +12949,12 @@
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "REVIEW",
+    "reason": "step_compared_nothing:merge3",
     "expected": "THINK GLOBAL LLC",
-    "observed": "THINK GLOBAL LLC",
+    "candidates": [
+     "THINK GLOBAL LLC"
+    ],
     "evidence": {
      "region": {
       "Min": {
@@ -13312,7 +13341,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5125129800,
+  "latency": 5232402200,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -13330,6 +13359,7 @@
    "matched": 85,
    "unexplained": 0,
    "violations": 0.02074688796680498,
+   "coverage": 0.35269709543568467,
    "recovered": 0,
    "spread": 0.06304770500685092,
    "characters": "(),.1ABCDEGHILMNORSTUVY",
@@ -13422,24 +13452,25 @@
        "Y": 669
       },
       "Max": {
-       "X": 692,
+       "X": 547,
        "Y": 703
       }
      },
-     "text": "Apona Vineyard, Apona Vineyards, Llc",
+     "text": "APONA VINEYARDS, LLC",
      "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "ponaineyardponaineyardslc",
-      "face": "Go Regular"
+      "casing": "upper",
+      "weight": "heavy",
+      "synthesized": "PVIEYDS,LLC",
+      "emphasis": "AONANAR",
+      "face": "Go Mono"
      },
-     "d1": 1781,
+     "d1": 871,
      "d2": -1,
-     "radius": 983,
-     "bits": 8192,
+     "radius": 553,
+     "bits": 4608,
      "refined": true,
-     "glyphs": 32,
-     "penalized": 15,
+     "glyphs": 18,
+     "penalized": 6,
      "spread": 0.09692647961048455,
      "low_confidence": false
     }
@@ -13519,9 +13550,12 @@
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "number_not_on_reading",
+    "status": "REVIEW",
+    "reason": "step_compared_nothing:merge3",
     "expected": "750",
+    "candidates": [
+     "50"
+    ],
     "evidence": {
      "region": {
       "Min": {
@@ -13945,7 +13979,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -13954,7 +13988,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4635622600,
+  "latency": 4600108600,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -13972,6 +14006,7 @@
    "matched": 114,
    "unexplained": 5,
    "violations": 0,
+   "coverage": 0.4730290456431535,
    "recovered": 20,
    "spread": 0.06361407844387755,
    "characters": "().12ACGSabcdefghiklmnoprstuvwy",
@@ -14749,7 +14784,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -14758,7 +14793,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4452670300,
+  "latency": 4472701600,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -14776,6 +14811,7 @@
    "matched": 93,
    "unexplained": 2,
    "violations": 0.08333333333333333,
+   "coverage": 0.38589211618257263,
    "recovered": 6,
    "spread": 0.07705284237092272,
    "characters": ")ACGSabcdefghiklmnoprstuvwy",
@@ -15418,7 +15454,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -15427,7 +15463,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4547763700,
+  "latency": 4493692400,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15445,6 +15481,7 @@
    "matched": 101,
    "unexplained": 1,
    "violations": 0.024896265560165973,
+   "coverage": 0.4190871369294606,
    "recovered": 34,
    "spread": 0.046619173237476816,
    "characters": "()12ACSabcdefghiklmnoprstuvwy",
@@ -16155,7 +16192,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "MEX - CAL, INC. FIREBAUGH. CA. 93622.",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -16164,7 +16201,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4440450100,
+  "latency": 4399059100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -16182,6 +16219,7 @@
    "matched": 63,
    "unexplained": 0,
    "violations": 0.07053941908713693,
+   "coverage": 0.26141078838174275,
    "recovered": 0,
    "spread": 0.11313447498139881,
    "characters": "ABCDEHIKLMNOPRSTUV",
@@ -16806,8 +16844,8 @@
    "heavy_face": "",
    "brand_face": "",
    "carried": {
-    "abv": "Alc 14,5 % by Vol.",
-    "brand": "BODEGAS Y VIÑEDOS VEGA DE YUSO",
+    "abv": "=",
+    "brand": "=",
     "class": "",
     "net": "=",
     "origin": "=",
@@ -16820,7 +16858,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6006889600,
+  "latency": 5894450200,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -16838,6 +16876,7 @@
    "matched": 231,
    "unexplained": 0,
    "violations": 0,
+   "coverage": 0.9585062240663901,
    "recovered": 2,
    "spread": 0.02037711048088147,
    "characters": "(),.01257ACGPSabcdefghiklmnoprstuvwy",
@@ -16930,29 +16969,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 341,
-       "Y": 370
+       "X": 189,
+       "Y": 508
       },
       "Max": {
-       "X": 812,
-       "Y": 409
+       "X": 396,
+       "Y": 547
       }
      },
-     "text": "CROD TRADING CORP, CROD TRADING CO CORP.",
+     "text": "Crod Trading Co Corp.",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "CDDCP,CDDCCP.",
-      "emphasis": "ROTRAINGORROTRAINGOOR",
-      "face": "Go Bold"
+      "casing": "title",
+      "weight": "regular",
+      "emphasis": "T"
      },
-     "d1": 1696,
+     "d1": 820,
      "d2": -1,
-     "radius": 1044,
-     "bits": 8704,
+     "radius": 553,
+     "bits": 4608,
      "refined": true,
-     "glyphs": 34,
-     "penalized": 11,
+     "glyphs": 18,
+     "penalized": 8,
      "spread": 0.015448457994493112,
      "relearned": true,
      "low_confidence": false
@@ -17053,7 +17090,7 @@
       "emphasis": "VO",
       "face": "FjallaOne Regular"
      },
-     "d1": 533,
+     "d1": 543,
      "d2": 809,
      "radius": 384,
      "bits": 2560,
@@ -17347,7 +17384,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "The Crossing at Big Creek Brewery",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -17356,7 +17393,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2843528300,
+  "latency": 2940889700,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -17374,6 +17411,7 @@
    "matched": 95,
    "unexplained": 0,
    "violations": 0.07883817427385892,
+   "coverage": 0.3941908713692946,
    "recovered": 2,
    "spread": 0.08122497696995465,
    "characters": "()1ABCDEFGHIKLMNOPRSTUVWY",
@@ -17431,8 +17469,36 @@
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "The Crossing at Big Creek Brewery, TCBC Development Company"
+    "expected": "The Crossing at Big Creek Brewery, TCBC Development Company",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 44,
+       "Y": 474
+      },
+      "Max": {
+       "X": 1559,
+       "Y": 534
+      }
+     },
+     "text": "THE CROSSING AT BIG CREEK BREWERY",
+     "params": {
+      "casing": "upper",
+      "weight": "heavy",
+      "synthesized": "HCOSSIGABIGCKBWY",
+      "emphasis": "TERNTREEREER",
+      "face": "Go Mono"
+     },
+     "d1": 1948,
+     "d2": -1,
+     "radius": 860,
+     "bits": 7168,
+     "refined": true,
+     "glyphs": 28,
+     "penalized": 13,
+     "spread": 0.16307291666666665,
+     "low_confidence": false
+    }
    },
    {
     "claim": "producer_2",
@@ -17703,7 +17769,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "SVP WINERY",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -17712,7 +17778,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9895278400,
+  "latency": 7387744600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -17730,6 +17796,7 @@
    "matched": 237,
    "unexplained": 1,
    "violations": 0.012448132780082987,
+   "coverage": 0.983402489626556,
    "recovered": 0,
    "spread": 0.036230040409827545,
    "characters": "(),.1257ABCDEFGHIKLMNOPRSTUVWYacdeklnrsvy",
@@ -17815,8 +17882,9 @@
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "SVP Winery, SVP Winery, LLC",
+    "observed": "SVP Winery, SVP Winery, LLC",
     "evidence": {
      "region": {
       "Min": {
@@ -17824,24 +17892,23 @@
        "Y": 1291
       },
       "Max": {
-       "X": 731,
+       "X": 593,
        "Y": 1312
       }
      },
-     "text": "SVP WINERY, SVP WINERY, LLC",
+     "text": "SVP WINERY",
      "params": {
       "casing": "upper",
       "weight": "regular"
      },
-     "d1": 1039,
+     "d1": 98,
      "d2": -1,
-     "radius": 707,
-     "bits": 5888,
+     "radius": 276,
+     "bits": 2304,
      "refined": true,
-     "glyphs": 23,
-     "penalized": 5,
+     "glyphs": 9,
+     "penalized": 0,
      "spread": 0.026766187061945983,
-     "relearned": true,
      "low_confidence": false
     }
    },
@@ -18243,7 +18310,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "Haberdasher Artisan Distillery",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -18252,7 +18319,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13661410600,
+  "latency": 9774563800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -18270,6 +18337,7 @@
    "matched": 103,
    "unexplained": 3,
    "violations": 0.13692946058091288,
+   "coverage": 0.42738589211618255,
    "recovered": 10,
    "spread": 0.06790502249486625,
    "characters": "(),2CSabcdefghiklmnoprstuvwy",
@@ -18357,29 +18425,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 435,
-       "Y": 1309
+       "X": 624,
+       "Y": 1295
       },
       "Max": {
-       "X": 741,
-       "Y": 1329
+       "X": 790,
+       "Y": 1315
       }
      },
-     "text": "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
+     "text": "Haberdasher Artisan Distillery",
      "params": {
       "casing": "as_given",
       "weight": "heavy",
-      "synthesized": "HaberdasherrtisanDistillery,BemisDistillers,LLC",
+      "synthesized": "HaberdasherrtisanDistillery",
       "emphasis": "A",
       "face": "Anton Regular"
      },
-     "d1": 2793,
+     "d1": 1588,
      "d2": -1,
-     "radius": 1475,
-     "bits": 12288,
+     "radius": 860,
+     "bits": 7168,
      "refined": true,
-     "glyphs": 48,
-     "penalized": 22,
+     "glyphs": 28,
+     "penalized": 13,
      "spread": 0.09975825498286436,
      "low_confidence": false
     }
@@ -18442,8 +18510,8 @@
       "synthesized": "75P",
       "face": "PTSans Bold"
      },
-     "d1": 351,
-     "d2": 400,
+     "d1": 344,
+     "d2": 420,
      "radius": 269,
      "bits": 1792,
      "refined": true,
@@ -18824,8 +18892,8 @@
     "brand": "=",
     "class": "=",
     "net": "=",
-    "producer_1": "IMPORTERS DIRECT WHOLESALE CO. INC.,",
-    "producer_2": "1944 Gardena Ave, Glendale, CA 91204, USA"
+    "producer_1": "=",
+    "producer_2": "="
    },
    "warning_caps": false,
    "inverted": false,
@@ -18833,7 +18901,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7704616000,
+  "latency": 5564613700,
   "orientation": "rot180",
   "reference_casing": "upper",
   "alphabet": {
@@ -18851,6 +18919,7 @@
    "matched": 62,
    "unexplained": 0,
    "violations": 0.12033195020746888,
+   "coverage": 0.2572614107883817,
    "recovered": 0,
    "spread": 0.1251165674603175,
    "characters": "()ABCDEFGILMNOPRSTUY",
@@ -19458,7 +19527,8 @@
    "brand": "45TH PARALLEL",
    "class": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
    "producer": [
-    "45TH PARALLEL SPIRITS, LLC 1570 MADISON AVE NEW RICHMOND WI 54017"
+    "45TH PARALLEL SPIRITS, LLC",
+    "1570 MADISON AVE NEW RICHMOND WI 54017"
    ],
    "origin": "",
    "abv": 42,
@@ -19474,7 +19544,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "45th Parallel Spirits, LLC",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -19483,7 +19553,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7283790100,
+  "latency": 5599176400,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -19501,24 +19571,24 @@
    "matched": 77,
    "unexplained": 2,
    "violations": 0.12552301255230125,
+   "coverage": 0.31950207468879666,
    "recovered": 0,
    "spread": 0.05158082764355742,
-   "characters": "%(,245ACGPabcdefghiklmnoprstuvwy",
+   "characters": "%(,24ACGabcdefghiklmnoprstuvwy",
    "face": "FjallaOne Regular",
    "x_height": 9,
    "cap_height": 12,
    "letter_gap": 1,
    "word_gap": 3,
    "rows": null,
-   "learned": "45P2%"
+   "learned": "42%"
   },
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "45TH PARALLEL",
-    "observed": "45TH PARALLEL",
     "evidence": {
      "region": {
       "Min": {
@@ -19534,10 +19604,10 @@
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "45P",
+      "synthesized": "5P",
       "face": "FjallaOne Regular"
      },
-     "d1": 366,
+     "d1": 371,
      "d2": -1,
      "radius": 369,
      "bits": 3072,
@@ -19545,6 +19615,7 @@
      "glyphs": 12,
      "penalized": 3,
      "spread": 0.09224877450980391,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -19587,33 +19658,68 @@
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "45TH PARALLEL SPIRITS, LLC 1570 MADISON AVE NEW RICHMOND WI 54017",
+    "expected": "45TH PARALLEL SPIRITS, LLC",
     "evidence": {
      "region": {
       "Min": {
-       "X": 190,
-       "Y": 1545
+       "X": 378,
+       "Y": 426
       },
       "Max": {
-       "X": 673,
-       "Y": 1571
+       "X": 531,
+       "Y": 455
       }
      },
-     "text": "45th Parallel Spirits, Llc 1570 Madison Ave New Richmond Wi 54017",
+     "text": "45th Parallel Spirits, Llc",
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "SL170MRW017",
+      "synthesized": "5PSL",
+      "face": "FjallaOne Regular"
+     },
+     "d1": 1383,
+     "d2": -1,
+     "radius": 707,
+     "bits": 5888,
+     "refined": true,
+     "glyphs": 23,
+     "penalized": 10,
+     "spread": 0.09224877450980391,
+     "relearned": true,
+     "low_confidence": false
+    }
+   },
+   {
+    "claim": "producer_2",
+    "engine": "3acb08a3df88",
+    "status": "NOT_FOUND",
+    "expected": "1570 MADISON AVE NEW RICHMOND WI 54017",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 362,
+       "Y": 1341
+      },
+      "Max": {
+       "X": 558,
+       "Y": 1366
+      }
+     },
+     "text": "1570 Madison Ave New Richmond Wi 54017",
+     "params": {
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "1570MRW5017",
       "emphasis": "N",
       "face": "FjallaOne Regular"
      },
-     "d1": 3638,
+     "d1": 1936,
      "d2": -1,
-     "radius": 1690,
-     "bits": 14080,
+     "radius": 983,
+     "bits": 8192,
      "refined": true,
-     "glyphs": 55,
-     "penalized": 28,
+     "glyphs": 32,
+     "penalized": 17,
      "spread": 0.09224877450980391,
      "relearned": true,
      "low_confidence": false
@@ -19683,7 +19789,7 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "70",
+      "synthesized": "750",
       "face": "FjallaOne Regular"
      },
      "d1": 153,
@@ -20021,7 +20127,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1889745700,
+  "latency": 1331949600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -20039,6 +20145,7 @@
    "matched": 36,
    "unexplained": 0,
    "violations": 0.12863070539419086,
+   "coverage": 0.14937759336099585,
    "recovered": 0,
    "spread": 0.11527242288961038,
    "characters": "ABCDEFGHKLNORSTUVW",
@@ -20802,7 +20909,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7590647800,
+  "latency": 5492392700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -20820,6 +20927,7 @@
    "matched": 227,
    "unexplained": 0,
    "violations": 0,
+   "coverage": 0.941908713692946,
    "recovered": 2,
    "spread": 0.03296086790010401,
    "characters": "(),12ABCDEFGHIKLMNOPRSTUVWYZ",
@@ -21247,7 +21355,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "Bluegrass Bottling",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -21256,7 +21364,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8982445900,
+  "latency": 6612951600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -21274,6 +21382,7 @@
    "matched": 66,
    "unexplained": 1,
    "violations": 0.14522821576763487,
+   "coverage": 0.27385892116182575,
    "recovered": 2,
    "spread": 0.10842168898809522,
    "characters": ")ABCDEFGHIKLMNOPRSTUVWY",
@@ -21362,28 +21471,26 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 462,
-       "Y": 1226
+       "X": 461,
+       "Y": 1286
       },
       "Max": {
-       "X": 650,
-       "Y": 1251
+       "X": 657,
+       "Y": 1319
       }
      },
-     "text": "BLUEGRASS BOTTLING, BLUEGRASS BOTTLING LLC",
+     "text": "BLUEGRASS BOTTLING LLC",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": ",",
-      "face": "Go Regular"
+      "weight": "regular"
      },
-     "d1": 2301,
+     "d1": 1124,
      "d2": -1,
-     "radius": 1167,
-     "bits": 9728,
+     "radius": 614,
+     "bits": 5120,
      "refined": true,
-     "glyphs": 38,
-     "penalized": 13,
+     "glyphs": 20,
+     "penalized": 10,
      "spread": 0.1775485568576389,
      "low_confidence": false
     }
@@ -21804,7 +21911,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "Engelheim Vineyards",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -21813,7 +21920,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4485043100,
+  "latency": 3838085900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -21831,6 +21938,7 @@
    "matched": 57,
    "unexplained": 1,
    "violations": 0.13278008298755187,
+   "coverage": 0.23651452282157676,
    "recovered": 0,
    "spread": 0.11285142963435373,
    "characters": "(ABCDEGHIKLMNOPRSTUVY",
@@ -22422,7 +22530,7 @@
     "brand": "=",
     "class": "",
     "net": "=",
-    "producer_1": "KNOWLTON HOUSE DISTILLERY",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -22431,7 +22539,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6558189300,
+  "latency": 6147601500,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -22449,6 +22557,7 @@
    "matched": 30,
    "unexplained": 4,
    "violations": 0.6371308016877637,
+   "coverage": 0.12448132780082988,
    "recovered": 0,
    "spread": 0.053501674107142856,
    "characters": ",Cabcehikloprst",
@@ -22527,7 +22636,7 @@
    "heavy_face": "",
    "brand_face": "",
    "carried": {
-    "abv": "ALC. 14,5% BY VOL.",
+    "abv": "=",
     "brand": "=",
     "class": "",
     "net": "BY VOL.50ML",
@@ -22541,7 +22650,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4902590300,
+  "latency": 4546927300,
   "orientation": "inverted_rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -22559,6 +22668,7 @@
    "matched": 175,
    "unexplained": 0,
    "violations": 0.13278008298755187,
+   "coverage": 0.7261410788381742,
    "recovered": 0,
    "spread": 0.02657194520037313,
    "characters": "(.ABCDEFGHIKLMNOPRSTUVY",
@@ -23052,7 +23162,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4242315200,
+  "latency": 3849422000,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -23070,6 +23180,7 @@
    "matched": 53,
    "unexplained": 0,
    "violations": 0.5643153526970954,
+   "coverage": 0.21991701244813278,
    "recovered": 0,
    "spread": 0.08491775616496598,
    "characters": ",ASabcdehiklmnoprstuvy",
@@ -23169,7 +23280,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4065728600,
+  "latency": 3599679400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -23187,6 +23298,7 @@
    "matched": 61,
    "unexplained": 2,
    "violations": 0.1037344398340249,
+   "coverage": 0.25311203319502074,
    "recovered": 0,
    "spread": 0.10347576530612244,
    "characters": "),ABCDEFGHIKLMNOPRSTUVY",
@@ -23762,7 +23874,7 @@
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -23771,7 +23883,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7754174900,
+  "latency": 6982590400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -23789,16 +23901,17 @@
    "matched": 111,
    "unexplained": 0,
    "violations": 0.02074688796680498,
+   "coverage": 0.4605809128630705,
    "recovered": 0,
    "spread": 0.09435615924873737,
-   "characters": "%().012457ABCDEFGHIKLMNOPRSTUVWY",
+   "characters": "()0257ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 10.344827586206897,
    "cap_height": 15,
    "letter_gap": 2,
    "word_gap": 5,
    "rows": null,
-   "learned": "14.5%70"
+   "learned": "750"
   },
   "claims": [
    {
@@ -23883,24 +23996,22 @@
        "Y": 1515
       },
       "Max": {
-       "X": 588,
+       "X": 267,
        "Y": 1538
       }
      },
-     "text": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+     "text": "GRAPEVINE DISTRIBUTORS",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": ",,",
-      "face": "Go Regular"
+      "weight": "regular"
      },
-     "d1": 2822,
+     "d1": 1070,
      "d2": -1,
-     "radius": 1567,
-     "bits": 13056,
+     "radius": 645,
+     "bits": 5376,
      "refined": true,
-     "glyphs": 51,
-     "penalized": 18,
+     "glyphs": 21,
+     "penalized": 8,
      "spread": 0.14506885258838384,
      "relearned": true,
      "low_confidence": false
@@ -23926,16 +24037,16 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "98-8",
+      "synthesized": "98-18",
       "face": "Go Regular"
      },
-     "d1": 2292,
+     "d1": 2208,
      "d2": -1,
      "radius": 1075,
      "bits": 8960,
      "refined": true,
      "glyphs": 35,
-     "penalized": 12,
+     "penalized": 11,
      "spread": 0.14506885258838384,
      "relearned": true,
      "low_confidence": false
@@ -23977,9 +24088,9 @@
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
+    "reason": "unit_letter_unmatched:B",
     "expected": "14.5",
-    "observed": "14.5",
     "evidence": {
      "region": {
       "Min": {
@@ -23995,17 +24106,18 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "14.5%..",
+      "synthesized": "14.%..",
       "face": "Go Regular"
      },
-     "d1": 470,
+     "d1": 433,
      "d2": -1,
      "radius": 576,
      "bits": 3840,
      "refined": true,
      "glyphs": 15,
-     "penalized": 3,
+     "penalized": 2,
      "spread": 0.14506885258838384,
+     "relearned": true,
      "low_confidence": false,
      "reading": "14.5%",
      "digit_confidence": 0.9512355992020279
@@ -24230,11 +24342,11 @@
    "brand_face": "",
    "carried": {
     "abv": "=",
-    "brand": "CHÂTEAU CÔTE DE BALEAU",
+    "brand": "=",
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -24243,7 +24355,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9698039700,
+  "latency": 8790536000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -24261,6 +24373,7 @@
    "matched": 116,
    "unexplained": 0,
    "violations": 0.03734439834024896,
+   "coverage": 0.48132780082987553,
    "recovered": 0,
    "spread": 0.08338031713450242,
    "characters": "().0257ABCDEFGHIKLMNOPRSTUVWY",
@@ -24352,28 +24465,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 39,
+       "X": 681,
        "Y": 1537
       },
       "Max": {
-       "X": 658,
-       "Y": 1564
+       "X": 907,
+       "Y": 1561
       }
      },
-     "text": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+     "text": "GRAPEVINE DISTRIBUTORS",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": ",,",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "PIDISIBUS",
+      "emphasis": "GRAEVNETRTOR",
+      "face": "PTSans Regular"
      },
-     "d1": 2980,
+     "d1": 1115,
      "d2": -1,
-     "radius": 1567,
-     "bits": 13056,
+     "radius": 645,
+     "bits": 5376,
      "refined": true,
-     "glyphs": 51,
-     "penalized": 12,
+     "glyphs": 21,
+     "penalized": 7,
      "spread": 0.13761393229166669,
      "relearned": true,
      "low_confidence": false
@@ -24708,11 +24822,11 @@
    "brand_face": "",
    "carried": {
     "abv": "=",
-    "brand": "Château LA GAFFELIÈRE",
+    "brand": "=",
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -24721,7 +24835,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7660058500,
+  "latency": 7242681700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -24739,6 +24853,7 @@
    "matched": 122,
    "unexplained": 1,
    "violations": 0.004149377593360996,
+   "coverage": 0.5062240663900415,
    "recovered": 0,
    "spread": 0.10026068712440513,
    "characters": "(),.1257ABCDEFGHIKLMNOPRSTUVYm",
@@ -24830,29 +24945,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 33,
-       "Y": 1422
+       "X": 598,
+       "Y": 1544
       },
       "Max": {
-       "X": 572,
-       "Y": 1448
+       "X": 797,
+       "Y": 1566
       }
      },
-     "text": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+     "text": "GRAPEVINE DISTRIBUTORS",
      "params": {
       "casing": "as_given",
       "weight": "heavy",
-      "synthesized": "PIDISIBUS,PIFHCLI,IC.",
-      "emphasis": "GRAEVNETRTORGRAEVNEONORTARONAN",
+      "synthesized": "PIDISIBUS",
+      "emphasis": "GRAEVNETRTOR",
       "face": "Go Medium"
      },
-     "d1": 3039,
+     "d1": 1116,
      "d2": -1,
-     "radius": 1567,
-     "bits": 13056,
+     "radius": 645,
+     "bits": 5376,
      "refined": true,
-     "glyphs": 51,
-     "penalized": 19,
+     "glyphs": 21,
+     "penalized": 8,
      "spread": 0.15911175271739128,
      "relearned": true,
      "low_confidence": false
@@ -25203,11 +25318,11 @@
    "brand_face": "",
    "carried": {
     "abv": "=",
-    "brand": "CHATEAU RAYMOND - LAFON",
+    "brand": "=",
     "class": "",
     "net": "=",
     "origin": "=",
-    "producer_1": "GRAPEVINE DISTRIBUTORS CONCORD, NC",
+    "producer_1": "=",
     "producer_2": ""
    },
    "warning_caps": false,
@@ -25216,7 +25331,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5947101900,
+  "latency": 5489901500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -25234,6 +25349,7 @@
    "matched": 94,
    "unexplained": 0,
    "violations": 0.03734439834024896,
+   "coverage": 0.3900414937759336,
    "recovered": 0,
    "spread": 0.10018507402961185,
    "characters": "()2ABCDEFGHIKLMNOPRSTUVWY",
@@ -25319,28 +25435,26 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 287,
-       "Y": 1529
+       "X": 734,
+       "Y": 1549
       },
       "Max": {
-       "X": 683,
-       "Y": 1548
+       "X": 894,
+       "Y": 1568
       }
      },
-     "text": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
+     "text": "GRAPEVINE DISTRIBUTORS",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": ",,.",
-      "face": "Go Regular"
+      "weight": "regular"
      },
-     "d1": 2896,
+     "d1": 1095,
      "d2": -1,
-     "radius": 1567,
-     "bits": 13056,
+     "radius": 645,
+     "bits": 5376,
      "refined": true,
-     "glyphs": 51,
-     "penalized": 22,
+     "glyphs": 21,
+     "penalized": 9,
      "spread": 0.15884103641456582,
      "low_confidence": false
     }
@@ -25452,9 +25566,12 @@
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "number_not_on_reading",
+    "status": "REVIEW",
+    "reason": "step_compared_nothing:merge3",
     "expected": "750",
+    "candidates": [
+     "750"
+    ],
     "evidence": {
      "region": {
       "Min": {

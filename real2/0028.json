@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 13.2,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "Apona Vineyard",
+   "Apona Vineyards, LLC"
+  ]
+ }
 }

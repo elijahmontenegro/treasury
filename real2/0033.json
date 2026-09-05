@@ -8,5 +8,11 @@
  ],
  "origin": "Product of Spain",
  "abv": 14.5,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "CROD TRADING CORP",
+   "CROD TRADING CO CORP."
+  ]
+ }
 }

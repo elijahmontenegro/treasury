@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 60,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "BLUEGRASS BOTTLING",
+   "Bluegrass Bottling LLC"
+  ]
+ }
 }

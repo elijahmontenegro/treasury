@@ -1438,6 +1438,72 @@ The producer row now compares a corpus figure over 250 labels with a real figure
 
 **What this does not change.** The engine, the corpus, every synthetic number, and the verdicts themselves. What it changes is what the real numbers mean: the fifty labels mostly do not carry the values filed for them, the engine mostly says so, and the recall figures published since 9d were measured against a denominator that included 153 claims no label prints.
 
+### Step 12b: the form gap, decided on merit (2026-09-05)
+
+Gate, stated before the run: recall and precision on the real set before and after, with the adopted equivalences listed and each one's justification, and not a single false assertion introduced on either corpus.
+
+**What the gap is.** Forty-four of the fifty labels' claims are printed in a form the filed string cannot match. Classifying them by kind, because the decision is a decision about kinds and not about labels:
+
+| kind | claims | decided |
+|---|---|---|
+| two registry fields joined; the label prints one | 19 | **adopted** |
+| a different name sharing some words | 7 | refused |
+| punctuation and spacing only | 5 | **adopted** |
+| diacritics only | 3 | **adopted** |
+| a number with no space between the value and the word after it | 3 | refused on measurement |
+| the filed value printed inside a longer line | 2 | **adopted** |
+| a number with a comma for the decimal point | 2 | **adopted** (the parser already reads it) |
+| the label prints fewer words than were filed | 2 | refused |
+| a legal suffix the label does not print | 1 | refused |
+
+**Adopted, and why each is defensible for a compliance tool.**
+
+- **The permittee's two names.** The application states the operating name and the name on the permit, and the form runs them together, which is how "SVP Winery, SVP Winery, LLC" became one claim string no label prints. A label naming either identifies the permittee, so either verifies the claim and the value reported stays the one filed. The alternatives come from the application, never from the label; that is what keeps this from being a rule fitted to the answer. `ttb.Expected.Aliases`, filled by the set builder from the registry's own cell.
+- **Punctuation and spacing are not part of a name.** "OZ TRADING GROUP INC" and "OZ Trading Group, Inc." are one name; so are "MEX-CAL, INC." and "MEX - CAL, INC.". No two permittees, and no two brands, are distinguished by a comma. In the alignment, a mark one spelling has and the other does not costs a fifth of an insert instead of a whole glyph; the reference alignment keeps the full penalty, since there unexplained ink is the evidence that a block is not the statute.
+- **Diacritics.** The registry stores "CHATEAU COTE DE BALEAU" for a label printing "CHÂTEAU CÔTE DE BALEAU"; the filed value is a transliteration of the printed one, and an accent does not distinguish two châteaux. Adopted in the scoring, where a claim is carried when its letters are there. Not implemented in the matching, which would need the alignment to know that a mark above a letter is not a different letter; the size of that is one claim of the three, since the other two are brands in display faces the encoder cannot reach either way.
+- **A comma for the decimal point.** "ALC. 14,5% BY VOL." is 14.5 percent. The parser already reads it and refuses the ambiguous case: a comma with exactly three digits after it is a thousands separator, which is why "1,750" stays 1750.
+
+**Refused, and what refusing costs.**
+
+- **A legal suffix the label does not print** would have moved five claims: four Brahman labels whose importer is filed as "Cinco Agaves Imports LLC" and printed "CINCO AGAVES IMPORTS CHULA VISTA CA", and one filed "LOVEMARK ADVANCED TRADING HOLDING LLC" and printed without it. It is refused because it is precisely the rule that would make the 0027 assertion correct by construction: with the suffix optional, "THINK GLOBAL LLC" becomes "THINK GLOBAL", which is printed — inside "THINK GLOBAL WINES", a different company. A rule that lets a different entity satisfy the claim is the failure this whole build is designed against.
+- **An abbreviation expanded to a different word** ("CO." for "COMPANY") is refused for the same reason, and the fifty contain the counterexample: 0040's filed importer is "Atlanta Improvement Company" and the label prints "DORAVILLE IMPROVEMENT COMPANY".
+- **A class designation with a word dropped** ("TABLE WHITE WINE" against a printed "WHITE WINE") and **a name with its words reordered** ("FAN ZONE DETROIT" against "DETROIT FAN ZONE") are refused: both change what the string says.
+- **A number set hard against the word before it** ("BY VOL.50ML") was built rather than argued about. Letting a full stop end the preceding token read the fill on that label, and also produced spurious numbers elsewhere — "(8 PROOF)" from a 14,5 percent statement — for no gain. It was reverted and the three claims stay uncarried. Step 7a's finding holds: a reading rule that admits more tokens admits the wrong ones.
+
+**Two rules adopted that are the opposite of an equivalence.** The amendment's constraint is that nothing may introduce a false assertion, and 11b had found one already there. A free-text verdict may no longer rest on a structural step that compared no shape: under a code with no composed triples, a three-way merge costs a fixed amount and measures nothing, which is how "THINK GLOBAL LLC" rode over the "W" of "THINK GLOBAL WINES". Step 7a made that rule for a number's unit; this is the same rule for a name. A second rule, refusing a verdict that leaves a letter of the candidate on no glyph, was built and measured: it fires on nothing either corpus shows, and it is deleted.
+
+**The real fifty, before and after.**
+
+| claim | carried before | verified | recall | carried after | verified | recall |
+|---|---|---|---|---|---|---|
+| brand | 44 | 3 | 0.07 | 49 | 2 | 0.04 |
+| class | 6 | 0 | 0.00 | 6 | 0 | 0.00 |
+| producer_1 | 1 | 1 | 1.00 | 19 | 2 | 0.11 |
+| producer_2 | 0 | 0 | -- | 3 | 0 | 0.00 |
+| origin | 14 | 6 | 0.43 | 14 | 6 | 0.43 |
+| abv | 46 | 2 | 0.04 | 48 | 1 | 0.02 |
+| net | 49 | 5 | 0.10 | 49 | 5 | 0.10 |
+| **all seven** | **160** | **17** | **0.11** | **188** | **16** | **0.09** |
+
+**The false assertion is gone**: 0027's producer is now a review with the reason `step_compared_nothing:merge3`, so the real set holds no verdict naming something the label does not print, and precision as an assertion about the image is 1.00 rather than 0.94.
+
+**Twenty-eight claims move into the denominator and one more verifies.** That is the finding, and it is not the one the step expected: the form gap is real and wide, and closing it in the input and in the matching gains a single verification, because the claims it unlocks fail for a different reason. The alias candidates reach their regions — "GRAPEVINE DISTRIBUTORS", "Engelheim Vineyards", "FOLEY FAMILY WINES" are all found and scored — at distances of 0.19 to 0.27 against a radius of 0.12. They are set in the warning's own face and still fall well outside it, which is the same wall 11b's same-face column ran into. The exception, 0035's "SVP WINERY", lands at 0.043.
+
+**Half B, to show precision unmoved.**
+
+| claim | recall before | recall after | precision before | precision after |
+|---|---|---|---|---|
+| brand | 0.22 | 0.19 | 1.00 | 1.00 |
+| class | 192.00 | 192.00 | 0.25 | 0.23 |
+| producer_1 | 195.00 | 195.00 | 0.20 | 0.20 |
+| origin | 192.00 | 192.00 | 0.14 | 0.14 |
+| abv | 177.00 | 177.00 | 0.14 | 0.14 |
+| net | 176.00 | 176.00 | 0.16 | 0.16 |
+
+Precision holds at 1.00 on every claim. Recall falls by 0.01 to 0.03 on three of them, and all of it is the uncompared-step rule turning verdicts that were right into reviews: about eleven claims in a thousand. Measured separately, the punctuation rule changes nothing on either corpus — zero claims differ on the fifty and none on half B — and it is kept because the equivalence is the right rule for a compliance tool, not because it moved a number. That is stated here rather than hidden, since step 8c's standard would delete a rule that buys nothing.
+
+**A defect the step exposed, reported and not fixed.** The learned code of a component is cached per image and box at the first framing any claim asks for, so it depends on which claim, and which candidate, asked first. Adding the registry's second name to 0047's producer claim — a claim that does not verify either way — moved that label's alcohol content from verified to not found, because the harvest then taught different characters. Keying the cache exactly removes the coupling and verifies it again, at 34 seconds a label against 7. The two verifications lost above, 0038's brand and 0047's alcohol content, are that coupling rather than any rule adopted here. It needs its own step: a canonical framing per region costs nothing in time but changes every code in the build.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

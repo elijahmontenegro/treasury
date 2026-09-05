@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 44,
- "net_ml": 1000
+ "net_ml": 1000,
+ "aliases": {
+  "producer_1": [
+   "Knowlton House Distillery",
+   "Mullins Distillery LLC"
+  ]
+ }
 }

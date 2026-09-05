@@ -221,7 +221,15 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	// score aligns one candidate to one framing of a region's components.
 	score := func(ri, wi int, obs alphabet.Observed) (scored, bool) {
 		s := shapes[wi]
-		path, st, ok := alphabet.Decode(obs, s.target, alphabet.DefaultPenalties())
+		// The rule that punctuation is not part of a name applies to
+		// names. A numeric claim's unit is a printed form, not a name,
+		// and letting its marks come cheap let "14.5% ALC/VOL" beat the
+		// "14.5% ALC. BY VOL." the label actually prints.
+		pen := alphabet.DefaultPenalties()
+		if !c.numericInner && c.Numeric == nil {
+			pen = alphabet.ClaimPenalties()
+		}
+		path, st, ok := alphabet.Decode(obs, s.target, pen)
 		if !ok {
 			return scored{}, false
 		}
@@ -230,10 +238,13 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		// a whole glyph: ink the candidate does not account for means the
 		// region is not that text, however well the rest matches, and at
 		// half a glyph "(90 Proof)" passed for "190 Proof".
-		raw := st.Hamming + st.Structural*glyphBits/4 + st.Unexplained*glyphBits
+		// Punctuation one spelling carries and the other does not is
+		// charged as a structural step rather than a whole glyph: it is a
+		// difference in how a name is written, not a different name.
+		raw := st.Hamming + (st.Structural+st.Punctuation)*glyphBits/4 + st.Unexplained*glyphBits
 		return scored{
 			region: ri, word: wi, dist: float64(raw) / float64(s.glyphs*glyphBits), raw: raw, bits: s.glyphs * glyphBits,
-			glyphs: s.glyphs, refined: true, penalized: st.Structural + st.Unexplained, word_: words[wi],
+			glyphs: s.glyphs, refined: true, penalized: st.Structural + st.Unexplained + st.Punctuation, word_: words[wi],
 			path: path, target: s.target, obs: obs,
 		}, true
 	}
@@ -458,6 +469,18 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		v.Candidates = values
 		return v, nil
 	}
+	// A verification asserts the label carries the string. On a registry
+	// label naming "THINK GLOBAL WINES" the candidate "THINK GLOBAL LLC"
+	// fitted its last three characters onto one glyph through a step that
+	// compared no shape, and the engine reported VERIFIED. This is the
+	// free-text counterpart of the completeness rule step 7a gave numbers.
+	if k, ok := uncomparedStep(decided[0]); ok {
+		v.Status = Review
+		v.Reason = "step_compared_nothing:" + k
+		v.Candidates = []string{decided[0].word_.Value}
+		v.Evidence = evidence(decided[0], scored{region: -1})
+		return v, nil
+	}
 	v.Observed = values[0]
 	if values[0] == c.Expected {
 		v.Status = Verified
@@ -475,6 +498,29 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		}
 	}
 	return v, &decided[0]
+}
+
+// uncomparedStep reports a step of the winning alignment that explained
+// characters without comparing any shape to them. Under a code with no
+// composed triples, a three-way merge costs a fixed amount and compares
+// nothing, which is how "THINK GLOBAL LLC" rode over the "W" of "THINK
+// GLOBAL WINES". Step 7a made the same rule for a number's unit; a name
+// deserves it too, since a verdict that rests on such a step asserts
+// characters no glyph was ever measured against.
+func uncomparedStep(s scored) (string, bool) {
+	for _, st := range s.path {
+		switch st.Kind {
+		case alphabet.Merge3:
+			if s.target.Triple == nil {
+				return "merge3", true
+			}
+		case alphabet.Merge:
+			if s.target.Pair == nil {
+				return "merge", true
+			}
+		}
+	}
+	return "", false
 }
 
 // runProbe reports every region overlapping the probe box against the

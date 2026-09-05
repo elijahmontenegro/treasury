@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 5.5,
- "net_ml": 355
+ "net_ml": 355,
+ "aliases": {
+  "producer_1": [
+   "The Crossing at Big Creek Brewery",
+   "TCBC Development Company"
+  ]
+ }
 }

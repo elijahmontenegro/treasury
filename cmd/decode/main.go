@@ -205,7 +205,7 @@ func run(path, ref string, spans []alphabet.Span, debug string) error {
 			return err
 		default:
 			s.Alphabet = summarize(alpha)
-			if !alpha.OK(0.10, 0.1) {
+			if !alpha.OK(0.10, 0.1, 0.30) {
 				s.Reason = "alphabet_rejected"
 			}
 		}

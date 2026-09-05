@@ -134,6 +134,7 @@ func (t Target) distance(code bitcode.Code, c int) int {
 
 // DecodeStats summarizes an alignment of observed glyphs to a target.
 type DecodeStats struct {
+	Punctuation int // marks and punctuation characters one spelling has and the other does not
 	Hamming     int // summed over matched glyphs, unions, and scored pairs
 	Matched     int
 	Structural  int // merge and split steps: the image explains the text, in pieces
@@ -201,7 +202,15 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 	if obs.unions == nil {
 		obs.unions = map[int]bitcode.Code{}
 	}
-	pr := &problem{chars: t.Text, m: m, gap: obs.Gaps, spaces: spaces, pen: pen}
+	marks := make([]bool, m)
+	for g := range marks {
+		marks[g] = feats[g].small == 1 && widths[g] <= 0.6
+	}
+	puncts := make([]bool, n)
+	for c, r := range t.Text {
+		puncts[c] = IsPunct(r)
+	}
+	pr := &problem{chars: t.Text, m: m, gap: obs.Gaps, spaces: spaces, pen: pen, mark: marks, punct: puncts}
 	pr.shape = func(g, c int) float64 { return shapeOf(obs.Codes[g], feats[g], widths[g], c) }
 	pr.pair = func(g, c int) float64 {
 		pc := priorCost(feats[g], widths[g], mergedPrior(priors[c], priors[c+1]))
@@ -295,8 +304,21 @@ func Decode(obs Observed, t Target, pen Penalties) (Path, DecodeStats, bool) {
 			if code, ok := obs.unionCode(s.Glyph, k); ok && t.Codes[s.Char] != nil {
 				st.Hamming += t.distance(code, s.Char)
 			}
-		case Insert, Delete:
-			st.Unexplained++
+		case Insert:
+			// A mark the candidate does not have is punctuation the label
+			// prints and the filed string does not; it is not evidence
+			// that this is a different name.
+			if pen.InsertMark > 0 && s.Glyph < len(marks) && marks[s.Glyph] {
+				st.Punctuation++
+			} else {
+				st.Unexplained++
+			}
+		case Delete:
+			if pen.DeleteMark > 0 && s.Char < len(puncts) && puncts[s.Char] {
+				st.Punctuation++
+			} else {
+				st.Unexplained++
+			}
 		}
 	}
 	return path, st, true

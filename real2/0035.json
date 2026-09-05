@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 13.0,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "SVP Winery",
+   "SVP Winery, LLC"
+  ]
+ }
 }

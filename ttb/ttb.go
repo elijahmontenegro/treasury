@@ -28,6 +28,13 @@ type Expected struct {
 	Origin   string   `json:"origin"`
 	ABV      float64  `json:"abv"`    // percent alcohol by volume
 	NetML    float64  `json:"net_ml"` // net contents in millilitres
+
+	// Other spellings of a claim that the application itself states, by
+	// claim name (amendment step 12b): the permittee's operating name
+	// beside the name on its permit, where the form gives both. A label
+	// carrying either identifies the permittee, so either verifies the
+	// claim, and the value reported stays the one filed.
+	Aliases map[string][]string `json:"aliases,omitempty"`
 }
 
 // Sample is the application behind testdata/sample.png.

@@ -857,8 +857,22 @@ func (a *Alphabet) ViolationFraction() float64 {
 // at or under maxUnexplained and shape-class violations at or under
 // maxViolations, both signs of text aligned to the wrong reference. Which
 // characters were learned is decided per character, not here.
-func (a *Alphabet) OK(maxUnexplained, maxViolations float64) bool {
-	return a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations
+func (a *Alphabet) OK(maxUnexplained, maxViolations, minCoverage float64) bool {
+	return a.UnexplainedFraction() <= maxUnexplained && a.ViolationFraction() <= maxViolations &&
+		a.Coverage() >= minCoverage
+}
+
+// Coverage is the share of the reference's own characters that a glyph was
+// matched to. Acceptance counted ink the alignment could not explain and
+// glyphs contradicting their shape class, and never asked how much of the
+// reference was actually read (amendment step 12c): a block of other text,
+// read as capitals so that every glyph measures tall, could explain its own
+// glyphs with merges and deletes and pass on a quarter of the statute.
+func (a *Alphabet) Coverage() float64 {
+	if a == nil || a.Chars == 0 {
+		return 0
+	}
+	return float64(a.Matched) / float64(a.Chars)
 }
 
 // HeightUniformity is the share of the block's glyphs standing at least

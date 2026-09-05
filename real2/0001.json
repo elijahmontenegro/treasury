@@ -8,5 +8,11 @@
  ],
  "origin": "PRODUCT OF MEXICO",
  "abv": 46,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "FOLEY FAMILY WINES",
+   "Foley Family Wines, Inc."
+  ]
+ }
 }

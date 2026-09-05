@@ -65,11 +65,35 @@ type Penalties struct {
 	Delete  float64
 	Break   float64 // consecutive letters across a row break
 	WordGap float64 // gap, in x-heights, that counts fully as a word space
+
+	// A name is identified by its letters: a comma, a period or a hyphen
+	// present in one of two spellings and absent from the other does not
+	// make them different names (amendment step 12b). When these are set,
+	// a mark-sized glyph the candidate does not have, and a punctuation
+	// character the region does not show, cost this instead of a full
+	// insert or delete. Zero leaves both at Insert and Delete, which is
+	// what the reference alignment uses: there, ink the statute does not
+	// explain is the evidence that the block is not the statute.
+	InsertMark float64
+	DeleteMark float64
 }
 
 // DefaultPenalties are the starting values; step 6 tunes them.
 func DefaultPenalties() Penalties {
 	return Penalties{Merge: 1.5, Split: 1.5, Insert: 2.5, Delete: 2.5, Break: 1.5, WordGap: 0.5}
+}
+
+// ClaimPenalties are the reference's penalties with the rule that a name is
+// identified by its letters (amendment step 12b): a mark one spelling has
+// and the other does not costs a fifth of an insert rather than a whole one,
+// so "OZ Trading Group, Inc." and "OZ TRADING GROUP INC" are the same name
+// while "THINK GLOBAL WINES" and "THINK GLOBAL LLC" remain different ones.
+// The reference alignment keeps the full penalties, where unexplained ink is
+// the evidence that a block is not the statute.
+func ClaimPenalties() Penalties {
+	p := DefaultPenalties()
+	p.InsertMark, p.DeleteMark = 0.5, 0.5
+	return p
 }
 
 // problem is one alignment instance with its cost functions.
@@ -85,6 +109,34 @@ type problem struct {
 	union3 func(g, c int) float64 // glyphs g, g+1, g+2 as char c; NaN when not allowed; may be nil
 	rejoin func(g, c int) float64 // glyphs g and g+1 as chars c and c+1 through their union; NaN when not allowed; may be nil
 	pen    Penalties
+	mark   []bool // glyph g is a mark: too small to be a letter
+	punct  []bool // char c is punctuation
+}
+
+// IsPunct reports whether a character is punctuation, for the rule that a
+// name is identified by its letters.
+func IsPunct(r rune) bool {
+	switch r {
+	case '.', ',', '-', 0x27, 0x60, ':', ';', '/', '(', ')':
+		return true
+	}
+	return false
+}
+
+// insertCost charges a glyph the candidate does not explain.
+func (p *problem) insertCost(g int) float64 {
+	if p.pen.InsertMark > 0 && p.mark != nil && g < len(p.mark) && p.mark[g] {
+		return p.pen.InsertMark
+	}
+	return p.pen.Insert
+}
+
+// deleteCost charges a character with no glyph.
+func (p *problem) deleteCost(c int) float64 {
+	if p.pen.DeleteMark > 0 && p.punct != nil && c < len(p.punct) && p.punct[c] {
+		return p.pen.DeleteMark
+	}
+	return p.pen.Delete
 }
 
 func clamp01(v float64) float64 { return math.Max(0, math.Min(1, v)) }
@@ -154,7 +206,7 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 				continue
 			}
 			if g < m {
-				relax(c, g+1, cur, p.pen.Insert, 0, Insert)
+				relax(c, g+1, cur, p.insertCost(g), 0, Insert)
 			}
 			if c == n {
 				continue
@@ -163,7 +215,7 @@ func (p *problem) align(band int) (path Path, cost float64, touched bool) {
 				relax(c+1, g, cur, p.spaceCost(g), 0, Space)
 				continue
 			}
-			relax(c+1, g, cur, p.pen.Delete, 0, Delete)
+			relax(c+1, g, cur, p.deleteCost(c), 0, Delete)
 			if g >= m {
 				continue
 			}

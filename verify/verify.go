@@ -141,6 +141,7 @@ type AlphabetReport struct {
 	Matched     int                   `json:"matched"`
 	Unexplained int                   `json:"unexplained"`
 	Violations  float64               `json:"violations"` // share of matched glyphs contradicting their shape class
+	Coverage    float64               `json:"coverage"`   // share of the reference's characters a glyph was matched to
 	Recovered   int                   `json:"recovered"`
 	Spread      float64               `json:"spread"`
 	Characters  string                `json:"characters"`
@@ -230,6 +231,7 @@ type Options struct {
 	MaxUnexplained       float64 // alphabet acceptance; 0.10
 	LineThreshold        float64 // reference row acceptance, mean normalized distance; 0.08
 	ViolationFraction    float64 // alphabet and reference row acceptance, share of glyphs contradicting their shape class; 0.1
+	MinCoverage          float64 // alphabet acceptance, share of the reference's characters a glyph was matched to; 0.30
 	RowFailAnomalies     float64 // anomaly weight (unexplained and strong outliers one, weak outliers half) at which a reference row fails rather than reviews; 2
 	HeavyFactor          float64 // stroke ratio of the heavy hypothesis to the body; 1.25
 	EmphasisGate         float64 // an emphasis span must be within this fraction of a hypothesis; 0.15
@@ -275,6 +277,7 @@ func (o Options) withDefaults() Options {
 	if o.ViolationFraction == 0 {
 		o.ViolationFraction = 0.15 // retuned (10c): +7 claims, and labels with no alphabet 20 to 8 on the sweep subset
 	}
+	// MinCoverage is step 12c's; step 12b measures without it.
 	if o.RowFailAnomalies == 0 {
 		o.RowFailAnomalies = 2
 	}
@@ -455,7 +458,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			// When both casings align, the block's own glyph heights say
 			// which the label printed: capitals stand uniformly tall.
 			better := func(x, y *alphabet.Alphabet, xName string) bool {
-				if y == nil || !y.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+				if y == nil || !y.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) {
 					return true
 				}
 				uniform := x.HeightUniformity() >= 0.7
@@ -463,16 +466,16 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			}
 			if AttemptTrace != nil {
 				AttemptTrace(at.name, c.name, b.Block.Box, len(b.Block.Glyphs), b.Matched, b.Unexplained,
-					b.ViolationFraction(), b.Spread, b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction))
+					b.ViolationFraction(), b.Spread, b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage))
 			}
-			if b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) && better(b, a, c.name) {
+			if b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) && better(b, a, c.name) {
 				a, casing = b, c.name
 			}
 		}
 		if AttemptTrace != nil && len(candidates) == 0 {
 			AttemptTrace(at.name, "", image.Rectangle{}, 0, 0, 0, 0, 0, false)
 		}
-		if a != nil && a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+		if a != nil && a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) {
 			found = at
 			break
 		}
@@ -540,7 +543,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		claimsRegions = kept
 	}
 	res := Result{Engine: buildid.Get(), DeskewDeg: pre.AngleDeg, Regions: len(claimsRegions), Orientation: found.name, ClaimsOrientation: claimsAt.name, ReferenceCasing: casing}
-	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction) {
+	if err != nil || !a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) {
 		res.Reason = "no_alphabet"
 		if a != nil {
 			res.Alphabet = report(a, nil) // what was rejected, and why
@@ -692,8 +695,8 @@ func report(a *alphabet.Alphabet, sp *spell.Speller) *AlphabetReport {
 	}
 	r := &AlphabetReport{
 		Block: a.Block.Box, Glyphs: len(a.Block.Glyphs), Matched: a.Matched, Unexplained: a.Unexplained,
-		Violations: a.ViolationFraction(),
-		Recovered:  a.Recovered, Spread: a.Spread, Characters: string(chars),
+		Violations: a.ViolationFraction(), Coverage: a.Coverage(),
+		Recovered: a.Recovered, Spread: a.Spread, Characters: string(chars),
 		XHeight: a.XHeight, CapHeight: a.CapHeight, LetterGap: a.LetterGap, WordGap: a.WordGap, Rows: a.Rows,
 	}
 	if sp != nil && sp.Face != nil {

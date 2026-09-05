@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 5,
- "net_ml": 473
+ "net_ml": 473,
+ "aliases": {
+  "producer_1": [
+   "Ellicottville Brewing Co.",
+   "S&W COMPANY, LLC"
+  ]
+ }
 }

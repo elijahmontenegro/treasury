@@ -8,5 +8,11 @@
  ],
  "origin": "",
  "abv": 50,
- "net_ml": 750
+ "net_ml": 750,
+ "aliases": {
+  "producer_1": [
+   "Haberdasher Artisan Distillery",
+   "Bemis Distillers, LLC"
+  ]
+ }
 }

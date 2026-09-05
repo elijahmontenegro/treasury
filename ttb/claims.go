@@ -15,12 +15,23 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 		if text == "" {
 			return
 		}
+		// The application names the permittee twice, by its operating
+		// name and by the name on its permit, and a label may print
+		// either (amendment step 12b). Both are accepted spellings of
+		// the same claim, in the way the alcohol formats are: the
+		// alternatives come from the application, never from the label.
+		cands := []verify.Candidate{{Text: text, Value: text}}
+		for _, alt := range exp.Aliases[name] {
+			if alt != "" && alt != text {
+				cands = append(cands, verify.Candidate{Text: alt, Value: text})
+			}
+		}
 		// The spec's 0.22 is a line-hash radius. Glyph-wise, text in the
 		// label's own face lands within 3–8 percent and text in a script
 		// face at 15; 0.12 sits between them until the eval tunes it.
 		claims = append(claims, verify.Claim{
 			Name: name, Expected: text, Required: required, Radius: 0.12, Variants: true,
-			Candidates: []verify.Candidate{{Text: text, Value: text}},
+			Candidates: cands,
 		})
 	}
 	free("brand", exp.Brand, true)
