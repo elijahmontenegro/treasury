@@ -1621,6 +1621,76 @@ The warning is set at five to eleven pixels of x-height on these labels, and a s
 
 **Evidence.** Region and spelled codeword for eight of the sampled claims are in `docs/evidence/decompose`, and the full decomposition, including the nine pairs whose region is not the claim's text, is in `real2/decompose.md` with what each region holds in `real2/decompose_regions.json`.
 
+### Step 14a: the learned alphabet against the font set (2026-09-06)
+
+Gate, stated before the run: the two distributions and the separation margins side by side, and a stated finding on which template source separates right from wrong better, and by how much. Measurement only.
+
+**The instrument.** `Options.Templates` chooses where a claim's characters come from: the samples the reference taught, as the engine has always done, or every character rendered from the font set. Everything else is held: the same alphabet supplies the geometry, the stroke width, the letter and word gaps and the nearest face, the same regions are scored, the same encoder measures them. The fonts arm is not "no alphabet"; it is the alphabet's measurements with the font set's shapes.
+
+**The sample.** Twenty-five claims of thirteen labels, every one with a region known to hold the claim's own text: the nine 13b read from the crops, and every claim whose verified region the 12a audit confirmed. All five claim types are present. The region a claim's text sits in cannot be had from the engine without circularity, which is why the measurement runs on this sample and not on all 313 claims.
+
+| label | claim | learned: right | wrong | margin | fonts: right | wrong | margin |
+|---|---|---|---|---|---|---|---|
+| 0003 | producer_1 | 0.099 | 0.155 | 0.056 | 0.099 | 0.155 | 0.055 |
+| 0027 | origin | 0.043 | 0.177 | 0.134 | 0.046 | 0.189 | 0.143 |
+| 0029 | producer_1 | 0.188 | 0.213 | 0.024 | 0.146 | 0.190 | 0.044 |
+| 0031 | producer_1 | 0.163 | 0.211 | 0.047 | 0.174 | 0.204 | 0.030 |
+| 0033 | brand | 0.132 | 0.204 | 0.072 | 0.118 | 0.139 | 0.021 |
+| 0033 | net | 0.024 | 0.106 | 0.082 | 0.020 | 0.108 | 0.088 |
+| 0033 | origin | 0.022 | 0.040 | 0.018 | 0.031 | 0.049 | 0.018 |
+| 0035 | brand | 0.077 | 0.198 | 0.121 | 0.077 | 0.195 | 0.117 |
+| 0035 | net | 0.064 | 0.105 | 0.041 | 0.070 | 0.105 | 0.036 |
+| 0038 | abv | 0.132 | 0.159 | 0.027 | 0.121 | 0.136 | 0.015 |
+| 0038 | brand | 0.115 | 0.173 | 0.057 | 0.130 | 0.184 | 0.053 |
+| 0038 | net | 0.079 | 0.098 | 0.019 | 0.029 | 0.086 | 0.057 |
+| 0038 | producer_1 | 0.213 | 0.224 | 0.011 | 0.220 | 0.236 | 0.016 |
+| 0040 | brand | 0.027 | 0.101 | 0.074 | 0.033 | 0.102 | 0.068 |
+| 0044 | origin | 0.031 | 0.095 | 0.064 | 0.031 | 0.095 | 0.064 |
+| 0047 | abv | 0.102 | 0.126 | 0.025 | 0.054 | 0.129 | 0.075 |
+| 0047 | net | 0.073 | 0.106 | 0.033 | 0.041 | 0.106 | 0.066 |
+| 0047 | origin | 0.066 | 0.213 | 0.147 | 0.027 | 0.184 | 0.157 |
+| 0048 | abv | 0.134 | 0.139 | 0.005 | 0.073 | 0.117 | 0.044 |
+| 0048 | net | 0.086 | 0.104 | 0.018 | 0.053 | 0.104 | 0.051 |
+| 0048 | origin | 0.074 | 0.210 | 0.135 | 0.024 | 0.211 | 0.188 |
+| 0049 | net | 0.095 | 0.248 | 0.153 | 0.080 | 0.248 | 0.168 |
+| 0049 | origin | 0.068 | 0.201 | 0.133 | 0.032 | 0.201 | 0.169 |
+| 0050 | net | 0.222 | 0.116 | -0.105 | 0.261 | 0.107 | -0.154 |
+| 0050 | origin | 0.164 | 0.231 | 0.066 | 0.057 | 0.232 | 0.175 |
+
+| | templates from the learned alphabet | templates from the font set |
+|---|---|---|
+| median distance to the claim's own text | 0.086 | 0.057 |
+| median distance to the best wrong region | 0.159 | 0.139 |
+| median separation | 0.056 | 0.057 |
+| separations above zero | 24 of 25 | 24 of 25 |
+| the true region ranked first | 24 of 25 | 24 of 25 |
+
+**The finding: the font set sits a third closer to the right text, and the separation is a wash.** Templates rendered from the font set reach the claim's own text at 0.057 where the learned alphabet reaches it at 0.086 — the same direction as 13b's per-character numbers, and by about the same factor. But they also sit closer to the wrong text, 0.139 against 0.159, so the quantity a verdict actually rests on, the gap between the right region and the best wrong one, is 0.057 against 0.056: the same to within a thousandth. Both arms rank the true region first on 24 of the 25 claims, and both fail on the same one, 0050's fill, where the region holds "750" alone and a wrong region scores better.
+
+| claim type | n | learned margin | fonts margin |
+|---|---|---|---|
+| brand | 4 | 0.073 | 0.061 |
+| producer_1 | 4 | 0.036 | 0.037 |
+| origin | 7 | 0.133 | 0.157 |
+| abv | 3 | 0.025 | 0.044 |
+| net | 7 | 0.033 | 0.057 |
+
+
+By claim type the font set is ahead on origin, alcohol content and net contents, level on the producer's name, and behind on brand. Brand is the one set in another face on most labels, which is where a learned alphabet has nothing to offer either.
+
+**Where the difference comes from.** At the true region, the fonts arm pays no segmentation cost at the median:
+
+| term at the true region | learned | fonts |
+|---|---|---|
+| shape at matched glyphs | 0.049 | 0.046 |
+| shape at merged or split glyphs | 0.010 | 0.000 |
+| the structural penalty | 0.017 | 0.000 |
+| unexplained ink | 0.000 | 0.000 |
+
+Step 13b found segmentation the dominant term with learned templates. Rendered templates make the alignment match glyph for glyph more often, and that is most of the third they gain.
+
+**What this means for the radius.** The radius is fixed, so a source that halves the distance to the right text buys recall at that radius — and brings the wrong text nearer it too. The separation is what a decision at a well-chosen radius can use, and on this evidence the two sources are equal on it. The learned alphabet is therefore not the design's weakest component in the way 13b's per-character numbers suggested: it is worse at the shapes and no worse at telling right from wrong.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

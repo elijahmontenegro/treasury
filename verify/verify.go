@@ -195,6 +195,12 @@ const (
 	// 1,520 spellings as well as the fill's. Kept so the cost of deleting
 	// the alcohol enumeration can be measured against it.
 	DigitsImageEnum = "image-enum"
+	// TemplatesLearned spells a claim with the samples the reference
+	// taught, falling back to a bundled face for characters it never
+	// showed. TemplatesFonts renders every character from the font set.
+	TemplatesLearned = ""
+	TemplatesFonts   = "fonts"
+
 	// DigitsSynthetic is DigitsImage with the harvest forbidden to teach
 	// digits, so every digit compared is one synthesized from a bundled
 	// face: the engine as it stood before the classifier.
@@ -205,6 +211,11 @@ type Options struct {
 	// Digits is how numeric fields are read: DigitsClassifier (default),
 	// DigitsImage, or DigitsSynthetic.
 	Digits string
+	// Templates is where a claim's characters come from: TemplatesLearned
+	// (default), the samples the reference taught, or TemplatesFonts,
+	// every character rendered from the font set. Step 14a benches one
+	// against the other.
+	Templates string
 	// Separate turns text separation on or off; nil means on. Off is the
 	// pipeline as it stood through step 9, where ink is whatever is dark.
 	Separate *bool
@@ -377,15 +388,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		quarters int
 		invert   bool
 	}
-	// Detection before trial. The median gray says whether the label is
-	// light on dark; the anisotropy of the binarized image's projection
-	// profiles says whether its text runs horizontal or vertical (rows of
-	// text make the row sums vary far more than the column sums). The
-	// detected orientation and polarity are tried first; the rest of the
-	// ladder stays as the fallback, since a warning alone may run
-	// vertically on a horizontal label, and a light label with a boxed
-	// warning has been found only inverted.
-	invertFirst := medianGray(gray) < 128
+	// Detection instead of trial (step 14b): the direction the text runs
+	// is measured from the arrangement of the components, and the page is
+	// turned once.
 	type prepared struct {
 		pre     *preprocess.Result
 		lines   []region.Line
@@ -416,6 +421,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		done[at] = p
 		return p, nil
 	}
+	invertFirst := medianGray(gray) < 128
 	first, err := prepare(attempt{"as_is", 0, invertFirst})
 	if err != nil {
 		return Result{}, err
@@ -567,7 +573,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		return Result{}, err
 	}
 	spellCache := spell.NewCache()
-	sp := spell.NewCached(a, e.faces, e.lineEnc, e.claimEnc, spellCache)
+	sp := e.speller(a, spellCache)
 	res.Reference = e.referenceVerdicts(a)
 	for i := range spans {
 		res.Emphasis = append(res.Emphasis, e.emphasisVerdict(a, pre, refs[0], i))
@@ -588,7 +594,7 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// undecided are read again.
 	learned := e.harvest(a, encoded, winners)
 	if len(learned) > 0 {
-		sp = spell.NewCached(a, e.faces, e.lineEnc, e.claimEnc, spellCache.NextPass())
+		sp = e.speller(a, spellCache.NextPass())
 		for i, c := range claims {
 			if res.Claims[i].Status == Verified {
 				continue
@@ -606,6 +612,15 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	res.Alphabet.Learned = string(learned)
 	stamp(&res)
 	return res, nil
+}
+
+// speller builds the speller for a pass: templates composed from the
+// label's own type, or rendered from the font set when asked (step 14a).
+func (e *Engine) speller(a *alphabet.Alphabet, cache *spell.Cache) *spell.Speller {
+	if e.opt.Templates == TemplatesFonts {
+		return spell.NewFonts(a, e.faces, e.lineEnc, e.claimEnc, cache)
+	}
+	return spell.NewCached(a, e.faces, e.lineEnc, e.claimEnc, cache)
 }
 
 // harvest adds, from every decisive reading, the glyphs matched to

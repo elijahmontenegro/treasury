@@ -321,6 +321,15 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 	}
 	sort.Slice(all, func(a, b int) bool { return all[a].dist < all[b].dist })
 	best := all[0]
+	if ClaimTraceAll != nil {
+		var out []ClaimBreakdown
+		for i := 0; i < len(all) && i < 8; i++ {
+			if all[i].refined {
+				out = append(out, breakdown(c.Name, all[i], sp, regions, radius))
+			}
+		}
+		ClaimTraceAll(c.Name, out)
+	}
 	if debugScored != nil {
 		debugScored(c.Name, regions, all)
 	}
@@ -540,6 +549,11 @@ type ClaimBreakdown struct {
 // ClaimTrace, when set, receives the best candidate of every claim decided
 // through the free-text path, whether or not it was verified.
 var ClaimTrace func(ClaimBreakdown)
+
+// ClaimTraceAll, when set, receives the eight best pairs of every claim, so
+// that the distance to the region holding the claim's own text can be read
+// off beside the distance to the best-scoring wrong one (step 14a).
+var ClaimTraceAll func(claim string, pairs []ClaimBreakdown)
 
 // breakdown takes a scored pair apart for ClaimTrace.
 func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion, radius float64) ClaimBreakdown {

@@ -82,6 +82,17 @@ func NewWith(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.E
 	return NewCached(a, faces, enc, glyphEnc, nil)
 }
 
+// NewFonts is NewCached with every template rendered from the font set:
+// the alphabet still supplies the geometry, the stroke and the nearest
+// face, but no character is spelled with a sample cut from the image. It
+// is the other arm of step 14a's bench, and the engine uses it only when
+// asked for.
+func NewFonts(a *alphabet.Alphabet, faces []*render.Face, enc, glyphEnc encoder.Encoder, cache *Cache) *Speller {
+	s := NewCached(a, faces, enc, glyphEnc, cache)
+	s.medoids = map[alphabet.Key]alphabet.Glyph{}
+	return s
+}
+
 // Cache holds codes that do not change between the spellers of one
 // verification: samples recoded under the claim encoder, and glyphs
 // synthesized in a face. A learned encoder costs milliseconds a frame,

@@ -33,6 +33,8 @@ func main() {
 	claims := flag.String("claims", "", "comma-separated claim names; empty means all")
 	asJSON := flag.Bool("json", false, "one JSON object per claim")
 	out := flag.String("out", "", "directory for evidence images: the region above the codeword")
+	tmpl := flag.String("templates", "", "learned (default) or fonts: where a claim's characters come from")
+	all := flag.Bool("all", false, "report the eight best pairs of each claim, not only the best")
 	flag.Parse()
 	want := map[string]bool{}
 	for _, c := range strings.Split(*claims, ",") {
@@ -41,13 +43,13 @@ func main() {
 		}
 	}
 	for _, path := range flag.Args() {
-		if err := one(path, want, *asJSON, *out); err != nil {
+		if err := one(path, want, *asJSON, *out, *tmpl, *all); err != nil {
 			fmt.Fprintln(os.Stderr, path, err)
 		}
 	}
 }
 
-func one(path string, want map[string]bool, asJSON bool, outDir string) error {
+func one(path string, want map[string]bool, asJSON bool, outDir, tmpl string, allPairs bool) error {
 	base := strings.TrimSuffix(path, filepath.Ext(path))
 	b, err := os.ReadFile(base + ".json")
 	if err != nil {
@@ -73,7 +75,17 @@ func one(path string, want map[string]bool, asJSON bool, outDir string) error {
 		}
 	}
 	defer func() { verify.ClaimTrace = nil }()
-	eng, err := verify.New(verify.Options{ClaimEncoder: "learned"})
+	if allPairs {
+		verify.ClaimTraceAll = func(claim string, pairs []verify.ClaimBreakdown) {
+			if len(want) > 0 && !want[claim] {
+				return
+			}
+			seen = append(seen, pairs...)
+		}
+		defer func() { verify.ClaimTraceAll = nil }()
+		verify.ClaimTrace = nil
+	}
+	eng, err := verify.New(verify.Options{ClaimEncoder: "learned", Templates: tmpl})
 	if err != nil {
 		return err
 	}
@@ -103,8 +115,23 @@ func one(path string, want map[string]bool, asJSON bool, outDir string) error {
 			}
 		}
 	}
+	name := filepath.Base(base)
 	// One line per claim: the last breakdown is the one the verdict rests
 	// on, since the second pass re-decides what the first left undecided.
+	if allPairs {
+		for _, b := range seen {
+			out, err := json.Marshal(struct {
+				Label     string `json:"label"`
+				Templates string `json:"templates"`
+				verify.ClaimBreakdown
+			}{name, tmpl, b})
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(out))
+		}
+		return nil
+	}
 	last := map[string]verify.ClaimBreakdown{}
 	var order []string
 	for _, b := range seen {
@@ -114,7 +141,6 @@ func one(path string, want map[string]bool, asJSON bool, outDir string) error {
 		last[b.Name] = b
 	}
 	sort.Strings(order)
-	name := filepath.Base(base)
 	for _, n := range order {
 		b := last[n]
 		if asJSON {

@@ -1,0 +1,327 @@
+{
+ "0029 producer_1": {
+  "box": {
+   "Min": {
+    "X": 282,
+    "Y": 1155
+   },
+   "Max": {
+    "X": 389,
+    "Y": 1174
+   }
+  },
+  "source": "read from the crop (13b): own: \"MEX - CAL, INC.\""
+ },
+ "0031 producer_1": {
+  "box": {
+   "Min": {
+    "X": 318,
+    "Y": 1156
+   },
+   "Max": {
+    "X": 384,
+    "Y": 1175
+   }
+  },
+  "source": "read from the crop (13b): own, cut: \"CAL, INC.\""
+ },
+ "0033 brand": {
+  "box": {
+   "Min": {
+    "X": 470,
+    "Y": 698
+   },
+   "Max": {
+    "X": 840,
+    "Y": 737
+   }
+  },
+  "source": "read from the crop (13b): own: \"BODEGAS Y VIÑEDOS VEGA DE\""
+ },
+ "0038 brand": {
+  "box": {
+   "Min": {
+    "X": 304,
+    "Y": 1248
+   },
+   "Max": {
+    "X": 386,
+    "Y": 1271
+   }
+  },
+  "source": "read from the crop (13b): own: \"45th Parallel\""
+ },
+ "0038 net": {
+  "box": {
+   "Min": {
+    "X": 528,
+    "Y": 428
+   },
+   "Max": {
+    "X": 579,
+    "Y": 450
+   }
+  },
+  "source": "read from the crop (13b): own: \"750 ml\""
+ },
+ "0038 producer_1": {
+  "box": {
+   "Min": {
+    "X": 288,
+    "Y": 1248
+   },
+   "Max": {
+    "X": 448,
+    "Y": 1276
+   }
+  },
+  "source": "read from the crop (13b): own, cut: \"to 45th Parallel Spirits to\""
+ },
+ "0048 abv": {
+  "box": {
+   "Min": {
+    "X": 763,
+    "Y": 1454
+   },
+   "Max": {
+    "X": 972,
+    "Y": 1478
+   }
+  },
+  "source": "read from the crop (13b): own: \"14.5% ALC. BY VOL.\""
+ },
+ "0050 net": {
+  "box": {
+   "Min": {
+    "X": 863,
+    "Y": 1490
+   },
+   "Max": {
+    "X": 927,
+    "Y": 1510
+   }
+  },
+  "source": "read from the crop (13b): own, cut: \"750\""
+ },
+ "0050 origin": {
+  "box": {
+   "Min": {
+    "X": 735,
+    "Y": 1529
+   },
+   "Max": {
+    "X": 903,
+    "Y": 1548
+   }
+  },
+  "source": "read from the crop (13b): own: \"PRODUCT OF FRANCE\""
+ },
+ "0003 producer_1": {
+  "box": {
+   "Min": {
+    "X": 394,
+    "Y": 1481
+   },
+   "Max": {
+    "X": 594,
+    "Y": 1508
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0027 origin": {
+  "box": {
+   "Min": {
+    "X": 403,
+    "Y": 526
+   },
+   "Max": {
+    "X": 563,
+    "Y": 547
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0033 origin": {
+  "box": {
+   "Min": {
+    "X": 446,
+    "Y": 163
+   },
+   "Max": {
+    "X": 662,
+    "Y": 208
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0033 net": {
+  "box": {
+   "Min": {
+    "X": 452,
+    "Y": 314
+   },
+   "Max": {
+    "X": 563,
+    "Y": 358
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0035 brand": {
+  "box": {
+   "Min": {
+    "X": 648,
+    "Y": 1188
+   },
+   "Max": {
+    "X": 827,
+    "Y": 1214
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0035 net": {
+  "box": {
+   "Min": {
+    "X": 161,
+    "Y": 1519
+   },
+   "Max": {
+    "X": 231,
+    "Y": 1540
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0038 abv": {
+  "box": {
+   "Min": {
+    "X": 295,
+    "Y": 427
+   },
+   "Max": {
+    "X": 382,
+    "Y": 450
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0040 brand": {
+  "box": {
+   "Min": {
+    "X": 548,
+    "Y": 96
+   },
+   "Max": {
+    "X": 825,
+    "Y": 125
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0044 origin": {
+  "box": {
+   "Min": {
+    "X": 455,
+    "Y": 109
+   },
+   "Max": {
+    "X": 719,
+    "Y": 141
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0047 origin": {
+  "box": {
+   "Min": {
+    "X": 661,
+    "Y": 1516
+   },
+   "Max": {
+    "X": 880,
+    "Y": 1539
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0047 abv": {
+  "box": {
+   "Min": {
+    "X": 735,
+    "Y": 1465
+   },
+   "Max": {
+    "X": 930,
+    "Y": 1487
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0047 net": {
+  "box": {
+   "Min": {
+    "X": 659,
+    "Y": 1465
+   },
+   "Max": {
+    "X": 737,
+    "Y": 1487
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0048 origin": {
+  "box": {
+   "Min": {
+    "X": 682,
+    "Y": 1510
+   },
+   "Max": {
+    "X": 919,
+    "Y": 1533
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0048 net": {
+  "box": {
+   "Min": {
+    "X": 681,
+    "Y": 1454
+   },
+   "Max": {
+    "X": 764,
+    "Y": 1478
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0049 origin": {
+  "box": {
+   "Min": {
+    "X": 599,
+    "Y": 1520
+   },
+   "Max": {
+    "X": 808,
+    "Y": 1542
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ },
+ "0049 net": {
+  "box": {
+   "Min": {
+    "X": 598,
+    "Y": 1471
+   },
+   "Max": {
+    "X": 672,
+    "Y": 1493
+   }
+  },
+  "source": "the region the engine verified, confirmed by the 12a audit"
+ }
+}
