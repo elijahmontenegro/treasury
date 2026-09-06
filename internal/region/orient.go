@@ -1,6 +1,7 @@
 package region
 
 import (
+	"fmt"
 	"image"
 	"math"
 	"sort"
@@ -22,9 +23,15 @@ import (
 // The return is the quarter turns to apply so that the text stands upright:
 // 0, 1, 2 or 3, in the sense of imgops.Rotate90.
 func Direction(comps []image.Rectangle, w, h int) int {
+	q, _ := DirectionDebug(comps, w, h)
+	return q
+}
+
+// DirectionDebug is Direction with the measurements it made.
+func DirectionDebug(comps []image.Rectangle, w, h int) (int, string) {
 	glyphs := plausible(comps)
 	if len(glyphs) < 8 {
-		return 0
+		return 0, "too few components"
 	}
 	axis := dominantAxis(glyphs)
 	// Horizontal text is a row of neighbours at about zero degrees;
@@ -36,10 +43,24 @@ func Direction(comps []image.Rectangle, w, h int) int {
 	} else {
 		cand = [2]int{1, 3}
 	}
-	if uprightScore(rotateBoxes(glyphs, cand[0], w, h)) <= uprightScore(rotateBoxes(glyphs, cand[1], w, h)) {
-		return cand[0]
+	// The first candidate is the one that leaves the page as it is when
+	// the text runs horizontally; turning it takes clear evidence, since
+	// a page turned wrongly reads nothing at all.
+	a := uprightScore(rotateBoxes(glyphs, cand[0], w, h))
+	b := uprightScore(rotateBoxes(glyphs, cand[1], w, h))
+	ab, am := uprightCues(rotateBoxes(glyphs, cand[0], w, h))
+	bb, bm := uprightCues(rotateBoxes(glyphs, cand[1], w, h))
+	note := fmt.Sprintf("axis %.0f deg, %d of %d components, %d: base %.2f marks %.2f | %d: base %.2f marks %.2f",
+		axis, len(glyphs), len(comps), cand[0], ab, am, cand[1], bb, bm)
+	// Turning a page that was the right way up reads nothing at all,
+	// where leaving an upside-down one costs that page alone, so the
+	// half turn is only taken on clear evidence. On the fifty real
+	// labels neither cue is decisive: they are measured and reported
+	// with step 14b rather than trusted.
+	if b < a-0.5 {
+		return cand[1], note
 	}
-	return cand[1]
+	return cand[0], note
 }
 
 // plausible keeps the components that could be letters: a page carries
@@ -70,7 +91,9 @@ func plausible(comps []image.Rectangle) []image.Rectangle {
 }
 
 // dominantAxis is the modal angle, in degrees from 0 to 180, between a
-// component's centre and its nearest neighbour's.
+// component's centre and its nearest neighbour's, each vote weighted by
+// the component's area: a paragraph of six-pixel type has many more
+// components than a headline and would otherwise decide the page.
 func dominantAxis(comps []image.Rectangle) float64 {
 	const bins = 36 // five degrees each
 	var hist [bins]float64
@@ -81,13 +104,19 @@ func dominantAxis(comps []image.Rectangle) float64 {
 			if i == j {
 				continue
 			}
+			// The next letter of a line is about as tall as this one;
+			// a blob of artwork beside a word is not.
+			r := float64(a.Dy()) / float64(max(1, b.Dy()))
+			if r < 0.6 || r > 1.7 {
+				continue
+			}
 			bx, by := center(b)
 			d := (ax-bx)*(ax-bx) + (ay-by)*(ay-by)
 			if d < bd {
 				bd, best = d, j
 			}
 		}
-		if best < 0 {
+		if best < 0 || bd > 9*float64(a.Dy()*a.Dy()) {
 			continue
 		}
 		bx, by := center(comps[best])
@@ -98,7 +127,8 @@ func dominantAxis(comps []image.Rectangle) float64 {
 		for ang >= 180 {
 			ang -= 180
 		}
-		hist[int(ang/5)%bins]++
+		w := float64(a.Dx() * a.Dy())
+		hist[int(ang/5)%bins] += w
 	}
 	// The neighbour of a letter is the next letter along the line, so the
 	// mode is the line's direction; a bin and its neighbours are counted
@@ -113,33 +143,96 @@ func dominantAxis(comps []image.Rectangle) float64 {
 	return float64(bestBin)*5 + 2.5
 }
 
-// uprightScore is small when the components sit on baselines: it is the
-// spread of their bottoms against the spread of their tops, summed over
-// the lines. Text read upside down has the tight end at the top.
+// uprightScore is small when the page is the right way up. Two cues, and
+// the page is only turned when they agree that it is upside down.
+//
+// The first is the baseline: within a line the bottoms of the components
+// cluster where they sit and the tops are spread between x-height,
+// capitals and ascenders, so the tighter end is the bottom. Text set
+// entirely in capitals is as tight at one end as the other and the cue
+// says nothing, which is why the second is needed.
+//
+// The second is punctuation: a period, a comma and a hyphen sit low in the
+// line whatever case the text is in, so a line whose small marks sit high
+// is a line being read upside down.
 func uprightScore(comps []image.Rectangle) float64 {
+	b, m := uprightCues(comps)
+	return b + m
+}
+
+// uprightCues is uprightScore split into its two parts.
+func uprightCues(comps []image.Rectangle) (float64, float64) {
 	lines := rows(comps)
 	var bottoms, tops float64
+	var deepBelow, deepAll float64
 	for _, ln := range lines {
 		if len(ln) < 4 {
 			continue
 		}
 		b := make([]float64, 0, len(ln))
 		t := make([]float64, 0, len(ln))
+		var hs []float64
 		for _, c := range ln {
 			b = append(b, float64(c.Max.Y))
 			t = append(t, float64(c.Min.Y))
+			hs = append(hs, float64(c.Dy()))
 		}
 		bottoms += spread(b)
 		tops += spread(t)
+
+		// Latin text has room above its baseline and little below it:
+		// ascenders and capitals reach well over the x-height, while
+		// descenders are shallow and rare. Read upside down, the deep
+		// side is below. Counting small marks instead does not work,
+		// since the dot of an i sits high in an upright line and there
+		// are more i's in the statute than full stops.
+		sort.Float64s(b)
+		base := b[len(b)/2]
+		var above, below float64
+		for _, c := range ln {
+			above = math.Max(above, base-float64(c.Min.Y))
+			below = math.Max(below, float64(c.Max.Y)-base)
+		}
+		if above > 0 {
+			deepAll++
+			deepBelow += math.Min(2, below/above)
+		}
 	}
-	if tops == 0 {
-		return 1
+	ratio := 1.0
+	if tops > 0 {
+		ratio = bottoms / tops
 	}
-	return bottoms / tops
+	deep := 1.0
+	if deepAll >= 3 {
+		deep = deepBelow / deepAll
+	}
+	return ratio, deep
 }
 
-// rows groups components into lines by their vertical centres.
+// rows groups components into lines the way the region proposer does, so
+// that panels of different sizes are not run together.
 func rows(comps []image.Rectangle) [][]image.Rectangle {
+	cs := make([]Component, 0, len(comps))
+	for _, b := range comps {
+		cs = append(cs, Component{Box: b, Area: b.Dx() * b.Dy()})
+	}
+	lines, _ := Lines(cs, Default())
+	if len(lines) > 0 {
+		out := make([][]image.Rectangle, 0, len(lines))
+		for _, ln := range lines {
+			row := make([]image.Rectangle, 0, len(ln.Comps))
+			for _, c := range ln.Comps {
+				row = append(row, c.Box)
+			}
+			out = append(out, row)
+		}
+		return out
+	}
+	return rowsByCentre(comps)
+}
+
+// rowsByCentre is the fallback when the proposer's grouping finds nothing.
+func rowsByCentre(comps []image.Rectangle) [][]image.Rectangle {
 	if len(comps) == 0 {
 		return nil
 	}

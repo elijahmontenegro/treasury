@@ -1691,6 +1691,34 @@ Step 13b found segmentation the dominant term with learned templates. Rendered t
 
 **What this means for the radius.** The radius is fixed, so a source that halves the distance to the right text buys recall at that radius — and brings the wrong text nearer it too. The separation is what a decision at a well-chosen radius can use, and on this evidence the two sources are equal on it. The learned alphabet is therefore not the design's weakest component in the way 13b's per-character numbers suggested: it is worse at the shapes and no worse at telling right from wrong.
 
+### Step 14b: orientation as a measurement (2026-09-06)
+
+Gate, stated before the run: on the fifty, the orientation chosen per label against transcription; the ladder removed; no-alphabet rate, per-claim recall, precision and latency before and after.
+
+**What replaces the ladder.** The direction the text runs is measured once, from the arrangement of the components: for every component, the angle to its nearest neighbour of similar height and within a few of its own heights, weighted by area so that a paragraph of six-pixel type does not outvote a headline, and the mode of those angles taken modulo a half turn. The page is turned once and decoded once. `region.Direction` does the measuring, `cmd/orient` prints it. Polarity is not orientation and is left to the separation step, which has extracted both since 10a; the inverted attempts are gone with the rest of the ladder.
+
+**The half turn is measured and not trusted.** Two cues were built and both were weak on this population: the spread of the components' bottoms against their tops, which says nothing about text set entirely in capitals, and the depth above the baseline against the depth below it. On the fifty neither is decisive, and since turning an upright page reads nothing at all while leaving an inverted one costs that page alone, the turn is only taken on a margin no label of the fifty reaches. The one label printed upside down, 0026, is therefore not detected, and that is stated rather than smoothed over.
+
+**The orientation chosen, against transcription.** Two readings of "correct" are possible and both are given. Against the page, which is upright on 49 of the fifty: **42 of 50**, the eight misses being labels whose warning or side panel is set vertically, where the measurement follows the type rather than the artwork. Against the direction the statutory warning is set in, which is what the engine has to read: **44 of 50**, missing four vertical warnings it calls upright (0015, 0016, 0017, 0028) and calling one upright warning vertical (0002).
+
+**Both numbers on the fifty.**
+
+| | the ladder | one measured turn |
+|---|---|---|
+| labels without an alphabet | 18 of 50 | 22 of 50 |
+| brand | 0.08 | 0.08 |
+| class | 0.00 | 0.00 |
+| producer_1 | 0.11 | 0.11 |
+| origin | 0.43 | 0.43 |
+| abv | 0.04 | 0.04 |
+| net | 0.10 | 0.10 |
+| median latency | 28.4s | 19.4s |
+| 95th percentile | 59.5s | 57.7s |
+
+**Every claim's recall and precision is unchanged, four labels lose their alphabet, and a third of the time goes.** The four are 0020, 0023, 0025 and 0028, each of which the ladder had found in a rotated or inverted attempt after the upright one failed; between them they verified nothing, and exactly one claim verdict moves in the whole set, 0028's fill from review to not found. Sixteen labels change orientation, most of them from a rotated or inverted attempt the ladder happened to stop at to the direction their type is actually set in.
+
+**What it costs.** A label whose warning is set vertically and whose claims are upright can no longer have both: one turn serves one of them. That is the design the amendment asked for, and on this set it costs nothing measurable, because the labels concerned were verifying nothing anyway.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

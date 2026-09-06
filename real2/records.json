@@ -34,7 +34,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7637609500,
+  "latency": 1013005900,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -151,7 +151,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8154916200,
+  "latency": 1957608100,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -261,7 +261,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 30727662700,
+  "latency": 31625081400,
   "orientation": "rot90",
   "reference_casing": "as_given",
   "alphabet": {
@@ -695,7 +695,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 28434813700,
+  "latency": 28626118700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1196,7 +1196,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 34244071900,
+  "latency": 33973970900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1891,7 +1891,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 55372710700,
+  "latency": 53851127200,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -2675,8 +2675,8 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 43576754900,
-  "orientation": "inverted_rot90",
+  "latency": 42486866700,
+  "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
    "block": {
@@ -2848,21 +2848,23 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 122,
-       "Y": 337
+       "X": 252,
+       "Y": 639
       },
       "Max": {
-       "X": 167,
-       "Y": 353
+       "X": 325,
+       "Y": 671
       }
      },
-     "text": "PROOF 2",
+     "text": "2 Proof",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "regular",
+      "synthesized": "roof",
+      "face": "Go Regular"
      },
-     "d1": 320,
-     "d2": 1036,
+     "d1": 314,
+     "d2": 978,
      "radius": 230,
      "bits": 1536,
      "refined": true,
@@ -2873,7 +2875,7 @@
      "spread": 0.053365211177711175,
      "low_confidence": false,
      "reading": "2",
-     "digit_confidence": 0.6295622069056659
+     "digit_confidence": 0.6549625429816961
     }
    },
    {
@@ -2884,32 +2886,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 107,
-       "Y": 670
+       "X": 100,
+       "Y": 531
       },
       "Max": {
-       "X": 225,
-       "Y": 704
+       "X": 167,
+       "Y": 558
       }
      },
-     "text": "(55 ml)",
+     "text": "(55 ML)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "55ml",
+      "synthesized": "55",
       "face": "Go Regular"
      },
-     "d1": 319,
+     "d1": 468,
      "d2": -1,
      "radius": 230,
      "bits": 1536,
      "refined": true,
      "glyphs": 6,
-     "penalized": 3,
+     "penalized": 2,
      "spread": 0.053365211177711175,
      "low_confidence": false,
      "reading": "55",
-     "digit_confidence": 0.5739642526955963
+     "digit_confidence": 0.5134966674266832
     }
    }
   ],
@@ -3349,7 +3351,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 18709543100,
+  "latency": 18733933600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4063,7 +4065,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 20969915100,
+  "latency": 21021751800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4927,7 +4929,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 20088761300,
+  "latency": 19398896600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -5786,7 +5788,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14117878800,
+  "latency": 14201749900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -6658,7 +6660,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4377927800,
+  "latency": 1154274700,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -6768,7 +6770,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 59467480400,
+  "latency": 57686084700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -7452,33 +7454,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6554261000,
+  "latency": 786763600,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 82,
-     "Y": 608
+     "X": 107,
+     "Y": 1144
     },
     "Max": {
-     "X": 941,
-     "Y": 693
+     "X": 1286,
+     "Y": 1255
     }
    },
-   "glyphs": 125,
-   "matched": 43,
+   "glyphs": 179,
+   "matched": 41,
    "unexplained": 3,
-   "violations": 0.38235294117647056,
-   "coverage": 0.17842323651452283,
-   "recovered": 2,
-   "spread": 0.12392998866213152,
-   "characters": ",GSabcdefghimnorstwy",
+   "violations": 0.6512605042016807,
+   "coverage": 0.17012448132780084,
+   "recovered": 0,
+   "spread": 0.07740885416666667,
+   "characters": ",.GSabcdefghilmnoprtuvy",
    "face": "",
-   "x_height": 11,
-   "cap_height": 38,
-   "letter_gap": 7,
-   "word_gap": 8,
+   "x_height": 18,
+   "cap_height": 18,
+   "letter_gap": 2,
+   "word_gap": 7,
    "rows": null
   },
   "claims": [
@@ -7562,9 +7564,9 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6679894000,
+  "latency": 774074800,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "claims": [
    {
     "claim": "brand",
@@ -7646,9 +7648,9 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7053090000,
+  "latency": 781709700,
   "reason": "no_alphabet",
-  "orientation": "inverted_rot90",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
@@ -7756,9 +7758,9 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6476938400,
+  "latency": 749659700,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "claims": [
    {
     "claim": "brand",
@@ -7840,35 +7842,34 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8657652600,
+  "latency": 786777300,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 103,
-     "Y": 591
+     "X": 578,
+     "Y": 733
     },
     "Max": {
-     "X": 964,
-     "Y": 694
+     "X": 829,
+     "Y": 970
     }
    },
-   "glyphs": 154,
-   "matched": 54,
-   "unexplained": 0,
-   "violations": 0.4107883817427386,
-   "coverage": 0.22406639004149378,
+   "glyphs": 158,
+   "matched": 39,
+   "unexplained": 2,
+   "violations": 0.6485355648535565,
+   "coverage": 0.16182572614107885,
    "recovered": 0,
-   "spread": 0.13455894510582012,
-   "characters": "(.GSabcdghiklmnostuwy",
+   "spread": 0.08083147321428572,
+   "characters": ",ACGabdefgiklnoprtuvwy",
    "face": "",
-   "x_height": 10,
-   "cap_height": 12,
-   "letter_gap": 8,
-   "word_gap": 8,
-   "rows": null,
-   "unlearned": "er"
+   "x_height": 18,
+   "cap_height": 17,
+   "letter_gap": 2,
+   "word_gap": 2,
+   "rows": null
   },
   "claims": [
    {
@@ -7951,7 +7952,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 55315480500,
+  "latency": 53809373900,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -8602,33 +8603,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 49772912100,
-  "orientation": "rot180",
-  "reference_casing": "upper",
+  "latency": 781313400,
+  "reason": "no_alphabet",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 75,
-     "Y": 321
+     "X": 575,
+     "Y": 632
     },
     "Max": {
-     "X": 1025,
-     "Y": 613
+     "X": 1525,
+     "Y": 986
     }
    },
-   "glyphs": 236,
-   "matched": 80,
+   "glyphs": 272,
+   "matched": 63,
    "unexplained": 1,
-   "violations": 0.06224066390041494,
-   "coverage": 0.33195020746887965,
+   "violations": 0.4979253112033195,
+   "coverage": 0.26141078838174275,
    "recovered": 0,
-   "spread": 0.09220470610119048,
-   "characters": "()ABCDEGHIKLMNOPRSTUVY",
-   "face": "Go Regular",
-   "x_height": 12.413793103448278,
+   "spread": 0.08263583993342516,
+   "characters": "),Aabcdefhimnoprstuvy",
+   "face": "",
+   "x_height": 18,
    "cap_height": 18,
    "letter_gap": 2,
-   "word_gap": 3,
+   "word_gap": 2,
    "rows": null
   },
   "claims": [
@@ -8636,613 +8637,47 @@
     "claim": "brand",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "SUPER LYTE",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 770,
-       "Y": 291
-      },
-      "Max": {
-       "X": 854,
-       "Y": 317
-      }
-     },
-     "text": "SUPER LYTE",
-     "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "SUPLY",
-      "emphasis": "ERTE",
-      "face": "Go Mono"
-     },
-     "d1": 431,
-     "d2": -1,
-     "radius": 276,
-     "bits": 2304,
-     "refined": true,
-     "glyphs": 9,
-     "penalized": 4,
-     "spread": 0.17885904947916667,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 772,
-       "Y": 566
-      },
-      "Max": {
-       "X": 1029,
-       "Y": 592
-      }
-     },
-     "text": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "\u0026",
-      "face": "Go Regular"
-     },
-     "d1": 1551,
-     "d2": -1,
-     "radius": 922,
-     "bits": 7680,
-     "refined": true,
-     "glyphs": 30,
-     "penalized": 14,
-     "spread": 0.17885904947916667,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "Prime Beverage Group, LLC",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1309,
-       "Y": 79
-      },
-      "Max": {
-       "X": 1497,
-       "Y": 106
-      }
-     },
-     "text": "PRIME BEVERAGE GROUP, LLC",
-     "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": ",",
-      "face": "Go Regular"
-     },
-     "d1": 1353,
-     "d2": -1,
-     "radius": 676,
-     "bits": 5632,
-     "refined": true,
-     "glyphs": 22,
-     "penalized": 11,
-     "spread": 0.17885904947916667,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1128,
-       "Y": 74
-      },
-      "Max": {
-       "X": 1497,
-       "Y": 107
-      }
-     },
-     "text": "1858 KANNAPOLIS PKWY Kannapolis NC 28027",
-     "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "1858KPLISPKWYKannapolisC28027",
-      "emphasis": "ANNAON",
-      "face": "Go Mono"
-     },
-     "d1": 2279,
-     "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
-     "refined": true,
-     "glyphs": 35,
-     "penalized": 19,
-     "spread": 0.17885904947916667,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "4.5",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1319,
-       "Y": 79
-      },
-      "Max": {
-       "X": 1396,
-       "Y": 106
-      }
-     },
-     "text": "9% Alc/Vol",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "9%lc/ol",
-      "face": "Go Regular"
-     },
-     "d1": 434,
-     "d2": 559,
-     "radius": 346,
-     "bits": 2304,
-     "refined": true,
-     "glyphs": 9,
-     "penalized": 4,
-     "competitor": "20",
-     "competitor_text": "(40 Proof)",
-     "spread": 0.17885904947916667,
-     "low_confidence": false,
-     "reading": "9%",
-     "digit_confidence": 0.7814705475207547
-    }
+    "reason": "no_alphabet",
+    "expected": "4.5"
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "355",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 899,
-       "Y": 265
-      },
-      "Max": {
-       "X": 967,
-       "Y": 291
-      }
-     },
-     "text": "(96 ML)",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "96",
-      "face": "Go Regular"
-     },
-     "d1": 439,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.17885904947916667,
-     "low_confidence": false,
-     "reading": "96",
-     "digit_confidence": 0.6078355738086685
-    }
+    "reason": "no_alphabet",
+    "expected": "355"
    }
   ],
-  "reference": [
-   {
-    "claim": "reference_row_1",
-    "engine": "3acb08a3df88",
-    "status": "VERIFIED",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 774,
-       "Y": 321
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 340
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 10,
-     "mean_distance": 0.016015625
-    }
-   },
-   {
-    "claim": "reference_row_2",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 75,
-       "Y": 344
-      },
-      "Max": {
-       "X": 1024,
-       "Y": 371
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 7,
-     "prior_violations": 5,
-     "mean_distance": 0.08139349489795919
-    }
-   },
-   {
-    "claim": "reference_row_3",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 774,
-       "Y": 369
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 391
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 4,
-     "mean_distance": 0.09751674107142856
-    }
-   },
-   {
-    "claim": "reference_row_4",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 773,
-       "Y": 399
-      },
-      "Max": {
-       "X": 1024,
-       "Y": 418
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 5,
-     "prior_violations": 2,
-     "mean_distance": 0.09877232142857142
-    }
-   },
-   {
-    "claim": "reference_row_5",
-    "engine": "3acb08a3df88",
-    "status": "VERIFIED",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 773,
-       "Y": 435
-      },
-      "Max": {
-       "X": 1023,
-       "Y": 455
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "mean_distance": 0.07791573660714285
-    }
-   },
-   {
-    "claim": "reference_row_6",
-    "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "anomalies",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 773,
-       "Y": 460
-      },
-      "Max": {
-       "X": 1024,
-       "Y": 480
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "unexplained": 1,
-     "mean_distance": 0.06340680803571429,
-     "anomalies": [
-      {
-       "kind": 7,
-       "glyph": 107,
-       "char": "",
-       "distance": 0,
-       "strong": true,
-       "box": {
-        "Min": {
-         "X": 773,
-         "Y": 461
-        },
-        "Max": {
-         "X": 785,
-         "Y": 479
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_7",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 774,
-       "Y": 491
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 511
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 6,
-     "prior_violations": 3,
-     "mean_distance": 0.08891369047619048
-    }
-   },
-   {
-    "claim": "reference_row_8",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 774,
-       "Y": 516
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 537
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "prior_violations": 3,
-     "mean_distance": 0.13392857142857142
-    }
-   },
-   {
-    "claim": "reference_row_9",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 772,
-       "Y": 541
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 562
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "mean_distance": 0.10365513392857144
-    }
-   },
-   {
-    "claim": "reference_row_10",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 776,
-       "Y": 570
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 588
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 9,
-     "mean_distance": 0.08072916666666666
-    }
-   },
-   {
-    "claim": "reference_row_11",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 772,
-       "Y": 592
-      },
-      "Max": {
-       "X": 1024,
-       "Y": 613
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 7,
-     "prior_violations": 2,
-     "mean_distance": 0.11057079081632652
-    }
-   }
-  ],
-  "emphasis": [
-   {
-    "claim": "emphasis_1",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "expected": "GOVERNMENT WARNING:",
-    "observed": "regular",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 774,
-       "Y": 321
-      },
-      "Max": {
-       "X": 1025,
-       "Y": 340
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 452,
-     "d2": 0,
-     "radius": 614,
-     "bits": 4096,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "stroke_ratio": 0.9170999169364269
-    }
-   }
-  ]
+  "reference": null,
+  "emphasis": null
  },
  {
   "label": "0021",
@@ -9278,7 +8713,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 57163017100,
+  "latency": 53527758500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -9962,7 +9397,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9556414500,
+  "latency": 1148515800,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -10072,32 +9507,32 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 39076325600,
-  "orientation": "rot180",
-  "reference_casing": "upper",
+  "latency": 1162700700,
+  "reason": "no_alphabet",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 99,
-     "Y": 459
+     "X": 44,
+     "Y": 556
     },
     "Max": {
-     "X": 1556,
-     "Y": 768
+     "X": 1501,
+     "Y": 865
     }
    },
-   "glyphs": 289,
-   "matched": 89,
-   "unexplained": 2,
-   "violations": 0.0912863070539419,
-   "coverage": 0.36929460580912865,
-   "recovered": 2,
-   "spread": 0.12035978385323431,
-   "characters": "(ABCDEFGHIKLMNOPRSTUY",
-   "face": "Go Regular",
-   "x_height": 10.344827586206897,
-   "cap_height": 15,
-   "letter_gap": 0,
+   "glyphs": 272,
+   "matched": 82,
+   "unexplained": 0,
+   "violations": 0.42738589211618255,
+   "coverage": 0.34024896265560167,
+   "recovered": 0,
+   "spread": 0.0824198316874098,
+   "characters": "),.CGabcdefghiklmnorstuvy",
+   "face": "",
+   "x_height": 15,
+   "cap_height": 18,
+   "letter_gap": 1,
    "word_gap": 3,
    "rows": null
   },
@@ -10106,746 +9541,47 @@
     "claim": "brand",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "OWL'S BREW",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1313,
-       "Y": 1053
-      },
-      "Max": {
-       "X": 1372,
-       "Y": 1077
-      }
-     },
-     "text": "OWL’S BREW",
-     "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "L’SBE",
-      "emphasis": "OWRW",
-      "face": "FjallaOne Regular"
-     },
-     "d1": 434,
-     "d2": -1,
-     "radius": 276,
-     "bits": 2304,
-     "refined": true,
-     "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.19065730733082709,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "OWL'S BREW"
    },
    {
     "claim": "class",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "VODKA SPECIALTIES",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1277,
-       "Y": 1077
-      },
-      "Max": {
-       "X": 1450,
-       "Y": 1104
-      }
-     },
-     "text": "VODKA SPECIALTIES",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "V",
-      "face": "Go Regular"
-     },
-     "d1": 832,
-     "d2": -1,
-     "radius": 492,
-     "bits": 4096,
-     "refined": true,
-     "glyphs": 16,
-     "penalized": 9,
-     "spread": 0.19065730733082709,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "Zumbiel Beverage Services, LLC",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 58,
-       "Y": 98
-      },
-      "Max": {
-       "X": 404,
-       "Y": 125
-      }
-     },
-     "text": "ZUMBIEL BEVERAGE SERVICES, LLC",
-     "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "ZVV,",
-      "face": "Go Regular"
-     },
-     "d1": 1629,
-     "d2": -1,
-     "radius": 829,
-     "bits": 6912,
-     "refined": true,
-     "glyphs": 27,
-     "penalized": 14,
-     "spread": 0.19065730733082709,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "1611 AIR PARK DR Farmington MO 63640",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 58,
-       "Y": 217
-      },
-      "Max": {
-       "X": 297,
-       "Y": 243
-      }
-     },
-     "text": "1611 AIR PARK DR Farmington MO 63640",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "1611armington63640",
-      "face": "Go Regular"
-     },
-     "d1": 1698,
-     "d2": -1,
-     "radius": 922,
-     "bits": 7680,
-     "refined": true,
-     "glyphs": 30,
-     "penalized": 15,
-     "spread": 0.19065730733082709,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "5",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 296,
-       "Y": 99
-      },
-      "Max": {
-       "X": 348,
-       "Y": 122
-      }
-     },
-     "text": "PROOF 8",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "8",
-      "face": "Go Regular"
-     },
-     "d1": 254,
-     "d2": 1048,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "competitor": "8",
-     "competitor_text": "8 % ALC/VOL",
-     "spread": 0.19065730733082709,
-     "low_confidence": false,
-     "reading": "8",
-     "digit_confidence": 0.8395831478763128
-    }
+    "reason": "no_alphabet",
+    "expected": "5"
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "355",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 713,
-       "Y": 364
-      },
-      "Max": {
-       "X": 747,
-       "Y": 384
-      }
-     },
-     "text": "1 Litre",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "1itre",
-      "face": "Go Regular"
-     },
-     "d1": 377,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "spread": 0.19065730733082709,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5541436904969053
-    }
+    "reason": "no_alphabet",
+    "expected": "355"
    }
   ],
-  "reference": [
-   {
-    "claim": "reference_row_1",
-    "engine": "3acb08a3df88",
-    "status": "VERIFIED",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1443,
-       "Y": 459
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 476
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 2,
-     "mean_distance": 0.07059151785714286
-    }
-   },
-   {
-    "claim": "reference_row_2",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1234,
-       "Y": 479
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 499
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 11,
-     "prior_violations": 2,
-     "mean_distance": 0.08101663961038962
-    }
-   },
-   {
-    "claim": "reference_row_3",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1236,
-       "Y": 502
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 521
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "mean_distance": 0.16482979910714285
-    }
-   },
-   {
-    "claim": "reference_row_4",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1242,
-       "Y": 524
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 543
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 7,
-     "prior_violations": 1,
-     "mean_distance": 0.08745216836734694
-    }
-   },
-   {
-    "claim": "reference_row_5",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1233,
-       "Y": 545
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 564
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 6,
-     "mean_distance": 0.12295386904761905
-    }
-   },
-   {
-    "claim": "reference_row_6",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1233,
-       "Y": 567
-      },
-      "Max": {
-       "X": 1555,
-       "Y": 586
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 12,
-     "prior_violations": 3,
-     "mean_distance": 0.08324032738095238
-    }
-   },
-   {
-    "claim": "reference_row_7",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1241,
-       "Y": 590
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 609
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "mean_distance": 0.12730189732142858
-    }
-   },
-   {
-    "claim": "reference_row_8",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1309,
-       "Y": 621
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 637
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 15,
-     "mean_distance": 0.11644345238095238
-    }
-   },
-   {
-    "claim": "reference_row_9",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1455,
-       "Y": 651
-      },
-      "Max": {
-       "X": 1555,
-       "Y": 670
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 4,
-     "mean_distance": 0.13909040178571427
-    }
-   },
-   {
-    "claim": "reference_row_10",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 99,
-       "Y": 679
-      },
-      "Max": {
-       "X": 185,
-       "Y": 702
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 3,
-     "prior_violations": 1,
-     "mean_distance": 0.18098958333333334
-    }
-   },
-   {
-    "claim": "reference_row_11",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 244,
-       "Y": 702
-      },
-      "Max": {
-       "X": 419,
-       "Y": 722
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 2,
-     "unexplained": 2,
-     "prior_violations": 4,
-     "mean_distance": 0.1381138392857143,
-     "anomalies": [
-      {
-       "kind": 7,
-       "glyph": 247,
-       "char": "",
-       "distance": 0,
-       "strong": true,
-       "box": {
-        "Min": {
-         "X": 244,
-         "Y": 706
-        },
-        "Max": {
-         "X": 263,
-         "Y": 717
-        }
-       }
-      },
-      {
-       "kind": 7,
-       "glyph": 263,
-       "char": "",
-       "distance": 0,
-       "strong": true,
-       "box": {
-        "Min": {
-         "X": 393,
-         "Y": 707
-        },
-        "Max": {
-         "X": 419,
-         "Y": 722
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_12",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1389,
-       "Y": 701
-      },
-      "Max": {
-       "X": 1555,
-       "Y": 768
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 3,
-     "outliers": 1,
-     "prior_violations": 7,
-     "mean_distance": 0.1056547619047619,
-     "anomalies": [
-      {
-       "kind": 5,
-       "glyph": 271,
-       "char": "E",
-       "nearest": "B",
-       "distance": 0.48716517857142855,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1489,
-         "Y": 717
-        },
-        "Max": {
-         "X": 1494,
-         "Y": 752
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_13",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1403,
-       "Y": 741
-      },
-      "Max": {
-       "X": 1476,
-       "Y": 757
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 2,
-     "prior_violations": 4,
-     "mean_distance": 0.123046875
-    }
-   },
-   {
-    "claim": "reference_row_14",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 311,
-       "Y": 741
-      },
-      "Max": {
-       "X": 419,
-       "Y": 757
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 6,
-     "mean_distance": 0.15708705357142858
-    }
-   }
-  ],
-  "emphasis": [
-   {
-    "claim": "emphasis_1",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "expected": "GOVERNMENT WARNING:",
-    "observed": "regular",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1234,
-       "Y": 459
-      },
-      "Max": {
-       "X": 1556,
-       "Y": 497
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 433,
-     "d2": 0,
-     "radius": 614,
-     "bits": 4096,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "stroke_ratio": 0.8268516370589731
-    }
-   }
-  ]
+  "reference": null,
+  "emphasis": null
  },
  {
   "label": "0024",
@@ -10881,9 +9617,9 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7378556100,
+  "latency": 1217634100,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
@@ -10991,533 +9727,81 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 50806597500,
-  "orientation": "rot180",
-  "reference_casing": "upper",
+  "latency": 1262594700,
+  "reason": "no_alphabet",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 56,
-     "Y": 459
+     "X": 52,
+     "Y": 126
     },
     "Max": {
-     "X": 1545,
-     "Y": 645
+     "X": 1455,
+     "Y": 234
     }
    },
-   "glyphs": 241,
-   "matched": 75,
-   "unexplained": 0,
-   "violations": 0.04979253112033195,
-   "coverage": 0.3112033195020747,
-   "recovered": 0,
-   "spread": 0.12607607886904762,
-   "characters": "(ABCDEGHIKLMNOPRSTVW",
-   "face": "Go Regular",
-   "x_height": 11.03448275862069,
-   "cap_height": 16,
-   "letter_gap": 2,
+   "glyphs": 107,
+   "matched": 32,
+   "unexplained": 5,
+   "violations": 0.5169491525423728,
+   "coverage": 0.13278008298755187,
+   "recovered": 2,
+   "spread": 0.07227957589285713,
+   "characters": ",Aabcdefghknorty",
+   "face": "",
+   "x_height": 12,
+   "cap_height": 11,
+   "letter_gap": 0,
    "word_gap": 5,
-   "rows": null,
-   "unlearned": "Y"
+   "rows": null
   },
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "OWL'S BREW",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1306,
-       "Y": 357
-      },
-      "Max": {
-       "X": 1393,
-       "Y": 380
-      }
-     },
-     "text": "OWL'S BREW",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "'",
-      "face": "Go Regular"
-     },
-     "d1": 447,
-     "d2": -1,
-     "radius": 276,
-     "bits": 2304,
-     "refined": true,
-     "glyphs": 9,
-     "penalized": 4,
-     "spread": 0.1806857638888889,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "OWL'S BREW"
    },
    {
     "claim": "class",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "VODKA SPECIALTIES",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 53,
-       "Y": 849
-      },
-      "Max": {
-       "X": 177,
-       "Y": 874
-      }
-     },
-     "text": "VODKA SPECIALTIES",
-     "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "ODKASPECIALIES",
-      "emphasis": "VT",
-      "face": "Anton Regular"
-     },
-     "d1": 766,
-     "d2": -1,
-     "radius": 492,
-     "bits": 4096,
-     "refined": true,
-     "glyphs": 16,
-     "penalized": 8,
-     "spread": 0.1806857638888889,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "Zumbiel Beverage Services, LLC",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 104,
-       "Y": 199
-      },
-      "Max": {
-       "X": 319,
-       "Y": 223
-      }
-     },
-     "text": "ZUMBIEL BEVERAGE SERVICES, LLC",
-     "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "ZU,",
-      "face": "Go Regular"
-     },
-     "d1": 1485,
-     "d2": -1,
-     "radius": 829,
-     "bits": 6912,
-     "refined": true,
-     "glyphs": 27,
-     "penalized": 14,
-     "spread": 0.1806857638888889,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "1611 AIR PARK DR Farmington MO 63640",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 104,
-       "Y": 199
-      },
-      "Max": {
-       "X": 352,
-       "Y": 225
-      }
-     },
-     "text": "1611 AIR PARK DR FARMINGTON MO 63640",
-     "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "1611F63640",
-      "face": "Go Regular"
-     },
-     "d1": 1624,
-     "d2": -1,
-     "radius": 922,
-     "bits": 7680,
-     "refined": true,
-     "glyphs": 30,
-     "penalized": 15,
-     "spread": 0.1806857638888889,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "5",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 134,
-       "Y": 147
-      },
-      "Max": {
-       "X": 188,
-       "Y": 171
-      }
-     },
-     "text": "PROOF 1",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "F1",
-      "face": "Go Regular"
-     },
-     "d1": 275,
-     "d2": 338,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "competitor": "2",
-     "competitor_text": "4 PROOF",
-     "spread": 0.1806857638888889,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.8555366174780932
-    }
+    "reason": "no_alphabet",
+    "expected": "5"
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "355",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 177,
-       "Y": 147
-      },
-      "Max": {
-       "X": 231,
-       "Y": 169
-      }
-     },
-     "text": "1 Litre",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "1itre",
-      "face": "Go Regular"
-     },
-     "d1": 321,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 1,
-     "spread": 0.1806857638888889,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.8555366174780932
-    }
+    "reason": "no_alphabet",
+    "expected": "355"
    }
   ],
-  "reference": [
-   {
-    "claim": "reference_row_1",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 202,
-       "Y": 459
-      },
-      "Max": {
-       "X": 1543,
-       "Y": 482
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 10,
-     "prior_violations": 2,
-     "mean_distance": 0.06238839285714286
-    }
-   },
-   {
-    "claim": "reference_row_2",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1226,
-       "Y": 484
-      },
-      "Max": {
-       "X": 1544,
-       "Y": 504
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 6,
-     "mean_distance": 0.10890997023809523
-    }
-   },
-   {
-    "claim": "reference_row_3",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 232,
-       "Y": 499
-      },
-      "Max": {
-       "X": 1544,
-       "Y": 524
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 9,
-     "prior_violations": 1,
-     "mean_distance": 0.13969494047619047
-    }
-   },
-   {
-    "claim": "reference_row_4",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 75,
-       "Y": 525
-      },
-      "Max": {
-       "X": 1544,
-       "Y": 548
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 15,
-     "prior_violations": 3,
-     "mean_distance": 0.13340773809523812
-    }
-   },
-   {
-    "claim": "reference_row_5",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1224,
-       "Y": 549
-      },
-      "Max": {
-       "X": 1544,
-       "Y": 568
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 9,
-     "mean_distance": 0.12462797619047618
-    }
-   },
-   {
-    "claim": "reference_row_6",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 111,
-       "Y": 560
-      },
-      "Max": {
-       "X": 1545,
-       "Y": 596
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 15,
-     "prior_violations": 2,
-     "mean_distance": 0.1154017857142857
-    }
-   },
-   {
-    "claim": "reference_row_7",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "distance",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 1301,
-       "Y": 601
-      },
-      "Max": {
-       "X": 1545,
-       "Y": 619
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 11,
-     "mean_distance": 0.0984679383116883
-    }
-   },
-   {
-    "claim": "reference_row_8",
-    "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 56,
-       "Y": 626
-      },
-      "Max": {
-       "X": 198,
-       "Y": 645
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "prior_violations": 4
-    }
-   }
-  ],
-  "emphasis": [
-   {
-    "claim": "emphasis_1",
-    "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "outside_gate",
-    "expected": "GOVERNMENT WARNING:",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 202,
-       "Y": 459
-      },
-      "Max": {
-       "X": 1318,
-       "Y": 482
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 880,
-     "d2": 946,
-     "radius": 614,
-     "bits": 4096,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "stroke_ratio": 1.1270982885397056
-    }
-   }
-  ]
+  "reference": null,
+  "emphasis": null
  },
  {
   "label": "0026",
@@ -11553,35 +9837,34 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2118087800,
+  "latency": 579746300,
   "reason": "no_alphabet",
-  "orientation": "as_is",
+  "orientation": "rot90",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 61,
-     "Y": 954
+     "X": 90,
+     "Y": 171
     },
     "Max": {
-     "X": 235,
-     "Y": 1079
+     "X": 935,
+     "Y": 223
     }
    },
-   "glyphs": 141,
+   "glyphs": 123,
    "matched": 29,
-   "unexplained": 1,
-   "violations": 0.42916666666666664,
+   "unexplained": 7,
+   "violations": 0.6837606837606838,
    "coverage": 0.12033195020746888,
    "recovered": 0,
-   "spread": 0.0888671875,
-   "characters": "abcdeghklmnprstuy",
+   "spread": 0.09908234126984128,
+   "characters": "),Sabeghknoprstvy",
    "face": "",
-   "x_height": 5,
-   "cap_height": 4,
-   "letter_gap": 7,
+   "x_height": 9,
+   "cap_height": 28,
+   "letter_gap": 1,
    "word_gap": 7,
-   "rows": null,
-   "unlearned": "o"
+   "rows": null
   },
   "claims": [
    {
@@ -11665,7 +9948,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 36398670400,
+  "latency": 36177088500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -12158,617 +10441,55 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 33162584400,
-  "orientation": "inverted_rot90",
-  "reference_casing": "upper",
-  "alphabet": {
-   "block": {
-    "Min": {
-     "X": 851,
-     "Y": 795
-    },
-    "Max": {
-     "X": 1538,
-     "Y": 954
-    }
-   },
-   "glyphs": 281,
-   "matched": 85,
-   "unexplained": 0,
-   "violations": 0.02074688796680498,
-   "coverage": 0.35269709543568467,
-   "recovered": 0,
-   "spread": 0.06304770500685092,
-   "characters": "(),.1ABCDEGHILMNORSTUVY",
-   "face": "Go Regular",
-   "x_height": 15.172413793103448,
-   "cap_height": 22,
-   "letter_gap": 0.9999999999999999,
-   "word_gap": 7.999999999999999,
-   "rows": null
-  },
+  "latency": 436323900,
+  "reason": "no_alphabet",
+  "orientation": "as_is",
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "APONA VINEYARDS",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 314,
-       "Y": 669
-      },
-      "Max": {
-       "X": 547,
-       "Y": 703
-      }
-     },
-     "text": "APONA VINEYARDS",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "P",
-      "face": "Go Regular"
-     },
-     "d1": 710,
-     "d2": -1,
-     "radius": 430,
-     "bits": 3584,
-     "refined": true,
-     "glyphs": 14,
-     "penalized": 3,
-     "spread": 0.09692647961048455,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "APONA VINEYARDS"
    },
    {
     "claim": "class",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "TABLE WHITE WINE",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 232,
-       "Y": 341
-      },
-      "Max": {
-       "X": 429,
-       "Y": 373
-      }
-     },
-     "text": "Table White Wine",
-     "params": {
-      "casing": "title",
-      "weight": "heavy",
-      "synthesized": "Tablehiteine",
-      "emphasis": "WW",
-      "face": "Go Mono"
-     },
-     "d1": 815,
-     "d2": -1,
-     "radius": 430,
-     "bits": 3584,
-     "refined": true,
-     "glyphs": 14,
-     "penalized": 4,
-     "spread": 0.09692647961048455,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "Apona Vineyard, Apona Vineyards, LLC",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 314,
-       "Y": 669
-      },
-      "Max": {
-       "X": 547,
-       "Y": 703
-      }
-     },
-     "text": "APONA VINEYARDS, LLC",
-     "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "P",
-      "face": "Go Regular"
-     },
-     "d1": 875,
-     "d2": -1,
-     "radius": 553,
-     "bits": 4608,
-     "refined": true,
-     "glyphs": 18,
-     "penalized": 5,
-     "spread": 0.09692647961048455,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "Apona Vineyard, Apona Vineyards, LLC"
    },
    {
     "claim": "producer_2",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "25443 FLECK RD Veneta OR 97487",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 407,
-       "Y": 669
-      },
-      "Max": {
-       "X": 692,
-       "Y": 703
-      }
-     },
-     "text": "25443 FLECK RD VENETA OR 97487",
-     "params": {
-      "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "25443FLECKDVEET97487",
-      "emphasis": "RNAOR",
-      "face": "Go Mono"
-     },
-     "d1": 1517,
-     "d2": -1,
-     "radius": 768,
-     "bits": 6400,
-     "refined": true,
-     "glyphs": 25,
-     "penalized": 11,
-     "spread": 0.09692647961048455,
-     "low_confidence": false
-    }
+    "reason": "no_alphabet",
+    "expected": "25443 FLECK RD Veneta OR 97487"
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "13.2",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 376,
-       "Y": 706
-      },
-      "Max": {
-       "X": 450,
-       "Y": 730
-      }
-     },
-     "text": "1 PROOF",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "PF",
-      "face": "Go Regular"
-     },
-     "d1": 349,
-     "d2": 990,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 2,
-     "competitor": "1",
-     "competitor_text": "1 % ALC/VOL",
-     "spread": 0.09692647961048455,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.9405147275902968
-    }
+    "reason": "no_alphabet",
+    "expected": "13.2"
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
-    "expected": "750",
-    "candidates": [
-     "50"
-    ],
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 367,
-       "Y": 416
-      },
-      "Max": {
-       "X": 409,
-       "Y": 447
-      }
-     },
-     "text": "50ml",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "50ml",
-      "face": "Go Regular"
-     },
-     "d1": 133,
-     "d2": -1,
-     "radius": 154,
-     "bits": 1024,
-     "refined": true,
-     "glyphs": 4,
-     "penalized": 2,
-     "spread": 0.09692647961048455,
-     "low_confidence": false,
-     "reading": "50",
-     "digit_confidence": 0.9422725843785651
-    }
+    "status": "NOT_FOUND",
+    "reason": "no_alphabet",
+    "expected": "750"
    }
   ],
-  "reference": [
-   {
-    "claim": "reference_row_1",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "shape_class",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 851,
-       "Y": 795
-      },
-      "Max": {
-       "X": 1535,
-       "Y": 817
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 13,
-     "outliers": 1,
-     "prior_violations": 2,
-     "mean_distance": 0.0495364010989011,
-     "anomalies": [
-      {
-       "kind": 1,
-       "glyph": 31,
-       "char": "T",
-       "nearest": "O",
-       "distance": 0.2974330357142857,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1447,
-         "Y": 795
-        },
-        "Max": {
-         "X": 1461,
-         "Y": 816
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_2",
-    "engine": "3acb08a3df88",
-    "status": "MISMATCH",
-    "reason": "anomalies",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 852,
-       "Y": 833
-      },
-      "Max": {
-       "X": 1534,
-       "Y": 857
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 8,
-     "outliers": 4,
-     "mean_distance": 0.07652064732142858,
-     "anomalies": [
-      {
-       "kind": 5,
-       "glyph": 39,
-       "char": "U",
-       "nearest": "1",
-       "distance": 0.32700892857142855,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 873,
-         "Y": 833
-        },
-        "Max": {
-         "X": 893,
-         "Y": 855
-        }
-       }
-      },
-      {
-       "kind": 5,
-       "glyph": 45,
-       "char": "O",
-       "nearest": "M",
-       "distance": 0.30078125,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 966,
-         "Y": 833
-        },
-        "Max": {
-         "X": 988,
-         "Y": 855
-        }
-       }
-      },
-      {
-       "kind": 5,
-       "glyph": 73,
-       "char": "D",
-       "nearest": "M",
-       "distance": 0.26953125,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1353,
-         "Y": 833
-        },
-        "Max": {
-         "X": 1361,
-         "Y": 855
-        }
-       }
-      },
-      {
-       "kind": 5,
-       "glyph": 80,
-       "char": "T",
-       "nearest": "M",
-       "distance": 0.27455357142857145,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1431,
-         "Y": 833
-        },
-        "Max": {
-         "X": 1438,
-         "Y": 855
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_3",
-    "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "anomalies",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 851,
-       "Y": 852
-      },
-      "Max": {
-       "X": 1538,
-       "Y": 887
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 13,
-     "outliers": 3,
-     "mean_distance": 0.05533138736263735,
-     "anomalies": [
-      {
-       "kind": 5,
-       "glyph": 92,
-       "char": "C",
-       "nearest": "1",
-       "distance": 0.265625,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 878,
-         "Y": 865
-        },
-        "Max": {
-         "X": 892,
-         "Y": 886
-        }
-       }
-      },
-      {
-       "kind": 5,
-       "glyph": 122,
-       "char": "N",
-       "nearest": "1",
-       "distance": 0.265625,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1202,
-         "Y": 865
-        },
-        "Max": {
-         "X": 1209,
-         "Y": 886
-        }
-       }
-      },
-      {
-       "kind": 5,
-       "glyph": 133,
-       "char": "E",
-       "nearest": "M",
-       "distance": 0.26674107142857145,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1322,
-         "Y": 865
-        },
-        "Max": {
-         "X": 1329,
-         "Y": 886
-        }
-       }
-      }
-     ]
-    }
-   },
-   {
-    "claim": "reference_row_4",
-    "engine": "3acb08a3df88",
-    "status": "VERIFIED",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 852,
-       "Y": 896
-      },
-      "Max": {
-       "X": 1538,
-       "Y": 920
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 22,
-     "prior_violations": 3,
-     "mean_distance": 0.05197341720779221
-    }
-   },
-   {
-    "claim": "reference_row_5",
-    "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "anomalies",
-    "expected": "",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 851,
-       "Y": 928
-      },
-      "Max": {
-       "X": 1503,
-       "Y": 954
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 0,
-     "d2": 0,
-     "radius": 0,
-     "bits": 0,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "matched": 29,
-     "outliers": 1,
-     "mean_distance": 0.03244304187192118,
-     "anomalies": [
-      {
-       "kind": 1,
-       "glyph": 269,
-       "char": "L",
-       "nearest": "O",
-       "distance": 0.25892857142857145,
-       "strong": false,
-       "box": {
-        "Min": {
-         "X": 1388,
-         "Y": 928
-        },
-        "Max": {
-         "X": 1394,
-         "Y": 950
-        }
-       }
-      }
-     ]
-    }
-   }
-  ],
-  "emphasis": [
-   {
-    "claim": "emphasis_1",
-    "engine": "3acb08a3df88",
-    "status": "VERIFIED",
-    "expected": "GOVERNMENT WARNING:",
-    "observed": "heavy",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 851,
-       "Y": 795
-      },
-      "Max": {
-       "X": 1170,
-       "Y": 817
-      }
-     },
-     "text": "",
-     "params": {},
-     "d1": 243,
-     "d2": 399,
-     "radius": 614,
-     "bits": 4096,
-     "refined": false,
-     "glyphs": 0,
-     "penalized": 0,
-     "low_confidence": false,
-     "stroke_ratio": 1.471642278098497
-    }
-   }
-  ]
+  "reference": null,
+  "emphasis": null
  },
  {
   "label": "0029",
@@ -12805,7 +10526,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 28759369100,
+  "latency": 27588488100,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -13610,7 +11331,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 32913776500,
+  "latency": 33021036800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -14280,7 +12001,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 21714124300,
+  "latency": 23770924800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15020,7 +12741,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 26923019300,
+  "latency": 28207852300,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15820,7 +13541,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 45591888700,
+  "latency": 47642643800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -16357,8 +14078,8 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5502816300,
-  "orientation": "inverted_rot90",
+  "latency": 6626028300,
+  "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
    "block": {
@@ -16473,34 +14194,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 865,
-       "Y": 712
+       "X": 816,
+       "Y": 708
       },
       "Max": {
        "X": 935,
        "Y": 737
       }
      },
-     "text": "(8 Proof)",
+     "text": "55% alc./vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "8roof",
+      "synthesized": "55%alc./vol.",
       "face": "Go Regular"
      },
-     "d1": 456,
-     "d2": 535,
-     "radius": 307,
-     "bits": 2048,
+     "d1": 601,
+     "d2": -1,
+     "radius": 461,
+     "bits": 3072,
      "refined": true,
-     "glyphs": 8,
-     "penalized": 4,
-     "competitor": "8",
-     "competitor_text": "8 % ALC/VOL",
+     "glyphs": 12,
+     "penalized": 6,
      "spread": 0.16307291666666665,
      "low_confidence": false,
-     "reading": "8",
-     "digit_confidence": 0.5396644997588838
+     "reading": "55%",
+     "digit_confidence": 0.9119430230808636
     }
    },
    {
@@ -16511,32 +14230,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 865,
-       "Y": 712
+       "X": 666,
+       "Y": 711
       },
       "Max": {
-       "X": 935,
-       "Y": 737
+       "X": 757,
+       "Y": 739
       }
      },
-     "text": "8 fl. oz.",
+     "text": "1 LITER",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "8fl.oz.",
-      "face": "Go Regular"
+      "weight": "regular"
      },
-     "d1": 398,
+     "d1": 325,
      "d2": -1,
-     "radius": 269,
-     "bits": 1792,
+     "radius": 230,
+     "bits": 1536,
      "refined": true,
-     "glyphs": 7,
+     "glyphs": 6,
      "penalized": 3,
      "spread": 0.16307291666666665,
      "low_confidence": false,
-     "reading": "8",
-     "digit_confidence": 0.5396644997588838
+     "reading": "1",
+     "digit_confidence": 0.5002727404363945
     }
    }
   ],
@@ -16736,7 +14453,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 37438778800,
+  "latency": 39042904300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -17277,7 +14994,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 70138013100,
+  "latency": 71409447800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -17888,7 +15605,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4573264600,
+  "latency": 451389200,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -17998,7 +15715,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 61373353100,
+  "latency": 64427173700,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -18576,7 +16293,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3819744400,
+  "latency": 682212100,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -18686,7 +16403,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 33449754100,
+  "latency": 35077238400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -19142,35 +16859,34 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6665048100,
+  "latency": 856592800,
   "reason": "no_alphabet",
-  "orientation": "rot90",
+  "orientation": "as_is",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 936,
-     "Y": 539
+     "X": 383,
+     "Y": 1209
     },
     "Max": {
-     "X": 1489,
-     "Y": 700
+     "X": 712,
+     "Y": 1370
     }
    },
-   "glyphs": 153,
-   "matched": 71,
+   "glyphs": 210,
+   "matched": 60,
    "unexplained": 1,
-   "violations": 0.32083333333333336,
-   "coverage": 0.2946058091286307,
+   "violations": 0.29045643153526973,
+   "coverage": 0.24896265560165975,
    "recovered": 0,
-   "spread": 0.13870097458964645,
-   "characters": ")ACGabcdeghikmnorstuvwy",
+   "spread": 0.10074670493197278,
+   "characters": "),CGSabcdefghikmnoprstuvwy",
    "face": "",
-   "x_height": 7,
-   "cap_height": 7,
-   "letter_gap": 7,
-   "word_gap": 7,
-   "rows": null,
-   "unlearned": "p"
+   "x_height": 11,
+   "cap_height": 13,
+   "letter_gap": 1,
+   "word_gap": 2,
+   "rows": null
   },
   "claims": [
    {
@@ -19253,7 +16969,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3600167700,
+  "latency": 413783800,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -19363,33 +17079,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5971511800,
+  "latency": 1511723500,
   "reason": "no_alphabet",
-  "orientation": "as_is",
+  "orientation": "rot90",
   "alphabet": {
    "block": {
     "Min": {
-     "X": 165,
-     "Y": 944
+     "X": 430,
+     "Y": 953
     },
     "Max": {
-     "X": 1089,
-     "Y": 1013
+     "X": 825,
+     "Y": 1180
     }
    },
-   "glyphs": 117,
-   "matched": 30,
-   "unexplained": 4,
-   "violations": 0.6371308016877637,
-   "coverage": 0.12448132780082988,
+   "glyphs": 207,
+   "matched": 33,
+   "unexplained": 1,
+   "violations": 0.5833333333333334,
+   "coverage": 0.13692946058091288,
    "recovered": 0,
-   "spread": 0.053501674107142856,
-   "characters": ",Cabcehikloprst",
+   "spread": 0.05317873677248677,
+   "characters": "(abcdeghinorsty",
    "face": "",
-   "x_height": 5,
-   "cap_height": 5,
-   "letter_gap": 6,
-   "word_gap": 6,
+   "x_height": 15,
+   "cap_height": 16,
+   "letter_gap": 1,
+   "word_gap": 2,
    "rows": null
   },
   "claims": [
@@ -19474,8 +17190,8 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 34743592800,
-  "orientation": "inverted_rot90",
+  "latency": 36309358100,
+  "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
    "block": {
@@ -19537,7 +17253,7 @@
      "glyphs": 14,
      "penalized": 1,
      "spread": 0.03320844040012566,
-     "low_confidence": false
+     "low_confidence": true
     }
    },
    {
@@ -19573,7 +17289,7 @@
      "penalized": 16,
      "spread": 0.03320844040012566,
      "relearned": true,
-     "low_confidence": false
+     "low_confidence": true
     }
    },
    {
@@ -19608,7 +17324,7 @@
      "penalized": 3,
      "spread": 0.03320844040012566,
      "relearned": true,
-     "low_confidence": false
+     "low_confidence": true
     }
    },
    {
@@ -19644,7 +17360,7 @@
      "penalized": 14,
      "spread": 0.03320844040012566,
      "relearned": true,
-     "low_confidence": false
+     "low_confidence": true
     }
    },
    {
@@ -19690,35 +17406,35 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 605,
-       "Y": 1224
+       "X": 1077,
+       "Y": 1347
       },
       "Max": {
-       "X": 859,
-       "Y": 1262
+       "X": 1219,
+       "Y": 1387
       }
      },
-     "text": "ALCOHOL 8% BY VOLUME",
+     "text": "(1 PROOF)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "8%",
+      "synthesized": "1)",
       "face": "Go Regular"
      },
-     "d1": 913,
-     "d2": 665,
-     "radius": 653,
-     "bits": 4352,
+     "d1": 411,
+     "d2": 514,
+     "radius": 307,
+     "bits": 2048,
      "refined": true,
-     "glyphs": 17,
-     "penalized": 7,
-     "competitor": "4",
-     "competitor_text": "(8 PROOF)",
+     "glyphs": 8,
+     "penalized": 3,
+     "competitor": "1",
+     "competitor_text": "1 % ALC/VOL",
      "spread": 0.03320844040012566,
      "relearned": true,
-     "low_confidence": false,
-     "reading": "8",
-     "digit_confidence": 0.651975106800827
+     "low_confidence": true,
+     "reading": "1",
+     "digit_confidence": 0.6733432803111796
     }
    },
    {
@@ -19729,34 +17445,33 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 597,
-       "Y": 553
+       "X": 1077,
+       "Y": 1348
       },
       "Max": {
-       "X": 869,
-       "Y": 670
+       "X": 1153,
+       "Y": 1387
       }
      },
-     "text": "0 Liter",
+     "text": "1 LITER",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "0",
-      "emphasis": "iter",
+      "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 319,
+     "d1": 301,
      "d2": -1,
      "radius": 230,
      "bits": 1536,
      "refined": true,
      "glyphs": 6,
-     "penalized": 3,
+     "penalized": 2,
      "spread": 0.03320844040012566,
      "relearned": true,
-     "low_confidence": false,
-     "reading": "0",
-     "digit_confidence": 0.5334058955866251
+     "low_confidence": true,
+     "reading": "1",
+     "digit_confidence": 0.6733432803111796
     }
    }
   ],
@@ -19986,7 +17701,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3824988200,
+  "latency": 464942100,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -20104,7 +17819,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4712133000,
+  "latency": 626183800,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -20222,7 +17937,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 34869136500,
+  "latency": 37009706100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -20693,7 +18408,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 36777882600,
+  "latency": 38981540800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -21170,7 +18885,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 48537164200,
+  "latency": 51396103300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -21663,7 +19378,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 33556669100,
+  "latency": 35782815100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {

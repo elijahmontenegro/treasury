@@ -421,31 +421,22 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		done[at] = p
 		return p, nil
 	}
-	invertFirst := medianGray(gray) < 128
-	first, err := prepare(attempt{"as_is", 0, invertFirst})
+	// The direction the text runs is measured once from the arrangement
+	// of the components and the page is turned once (step 14b). The
+	// ladder that tried orientations until one read is gone: it cost time,
+	// and it let a wrong orientation accept an alphabet from other text.
+	// Polarity is not orientation, and is left to the separation step,
+	// which has extracted both since 10a.
+	first, err := prepare(attempt{"as_is", 0, false})
 	if err != nil {
 		return Result{}, err
 	}
-	verticalText := anisotropy(first.pre.Bin) < 1
-	var order []int
-	if verticalText {
-		order = []int{1, 3, 0, 2}
-	} else {
-		order = []int{0, 1, 3, 2}
+	var boxes []image.Rectangle
+	for _, c := range region.Components(first.pre.Bin) {
+		boxes = append(boxes, c.Box)
 	}
-	var attempts []attempt
-	for _, inv := range []bool{invertFirst, !invertFirst} {
-		for _, q := range order {
-			name := map[int]string{0: "as_is", 1: "rot90", 2: "rot180", 3: "rot270"}[q]
-			if inv {
-				name = "inverted_" + name
-				if q == 0 {
-					name = "inverted"
-				}
-			}
-			attempts = append(attempts, attempt{name, q, inv})
-		}
-	}
+	q := region.Direction(boxes, first.pre.Bin.W, first.pre.Bin.H)
+	attempts := []attempt{{map[int]string{0: "as_is", 1: "rot90", 2: "rot180", 3: "rot270"}[q], q, false}}
 	var pre *preprocess.Result
 	var lines []region.Line
 	var a *alphabet.Alphabet
