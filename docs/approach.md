@@ -1577,6 +1577,50 @@ Precision stays 1.00 on every claim of both sets. Recall rises on five of six cl
 
 **The cost is five times the latency**, 7.1 seconds a label to 35.3 on half B and 6.1 to 28.4 on the fifty. That is what exactness costs here: the refinement tries several framings per candidate, and each is now encoded rather than sharing whatever was computed first. The step-3 budget of five seconds was already exceeded at six; it is now exceeded by a factor of six, and closing that is a separate problem from correctness. A canonical framing per region would be as fast as before and just as order-independent, at the cost of a code that no longer depends on the framing the decoder chose; that is the alternative, unmeasured, and it is not what this step was asked for.
 
+### Step 13b: where the same-face distance comes from (2026-09-06)
+
+Gate, stated before the run: a sample of the claims that reach the right region in the warning's own face, decomposed into shape, spacing, framing and scale, with evidence images of the spelled codeword beside the region, and the dominant term named per claim type. No fix in this step.
+
+**The premise was wrong, and the evidence images are what showed it.** Step 12b reported that the alias candidates reach the right regions and score 0.19 to 0.27. Cropping the region each of those figures belongs to and reading it: of sixteen same-face claims sampled, the best-scoring region holds the claim's own text on six, holds it cut short or run on with its neighbours on three, and holds a different line of the same length on seven — "BEVERAGES IMPAIRS" for "GRAPEVINE DISTRIBUTORS", "CONTAINS SULFITES" for the same name on two more labels, "GOVERNMENT WARNING" for "BEMIS DISTILLERS, LLC", "DRINK" for "BRAHMAN", "car or" for "PATRÓN". Those distances were the score of a wrong pair, and 12b's sentence about them is corrected here.
+
+| the best-scoring region holds | claims | median distance | shape at matched glyphs | shape at merged or split glyphs | the structural penalty | unexplained ink |
+|---|---|---|---|---|---|---|
+| the claim's own text | 6 | 0.133 | 0.039 | 0.025 | 0.046 | 0.000 |
+| its own text, cut short or run on | 3 | 0.213 | 0.094 | 0.056 | 0.071 | 0.000 |
+| another line of the same length | 7 | 0.191 | 0.052 | 0.057 | 0.071 | 0.000 |
+
+**A same-length piece of the warning scores 0.19; the claim's own text scores 0.13.** That is the answer to why the radius sits at 0.12 and cannot simply be widened: the whole scale is compressed, and the margin between the right text and a wrong line of the same length is about six hundredths.
+
+**The six clean pairs, decomposed.** The engine sums four things: the Hamming distance over cleanly matched glyphs, the same distance measured at glyphs it had to merge or split, a quarter of a glyph for each such structural step, and a whole glyph for ink neither side explains.
+
+| label | claim | candidate | distance | radius | shape at matched glyphs | shape at merged or split | structural penalty | unexplained ink | dominant |
+|---|---|---|---|---|---|---|---|---|---|
+| 0038 | net | 750 ml | 0.079 | 0.150 | 0.019 | 0.010 | 0.050 | 0.000 | segmentation |
+| 0038 | brand | 45th Parallel | 0.115 | 0.120 | 0.030 | 0.044 | 0.042 | 0.000 | segmentation |
+| 0033 | brand | BODEGAS Y VINEDOS VEGA | 0.132 | 0.120 | 0.017 | 0.015 | 0.020 | 0.080 | unexplained ink |
+| 0048 | abv | 14.5% ALC. BY VOL. | 0.134 | 0.150 | 0.049 | 0.036 | 0.050 | 0.000 | segmentation |
+| 0050 | origin | PRODUCT OF FRANCE | 0.164 | 0.120 | 0.055 | 0.042 | 0.067 | 0.000 | segmentation |
+| 0029 | producer_1 | Mex-cal, Inc. | 0.188 | 0.120 | 0.115 | 0.011 | 0.062 | 0.000 | glyph shape |
+
+**Segmentation is the dominant term, on four of the six and on every claim type but one.** Merging and splitting costs twice: the structural penalty itself, and the shape distance measured through a composed or union code rather than a clean one. On the producer lines it is a quarter of the glyphs; even on a five-glyph fill it is one step. The two exceptions name themselves: 0029's producer is glyph shape, and 0033's brand is unexplained ink — the tilde of "VIÑEDOS" against a filed "VINEDOS", which is the diacritic case 12b adopted in the scoring and did not implement in the matching.
+
+**Spacing enters as segmentation, not as distance.** Each component is encoded on its own frame, so the gaps between glyphs never enter the Hamming term; what they do is make the cutter fuse or split, and that shows up as the structural steps above.
+
+**Scale is not the cause.** The sampled claims are set at 0.77 to 1.41 times the warning's x-height, median 1.02. Two of the sixteen are more than a quarter away from it. Framing is not a residual either: the reported distance is already the best of the framings the refinement searches, five of them over a baseline of plus or minus a pixel and a scale of plus or minus four percent.
+
+**One more thing the per-character numbers say.** A character the alphabet learned from the warning and rescaled to the claim's size is a worse target than the same character rendered by a bundled face:
+
+| characters | spelled from | n | median distance |
+|---|---|---|---|
+| capitals | the label's own type, rescaled | 48 | 0.113 |
+| capitals | a bundled face | 25 | 0.023 |
+| lower case | the label's own type, rescaled | 12 | 0.174 |
+| lower case | a bundled face | 1 | 0.227 |
+
+The warning is set at five to eleven pixels of x-height on these labels, and a sample cut from it and resampled up carries the resampling with it, while a synthesized glyph is drawn at the size it is needed. The alphabet's own type is what the whole method rests on, so this is worth its own step.
+
+**Evidence.** Region and spelled codeword for eight of the sampled claims are in `docs/evidence/decompose`, and the full decomposition, including the nine pairs whose region is not the claim's text, is in `real2/decompose.md` with what each region holds in `real2/decompose_regions.json`.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

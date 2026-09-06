@@ -24,6 +24,7 @@ import (
 	"sort"
 	"strings"
 
+	"treasury/internal/bitmap"
 	"treasury/ttb"
 	"treasury/verify"
 )
@@ -31,6 +32,7 @@ import (
 func main() {
 	claims := flag.String("claims", "", "comma-separated claim names; empty means all")
 	asJSON := flag.Bool("json", false, "one JSON object per claim")
+	out := flag.String("out", "", "directory for evidence images: the region above the codeword")
 	flag.Parse()
 	want := map[string]bool{}
 	for _, c := range strings.Split(*claims, ",") {
@@ -39,13 +41,13 @@ func main() {
 		}
 	}
 	for _, path := range flag.Args() {
-		if err := one(path, want, *asJSON); err != nil {
+		if err := one(path, want, *asJSON, *out); err != nil {
 			fmt.Fprintln(os.Stderr, path, err)
 		}
 	}
 }
 
-func one(path string, want map[string]bool, asJSON bool) error {
+func one(path string, want map[string]bool, asJSON bool, outDir string) error {
 	base := strings.TrimSuffix(path, filepath.Ext(path))
 	b, err := os.ReadFile(base + ".json")
 	if err != nil {
@@ -76,8 +78,30 @@ func one(path string, want map[string]bool, asJSON bool) error {
 		return err
 	}
 	refs, claims := ttb.Inputs(exp)
-	if _, err := eng.Verify(context.Background(), img, refs, claims); err != nil {
+	res, err := eng.Verify(context.Background(), img, refs, claims)
+	if err != nil {
 		return err
+	}
+	if outDir != "" {
+		if err := os.MkdirAll(outDir, 0o755); err != nil {
+			return err
+		}
+		for _, v := range res.Claims {
+			if v.Evidence == nil || (len(want) > 0 && !want[v.Claim]) {
+				continue
+			}
+			name := filepath.Base(base) + "_" + v.Claim
+			if v.Evidence.Crop != nil {
+				if err := bitmap.WritePNG(filepath.Join(outDir, name+"_region.png"), v.Evidence.Crop); err != nil {
+					return err
+				}
+			}
+			if p := v.Evidence.Codeword; p.Bin != nil {
+				if err := bitmap.WritePNG(filepath.Join(outDir, name+"_codeword.png"), p.Bin.ToGray()); err != nil {
+					return err
+				}
+			}
+		}
 	}
 	// One line per claim: the last breakdown is the one the verdict rests
 	// on, since the second pass re-decides what the first left undecided.

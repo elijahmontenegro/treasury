@@ -528,6 +528,10 @@ type ClaimBreakdown struct {
 	Structural      float64         `json:"structural"`  // structural steps as a share
 	Unexplained     float64         `json:"unexplained"` // unexplained glyphs as a share
 	Punctuation     float64         `json:"punctuation"` // punctuation as a share
+	Residual        float64         `json:"residual"`    // what the four terms do not account for
+	Structural1     int             `json:"structural_steps"`
+	Unexplained1    int             `json:"unexplained_steps"`
+	Punctuation1    int             `json:"punctuation_steps"`
 	RegionXHeight   float64         `json:"region_x_height"`
 	AlphabetXHeight float64         `json:"alphabet_x_height"`
 	Chars           []CharTerm      `json:"chars"`
@@ -547,7 +551,7 @@ func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion
 		AlphabetXHeight: sp.A.XHeight,
 	}
 	bits := p.obs.Enc.Bits()
-	var hamming, structural, unexplained int
+	var hamming, structural, unexplained, punct int
 	for _, st := range p.path {
 		kind := ""
 		switch st.Kind {
@@ -560,11 +564,24 @@ func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion
 			kind = "split"
 			structural++
 		case alphabet.Insert:
+			// The engine charges a mark the candidate does not have a
+			// quarter glyph and anything else a whole one; the split is
+			// the same here or the terms will not add up.
 			kind = "insert"
-			unexplained++
+			if st.Glyph < len(p.obs.Boxes) && isMark(p.obs.Boxes[st.Glyph], p.obs.XHeight) {
+				kind = "insert mark"
+				punct++
+			} else {
+				unexplained++
+			}
 		case alphabet.Delete:
 			kind = "delete"
-			unexplained++
+			if st.Char < len(text) && alphabet.IsPunct(text[st.Char]) {
+				kind = "delete mark"
+				punct++
+			} else {
+				unexplained++
+			}
 		default:
 			continue
 		}
@@ -584,8 +601,19 @@ func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion
 	b.Shape = float64(hamming) / den
 	b.Structural = float64(structural) * float64(bits) / 4 / den
 	b.Unexplained = float64(unexplained) * float64(bits) / den
-	b.Punctuation = math.Max(0, p.dist-b.Shape-b.Structural-b.Unexplained)
+	b.Punctuation = float64(punct) * float64(bits) / 4 / den
+	b.Residual = p.dist - b.Shape - b.Structural - b.Unexplained - b.Punctuation
+	b.Structural1, b.Unexplained1, b.Punctuation1 = structural, unexplained, punct
 	return b
+}
+
+// isMark says whether a component is too small to be a letter, the test
+// the alignment uses to charge punctuation less than a whole glyph.
+func isMark(box image.Rectangle, xh float64) bool {
+	if xh <= 0 {
+		return false
+	}
+	return float64(box.Dy())/xh < 0.4 && float64(box.Dx())/xh <= 0.6
 }
 
 // uncomparedStep reports a step of the winning alignment that explained

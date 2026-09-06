@@ -1,0 +1,19 @@
+{
+ "note": "Step 13b: what the best-scoring region for each sampled claim actually holds, read from the evidence crops in docs/evidence/decompose. 'own' is the claim's own text, 'own, cut' is its text with the region cut short or run on, and 'other' is a piece of some other line of the same length.",
+ "0004 brand": "other: \"car or\", from the warning",
+ "0008 brand": "other: \"DRINK\", from the warning",
+ "0011 brand": "other: \"100% PURO\"",
+ "0029 producer_1": "own: \"MEX - CAL, INC.\"",
+ "0031 producer_1": "own, cut: \"CAL, INC.\"",
+ "0033 brand": "own: \"BODEGAS Y VIÑEDOS VEGA DE\"",
+ "0036 producer_1": "other: \"GOVERNMENT WARNING\"",
+ "0038 brand": "own: \"45th Parallel\"",
+ "0038 net": "own: \"750 ml\"",
+ "0038 producer_1": "own, cut: \"to 45th Parallel Spirits to\"",
+ "0047 producer_1": "other: \"BEVERAGES IMPAIRS\", from the warning",
+ "0048 abv": "own: \"14.5% ALC. BY VOL.\"",
+ "0048 producer_1": "other: \"CONTAINS SULFITES\"",
+ "0050 net": "own, cut: \"750\"",
+ "0050 origin": "own: \"PRODUCT OF FRANCE\"",
+ "0050 producer_1": "other: \"CONTAINS SULFITES\""
+}
