@@ -68,27 +68,42 @@ type glyphClass struct {
 // callCache holds work shared by the claims of one verification: a
 // component is classified once however many word runs contain it.
 type callCache struct {
-	classes map[image.Rectangle]glyphClass
-	codes   map[codeKey]bitcode.Code // learned codes, one per box per image
+	classes map[classKey]glyphClass  // one per box per framing
+	codes   map[codeKey]bitcode.Code // learned codes, one per box per framing
+}
+
+// classKey is a component and the geometry it was classified at. The
+// classifier's frame is cut on the baseline at the region's x-height, and
+// the same component belongs to several word runs with x-heights of their
+// own, so the box alone did not identify what was classified (step 13a).
+type classKey struct {
+	box      image.Rectangle
+	baseline int
+	xh       float64
 }
 
 type codeKey struct {
-	pre *preprocess.Result
-	box image.Rectangle
+	pre      *preprocess.Result
+	box      image.Rectangle
+	baseline int
+	xh       float64
 }
 
 func newCallCache() *callCache {
-	return &callCache{classes: map[image.Rectangle]glyphClass{}, codes: map[codeKey]bitcode.Code{}}
+	return &callCache{classes: map[classKey]glyphClass{}, codes: map[codeKey]bitcode.Code{}}
 }
 
 // coder returns the learned encoder's code supplier for regions of pre:
-// one code per box, at the first framing asked for. The encoder was
-// trained with the engine's own framing jitter, so the framing's error is
-// inside what it ignores, and a component is encoded once rather than at
-// every scale and baseline the decoder tries.
+// one code per box and framing. It cached one code per box until step 13a,
+// computed at the first framing any claim asked for, which made a verdict
+// depend on which other claims were in the run and in what order: adding a
+// second accepted spelling to one claim moved another claim's alcohol
+// content from verified to not found. The key is now the framing as well,
+// so a code is a function of the component and the geometry it is measured
+// at, and of nothing else.
 func (c *callCache) coder(enc encoder.Encoder, pre *preprocess.Result) func(image.Rectangle, int, float64) bitcode.Code {
 	return func(box image.Rectangle, baseline int, xh float64) bitcode.Code {
-		k := codeKey{pre, box}
+		k := codeKey{pre, box, baseline, xh}
 		if code, ok := c.codes[k]; ok {
 			return code
 		}

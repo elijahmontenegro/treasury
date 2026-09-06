@@ -398,6 +398,9 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		return ev
 	}
 
+	if ClaimTrace != nil && best.region >= 0 && best.refined {
+		ClaimTrace(breakdown(c.Name, best, sp, regions, radius))
+	}
 	if best.dist > radius {
 		v.Evidence = evidence(best, competitor(best))
 		v.Status = NotFound
@@ -498,6 +501,91 @@ func (e *Engine) decide(c Claim, sp *spell.Speller, pre *preprocess.Result, regi
 		}
 	}
 	return v, &decided[0]
+}
+
+// CharTerm is one character of a candidate and what it contributed.
+type CharTerm struct {
+	Char    string  `json:"char"`
+	Kind    string  `json:"kind"`    // match, merge, split, insert, delete
+	Learned bool    `json:"learned"` // spelled from the label's own type, not synthesized
+	Dist    float64 `json:"dist"`    // normalized distance of the glyph to the character
+}
+
+// ClaimBreakdown is the best candidate for a claim taken apart into the
+// terms the engine sums: shape over matched glyphs, structural steps at a
+// quarter glyph, unexplained glyphs at a whole one, and punctuation at a
+// quarter. It is a diagnostic for step 13b; the engine does not set it.
+type ClaimBreakdown struct {
+	Claim, Text     string          `json:"-"`
+	Name            string          `json:"claim"`
+	Candidate       string          `json:"text"`
+	Region          image.Rectangle `json:"region"`
+	Dist            float64         `json:"dist"`
+	Radius          float64         `json:"radius"`
+	Glyphs          int             `json:"glyphs"`
+	Bits            int             `json:"bits"`
+	Shape           float64         `json:"shape"`       // the Hamming term as a share of the total
+	Structural      float64         `json:"structural"`  // structural steps as a share
+	Unexplained     float64         `json:"unexplained"` // unexplained glyphs as a share
+	Punctuation     float64         `json:"punctuation"` // punctuation as a share
+	RegionXHeight   float64         `json:"region_x_height"`
+	AlphabetXHeight float64         `json:"alphabet_x_height"`
+	Chars           []CharTerm      `json:"chars"`
+}
+
+// ClaimTrace, when set, receives the best candidate of every claim decided
+// through the free-text path, whether or not it was verified.
+var ClaimTrace func(ClaimBreakdown)
+
+// breakdown takes a scored pair apart for ClaimTrace.
+func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion, radius float64) ClaimBreakdown {
+	text := []rune(p.word_.Text)
+	b := ClaimBreakdown{
+		Name: name, Candidate: p.word_.Text, Region: regions[p.region].box,
+		Dist: p.dist, Radius: radius, Glyphs: p.glyphs, Bits: p.bits,
+		RegionXHeight:   regionXHeight(regions[p.region].comps),
+		AlphabetXHeight: sp.A.XHeight,
+	}
+	bits := p.obs.Enc.Bits()
+	var hamming, structural, unexplained int
+	for _, st := range p.path {
+		kind := ""
+		switch st.Kind {
+		case alphabet.Match:
+			kind = "match"
+		case alphabet.Merge, alphabet.Merge3, alphabet.Rejoin:
+			kind = "merge"
+			structural++
+		case alphabet.Split, alphabet.Split3:
+			kind = "split"
+			structural++
+		case alphabet.Insert:
+			kind = "insert"
+			unexplained++
+		case alphabet.Delete:
+			kind = "delete"
+			unexplained++
+		default:
+			continue
+		}
+		if st.Char >= len(text) {
+			continue
+		}
+		r := text[st.Char]
+		t := CharTerm{Char: string(r), Kind: kind, Learned: len(sp.A.Samples[r]) > 0}
+		if st.Kind == alphabet.Match && st.Glyph < len(p.obs.Codes) && p.target.Codes[st.Char] != nil {
+			d := encoder.NormalizedDistance(p.obs.Codes[st.Glyph], p.target.Codes[st.Char], bits)
+			t.Dist = d
+			hamming += int(math.Round(d * float64(bits)))
+		}
+		b.Chars = append(b.Chars, t)
+	}
+	den := math.Max(1, float64(p.bits))
+	b.Shape = float64(hamming) / den
+	b.Structural = float64(structural) * float64(bits) / 4 / den
+	b.Unexplained = float64(unexplained) * float64(bits) / den
+	b.Punctuation = math.Max(0, p.dist-b.Shape-b.Structural-b.Unexplained)
+	return b
 }
 
 // uncomparedStep reports a step of the winning alignment that explained

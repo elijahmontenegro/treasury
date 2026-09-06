@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"sort"
 	"strings"
 	"treasury/internal/imgops"
 
@@ -614,6 +615,18 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners []*scored) []rune {
 	var learned []rune
 	seen := map[rune]bool{}
+	// Every winner's candidates for a character are collected and the
+	// closest is taken, rather than the first claim to offer one (step
+	// 13a). Taking the first made what the alphabet learned depend on the
+	// order the claims were given in, so permuting the claims changed
+	// other claims' verdicts.
+	type cand struct {
+		w    *scored
+		step int
+		dist float64
+	}
+	best := map[rune]cand{}
+	bestSpan := map[rune]cand{}
 	for _, w := range winners {
 		if w == nil || !w.refined {
 			continue
@@ -622,7 +635,7 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 		if w.word_.Heavy && len(a.Spans) > 0 {
 			span = 0
 		}
-		for _, st := range w.path {
+		for i, st := range w.path {
 			if st.Kind != alphabet.Match {
 				continue
 			}
@@ -635,7 +648,8 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 			}
 			// Only a glyph that matched its own code closely teaches: a
 			// piece of a bad cut or a blurred glyph would poison the pool.
-			if encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], w.obs.Enc.Bits()) > e.opt.MaxCharSpread {
+			d := encoder.NormalizedDistance(w.obs.Codes[st.Glyph], w.target.Codes[st.Char], w.obs.Enc.Bits())
+			if d > e.opt.MaxCharSpread {
 				continue
 			}
 			if span < 0 && len(a.Samples[r]) > 0 {
@@ -644,9 +658,30 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 			if span >= 0 && len(a.Emphasis[span][r]) > 0 {
 				continue
 			}
-			pre := regions[w.region].pre
-			g := a.Rescaled(pre.Bin, pre.Gray, w.obs.Boxes[st.Glyph], w.obs.Baselines[st.Glyph], w.obs.XHeight)
-			a.AddSample(r, span, g)
+			into := best
+			if span >= 0 {
+				into = bestSpan
+			}
+			if cur, ok := into[r]; !ok || d < cur.dist {
+				into[r] = cand{w, i, d}
+			}
+		}
+	}
+	for _, pool := range []struct {
+		m    map[rune]cand
+		span int
+	}{{best, -1}, {bestSpan, 0}} {
+		chars := make([]rune, 0, len(pool.m))
+		for r := range pool.m {
+			chars = append(chars, r)
+		}
+		sort.Slice(chars, func(i, j int) bool { return chars[i] < chars[j] })
+		for _, r := range chars {
+			c := pool.m[r]
+			st := c.w.path[c.step]
+			pre := regions[c.w.region].pre
+			g := a.Rescaled(pre.Bin, pre.Gray, c.w.obs.Boxes[st.Glyph], c.w.obs.Baselines[st.Glyph], c.w.obs.XHeight)
+			a.AddSample(r, pool.span, g)
 			if !seen[r] {
 				seen[r] = true
 				learned = append(learned, r)

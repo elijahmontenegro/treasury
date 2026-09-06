@@ -158,3 +158,90 @@ func TestDeterminismSample(t *testing.T) {
 	}
 	t.Logf("%d labels, %d runs, digest %s", determinismLabels, len(digests), digests[0][:16])
 }
+
+// TestClaimSetIndependence pins what step 13a fixed: a claim's verdict must
+// not depend on which other claims were in the run, nor on the order they
+// were given in.
+//
+// TestDeterminismSample could not have caught this. It repeats one input,
+// so every run asks the same questions in the same order and the shared
+// code cache is filled the same way each time. The defect showed only when
+// the input changed: the learned code of a component was cached per box at
+// the first framing any claim asked for, so adding a second accepted
+// spelling to one claim moved another claim's alcohol content from verified
+// to not found on a real label.
+//
+// Order must not matter at all. Membership may, but only through the
+// harvest, which is a designed coupling: a claim that decides teaches the
+// alphabet the characters it printed, and a later claim reads them. So the
+// subset arm drops only claims that decided nothing, which teach nothing,
+// and requires every other verdict to be unchanged.
+func TestClaimSetIndependence(t *testing.T) {
+	if testing.Short() {
+		t.Skip("long: one label verified nine ways")
+	}
+	imgs, exps := sampleLabels(t)
+	eng, err := verify.New(verify.Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	const labels = 4
+	rng := rand.New(rand.NewSource(13))
+	for i := 0; i < labels && i < len(imgs); i++ {
+		refs, claims := ttb.Inputs(exps[i])
+		full, err := eng.Verify(context.Background(), imgs[i], refs, claims)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want := map[string]string{}
+		decided := map[string]bool{}
+		for _, v := range full.Claims {
+			want[v.Claim] = verdictDigest(t, v)
+			decided[v.Claim] = v.Status == verify.Verified || v.Status == verify.Mismatch
+		}
+		check := func(what string, got verify.Result) {
+			for _, v := range got.Claims {
+				if w, ok := want[v.Claim]; ok && w != verdictDigest(t, v) {
+					t.Errorf("label %d, %s: claim %q differs from the full run\n  full %s\n  this %s",
+						i, what, v.Claim, w, verdictDigest(t, v))
+				}
+			}
+		}
+		for p := range 3 {
+			shuffled := append([]verify.Claim(nil), claims...)
+			rng.Shuffle(len(shuffled), func(a, b int) { shuffled[a], shuffled[b] = shuffled[b], shuffled[a] })
+			got, err := eng.Verify(context.Background(), imgs[i], refs, shuffled)
+			if err != nil {
+				t.Fatal(err)
+			}
+			check(fmt.Sprintf("permutation %d", p+1), got)
+		}
+		for _, c := range claims {
+			if decided[c.Name] {
+				continue // it taught the alphabet; dropping it may change the rest
+			}
+			subset := make([]verify.Claim, 0, len(claims)-1)
+			for _, o := range claims {
+				if o.Name != c.Name {
+					subset = append(subset, o)
+				}
+			}
+			got, err := eng.Verify(context.Background(), imgs[i], refs, subset)
+			if err != nil {
+				t.Fatal(err)
+			}
+			check("without "+c.Name, got)
+		}
+	}
+}
+
+// verdictDigest is a verdict and all its evidence as one string.
+func verdictDigest(t testing.TB, v verify.Verdict) string {
+	t.Helper()
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sum := sha256.Sum256(b)
+	return hex.EncodeToString(sum[:8])
+}

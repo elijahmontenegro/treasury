@@ -77,7 +77,8 @@ func (e *Engine) readAll(reg encodedRegion, ri int, sp *spell.Speller, cache *ca
 	}
 	glyphs := make([]glyphClass, n)
 	for i, box := range reg.comps {
-		if g, ok := cache.classes[box]; ok && !byImage {
+		ck := classKey{box, reg.baselines[i], xh}
+		if g, ok := cache.classes[ck]; ok && !byImage {
 			glyphs[i] = g
 			continue
 		}
@@ -112,7 +113,7 @@ func (e *Engine) readAll(reg encodedRegion, ri int, sp *spell.Speller, cache *ca
 				g.second, g.secondProb = k, probs[k]
 			}
 		}
-		cache.classes[box] = g
+		cache.classes[ck] = g
 		glyphs[i] = g
 	}
 	isDigit := func(k int) bool { return k >= 0 && k < 10 }

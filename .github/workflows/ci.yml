@@ -55,3 +55,8 @@ jobs:
 
       - name: determinism
         run: go test -count=1 -timeout 40m -run TestDeterminismSample -v ./verify/
+
+      # Repeating one input cannot catch a verdict that depends on which
+      # other claims were in the run; this varies the input (step 13a).
+      - name: claim-set independence
+        run: go test -count=1 -timeout 40m -run TestClaimSetIndependence -v ./verify/

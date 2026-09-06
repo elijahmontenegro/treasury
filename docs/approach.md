@@ -1543,6 +1543,40 @@ Precision does not move: 1.00 on every claim on both sets, before and after. Nei
 
 **What it costs.** Thirty-five labels of half B and eight of the fifty now report no alphabet where they reported one, and their claims come back `no_alphabet` rather than not found. That is the honest reading: an alphabet learned from a quarter of the statute was never the label's alphabet, and every claim resting on it was already a miss.
 
+### Step 13a: the cache key, and a determinism test that varies the input (2026-09-06)
+
+Gate, stated before the run: verdicts identical under permuted and subset claim sets; the two verifications 12b lost recovered or their loss explained; both sets re-run and reported beside 12c's numbers, with the latency cost stated plainly.
+
+**Why the determinism test could not have caught this.** `TestDeterminismSample` verifies one fixed sample of twenty labels ten times and requires identical digests. Every run asks the same questions in the same order, so a cache filled in claim order is filled the same way each time and the digests agree. The defect showed only when the input changed: 12b added a second accepted spelling to one claim of 0047 and another claim's alcohol content went from verified to not found. A property tested by repetition is not the property that was wanted.
+
+**Three couplings, not one.**
+
+- The **learned code** of a component was cached per image and box and computed at the first framing any claim asked for. Its key is now the framing as well, so a code is a function of the component and the geometry it is measured at and of nothing else.
+- The **digit classifier's** result was cached per box alone, and its frame is cut on the baseline at the region's x-height; the same component belongs to several word runs with x-heights of their own. Its key is now the framing too.
+- The **harvest** taught a character from the first claim in the list that offered a sample of it. Which claim that was depended on the order the claims were given in. It now collects every winner's candidates and takes the closest, and adds them in a fixed order.
+
+The first was known from 12b. The other two were found by the new test, which failed on its first run with only the code key fixed.
+
+**The new test.** `TestClaimSetIndependence` verifies four labels of the same sample with their claims permuted three ways, and with subsets that drop one claim at a time. Every claim's verdict and evidence must be identical to its verdict in the full run. Order must not matter at all; membership may, but only through the harvest, which is a designed coupling — a claim that decides teaches the alphabet what it printed — so the subset arm drops only claims that decided nothing. It runs in CI beside the repetition test.
+
+**The gate on the two lost verifications.** 0047's alcohol content is verified again: it was the coupling, and the exact key removes it. 0038's brand is not, and the explanation is the other rule: it now reviews with `step_compared_nothing:merge3`, because that verification rested on a three-way merge that compared no shape — the rule 12b adopted to remove the false assertion on 0027. Its loss is that rule doing its job, not the cache.
+
+**Both sets, before and after.**
+
+| claim | the fifty, before | after | half B, before | after |
+|---|---|---|---|---|
+| brand | 0.04 | 0.08 | 0.19 | 0.21 |
+| class | 0.00 | 0.00 | 0.20 | 0.20 |
+| producer_1 | 0.11 | 0.11 | 0.14 | 0.16 |
+| origin | 0.43 | 0.43 | 0.21 | 0.24 |
+| abv | 0.02 | 0.04 | 0.13 | 0.14 |
+| net | 0.10 | 0.10 | 0.20 | 0.22 |
+| median latency | 6.1s | 28.4s | 7.1s | 35.3s |
+
+Precision stays 1.00 on every claim of both sets. Recall rises on five of six claims of half B and on two of the fifty: the fifty verify 19 of the 188 claims they carry against 16, with 0 false assertions. Two more brands verify (0005 and 0044) and three more claims move to review where a step compared nothing. One thing moved the wrong way and is recorded: half B finds one fewer of the five labels printing a wrong alcohol content, 0 of 5 against 1 of 5.
+
+**The cost is five times the latency**, 7.1 seconds a label to 35.3 on half B and 6.1 to 28.4 on the fifty. That is what exactness costs here: the refinement tries several framings per candidate, and each is now encoded rather than sharing whatever was computed first. The step-3 budget of five seconds was already exceeded at six; it is now exceeded by a factor of six, and closing that is a separate problem from correctness. A canonical framing per region would be as fast as before and just as order-independent, at the cost of a code that no longer depends on the framing the decoder chose; that is the alternative, unmeasured, and it is not what this step was asked for.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
