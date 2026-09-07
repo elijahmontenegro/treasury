@@ -2061,6 +2061,107 @@ The medians do point the way the intuition says: a brand's own region is about t
 
 **The finding.** Where the text sits does separate kinds of claim — statements sit against the warning, names sit away from it, by an order of magnitude — and it does not separate a brand from a producer. What would is knowing which region is the brand, which is a different question from where it is; the sample here is four true brand verifications and two false ones, which is thin, and it is thin in the direction that matters: every one of the six is a small instance of the name, not the brand as a person reads it.
 
+### Step 18a: segmentation, measured directly (2026-09-07)
+
+Gate, stated before the run: the error rates named and counted by condition, x-height, background, polarity and face, with the dominant mode identified.
+
+**The method.** `cmd/segment` draws labels with the generator, which records the box of every character it draws, puts them through the pipeline the engine uses, and asks of each character what became of it: a component of its own, a component shared with a neighbour, several components, or no ink kept. The truth boxes are carried through the channel and through the pipeline's own resize and deskew, so the comparison is to the glyphs actually printed and not to any verdict. Eighty labels, forty clean and forty through the channel, 85,134 characters.
+
+85134 glyphs measured; 0.39 come out as their own component, 0.35 fused with a neighbour, 0.17 in pieces, 0.09 with no ink kept
+
+
+**Fusion is the dominant mode**, and the stage is wrong more often than it is right.
+
+**Overall, and by condition.**
+
+| group | glyphs | its own | fused | split | dropped |
+|---|---|---|---|---|---|
+| clean | 36210 | 0.59 | 0.26 | 0.08 | 0.08 |
+| through the channel | 48924 | 0.25 | 0.42 | 0.23 | 0.10 |
+
+**By x-height, in pixels of the image the decoder sees.**
+
+| group | glyphs | its own | fused | split | dropped |
+|---|---|---|---|---|---|
+| 2 to 5 | 4301 | 0.17 | 0.27 | 0.06 | 0.51 |
+| 6 to 9 | 24327 | 0.21 | 0.48 | 0.19 | 0.12 |
+| 10 to 15 | 44385 | 0.45 | 0.32 | 0.19 | 0.04 |
+| over 15 | 12121 | 0.65 | 0.22 | 0.08 | 0.05 |
+
+**By how busy the ground under the glyph is.**
+
+| group | glyphs | its own | fused | split | dropped |
+|---|---|---|---|---|---|
+| plain, under 0.05 | 45912 | 0.40 | 0.34 | 0.16 | 0.10 |
+| patterned, 0.05 to 0.15 | 35440 | 0.37 | 0.38 | 0.18 | 0.07 |
+| busy, over 0.15 | 3782 | 0.55 | 0.29 | 0.08 | 0.08 |
+
+**By polarity.**
+
+| group | glyphs | its own | fused | split | dropped |
+|---|---|---|---|---|---|
+| dark on light | 66938 | 0.42 | 0.34 | 0.17 | 0.08 |
+| light on dark | 18196 | 0.31 | 0.41 | 0.16 | 0.12 |
+
+**By face.**
+
+| group | glyphs | its own | fused | split | dropped |
+|---|---|---|---|---|---|
+| the body | 84087 | 0.39 | 0.35 | 0.17 | 0.09 |
+| the brand, in a display face | 1047 | 0.40 | 0.52 | 0.04 | 0.03 |
+
+**What the table says.** The channel is the largest single factor: clean, three characters in five come out as their own component; through blur, rotation and JPEG at the rates the corpus draws them, one in four does, and fusion rises from 0.26 to 0.42. Size is next and it cuts both ways — below six pixels of x-height half the ink is dropped outright, between six and nine fusion peaks at 0.48, and only above fifteen does the stage get two characters in three right. Light type on a dark ground is worse than dark on light by eleven points of correctness, which is the polarity the separation step added at 10a and still handles least well. A busy ground is not the problem it was assumed to be: those glyphs come out slightly better, because on this corpus busy grounds carry larger type. And the brand's display face fuses most of all, 0.52, while dropping least.
+
+**The fifty, measured the only way they can be.** Real labels have no per-character truth, but the statute's 241 characters are known exactly, so the components inside a located warning block can be counted against them:
+
+| labels | components per statute character | characters the alignment matched |
+|---|---|---|
+| the 28 that learn an alphabet | 0.97, from 0.85 to 1.22 | 0.42 |
+| the 19 that locate a block and fail | 0.74, from 0.41 to 0.97 | 0.22 |
+
+A label that fails has three components for every four characters printed: a quarter of its warning has already been fused away before the alignment sees it, and the alignment then matches a fifth of the statute. That is 17b's finding with the cause named: not a bound set too tight, but characters that never arrived as characters.
+
+**Where this leaves the three investigations that pointed here.** 13b's merges and splits dominating the claim distance, 17b's labels matching fifty of 241 characters, and 17a's brand discarded before matching are one measurement: the stage that turns ink into glyphs is right 39 times in 100 on the corpus and drops a quarter of the warning's characters into their neighbours on the real labels that fail. Every threshold tuned downstream of it has been fitted to that.
+
+### Step 18b: what the separation step discards (2026-09-07)
+
+Gate, stated before the run: the discard rate measured, by size and face, with evidence images of discarded regions that hold claim text, and a stated finding on whether the legibility criteria can admit display type without admitting artwork.
+
+**The rate.** Over the fifty, the separation step considers 128905 pieces and keeps 52061: it discards three in five. By size that is a different statement than it sounds — the median discarded piece is 2 pixels tall and the median kept one 9.5.
+
+| why a piece was discarded | pieces | share of discards |
+|---|---|---|
+| too small | 43946 | 0.57 |
+| no contrast with its surround | 21543 | 0.28 |
+| the hole inside a letter | 4177 | 0.05 |
+| light ink on a light ground | 3940 | 0.05 |
+| no line of type around it | 1069 | 0.01 |
+| stroke is not one width | 838 | 0.01 |
+| a bar of a barcode | 563 | 0.01 |
+| dark ink on a dark ground | 403 | 0.01 |
+| taller than a letter | 288 | 0.00 |
+| a rule or a border | 77 | 0.00 |
+
+**Text-sized discards.** Of the 76844 pieces discarded, 17865 stand at least six pixels tall, about one for every three kept:
+
+| why a text-sized piece was discarded | pieces | share |
+|---|---|---|
+| no contrast with its surround | 10459 | 0.59 |
+| the hole inside a letter | 2785 | 0.16 |
+| light ink on a light ground | 2057 | 0.12 |
+| stroke is not one width | 838 | 0.05 |
+| a bar of a barcode | 563 | 0.03 |
+| no line of type around it | 548 | 0.03 |
+| taller than a letter | 288 | 0.02 |
+| dark ink on a dark ground | 258 | 0.01 |
+| a rule or a border | 69 | 0.00 |
+
+Kept text sits at a contrast of 0.22 to 0.50 against its own surround, median 0.35, where the bound is 0.10; the text-sized pieces discarded for contrast are below that tenth.
+
+**The evidence corrects step 17a.** 17a inferred from the size of the regions the engine matched that display type is rejected before the decoder sees it. The separation images say otherwise. On 0004 the words "PATRÓN" and "BARREL SELECT" are kept — drawn black in `docs/evidence/discard/0004_front_separation.png` — and what is discarded around them is the bee ornament, the label's frames and its rules. On 0035 "McKELVEY VINEYARDS" is kept and the diamond device around it is discarded. **The brand's own display type reaches the decoder on both.** What 17a measured was that the region the engine *matched* was a small instance of the name elsewhere on the label; the reason is not that the large one was thrown away, and that correction belongs with 17a's finding.
+
+**The finding on the criteria.** They already admit display type: a modulated serif and an outlined sans both survive on these labels, because both have consistent stroke width within a glyph and stand at a contrast of a fifth or more against their ground. What they discard at text size is overwhelmingly ink whose contrast against its immediate surround is under a tenth — ten thousand pieces of it — and the two evidence images show what lives in that band beside any faint text: the bee at contrast 0.04 to 0.09, the frame lines, the ghosted watermark behind the type. Lowering the bound would admit those with whatever text it gained. So the answer is that the criteria as they stand cannot be loosened into low-contrast display type without admitting ornament, because on this evidence the two are not separated by contrast, by stroke consistency or by size — the three things the step measures. Admitting them would need a fourth thing, and this step does not have one to offer.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

@@ -141,18 +141,22 @@ func outline(dst *image.RGBA, r image.Rectangle, c color.RGBA) {
 // population rather than from assumption.
 func report(name string, res *preprocess.Result, src image.Image) error {
 	type out struct {
-		Label      string    `json:"label"`
-		LongSide   int       `json:"long_side"`
-		Kept       int       `json:"kept"`
-		LightShare float64   `json:"light_share"`  // kept pieces that are light on dark
-		Contrast   []float64 `json:"contrast"`     // p10, p50, p90 of ink against its own ring
-		Ground     []float64 `json:"ground"`       // p10, p50, p90 of the ring's grey, dark-ink pieces
-		LightGnd   []float64 `json:"light_ground"` // the same for light-ink pieces
-		Busy       []float64 `json:"busy"`         // p50, p90 of the ring's own variation: text over something structured
-		Height     []float64 `json:"height"`       // p10, p50, p90 of kept piece height in pixels
-		Stroke     []float64 `json:"stroke"`
-		Barcode    int       `json:"barcode_bars"`
-		Rules      int       `json:"rules"`
+		Label      string         `json:"label"`
+		LongSide   int            `json:"long_side"`
+		Kept       int            `json:"kept"`
+		Rejected   map[string]int `json:"rejected"`     // by the reason each was refused
+		RejHeight  []float64      `json:"rej_height"`   // p10, p50, p90 of rejected piece height
+		RejBig     map[string]int `json:"rej_big"`      // discarded pieces at least six pixels tall, by reason
+		Tallest    []float64      `json:"tallest"`      // the five tallest pieces; negative means kept
+		LightShare float64        `json:"light_share"`  // kept pieces that are light on dark
+		Contrast   []float64      `json:"contrast"`     // p10, p50, p90 of ink against its own ring
+		Ground     []float64      `json:"ground"`       // p10, p50, p90 of the ring's grey, dark-ink pieces
+		LightGnd   []float64      `json:"light_ground"` // the same for light-ink pieces
+		Busy       []float64      `json:"busy"`         // p50, p90 of the ring's own variation: text over something structured
+		Height     []float64      `json:"height"`       // p10, p50, p90 of kept piece height in pixels
+		Stroke     []float64      `json:"stroke"`
+		Barcode    int            `json:"barcode_bars"`
+		Rules      int            `json:"rules"`
 	}
 	o := out{Label: name, LongSide: max(src.Bounds().Dx(), src.Bounds().Dy())}
 	var contrast, ground, lightGnd, busy, height, strokes []float64
@@ -188,6 +192,43 @@ func report(name string, res *preprocess.Result, src image.Image) error {
 	o.Busy = quantiles(busy, 0.5, 0.9)
 	o.Height = quantiles(height, 0.1, 0.5, 0.9)
 	o.Stroke = quantiles(strokes, 0.1, 0.5, 0.9)
+	rej := map[string]int{}
+	var rh []float64
+	type tall struct {
+		h    float64
+		kept bool
+	}
+	var talls []tall
+	for _, pc := range res.Pieces {
+		talls = append(talls, tall{float64(pc.Box.Dy()), pc.Kept})
+		if pc.Kept {
+			continue
+		}
+		reason := pc.Reason
+		if reason == "" {
+			reason = "unstated"
+		}
+		rej[reason]++
+		if pc.Box.Dy() >= 6 {
+			if o.RejBig == nil {
+				o.RejBig = map[string]int{}
+			}
+			o.RejBig[reason]++
+		}
+		rh = append(rh, float64(pc.Box.Dy()))
+	}
+	sort.Slice(talls, func(a, b int) bool { return talls[a].h > talls[b].h })
+	for i, t := range talls {
+		if i >= 5 {
+			break
+		}
+		v := t.h
+		if t.kept {
+			v = -v
+		}
+		o.Tallest = append(o.Tallest, v)
+	}
+	o.Rejected, o.RejHeight = rej, quantiles(rh, 0.1, 0.5, 0.9)
 	b, err := json.Marshal(o)
 	if err != nil {
 		return err
