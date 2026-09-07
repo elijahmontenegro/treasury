@@ -3,10 +3,6 @@ package verify
 import (
 	"math"
 	"testing"
-
-	"treasury/internal/alphabet"
-	"treasury/internal/preprocess"
-	"treasury/internal/region"
 )
 
 // TestAdoptedValuesAreLive is the check step 10c needed and did not have.
@@ -64,7 +60,6 @@ func TestEveryTunableIsRecorded(t *testing.T) {
 // functions the engine uses, and the destination must carry it.
 func TestOverrideReachesTheCode(t *testing.T) {
 	// The sweep writes package variables; put them back whatever happens.
-	defer restore()
 	// A value no default is, so that "it reached the code" and "it was
 	// already that" cannot be confused. Constants that are counts take a
 	// whole number, since a fraction truncates to zero and zero is how the
@@ -87,8 +82,7 @@ func TestOverrideReachesTheCode(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		pp, rp, ao := applyTune(tune, preprocess.Default(), region.Default(), alphabet.DefaultOptions())
-		got, err := liveIn(c, eng.opt, pp, rp, ao)
+		got, err := liveIn(c, eng.opt)
 		if err != nil {
 			t.Errorf("%s: %v", c.Name, err)
 			continue
@@ -97,18 +91,4 @@ func TestOverrideReachesTheCode(t *testing.T) {
 			t.Errorf("%s: an override of %g did not reach %s, which reads %g", c.Name, probe, c.Where, got)
 		}
 	}
-}
-
-// restore returns the package variables applyTune writes to their adopted
-// values, so that a sweep in one test does not leak into the next.
-func restore() {
-	for _, c := range Adopted {
-		switch c.Where {
-		case "alphabet.UnionGap":
-			alphabet.UnionGap = c.Value
-		case "alphabet.ClassBands":
-			alphabet.ClassBands = c.Value
-		}
-	}
-	restoreDigits()
 }

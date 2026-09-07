@@ -32,21 +32,12 @@ import (
 	"sync"
 	"time"
 
-	"treasury/internal/alphabet"
 	"treasury/internal/fontset"
 	"treasury/ttb"
 	"treasury/verify"
 )
 
-var claimEnc = flag.String("claim-encoder", "", "the code claims are decoded in: same (default) or learned")
-
-var digitMode = flag.String("digits", "", "how numeric fields are read: classifier (default), image, or synthetic")
-
-var without = flag.String("without", "", "comma-separated rules to remove, to measure the cost of deleting them")
-
 var tuneSet = flag.String("tune-set", "", "override constants by name, as name=value pairs separated by commas")
-
-var separate = flag.Bool("separate", true, "separate text from artwork before decoding rather than taking whatever is dark as ink")
 
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
@@ -70,18 +61,14 @@ type Truth struct {
 
 // Record is one label's outcome under one encoder.
 type Record struct {
-	Label     string                 `json:"label"`
-	Encoder   string                 `json:"encoder"`
-	Printed   ttb.Printed            `json:"printed"`
-	Augmented bool                   `json:"augmented"`
-	Latency   time.Duration          `json:"latency"`
-	Reason    string                 `json:"reason,omitempty"`
-	Orient    string                 `json:"orientation,omitempty"`
-	Casing    string                 `json:"reference_casing,omitempty"`
-	Alphabet  *verify.AlphabetReport `json:"alphabet,omitempty"`
-	Claims    []verify.Verdict       `json:"claims"`
-	Reference []verify.Verdict       `json:"reference"`
-	Emphasis  []verify.Verdict       `json:"emphasis"`
+	Label     string           `json:"label"`
+	Printed   ttb.Printed      `json:"printed"`
+	Augmented bool             `json:"augmented"`
+	Latency   time.Duration    `json:"latency"`
+	Reason    string           `json:"reason,omitempty"`
+	Claims    []verify.Verdict `json:"claims"`
+	Reference []verify.Verdict `json:"reference"`
+	Emphasis  []verify.Verdict `json:"emphasis"`
 }
 
 func run(dir string, encoders []string, workers int, tune bool, limit int, half string) error {
@@ -111,34 +98,19 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	if limit > 0 && limit < len(labels) {
 		labels = labels[:limit]
 	}
-	var records []Record
-	for _, enc := range encoders {
-		eng, err := verify.New(verify.Options{Encoder: enc, ClaimEncoder: *claimEnc, Digits: *digitMode, Without: rules(*without), Separate: separate, Tune: tuneMap(*tuneSet)})
-		if err != nil {
-			return err
-		}
-		recs, err := evaluate(eng, enc, labels, workers)
-		if err != nil {
-			return err
-		}
-		records = append(records, recs...)
+	eng, err := verify.New(verify.Options{Tune: tuneMap(*tuneSet)})
+	if err != nil {
+		return err
+	}
+	records, err := evaluate(eng, labels, workers)
+	if err != nil {
+		return err
 	}
 	if err := writeJSON(filepath.Join(dir, "records.json"), records); err != nil {
 		return err
 	}
 	var out strings.Builder
-	for _, enc := range encoders {
-		var recs []Record
-		for _, r := range records {
-			if r.Encoder == enc {
-				recs = append(recs, r)
-			}
-		}
-		out.WriteString(table(enc, recs, nil))
-	}
-	if tune {
-		out.WriteString(tuned(records, encoders[0]))
-	}
+	out.WriteString(table(records))
 	fmt.Print(out.String())
 	return os.WriteFile(filepath.Join(dir, "table.md"), []byte(out.String()), 0o644)
 }
@@ -161,7 +133,7 @@ func checkLeak(dir string) (string, error) {
 	return strings.Join(fontset.Leaked(m.Families), ", "), nil
 }
 
-func evaluate(eng *verify.Engine, enc string, labels []string, workers int) ([]Record, error) {
+func evaluate(eng *verify.Engine, labels []string, workers int) ([]Record, error) {
 	type job struct {
 		i    int
 		path string
@@ -175,7 +147,7 @@ func evaluate(eng *verify.Engine, enc string, labels []string, workers int) ([]R
 		go func() {
 			defer wg.Done()
 			for j := range jobs {
-				results[j.i], errs[j.i] = one(eng, enc, j.path)
+				results[j.i], errs[j.i] = one(eng, j.path)
 			}
 		}()
 	}
@@ -183,7 +155,7 @@ func evaluate(eng *verify.Engine, enc string, labels []string, workers int) ([]R
 	for i, p := range labels {
 		jobs <- job{i, p}
 		if (i+1)%25 == 0 {
-			fmt.Fprintf(os.Stderr, "%s: %d/%d labels (%.0fs)\n", enc, i+1, len(labels), time.Since(start).Seconds())
+			fmt.Fprintf(os.Stderr, "%d/%d labels (%.0fs)\n", i+1, len(labels), time.Since(start).Seconds())
 		}
 	}
 	close(jobs)
@@ -196,7 +168,7 @@ func evaluate(eng *verify.Engine, enc string, labels []string, workers int) ([]R
 	return results, nil
 }
 
-func one(eng *verify.Engine, enc, truthPath string) (Record, error) {
+func one(eng *verify.Engine, truthPath string) (Record, error) {
 	base := strings.TrimSuffix(truthPath, ".truth.json")
 	var t Truth
 	if err := readJSON(truthPath, &t); err != nil {
@@ -222,21 +194,8 @@ func one(eng *verify.Engine, enc, truthPath string) (Record, error) {
 		return Record{}, err
 	}
 	rec := Record{
-		Label: filepath.Base(base), Encoder: enc, Printed: t.Printed, Augmented: len(t.Aug) > 0,
-		Latency: time.Since(start), Reason: res.Reason, Orient: res.Orientation, Casing: res.ReferenceCasing, Alphabet: res.Alphabet, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
-	}
-	if rec.Alphabet != nil {
-		rec.Alphabet.Rows = nil
-	}
-	for i := range rec.Claims {
-		if rec.Claims[i].Evidence != nil {
-			rec.Claims[i].Evidence.Crop = nil
-		}
-	}
-	for i := range rec.Emphasis {
-		if rec.Emphasis[i].Evidence != nil {
-			rec.Emphasis[i].Evidence.Crop = nil
-		}
+		Label: filepath.Base(base), Printed: t.Printed, Augmented: len(t.Aug) > 0,
+		Latency: time.Since(start), Reason: res.Reason, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
 	}
 	return rec, nil
 }
@@ -339,86 +298,12 @@ func (t tally) recall() float64 {
 	return float64(t.tp) / float64(t.tp+t.fn)
 }
 
-// override lets tune re-derive a claim verdict from its evidence.
-type override struct {
-	freeRadius, enumRadius, tie float64
-}
-
-// rederive applies radius and tie margin to a claim's recorded evidence,
-// approximating the engine (which also weighs agreement across regions).
-func rederive(v verify.Verdict, o override) verify.Status {
-	ev := v.Evidence
-	if ev == nil || ev.Bits == 0 {
-		return v.Status
-	}
-	radius := o.freeRadius
-	if v.Claim == "abv" || v.Claim == "net" {
-		radius = o.enumRadius
-	}
-	d1 := float64(ev.D1) / float64(ev.Bits)
-	if d1 > radius {
-		if v.Status == verify.Skipped {
-			return verify.Skipped
-		}
-		return verify.NotFound
-	}
-	if ev.D2 >= 0 && ev.Refined {
-		d2 := float64(ev.D2) / float64(ev.Bits)
-		k := float64(max(1, differing(ev.Text, ev.CompetitorText)))
-		margin := math.Max(o.tie, 1.5*ev.Spread) * k / float64(max(1, ev.Glyphs))
-		if d2-d1 < margin {
-			return verify.Review
-		}
-	}
-	observed := v.Observed
-	if observed == "" {
-		observed = valueOf(v)
-	}
-	if observed == v.Expected {
-		return verify.Verified
-	}
-	return verify.Mismatch
-}
-
-// valueOf recovers the decoded value of a review verdict from its candidates.
-func valueOf(v verify.Verdict) string {
-	if len(v.Candidates) > 0 {
-		return v.Candidates[0]
-	}
-	return v.Observed
-}
-
-func differing(a, b string) int {
-	strip := func(s string) []rune {
-		var out []rune
-		for _, r := range s {
-			if r != ' ' {
-				out = append(out, r)
-			}
-		}
-		return out
-	}
-	x, y := strip(a), strip(b)
-	n := 0
-	for i := 0; i < len(x) && i < len(y); i++ {
-		if x[i] != y[i] {
-			n++
-		}
-	}
-	if len(x) > len(y) {
-		n += len(x) - len(y)
-	} else {
-		n += len(y) - len(x)
-	}
-	return n
-}
-
 // table renders the report for one encoder; with o set, claim verdicts are
 // re-derived from evidence under those thresholds.
 // crossFaceAndConventions reports recall split by whether a claim's face is
 // the warning's (the cross-face gap) and, per convention the real labels
 // showed, how many labels carry it and how they fare.
-func crossFaceAndConventions(recs []Record, o *override) string {
+func crossFaceAndConventions(recs []Record) string {
 	type split struct{ same, cross tally }
 	splits := map[string]*split{}
 	order := []string{"class", "producer_1", "producer_2", "origin", "abv", "net"}
@@ -441,9 +326,6 @@ func crossFaceAndConventions(recs []Record, o *override) string {
 				continue
 			}
 			st := v.Status
-			if o != nil {
-				st = rederive(v, *o)
-			}
 			base := strings.TrimSuffix(strings.TrimSuffix(v.Claim, "_1"), "_2")
 			if r.Printed.ClaimFaces[base] == r.Printed.BodyFace {
 				sp.same.add(st, w)
@@ -472,7 +354,7 @@ func crossFaceAndConventions(recs []Record, o *override) string {
 		{"crowded warning", func(p ttb.Printed) bool { return p.Crowded }},
 		{"none of these", func(p ttb.Printed) bool { return !p.WarningCaps && !p.Inverted && !p.Vertical && !p.Crowded }},
 	}
-	fmt.Fprintf(&b, "Convention coverage (free-text recall over brand, class, producer, origin):\n\n| convention | labels | no alphabet | free-text recall |\n|---|---|---|---|\n")
+	fmt.Fprintf(&b, "Convention coverage (free-text recall over brand, class, producer, origin):\n\n| convention | labels | nothing read | free-text recall |\n|---|---|---|---|\n")
 	for _, c := range convs {
 		n, noAlpha := 0, 0
 		var t tally
@@ -489,9 +371,6 @@ func crossFaceAndConventions(recs []Record, o *override) string {
 				case "brand", "class", "producer_1", "producer_2", "origin":
 					if w := want(r.Printed, v.Claim); w == "correct" {
 						st := v.Status
-						if o != nil {
-							st = rederive(v, *o)
-						}
 						t.add(st, w)
 					}
 				}
@@ -503,14 +382,14 @@ func crossFaceAndConventions(recs []Record, o *override) string {
 	return b.String()
 }
 
-func table(enc string, recs []Record, o *override) string {
+func table(recs []Record) string {
 	claims := []string{"brand", "class", "producer_1", "producer_2", "origin", "abv", "net"}
 	tallies := map[string]*tally{}
 	for _, c := range claims {
 		tallies[c] = &tally{}
 	}
 	var latencies []float64
-	noAlphabet := 0
+	noRead := 0
 	rowErr := tally{}       // wording and title-case errors: any row MISMATCH
 	rowClean := tally{}     // compliant labels: every row VERIFIED
 	emph := tally{}         // regular-header errors detected; compliant headers verified
@@ -518,7 +397,7 @@ func table(enc string, recs []Record, o *override) string {
 	for _, r := range recs {
 		latencies = append(latencies, r.Latency.Seconds())
 		if r.Reason == "no_alphabet" {
-			noAlphabet++
+			noRead++
 		}
 		bodyFamily := strings.Fields(r.Printed.BodyFace)
 		brandFamily := strings.Fields(r.Printed.BrandFace)
@@ -529,9 +408,6 @@ func table(enc string, recs []Record, o *override) string {
 				continue
 			}
 			status := v.Status
-			if o != nil {
-				status = rederive(v, *o)
-			}
 			w := want(r.Printed, v.Claim)
 			if v.Claim == "brand" && displayBrand {
 				brandDisplay.add(status, w)
@@ -595,14 +471,8 @@ func table(enc string, recs []Record, o *override) string {
 		return latencies[min(len(latencies)-1, int(p*float64(len(latencies))))]
 	}
 	var b strings.Builder
-	title := "## Encoder " + enc
-	if *claimEnc != "" && *claimEnc != "same" {
-		title += ", claims decoded with the " + *claimEnc + " encoder"
-	}
-	if o != nil {
-		title += fmt.Sprintf(" (tuned: free radius %.2f, enum radius %.2f, tie %.3f; half B)", o.freeRadius, o.enumRadius, o.tie)
-	}
-	fmt.Fprintf(&b, "%s\n\n%d labels, %d without an alphabet, latency median %.1fs p95 %.1fs\n\n", title, len(recs), noAlphabet, pct(0.5), pct(0.95))
+	title := "## The set"
+	fmt.Fprintf(&b, "%s\n\n%d labels, %d the reader found nothing on, latency median %.1fs p95 %.1fs\n\n", title, len(recs), noRead, pct(0.5), pct(0.95))
 	b.WriteString("| claim | n | precision | recall | review | mismatch found | not found on missing |\n|---|---|---|---|---|---|---|\n")
 	for _, c := range claims {
 		t := tallies[c]
@@ -611,130 +481,8 @@ func table(enc string, recs []Record, o *override) string {
 	fmt.Fprintf(&b, "| brand (display face) | %d | %.2f | %.2f | %.2f | | |\n", brandDisplay.n, brandDisplay.precision(), brandDisplay.recall(), float64(brandDisplay.review)/math.Max(1, float64(brandDisplay.n)))
 	fmt.Fprintf(&b, "\nReference rows: compliant labels with every row verified %d/%d (%d reviewed, %d failed); wording and title-case errors caught %d/%d.\n", rowClean.tp, rowClean.n, rowClean.review, rowClean.fp, rowErr.tp, rowErr.n)
 	fmt.Fprintf(&b, "Emphasis: correct on %d/%d labels (compliant headers verified and regular-weight headers caught).\n\n", emph.tp, emph.n)
-	b.WriteString(crossFaceAndConventions(recs, o))
+	b.WriteString(crossFaceAndConventions(recs))
 	return b.String()
-}
-
-// rowWeight recomputes a reference row's anomaly weight from its evidence:
-// unexplained glyphs and strong outliers one, weak outliers half.
-func rowWeight(v verify.Verdict) float64 {
-	if v.Evidence == nil {
-		return 0
-	}
-	w := 0.0
-	for _, a := range v.Evidence.Anomalies {
-		if a.Strong || a.Kind == alphabet.Insert || a.Kind == alphabet.Delete {
-			w++
-		} else {
-			w += 0.5
-		}
-	}
-	return w
-}
-
-// rowStatus re-derives a row verdict under a fail threshold; the shape-class
-// and distance rules are left as the engine decided them.
-func rowStatus(v verify.Verdict, fail float64) verify.Status {
-	if v.Status == verify.Mismatch && v.Reason != "anomalies" {
-		return v.Status
-	}
-	if v.Status == verify.NotFound {
-		return v.Status
-	}
-	w := rowWeight(v)
-	switch {
-	case w >= fail:
-		return verify.Mismatch
-	case w > 0:
-		return verify.Review
-	}
-	return verify.Verified
-}
-
-// rowScore is the share of wording and title-case errors caught minus the
-// share of compliant labels with a failed row, under a fail threshold.
-func rowScore(recs []Record, fail float64) (score float64, caught, errs, falseFails, compliant int) {
-	for _, r := range recs {
-		anyFail := false
-		for _, v := range r.Reference {
-			if rowStatus(v, fail) == verify.Mismatch {
-				anyFail = true
-			}
-		}
-		switch r.Printed.Error {
-		case "wording", "title_header":
-			errs++
-			if anyFail {
-				caught++
-			}
-		case "":
-			if len(r.Reference) > 0 {
-				compliant++
-				if anyFail {
-					falseFails++
-				}
-			}
-		}
-	}
-	if errs > 0 {
-		score += float64(caught) / float64(errs)
-	}
-	if compliant > 0 {
-		score -= float64(falseFails) / float64(compliant)
-	}
-	return
-}
-
-// tuned sweeps thresholds on half A and reports half B.
-func tuned(records []Record, enc string) string {
-	var a, bHalf []Record
-	for _, r := range records {
-		if r.Encoder != enc {
-			continue
-		}
-		var n int
-		fmt.Sscanf(r.Label, "%d", &n)
-		if n%2 == 0 {
-			a = append(a, r)
-		} else {
-			bHalf = append(bHalf, r)
-		}
-	}
-	// The objective is a stated exchange rate: a verdict that names
-	// something untrue costs FalseAssertionCost claims left unverified.
-	// Mean F1 trades one against one, and on this set that bought a
-	// hundredth of numeric recall for six more false verdicts; minimizing
-	// false verdicts alone trades the other way and takes every radius to
-	// its floor. Both were run and are recorded in the doc.
-	enumRadius := verify.DefaultNumericRadius
-	best, bestScore, bestF := override{0.12, enumRadius, 0.02}, math.Inf(-1), -1.0
-	for _, free := range []float64{0.08, 0.10, 0.12, 0.15, 0.18} {
-		for _, tie := range []float64{0.01, 0.02, 0.03, 0.05} {
-			{
-				o := override{free, enumRadius, tie}
-				sc, f := score(a, o), f1(a, o)
-				if sc > bestScore {
-					best, bestScore, bestF = o, sc, f
-				}
-			}
-		}
-	}
-	var rows strings.Builder
-	// The numeric radius is not swept. The sweep re-derives a verdict from
-	// the distances recorded for a claim, and since a numeric verdict also
-	// has to explain every glyph of the run it was read from, that model
-	// now predicts false assertions the engine does not make: 77 at 0.15
-	// on half A against the two the engine produced on half B. It is
-	// chosen by running half A at candidate values instead, and the run is
-	// in the approach doc.
-	fmt.Fprintf(&rows, "Numeric radius %.2f, not swept: chosen by running half A, since the re-derivation below cannot model a numeric verdict.\n\n", enumRadius)
-	fmt.Fprintf(&rows, "Reference row fail threshold (anomaly weight), half A → half B:\n\n| threshold | errors caught (A) | compliant false fails (A) | errors caught (B) | compliant false fails (B) |\n|---|---|---|---|---|\n")
-	for _, fail := range []float64{1, 1.5, 2, 3, 4} {
-		_, ca, ea, fa, na := rowScore(a, fail)
-		_, cb, eb, fb, nb := rowScore(bHalf, fail)
-		fmt.Fprintf(&rows, "| %.1f | %d/%d | %d/%d | %d/%d | %d/%d |\n", fail, ca, ea, fa, na, cb, eb, fb, nb)
-	}
-	return fmt.Sprintf("## Tuning on half A (%d labels): %d false assertions, mean F1 %.3f\n\n", len(a), falseAssertions(a, best), bestF) + table(enc, bHalf, &best) + rows.String() + "\n"
 }
 
 // f1 is the mean F1 of VERIFIED over the claims, with a penalty for wrong
@@ -747,78 +495,6 @@ func tuned(records []Record, enc string) string {
 // on a correct label is a rejection the reader will act on, where a miss is
 // work the reader was doing anyway.
 const FalseAssertionCost = 10
-
-// score is the tuner's objective: verified claims that are right, less the
-// exchange rate times the verdicts that name something untrue, over the
-// claims judged.
-func score(recs []Record, o override) float64 {
-	tallies := map[string]*tally{}
-	for _, r := range recs {
-		for _, v := range r.Claims {
-			t := tallies[v.Claim]
-			if t == nil {
-				t = &tally{}
-				tallies[v.Claim] = t
-			}
-			t.add(rederive(v, o), want(r.Printed, v.Claim))
-		}
-	}
-	tp, fp, n := 0, 0, 0
-	for _, t := range tallies {
-		tp += t.tp + t.mismatchHit
-		fp += t.fp
-		n += t.n
-	}
-	if n == 0 {
-		return 0
-	}
-	return float64(tp-FalseAssertionCost*fp) / float64(n)
-}
-
-func falseAssertions(recs []Record, o override) int {
-	tallies := map[string]*tally{}
-	for _, r := range recs {
-		for _, v := range r.Claims {
-			t := tallies[v.Claim]
-			if t == nil {
-				t = &tally{}
-				tallies[v.Claim] = t
-			}
-			t.add(rederive(v, o), want(r.Printed, v.Claim))
-		}
-	}
-	n := 0
-	for _, t := range tallies {
-		n += t.fp
-	}
-	return n
-}
-
-func f1(recs []Record, o override) float64 {
-	tallies := map[string]*tally{}
-	for _, r := range recs {
-		for _, v := range r.Claims {
-			t := tallies[v.Claim]
-			if t == nil {
-				t = &tally{}
-				tallies[v.Claim] = t
-			}
-			t.add(rederive(v, o), want(r.Printed, v.Claim))
-		}
-	}
-	sum, n := 0.0, 0
-	for _, t := range tallies {
-		p, r := t.precision(), t.recall()
-		if p+r > 0 {
-			sum += 2 * p * r / (p + r)
-		}
-		n++
-	}
-	if n == 0 {
-		return 0
-	}
-	return sum / float64(n)
-}
 
 func readJSON(path string, v any) error {
 	b, err := os.ReadFile(path)
@@ -834,14 +510,6 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	return os.WriteFile(path, append(b, '\n'), 0o644)
-}
-
-// rules splits the -without list.
-func rules(s string) []string {
-	if s == "" {
-		return nil
-	}
-	return strings.Split(s, ",")
 }
 
 // tuneMap parses -tune-set.
