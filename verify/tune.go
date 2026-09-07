@@ -53,6 +53,7 @@ const (
 	TuneSepMaxHeight   = "sep_max_height"   // 0.25
 	TuneSepMaxWidth    = "sep_max_width"    // 0.6
 	TuneSepMinArea     = "sep_min_area"     // 4
+	TuneMinCoverage    = "min_coverage"     // 0.30, added in 12c
 )
 
 // TuneNames is every constant a sweep may set, in the order the doc reports
@@ -64,7 +65,7 @@ var TuneNames = []string{
 	TuneRegionHGap, TuneRegionVCenter, TuneRegionWords, TuneRegionFused, TuneRegionMinArea,
 	TuneSepMaxRatio, TuneSepMaxSpread, TuneSepMinContrast, TuneSepSolid, TuneSepMinRun,
 	TuneSepRunHeight, TuneSepDarkGround, TuneSepLightGround, TuneSepBarField,
-	TuneSepMinHeight, TuneSepMaxHeight, TuneSepMaxWidth, TuneSepMinArea,
+	TuneSepMinHeight, TuneSepMaxHeight, TuneSepMaxWidth, TuneSepMinArea, TuneMinCoverage,
 }
 
 // value returns the override for a name, and whether it was given.
@@ -139,5 +140,6 @@ func applyOptions(o Options) Options {
 	set(TuneHeavyFactor, func(v float64) { o.HeavyFactor = v })
 	set(TuneMinGlyphs, func(v float64) { o.MinGlyphs = int(v) })
 	set(TuneUnitBound, func(v float64) { o.UnitBound = v })
+	set(TuneMinCoverage, func(v float64) { o.MinCoverage = v })
 	return o
 }

@@ -24,8 +24,8 @@ const Other = len(Classes) - 1
 // frame's height (1.6 above the baseline to 0.6 below) but narrower, so
 // the glyph fills the patch and its neighbours stay at the edges.
 var (
-	FrameW = 1.6
-	FrameH = 2.2
+	FrameW = 2.0 // refitted (14d)
+	FrameH = 1.8 // refitted (14d)
 )
 
 // Frame samples the gray image around a glyph into a Side×Side patch:

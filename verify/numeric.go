@@ -755,5 +755,7 @@ func (e *Engine) unitBound() float64 {
 	if e.opt.UnitBound > 0 {
 		return e.opt.UnitBound
 	}
-	return 1.6
+	// Step 10c chose 2.2 and recorded it; the value never reached the
+	// code, which returned 1.6 until step 14d found it in the sweep.
+	return 2.2
 }

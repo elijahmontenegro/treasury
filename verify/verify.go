@@ -179,7 +179,7 @@ type Result struct {
 // subset and then asserted 5% for a label printing 46.5%, a partial read
 // the wider radius accepts; precision is a constraint, so it stays at
 // 0.15.
-const DefaultNumericRadius = 0.15
+const DefaultNumericRadius = 0.15 // 0.20 gained on the subset and cost alcohol and net precision on half B (14d)
 
 // How a numeric field's value is obtained.
 const (
@@ -284,7 +284,7 @@ func (o Options) withDefaults() Options {
 		// corpus it verifies a brand on two labels that print a different
 		// one, because the declared brand also stands in the producer
 		// line. Precision is a constraint, so it stays at 0.12.
-		o.LearnedRadius = 0.12
+		o.LearnedRadius = 0.12 // 0.15 gained on the subset and cost brand precision on half B (14d)
 	}
 	if o.ViolationFraction == 0 {
 		o.ViolationFraction = 0.15 // retuned (10c): +7 claims, and labels with no alphabet 20 to 8 on the sweep subset

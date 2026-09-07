@@ -11,7 +11,7 @@ import (
 
 // UnionGap is how close two components must be, in x-heights, before they
 // are considered pieces of one glyph. Fitted to the old corpus at 0.15.
-var UnionGap = 0.15
+var UnionGap = 0.15 // 0.25 gained on the subset and cost alphabets on half B (14d)
 
 // Observed is a run of components in reading order with their frame codes.
 // Union codes of neighbouring components, which depend on the run alone,
