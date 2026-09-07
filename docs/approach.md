@@ -1719,6 +1719,36 @@ Gate, stated before the run: on the fifty, the orientation chosen per label agai
 
 **What it costs.** A label whose warning is set vertically and whose claims are upright can no longer have both: one turn serves one of them. That is the design the amendment asked for, and on this set it costs nothing measurable, because the labels concerned were verifying nothing anyway.
 
+### Step 14c: re-deciding the two learned components (2026-09-06)
+
+Gate, stated before the run: each component measured present and absent on both corpora, the contribution table, and a stated decision per component with its reason.
+
+**The conditional in the amendment does not fire.** It said that if font templates won in 14a, digits would be ordinary glyphs and the classifier's reason for existing would be gone. They did not win: they sit closer to the right text and equally close to the wrong text, so the separation is the same. Both components are therefore measured on their own merits.
+
+**Four arms, both corpora, on the engine 14a and 14b leave.**
+
+| kept | half B brand | class | producer | origin | alcohol | net | the fifty verified | recall | false |
+|---|---|---|---|---|---|---|---|---|---|
+| both | 0.19 | 0.17 | 0.15 | 0.22 | 0.09 | 0.13 | 19 | 0.10 | 0 |
+| the encoder alone | 0.19 | 0.17 | 0.15 | 0.22 | 0.05 | 0.22 | 19 | 0.10 | 0 |
+| the classifier alone | 0.19 | 0.16 | 0.10 | 0.09 | 0.08 | 0.10 | 9 | 0.05 | 1 |
+| neither | 0.19 | 0.16 | 0.10 | 0.10 | 0.03 | 0.15 | 11 | 0.06 | 1 |
+
+| kept | half B precision below 1.00 |
+|---|---|
+| both | all 1.00 |
+| the encoder alone | abv 0.87, net 0.98 |
+| the classifier alone | net 0.96 |
+| neither | abv 0.67, net 0.92 |
+
+**The encoder earns its place, decisively.** Take it away and half B's producer recall falls from 0.15 to 0.10, its origin from 0.22 to 0.09, its net from 0.13 to 0.10; on the fifty the verified claims fall from 19 to 9, brand from 0.08 to 0.04, producer from 0.11 to 0.05, origin from 0.43 to 0.21. It is what reads text set in a face the warning never showed, which 11b measured as most of the loss, and it is also what keeps the numeric path's precision at 1.00 rather than 0.96.
+
+**The classifier earns its place on precision, not on recall.** On the fifty it makes no difference at all: 19 verified with it and 19 without, the same claims. On half B it costs net recall, 0.13 against 0.22, and buys alcohol recall, 0.09 against 0.05. What decides it is the precision column: without the classifier, half B's alcohol precision is 0.87 and its net 0.98, which is nine wrong values asserted on labels printing the right one. A reading path that names a wrong number is the failure this build has spent five amendments removing, and no recall figure trades against it. The classifier is kept for that reason and no other, and the doc says so.
+
+**Both are kept.** Neither by inheritance: the encoder for the recall it carries and the precision it holds, the classifier for the false assertions it prevents in the numeric path.
+
+**A cost of 14b that the corpus shows and the fifty did not.** 14b's gate was the fifty, where removing the ladder changed no claim's recall. Half B, measured here, is where it shows: against 13a's numbers, brand falls 0.21 to 0.19, class 0.20 to 0.17, producer 0.16 to 0.15, origin 0.24 to 0.22, alcohol 0.14 to 0.09 and net 0.22 to 0.13, with latency 35.3 seconds to 27.1. The corpus sets its warning vertically on a fifth of its labels, as the fifty do, and one turn of the page can no longer serve both a vertical warning and upright claims. That is the design the amendment asked for and this is its price, stated where it can be seen.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

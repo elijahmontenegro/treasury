@@ -34,7 +34,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1013005900,
+  "latency": 1189743400,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -151,7 +151,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1957608100,
+  "latency": 2208033600,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -261,7 +261,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 31625081400,
+  "latency": 4454167600,
   "orientation": "rot90",
   "reference_casing": "as_given",
   "alphabet": {
@@ -282,14 +282,13 @@
    "coverage": 0.9087136929460581,
    "recovered": 0,
    "spread": 0.025023956597281342,
-   "characters": "),.ACGOSTabcdefghiklmnoprstuvwyz",
+   "characters": "),.ACGSabcdefghiklmnoprstuvwy",
    "face": "Go Regular",
    "x_height": 12,
    "cap_height": 17,
    "letter_gap": 2,
    "word_gap": 5,
-   "rows": null,
-   "learned": "OTz"
+   "rows": null
   },
   "claims": [
    {
@@ -300,12 +299,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 847,
-       "Y": 39
+       "X": 663,
+       "Y": 832
       },
       "Max": {
-       "X": 916,
-       "Y": 67
+       "X": 723,
+       "Y": 855
       }
      },
      "text": "Barullo",
@@ -315,15 +314,14 @@
       "synthesized": "B",
       "face": "Go Regular"
      },
-     "d1": 289,
+     "d1": 2097,
      "d2": -1,
-     "radius": 215,
-     "bits": 1792,
+     "radius": 1505,
+     "bits": 12544,
      "refined": true,
      "glyphs": 7,
-     "penalized": 3,
-     "spread": 0.024107360350603017,
-     "relearned": true,
+     "penalized": 2,
+     "spread": 0.025023956597281342,
      "low_confidence": false
     }
    },
@@ -335,40 +333,38 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 566,
+       "X": 306,
        "Y": 832
       },
       "Max": {
-       "X": 814,
+       "X": 567,
        "Y": 859
       }
      },
      "text": "Other Specialties \u0026 Proprietaries",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "therSpecialties\u0026Proprietaries",
+      "weight": "regular",
+      "synthesized": "\u0026P",
       "emphasis": "O",
-      "face": "PTSans Bold"
+      "face": "Go Regular"
      },
-     "d1": 1745,
+     "d1": 9477,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 14,
-     "spread": 0.024107360350603017,
-     "relearned": true,
+     "penalized": 8,
+     "spread": 0.025023956597281342,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "OZ TRADING GROUP INC",
-    "observed": "OZ TRADING GROUP INC",
     "evidence": {
      "region": {
       "Min": {
@@ -383,19 +379,19 @@
      "text": "Oz Trading Group Inc",
      "params": {
       "casing": "title",
-      "weight": "regular",
-      "synthesized": "z",
-      "emphasis": "OTI",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "zradingroupnc",
+      "emphasis": "OTGI",
+      "face": "PTSans Bold"
      },
-     "d1": 430,
+     "d1": 3772,
      "d2": -1,
-     "radius": 522,
-     "bits": 4352,
+     "radius": 3656,
+     "bits": 30464,
      "refined": true,
      "glyphs": 17,
      "penalized": 3,
-     "spread": 0.024107360350603017,
+     "spread": 0.025023956597281342,
      "low_confidence": false
     }
    },
@@ -418,20 +414,19 @@
      "text": "2806 E Nogal Ave Hidalgo Tx 78557",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "2806ogalveHidalgox78557",
-      "emphasis": "ENAT",
-      "face": "PTSans Bold"
+      "weight": "regular",
+      "synthesized": "2806Hx78557",
+      "emphasis": "ENT",
+      "face": "Go Regular"
      },
-     "d1": 862,
+     "d1": 8401,
      "d2": -1,
-     "radius": 829,
-     "bits": 6912,
+     "radius": 5806,
+     "bits": 48384,
      "refined": true,
      "glyphs": 27,
-     "penalized": 8,
-     "spread": 0.024107360350603017,
-     "relearned": true,
+     "penalized": 9,
+     "spread": 0.025023956597281342,
      "low_confidence": false
     }
    },
@@ -443,36 +438,33 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 109,
-       "Y": 1515
+       "X": 515,
+       "Y": 1325
       },
       "Max": {
-       "X": 170,
-       "Y": 1535
+       "X": 992,
+       "Y": 1384
       }
      },
-     "text": "PROOF 15",
+     "text": "Alc. by Vol. 4%",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "PF15",
-      "emphasis": "R",
+      "synthesized": "4%",
+      "emphasis": "V",
       "face": "Go Regular"
      },
-     "d1": 393,
-     "d2": 480,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 4384,
+     "d2": -1,
+     "radius": 3226,
+     "bits": 21504,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 4,
-     "competitor": "15",
-     "competitor_text": "15% ABV",
-     "spread": 0.024107360350603017,
-     "relearned": true,
+     "glyphs": 12,
+     "penalized": 3,
+     "spread": 0.025023956597281342,
      "low_confidence": false,
-     "reading": "15",
-     "digit_confidence": 0.9466890026678121
+     "reading": "4",
+     "digit_confidence": 0.5224719101123595
     }
    },
    {
@@ -483,33 +475,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 569,
-       "Y": 501
+       "X": 932,
+       "Y": 445
       },
       "Max": {
-       "X": 617,
-       "Y": 560
+       "X": 965,
+       "Y": 468
       }
      },
-     "text": "1L",
+     "text": "1 L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "1L",
       "face": "Go Regular"
      },
-     "d1": 329,
-     "d2": -1,
-     "radius": 77,
-     "bits": 512,
+     "d1": 556,
+     "d2": 809,
+     "radius": 538,
+     "bits": 3584,
      "refined": true,
      "glyphs": 2,
-     "penalized": 2,
-     "spread": 0.024107360350603017,
-     "relearned": true,
-     "low_confidence": false,
-     "reading": "7",
-     "digit_confidence": 0.7787775063646595
+     "penalized": 0,
+     "competitor": "187",
+     "competitor_text": "187 ml",
+     "spread": 0.025023956597281342,
+     "low_confidence": false
     }
    }
   ],
@@ -695,7 +686,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 28626118700,
+  "latency": 2324219100,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -733,12 +724,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 497,
-       "Y": 541
+       "X": 363,
+       "Y": 557
       },
       "Max": {
-       "X": 540,
-       "Y": 560
+       "X": 403,
+       "Y": 576
       }
      },
      "text": "PATRÓN",
@@ -748,14 +739,14 @@
       "synthesized": "Ó",
       "face": "Go Regular"
      },
-     "d1": 252,
+     "d1": 2046,
      "d2": -1,
-     "radius": 184,
-     "bits": 1536,
+     "radius": 1290,
+     "bits": 10752,
      "refined": true,
      "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.14962327892015392,
+     "penalized": 1,
+     "spread": 0.08992561000094483,
      "low_confidence": false
     }
    },
@@ -767,30 +758,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 260,
-       "Y": 352
+       "X": 294,
+       "Y": 504
       },
       "Max": {
-       "X": 343,
-       "Y": 375
+       "X": 359,
+       "Y": 527
       }
      },
      "text": "TEQUILA FB",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "EQUILFB",
-      "emphasis": "TA",
-      "face": "Lobster Regular"
+      "weight": "regular",
+      "synthesized": "Q",
+      "face": "Go Regular"
      },
-     "d1": 463,
+     "d1": 3002,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.14962327892015392,
+     "penalized": 0,
+     "spread": 0.08992561000094483,
      "low_confidence": false
     }
    },
@@ -802,29 +792,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 207,
-       "Y": 680
+       "X": 319,
+       "Y": 538
       },
       "Max": {
-       "X": 346,
-       "Y": 703
+       "X": 424,
+       "Y": 563
       }
      },
-     "text": "BACARDI U.S.A., INC.",
+     "text": "Bacardi U.s.a., Inc.",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "...,.",
+      "synthesized": "acardi.s.a.,nc.",
       "face": "Go Regular"
      },
-     "d1": 1137,
+     "d1": 6399,
      "d2": -1,
-     "radius": 553,
-     "bits": 4608,
+     "radius": 3871,
+     "bits": 32256,
      "refined": true,
      "glyphs": 18,
      "penalized": 8,
-     "spread": 0.14962327892015392,
+     "spread": 0.08992561000094483,
      "low_confidence": false
     }
    },
@@ -836,29 +826,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 202,
-       "Y": 487
+       "X": 259,
+       "Y": 508
       },
       "Max": {
-       "X": 487,
-       "Y": 527
+       "X": 540,
+       "Y": 547
       }
      },
-     "text": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134",
+     "text": "3011 Ponce De Leon Blvd Ste 900 Coral Gables Fl 33134",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "301190033134",
+      "synthesized": "3011onceeeonlvdte900oralablesl33134",
       "face": "Go Regular"
      },
-     "d1": 2509,
+     "d1": 16669,
      "d2": -1,
-     "radius": 1321,
-     "bits": 11008,
+     "radius": 9247,
+     "bits": 77056,
      "refined": true,
      "glyphs": 43,
-     "penalized": 23,
-     "spread": 0.14962327892015392,
+     "penalized": 18,
+     "spread": 0.08992561000094483,
      "low_confidence": false
     }
    },
@@ -870,34 +860,34 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 603,
-       "Y": 947
+       "X": 201,
+       "Y": 504
       },
       "Max": {
-       "X": 641,
-       "Y": 965
+       "X": 297,
+       "Y": 528
       }
      },
-     "text": "1 Proof",
+     "text": "40% alc./vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1roof",
+      "synthesized": "40%alc./vol.",
       "face": "Go Regular"
      },
-     "d1": 335,
-     "d2": 312,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 3906,
+     "d2": 3911,
+     "radius": 3226,
+     "bits": 21504,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "competitor": "4",
-     "competitor_text": "4% ABV",
-     "spread": 0.14962327892015392,
+     "glyphs": 12,
+     "penalized": 4,
+     "competitor": "90",
+     "competitor_text": "90% alc./vol.",
+     "spread": 0.08992561000094483,
      "low_confidence": false,
-     "reading": "4",
-     "digit_confidence": 0.7854598276074898
+     "reading": "40%",
+     "digit_confidence": 0.5201342281879194
     }
    },
    {
@@ -908,32 +898,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 603,
-       "Y": 947
+       "X": 444,
+       "Y": 489
       },
       "Max": {
-       "X": 641,
-       "Y": 965
+       "X": 462,
+       "Y": 511
       }
      },
-     "text": "1 Liter",
+     "text": "1L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1iter",
+      "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 281,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 544,
+     "d2": 693,
+     "radius": 538,
+     "bits": 3584,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "spread": 0.14962327892015392,
-     "low_confidence": false,
-     "reading": "4",
-     "digit_confidence": 0.7854598276074898
+     "glyphs": 2,
+     "penalized": 0,
+     "competitor": "750",
+     "competitor_text": "25.360542377466313 Fl. Oz.",
+     "spread": 0.08992561000094483,
+     "low_confidence": false
     }
    }
   ],
@@ -1196,7 +1186,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 33973970900,
+  "latency": 2467689700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1224,25 +1214,23 @@
    "letter_gap": 0,
    "word_gap": 1,
    "rows": null,
-   "learned": "PRT",
    "unlearned": "G"
   },
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "PATRÓN",
-    "observed": "PATRÓN",
     "evidence": {
      "region": {
       "Min": {
-       "X": 238,
-       "Y": 450
+       "X": 380,
+       "Y": 273
       },
       "Max": {
-       "X": 305,
-       "Y": 473
+       "X": 460,
+       "Y": 297
       }
      },
      "text": "PATRÓN",
@@ -1253,14 +1241,14 @@
       "emphasis": "AN",
       "face": "Lato Bold"
      },
-     "d1": 176,
+     "d1": 1578,
      "d2": -1,
-     "radius": 184,
-     "bits": 1536,
+     "radius": 1290,
+     "bits": 10752,
      "refined": true,
      "glyphs": 6,
-     "penalized": 1,
-     "spread": 0.16648029003267975,
+     "penalized": 0,
+     "spread": 0.12754818073062557,
      "low_confidence": false
     }
    },
@@ -1272,30 +1260,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 202,
-       "Y": 488
+       "X": 432,
+       "Y": 538
       },
       "Max": {
-       "X": 292,
-       "Y": 510
+       "X": 538,
+       "Y": 560
       }
      },
-     "text": "TEQUILA FB",
+     "text": "Tequila Fb",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "Q",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "TequilaFb",
+      "face": "Lato Bold"
      },
-     "d1": 434,
+     "d1": 3094,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.16648029003267975,
-     "relearned": true,
+     "penalized": 2,
+     "spread": 0.12754818073062557,
      "low_confidence": false
     }
    },
@@ -1315,22 +1302,21 @@
        "Y": 527
       }
      },
-     "text": "BACARDI U.S.A., INC.",
+     "text": "Bacardi U.s.a., Inc.",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "...,.",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "BacardiU.s.a.,Inc.",
+      "face": "Lato Bold"
      },
-     "d1": 1092,
+     "d1": 6440,
      "d2": -1,
-     "radius": 553,
-     "bits": 4608,
+     "radius": 3871,
+     "bits": 32256,
      "refined": true,
      "glyphs": 18,
-     "penalized": 9,
-     "spread": 0.16648029003267975,
-     "relearned": true,
+     "penalized": 6,
+     "spread": 0.12754818073062557,
      "low_confidence": false
     }
    },
@@ -1350,23 +1336,22 @@
        "Y": 600
       }
      },
-     "text": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134",
+     "text": "3011 Ponce De Leon Blvd Ste 900 Coral Gables Fl 33134",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "309003334",
+      "synthesized": "30onceeeonlvdte900oralablesl3334",
       "emphasis": "G",
       "face": "Go Regular"
      },
-     "d1": 2248,
+     "d1": 18207,
      "d2": -1,
-     "radius": 1321,
-     "bits": 11008,
+     "radius": 9247,
+     "bits": 77056,
      "refined": true,
      "glyphs": 43,
-     "penalized": 19,
-     "spread": 0.16648029003267975,
-     "relearned": true,
+     "penalized": 21,
+     "spread": 0.12754818073062557,
      "low_confidence": false
     }
    },
@@ -1378,43 +1363,71 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 339,
-       "Y": 232
+       "X": 319,
+       "Y": 538
       },
       "Max": {
-       "X": 387,
-       "Y": 253
+       "X": 423,
+       "Y": 563
       }
      },
-     "text": "5% ABV",
+     "text": "7% alc. by vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "5%",
+      "synthesized": "7%alc.byvol.",
       "face": "Go Regular"
      },
-     "d1": 229,
-     "d2": 281,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 3940,
+     "d2": 4683,
+     "radius": 3226,
+     "bits": 21504,
      "refined": true,
-     "glyphs": 5,
-     "penalized": 2,
-     "competitor": "2.5",
-     "competitor_text": "5 Proof",
-     "spread": 0.16648029003267975,
-     "relearned": true,
+     "glyphs": 12,
+     "penalized": 4,
+     "competitor": "3.5",
+     "competitor_text": "(7 Proof)",
+     "spread": 0.12754818073062557,
      "low_confidence": false,
-     "reading": "5",
-     "digit_confidence": 0.8689208476142453
+     "reading": "7",
+     "digit_confidence": 0.537542662116041
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "750"
+    "expected": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 312,
+       "Y": 761
+      },
+      "Max": {
+       "X": 369,
+       "Y": 781
+      }
+     },
+     "text": "0.375L",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "0.375",
+      "face": "Go Regular"
+     },
+     "d1": 1761,
+     "d2": 1798,
+     "radius": 1613,
+     "bits": 10752,
+     "refined": true,
+     "glyphs": 6,
+     "penalized": 1,
+     "competitor": "200",
+     "competitor_text": "200 mL",
+     "spread": 0.12754818073062557,
+     "low_confidence": false
+    }
    }
   ],
   "reference": [
@@ -1891,7 +1904,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 53851127200,
+  "latency": 3747698300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -1929,29 +1942,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 571,
-       "Y": 1140
+       "X": 705,
+       "Y": 752
       },
       "Max": {
-       "X": 651,
-       "Y": 1166
+       "X": 828,
+       "Y": 778
       }
      },
      "text": "SUPER LYTE",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "SUPERLYTE",
-      "face": "PTSans Regular"
+      "weight": "regular"
      },
-     "d1": 359,
+     "d1": 2230,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 4,
-     "spread": 0.022876529374708413,
+     "penalized": 2,
+     "spread": 0.03775129770594157,
      "low_confidence": false
     }
    },
@@ -1964,11 +1975,11 @@
      "region": {
       "Min": {
        "X": 571,
-       "Y": 973
+       "Y": 1036
       },
       "Max": {
-       "X": 830,
-       "Y": 1010
+       "X": 832,
+       "Y": 1062
       }
      },
      "text": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
@@ -1978,14 +1989,14 @@
       "synthesized": "\u0026",
       "face": "Go Regular"
      },
-     "d1": 1625,
+     "d1": 10742,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 14,
-     "spread": 0.022876529374708413,
+     "penalized": 11,
+     "spread": 0.03775129770594157,
      "low_confidence": false
     }
    },
@@ -1997,29 +2008,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 572,
-       "Y": 1114
+       "X": 649,
+       "Y": 1140
       },
       "Max": {
-       "X": 755,
-       "Y": 1140
+       "X": 790,
+       "Y": 1170
       }
      },
      "text": "THE LION BREWERY, INC.",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "THELIONBREWERY,INC.",
-      "face": "PTSans Regular"
+      "weight": "regular"
      },
-     "d1": 981,
+     "d1": 6727,
      "d2": -1,
-     "radius": 584,
-     "bits": 4864,
+     "radius": 4086,
+     "bits": 34048,
      "refined": true,
      "glyphs": 19,
-     "penalized": 8,
-     "spread": 0.022876529374708413,
+     "penalized": 7,
+     "spread": 0.03775129770594157,
      "low_confidence": false
     }
    },
@@ -2031,12 +2040,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 572,
-       "Y": 1228
+       "X": 571,
+       "Y": 1010
       },
       "Max": {
-       "X": 831,
-       "Y": 1258
+       "X": 830,
+       "Y": 1036
       }
      },
      "text": "1001 SATHERS DR Pittston PA 18640",
@@ -2046,63 +2055,93 @@
       "synthesized": "1001ittston18640",
       "face": "Go Regular"
      },
-     "d1": 1542,
+     "d1": 9944,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 6021,
+     "bits": 50176,
      "refined": true,
      "glyphs": 28,
-     "penalized": 15,
-     "spread": 0.022876529374708413,
+     "penalized": 10,
+     "spread": 0.03775129770594157,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "VERIFIED",
     "expected": "4.5",
-    "candidates": [
-     "4.5"
-    ],
+    "observed": "4.5",
     "evidence": {
      "region": {
       "Min": {
-       "X": 103,
+       "X": 920,
        "Y": 1227
       },
       "Max": {
-       "X": 205,
-       "Y": 1254
+       "X": 1098,
+       "Y": 1260
       }
      },
-     "text": "4.5% Alc./Vol.",
+     "text": "4.5% ALC. BY VOL.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "45%lc/ol",
+      "synthesized": "45%",
       "face": "Go Regular"
      },
-     "d1": 426,
+     "d1": 3498,
      "d2": -1,
-     "radius": 499,
-     "bits": 3328,
+     "radius": 3763,
+     "bits": 25088,
      "refined": true,
-     "glyphs": 13,
-     "penalized": 6,
-     "spread": 0.022876529374708413,
+     "glyphs": 14,
+     "penalized": 3,
+     "spread": 0.03775129770594157,
      "low_confidence": false,
      "reading": "4.5%",
-     "digit_confidence": 0.812761802849599
+     "digit_confidence": 0.6262626262626262
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "355"
+    "status": "REVIEW",
+    "expected": "355",
+    "candidates": [
+     "200",
+     "375"
+    ],
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 753,
+       "Y": 423
+      },
+      "Max": {
+       "X": 820,
+       "Y": 450
+      }
+     },
+     "text": "(200 mL)",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "00m",
+      "face": "Go Regular"
+     },
+     "d1": 1366,
+     "d2": 1397,
+     "radius": 1882,
+     "bits": 12544,
+     "refined": true,
+     "glyphs": 7,
+     "penalized": 1,
+     "competitor": "375",
+     "competitor_text": "(375 mL)",
+     "spread": 0.03775129770594157,
+     "low_confidence": false
+    }
    }
   ],
   "reference": [
@@ -2675,7 +2714,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 42486866700,
+  "latency": 3966944200,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -2713,12 +2752,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 431,
-       "Y": 519
+       "X": 402,
+       "Y": 481
       },
       "Max": {
-       "X": 542,
-       "Y": 548
+       "X": 523,
+       "Y": 505
       }
      },
      "text": "JOHNNY TEJAS",
@@ -2729,14 +2768,14 @@
       "emphasis": "ONNTEA",
       "face": "FjallaOne Regular"
      },
-     "d1": 592,
+     "d1": 3962,
      "d2": -1,
-     "radius": 338,
-     "bits": 2816,
+     "radius": 2365,
+     "bits": 19712,
      "refined": true,
      "glyphs": 11,
-     "penalized": 5,
-     "spread": 0.053365211177711175,
+     "penalized": 3,
+     "spread": 0.04103837708050877,
      "low_confidence": false
     }
    },
@@ -2749,28 +2788,29 @@
      "region": {
       "Min": {
        "X": 100,
-       "Y": 404
+       "Y": 498
       },
       "Max": {
-       "X": 518,
-       "Y": 438
+       "X": 542,
+       "Y": 548
       }
      },
      "text": "Other Specialties \u0026 Proprietaries",
      "params": {
       "casing": "title",
-      "weight": "regular",
-      "synthesized": "therpecialties\u0026roprietaries",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "therSpecialties\u0026Proprietaries",
+      "emphasis": "O",
+      "face": "FjallaOne Regular"
      },
-     "d1": 1894,
+     "d1": 12037,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 16,
-     "spread": 0.053365211177711175,
+     "penalized": 11,
+     "spread": 0.04103837708050877,
      "low_confidence": false
     }
    },
@@ -2795,14 +2835,14 @@
       "casing": "upper",
       "weight": "regular"
      },
-     "d1": 784,
+     "d1": 5230,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
      "penalized": 6,
-     "spread": 0.053365211177711175,
+     "spread": 0.04103837708050877,
      "low_confidence": false
     }
    },
@@ -2814,29 +2854,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 100,
-       "Y": 447
+       "X": 99,
+       "Y": 544
       },
       "Max": {
-       "X": 517,
-       "Y": 483
+       "X": 523,
+       "Y": 573
       }
      },
-     "text": "357 E TAYLOR ST San Jose CA 95112",
+     "text": "357 E Taylor St San Jose Ca 95112",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "357anJose95",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "357aylorStSanJoseCa95112",
+      "emphasis": "ET",
+      "face": "FjallaOne Regular"
      },
-     "d1": 1756,
+     "d1": 10410,
      "d2": -1,
-     "radius": 799,
-     "bits": 6656,
+     "radius": 5591,
+     "bits": 46592,
      "refined": true,
      "glyphs": 26,
-     "penalized": 12,
-     "spread": 0.053365211177711175,
+     "penalized": 10,
+     "spread": 0.04103837708050877,
      "low_confidence": false
     }
    },
@@ -2848,34 +2889,34 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 252,
-       "Y": 639
+       "X": 437,
+       "Y": 393
       },
       "Max": {
-       "X": 325,
-       "Y": 671
+       "X": 528,
+       "Y": 417
       }
      },
-     "text": "2 Proof",
+     "text": "127 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "roof",
+      "synthesized": "7roof",
       "face": "Go Regular"
      },
-     "d1": 314,
-     "d2": 978,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 2963,
+     "d2": 2975,
+     "radius": 2150,
+     "bits": 14336,
      "refined": true,
-     "glyphs": 6,
+     "glyphs": 8,
      "penalized": 3,
-     "competitor": "2",
-     "competitor_text": "2 % ALC/VOL",
-     "spread": 0.053365211177711175,
+     "competitor": "68.5",
+     "competitor_text": "137 Proof",
+     "spread": 0.04103837708050877,
      "low_confidence": false,
-     "reading": "2",
-     "digit_confidence": 0.6549625429816961
+     "reading": "127",
+     "digit_confidence": 0.5387096774193548
     }
    },
    {
@@ -2886,32 +2927,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 100,
-       "Y": 531
+       "X": 1174,
+       "Y": 642
       },
       "Max": {
-       "X": 167,
-       "Y": 558
+       "X": 1358,
+       "Y": 704
       }
      },
-     "text": "(55 ML)",
+     "text": "(500 mL)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "55",
+      "synthesized": "500m",
       "face": "Go Regular"
      },
-     "d1": 468,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 2078,
+     "d2": 2113,
+     "radius": 1882,
+     "bits": 12544,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.053365211177711175,
-     "low_confidence": false,
-     "reading": "55",
-     "digit_confidence": 0.5134966674266832
+     "glyphs": 7,
+     "penalized": 0,
+     "competitor": "200",
+     "competitor_text": "(200 mL)",
+     "spread": 0.04103837708050877,
+     "low_confidence": false
     }
    }
   ],
@@ -3351,7 +3392,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 18733933600,
+  "latency": 1602330700,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -3389,27 +3430,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 179,
-       "Y": 907
+       "X": 283,
+       "Y": 876
       },
       "Max": {
-       "X": 216,
-       "Y": 926
+       "X": 332,
+       "Y": 895
       }
      },
-     "text": "BRAHMAN",
+     "text": "Brahman",
      "params": {
-      "casing": "as_given",
-      "weight": "regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "Brahman",
+      "face": "Anton Regular"
      },
-     "d1": 299,
+     "d1": 2490,
      "d2": -1,
-     "radius": 215,
-     "bits": 1792,
+     "radius": 1505,
+     "bits": 12544,
      "refined": true,
      "glyphs": 7,
-     "penalized": 2,
-     "spread": 0.17579512934981684,
+     "penalized": 0,
+     "spread": 0.10897519704997383,
      "low_confidence": false
     }
    },
@@ -3421,29 +3464,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 234,
-       "Y": 785
+       "X": 272,
+       "Y": 907
       },
       "Max": {
-       "X": 295,
-       "Y": 803
+       "X": 332,
+       "Y": 926
       }
      },
      "text": "TEQUILA FB",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "Q",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "EQUILAFB",
+      "emphasis": "T",
+      "face": "Anton Regular"
      },
-     "d1": 438,
+     "d1": 2803,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.17579512934981684,
+     "penalized": 0,
+     "spread": 0.10897519704997383,
      "low_confidence": false
     }
    },
@@ -3455,12 +3499,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 192,
-       "Y": 858
+       "X": 194,
+       "Y": 876
       },
       "Max": {
-       "X": 318,
-       "Y": 880
+       "X": 332,
+       "Y": 895
       }
      },
      "text": "CINCO AGAVES IMPORTS LLC",
@@ -3468,14 +3512,14 @@
       "casing": "upper",
       "weight": "regular"
      },
-     "d1": 978,
+     "d1": 7030,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 10,
-     "spread": 0.17579512934981684,
+     "penalized": 2,
+     "spread": 0.10897519704997383,
      "low_confidence": false
     }
    },
@@ -3490,23 +3534,59 @@
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "53"
+    "expected": "53",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 170,
+       "Y": 496
+      },
+      "Max": {
+       "X": 244,
+       "Y": 514
+      }
+     },
+     "text": "22% ALC/VOL",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "%/",
+      "face": "Go Regular"
+     },
+     "d1": 3362,
+     "d2": 3427,
+     "radius": 2688,
+     "bits": 17920,
+     "refined": true,
+     "glyphs": 10,
+     "penalized": 0,
+     "competitor": "52",
+     "competitor_text": "52% ALC/VOL",
+     "spread": 0.10897519704997383,
+     "low_confidence": false,
+     "reading": "22%",
+     "digit_confidence": 0.7
+    }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "REVIEW",
+    "reason": "too_few_glyphs",
     "expected": "750",
+    "candidates": [
+     "1000",
+     "200"
+    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 207,
-       "Y": 1378
+       "X": 249,
+       "Y": 876
       },
       "Max": {
-       "X": 228,
-       "Y": 1411
+       "X": 267,
+       "Y": 895
       }
      },
      "text": "1L",
@@ -3516,17 +3596,17 @@
       "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 140,
-     "d2": -1,
-     "radius": 77,
-     "bits": 512,
+     "d1": 511,
+     "d2": 686,
+     "radius": 538,
+     "bits": 3584,
      "refined": true,
      "glyphs": 2,
-     "penalized": 1,
-     "spread": 0.17579512934981684,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5022919410083125
+     "penalized": 0,
+     "competitor": "200",
+     "competitor_text": "0.2L",
+     "spread": 0.10897519704997383,
+     "low_confidence": false
     }
    }
   ],
@@ -4065,7 +4145,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 21021751800,
+  "latency": 1192761800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4103,30 +4183,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 199,
-       "Y": 423
+       "X": 198,
+       "Y": 559
       },
       "Max": {
-       "X": 255,
-       "Y": 442
+       "X": 251,
+       "Y": 579
       }
      },
-     "text": "BRAHMAN",
+     "text": "Brahman",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "BAHMAN",
-      "emphasis": "R",
+      "synthesized": "Brahman",
       "face": "Anton Regular"
      },
-     "d1": 351,
+     "d1": 2327,
      "d2": -1,
-     "radius": 215,
-     "bits": 1792,
+     "radius": 1505,
+     "bits": 12544,
      "refined": true,
      "glyphs": 7,
-     "penalized": 4,
-     "spread": 0.1650105794270833,
+     "penalized": 1,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -4138,29 +4217,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 234,
-       "Y": 852
+       "X": 271,
+       "Y": 421
       },
       "Max": {
-       "X": 277,
-       "Y": 869
+       "X": 332,
+       "Y": 444
       }
      },
-     "text": "TEQUILA FB",
+     "text": "Tequila Fb",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "Q",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "equilaFb",
+      "emphasis": "T",
+      "face": "Anton Regular"
      },
-     "d1": 447,
+     "d1": 3249,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.1650105794270833,
+     "penalized": 3,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -4172,29 +4252,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 199,
-       "Y": 877
+       "X": 197,
+       "Y": 953
       },
       "Max": {
-       "X": 329,
-       "Y": 893
+       "X": 331,
+       "Y": 971
       }
      },
-     "text": "CINCO AGAVES IMPORTS LLC",
+     "text": "Cinco Agaves Imports Llc",
      "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "V",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "CincoAgavesImportsLlc",
+      "face": "Anton Regular"
      },
-     "d1": 1131,
+     "d1": 7926,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 10,
-     "spread": 0.1650105794270833,
+     "penalized": 9,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -4213,74 +4293,70 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 173,
-       "Y": 488
+       "X": 170,
+       "Y": 559
       },
       "Max": {
-       "X": 205,
-       "Y": 502
+       "X": 251,
+       "Y": 579
       }
      },
-     "text": "PROOF 31",
+     "text": "22% Alc/Vol",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "31",
+      "synthesized": "%lc/Vol",
       "face": "Go Regular"
      },
-     "d1": 354,
-     "d2": 317,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 3566,
+     "d2": 3630,
+     "radius": 2688,
+     "bits": 17920,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 3,
-     "competitor": "91",
-     "competitor_text": "91% ABV",
-     "spread": 0.1650105794270833,
+     "glyphs": 10,
+     "penalized": 2,
+     "competitor": "42",
+     "competitor_text": "42% Alc/Vol",
+     "spread": 0.1091343470982143,
      "low_confidence": false,
-     "reading": "91",
-     "digit_confidence": 0.5337711192037649
+     "reading": "22%",
+     "digit_confidence": 0.6560283687943262
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "NOT_FOUND",
     "expected": "750",
-    "candidates": [
-     "45707"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 224,
-       "Y": 1122
+       "X": 197,
+       "Y": 926
       },
       "Max": {
-       "X": 268,
-       "Y": 1141
+       "X": 239,
+       "Y": 944
       }
      },
-     "text": "45707mL",
+     "text": "1 Liter",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "45707m",
+      "synthesized": "1iter",
       "face": "Go Regular"
      },
-     "d1": 221,
-     "d2": -1,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 1898,
+     "d2": 2197,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 2,
-     "spread": 0.1650105794270833,
-     "low_confidence": false,
-     "reading": "45707",
-     "digit_confidence": 0.8736433829833833
+     "glyphs": 6,
+     "penalized": 1,
+     "competitor": "100",
+     "competitor_text": "100 ml",
+     "spread": 0.1091343470982143,
+     "low_confidence": false
     }
    }
   ],
@@ -4929,7 +5005,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 19398896600,
+  "latency": 887567500,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -4967,29 +5043,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 333,
-       "Y": 419
+       "X": 234,
+       "Y": 852
       },
       "Max": {
-       "X": 381,
-       "Y": 431
+       "X": 277,
+       "Y": 869
       }
      },
-     "text": "Brahman",
+     "text": "BRAHMAN",
      "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "rahman",
-      "face": "Go Regular"
+      "casing": "as_given",
+      "weight": "regular"
      },
-     "d1": 369,
+     "d1": 2544,
      "d2": -1,
-     "radius": 215,
-     "bits": 1792,
+     "radius": 1505,
+     "bits": 12544,
      "refined": true,
      "glyphs": 7,
-     "penalized": 3,
-     "spread": 0.1650105794270833,
+     "penalized": 2,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -5001,29 +5075,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 234,
-       "Y": 852
+       "X": 233,
+       "Y": 810
       },
       "Max": {
-       "X": 277,
-       "Y": 869
+       "X": 296,
+       "Y": 827
       }
      },
-     "text": "TEQUILA FB",
+     "text": "Tequila Fb",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "Q",
+      "synthesized": "equilab",
       "face": "Go Regular"
      },
-     "d1": 447,
+     "d1": 3437,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 5,
-     "spread": 0.1650105794270833,
+     "penalized": 3,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -5035,29 +5109,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 199,
-       "Y": 877
+       "X": 197,
+       "Y": 953
       },
       "Max": {
-       "X": 329,
-       "Y": 893
+       "X": 331,
+       "Y": 971
       }
      },
-     "text": "CINCO AGAVES IMPORTS LLC",
+     "text": "Cinco Agaves Imports Llc",
      "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "V",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "CincoAgavesImportsLlc",
+      "face": "Anton Regular"
      },
-     "d1": 1131,
+     "d1": 7926,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 10,
-     "spread": 0.1650105794270833,
+     "penalized": 9,
+     "spread": 0.1091343470982143,
      "low_confidence": false
     }
    },
@@ -5076,34 +5150,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 94,
-       "Y": 1376
+       "X": 233,
+       "Y": 810
       },
       "Max": {
-       "X": 187,
-       "Y": 1414
+       "X": 296,
+       "Y": 827
       }
      },
-     "text": "33 Proof",
+     "text": "8% alc./vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "33roof",
+      "synthesized": "8%alc/vol",
       "face": "Go Regular"
      },
-     "d1": 430,
-     "d2": 752,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 4428,
+     "d2": -1,
+     "radius": 2957,
+     "bits": 19712,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 4,
-     "competitor": "33",
-     "competitor_text": "Alcohol 33% by volume",
-     "spread": 0.1650105794270833,
+     "glyphs": 11,
+     "penalized": 5,
+     "spread": 0.1091343470982143,
      "low_confidence": false,
-     "reading": "33",
-     "digit_confidence": 0.584693029176066
+     "reading": "0%",
+     "digit_confidence": 0.5220385674931128
     }
    },
    {
@@ -5129,17 +5201,17 @@
       "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 166,
-     "d2": -1,
-     "radius": 77,
-     "bits": 512,
+     "d1": 595,
+     "d2": 778,
+     "radius": 538,
+     "bits": 3584,
      "refined": true,
      "glyphs": 2,
      "penalized": 0,
-     "spread": 0.1650105794270833,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.7350498258725603
+     "competitor": "700",
+     "competitor_text": "0.7L",
+     "spread": 0.1091343470982143,
+     "low_confidence": false
     }
    }
   ],
@@ -5788,7 +5860,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14201749900,
+  "latency": 744948800,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -5826,11 +5898,11 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 183,
+       "X": 205,
        "Y": 308
       },
       "Max": {
-       "X": 234,
+       "X": 275,
        "Y": 322
       }
      },
@@ -5842,14 +5914,14 @@
       "emphasis": "N",
       "face": "Go Italic"
      },
-     "d1": 323,
+     "d1": 2631,
      "d2": -1,
-     "radius": 215,
-     "bits": 1792,
+     "radius": 1505,
+     "bits": 12544,
      "refined": true,
      "glyphs": 7,
      "penalized": 3,
-     "spread": 0.15587071010044642,
+     "spread": 0.10600066931069305,
      "low_confidence": false
     }
    },
@@ -5861,29 +5933,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 201,
-       "Y": 734
+       "X": 189,
+       "Y": 833
       },
       "Max": {
-       "X": 255,
-       "Y": 750
+       "X": 266,
+       "Y": 849
       }
      },
      "text": "Tequila Fb",
      "params": {
       "casing": "title",
-      "weight": "regular",
-      "synthesized": "equilab",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "equilaFb",
+      "emphasis": "T",
+      "face": "Go Italic"
      },
-     "d1": 476,
+     "d1": 3389,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
      "penalized": 3,
-     "spread": 0.15587071010044642,
+     "spread": 0.10600066931069305,
      "low_confidence": false
     }
    },
@@ -5896,11 +5969,11 @@
      "region": {
       "Min": {
        "X": 169,
-       "Y": 856
+       "Y": 844
       },
       "Max": {
        "X": 286,
-       "Y": 873
+       "Y": 862
       }
      },
      "text": "Cinco Agaves Imports Llc",
@@ -5910,14 +5983,14 @@
       "synthesized": "incogavesmportslc",
       "face": "Go Regular"
      },
-     "d1": 1224,
+     "d1": 8119,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 10,
-     "spread": 0.15587071010044642,
+     "penalized": 8,
+     "spread": 0.10600066931069305,
      "low_confidence": false
     }
    },
@@ -5932,78 +6005,43 @@
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "expected": "40",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 170,
-       "Y": 275
-      },
-      "Max": {
-       "X": 324,
-       "Y": 306
-      }
-     },
-     "text": "(8 Proof)",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "8roof",
-      "face": "Go Regular"
-     },
-     "d1": 631,
-     "d2": 909,
-     "radius": 307,
-     "bits": 2048,
-     "refined": true,
-     "glyphs": 8,
-     "penalized": 3,
-     "competitor": "8",
-     "competitor_text": "8 % ALC/VOL",
-     "spread": 0.15587071010044642,
-     "low_confidence": false,
-     "reading": "8",
-     "digit_confidence": 0.5663202235354621
-    }
+    "reason": "no_region_fits",
+    "expected": "40"
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "NOT_FOUND",
     "expected": "750",
-    "candidates": [
-     "45707"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 190,
+       "X": 227,
        "Y": 968
       },
       "Max": {
-       "X": 229,
+       "X": 265,
        "Y": 984
       }
      },
-     "text": "45707ml",
+     "text": "0.375 L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "45707ml",
+      "synthesized": "0.375",
       "face": "Go Regular"
      },
-     "d1": 264,
-     "d2": -1,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 1827,
+     "d2": 1720,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 2,
-     "spread": 0.15587071010044642,
-     "low_confidence": false,
-     "reading": "45707",
-     "digit_confidence": 0.8575460588525246
+     "glyphs": 6,
+     "penalized": 1,
+     "competitor": "750",
+     "competitor_text": "0.75 L",
+     "spread": 0.10600066931069305,
+     "low_confidence": false
     }
    }
   ],
@@ -6660,7 +6698,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1154274700,
+  "latency": 1351140000,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -6770,7 +6808,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 57686084700,
+  "latency": 4657796600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -6808,30 +6846,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 652,
-       "Y": 701
+       "X": 634,
+       "Y": 78
       },
       "Max": {
-       "X": 733,
-       "Y": 727
+       "X": 792,
+       "Y": 114
       }
      },
-     "text": "SUPER LYTE",
+     "text": "Super Lyte",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "SUPELYE",
-      "emphasis": "RT",
+      "synthesized": "SuperLyte",
       "face": "Anton Regular"
      },
-     "d1": 364,
+     "d1": 2865,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 4,
-     "spread": 0.17146131727430555,
+     "penalized": 2,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -6843,29 +6880,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 595,
-       "Y": 1062
+       "X": 201,
+       "Y": 716
       },
       "Max": {
-       "X": 831,
-       "Y": 1089
+       "X": 1061,
+       "Y": 760
       }
      },
      "text": "Other Specialties \u0026 Proprietaries",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "OtherSpecialties\u0026Proprietaries",
-      "face": "Anton Regular"
+      "weight": "regular",
+      "synthesized": "therpecialties\u0026roprietaries",
+      "face": "Go Regular"
      },
-     "d1": 1733,
+     "d1": 11349,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 16,
-     "spread": 0.17146131727430555,
+     "penalized": 13,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -6877,30 +6914,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 640,
-       "Y": 1010
+       "X": 583,
+       "Y": 423
       },
       "Max": {
-       "X": 820,
-       "Y": 1036
+       "X": 756,
+       "Y": 450
       }
      },
-     "text": "THE LION BREWERY, INC.",
+     "text": "The Lion Brewery, Inc.",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "HELIOBEEY,IC.",
-      "emphasis": "TNRWRN",
-      "face": "Anton Regular"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "heionrewerync.",
+      "face": "Go Regular"
      },
-     "d1": 1077,
+     "d1": 6528,
      "d2": -1,
-     "radius": 584,
-     "bits": 4864,
+     "radius": 4086,
+     "bits": 34048,
      "refined": true,
      "glyphs": 19,
-     "penalized": 9,
-     "spread": 0.17146131727430555,
+     "penalized": 7,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -6923,18 +6959,19 @@
      "text": "1001 SATHERS DR PITTSTON PA 18640",
      "params": {
       "casing": "upper",
-      "weight": "regular",
-      "synthesized": "100118640",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "1001SHESDPISOP18640",
+      "emphasis": "ATRRTTTNA",
+      "face": "Anton Regular"
      },
-     "d1": 1598,
+     "d1": 10395,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 6021,
+     "bits": 50176,
      "refined": true,
      "glyphs": 28,
-     "penalized": 9,
-     "spread": 0.17146131727430555,
+     "penalized": 8,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -6950,28 +6987,30 @@
        "Y": 1227
       },
       "Max": {
-       "X": 205,
+       "X": 188,
        "Y": 1254
       }
      },
-     "text": "4.5% Alc/Vol",
+     "text": "4.5% abv",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4.5%lc/ol",
+      "synthesized": "4.5%abv",
       "face": "Go Regular"
      },
-     "d1": 454,
-     "d2": -1,
-     "radius": 422,
-     "bits": 2816,
+     "d1": 2063,
+     "d2": 3358,
+     "radius": 1882,
+     "bits": 12544,
      "refined": true,
-     "glyphs": 11,
-     "penalized": 5,
-     "spread": 0.17146131727430555,
+     "glyphs": 7,
+     "penalized": 2,
+     "competitor": "22.5",
+     "competitor_text": "(45 Proof)",
+     "spread": 0.0970307849702381,
      "low_confidence": false,
-     "reading": "4.5%",
-     "digit_confidence": 0.9417978212993213
+     "reading": "4.6%",
+     "digit_confidence": 0.573170731707317
     }
    },
    {
@@ -6982,32 +7021,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 1380,
-       "Y": 1189
+       "X": 735,
+       "Y": 1114
       },
       "Max": {
-       "X": 1517,
-       "Y": 1232
+       "X": 798,
+       "Y": 1140
       }
      },
-     "text": "99 ml",
+     "text": "50 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "99ml",
+      "synthesized": "50",
       "face": "Go Regular"
      },
-     "d1": 299,
-     "d2": -1,
-     "radius": 154,
-     "bits": 1024,
+     "d1": 1088,
+     "d2": 1552,
+     "radius": 1075,
+     "bits": 7168,
      "refined": true,
      "glyphs": 4,
-     "penalized": 2,
-     "spread": 0.17146131727430555,
-     "low_confidence": false,
-     "reading": "99",
-     "digit_confidence": 0.7421049842693335
+     "penalized": 0,
+     "competitor": "750",
+     "competitor_text": "750 ML",
+     "spread": 0.0970307849702381,
+     "low_confidence": false
     }
    }
   ],
@@ -7454,7 +7493,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 786763600,
+  "latency": 1003315900,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -7564,7 +7603,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 774074800,
+  "latency": 1013881600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "claims": [
@@ -7648,7 +7687,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 781709700,
+  "latency": 1097916200,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -7758,7 +7797,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 749659700,
+  "latency": 1095959600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "claims": [
@@ -7842,7 +7881,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 786777300,
+  "latency": 1117847900,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -7952,7 +7991,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 53809373900,
+  "latency": 5253453300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -7990,12 +8029,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 570,
-       "Y": 869
+       "X": 705,
+       "Y": 752
       },
       "Max": {
-       "X": 661,
-       "Y": 895
+       "X": 828,
+       "Y": 778
       }
      },
      "text": "SUPER LYTE",
@@ -8005,14 +8044,14 @@
       "synthesized": "Y",
       "face": "Go Regular"
      },
-     "d1": 334,
+     "d1": 1985,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 3,
-     "spread": 0.18114653087797622,
+     "penalized": 0,
+     "spread": 0.09640208134034862,
      "low_confidence": false
     }
    },
@@ -8024,30 +8063,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 570,
-       "Y": 1036
+       "X": 201,
+       "Y": 822
       },
       "Max": {
-       "X": 832,
-       "Y": 1062
+       "X": 1062,
+       "Y": 871
       }
      },
-     "text": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
+     "text": "Other Specialties \u0026 Proprietaries",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "OHESPECILIES\u0026POPIEIES",
-      "emphasis": "TRATRRTAR",
-      "face": "Anton Regular"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "therpecialties\u0026roprietaries",
+      "face": "Go Regular"
      },
-     "d1": 1722,
+     "d1": 10847,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 13,
-     "spread": 0.18114653087797622,
+     "penalized": 12,
+     "spread": 0.09640208134034862,
      "low_confidence": false
     }
    },
@@ -8059,29 +8097,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 570,
-       "Y": 1036
+       "X": 571,
+       "Y": 973
       },
       "Max": {
-       "X": 752,
-       "Y": 1062
+       "X": 830,
+       "Y": 1010
       }
      },
-     "text": "PRIME BEVERAGE GROUP, LLC",
+     "text": "Prime Beverage Group, Llc",
      "params": {
-      "casing": "upper",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": ",",
+      "synthesized": "rimeeverageroup,lc",
       "face": "Go Regular"
      },
-     "d1": 1217,
+     "d1": 7750,
      "d2": -1,
-     "radius": 676,
-     "bits": 5632,
+     "radius": 4731,
+     "bits": 39424,
      "refined": true,
      "glyphs": 22,
-     "penalized": 11,
-     "spread": 0.18114653087797622,
+     "penalized": 9,
+     "spread": 0.09640208134034862,
      "low_confidence": false
     }
    },
@@ -8093,12 +8131,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 571,
-       "Y": 1056
+       "X": 920,
+       "Y": 1227
       },
       "Max": {
-       "X": 1529,
-       "Y": 1092
+       "X": 1290,
+       "Y": 1259
       }
      },
      "text": "1858 KANNAPOLIS PKWY KANNAPOLIS NC 28027",
@@ -8108,14 +8146,14 @@
       "synthesized": "1858Y28027",
       "face": "Go Regular"
      },
-     "d1": 2121,
+     "d1": 14601,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
-     "penalized": 18,
-     "spread": 0.18114653087797622,
+     "penalized": 15,
+     "spread": 0.09640208134034862,
      "low_confidence": false
     }
    },
@@ -8135,60 +8173,61 @@
        "Y": 1254
       }
      },
-     "text": "4.5% alc./vol.",
+     "text": "4.5% alc/vol",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "45%alc/vol",
       "face": "Go Regular"
      },
-     "d1": 504,
+     "d1": 3627,
      "d2": -1,
-     "radius": 499,
-     "bits": 3328,
+     "radius": 2957,
+     "bits": 19712,
      "refined": true,
-     "glyphs": 13,
-     "penalized": 6,
-     "spread": 0.18114653087797622,
+     "glyphs": 11,
+     "penalized": 3,
+     "spread": 0.09640208134034862,
      "low_confidence": false,
-     "reading": "4.5%",
-     "digit_confidence": 0.8540902195850523
+     "reading": "4.6%",
+     "digit_confidence": 0.5439024390243902
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "MISMATCH",
     "expected": "355",
+    "observed": "187",
     "evidence": {
      "region": {
       "Min": {
-       "X": 600,
-       "Y": 25
+       "X": 752,
+       "Y": 650
       },
       "Max": {
-       "X": 661,
-       "Y": 44
+       "X": 831,
+       "Y": 676
       }
      },
-     "text": "(50 ML)",
+     "text": "0.187L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "50)",
+      "synthesized": "0187",
       "face": "Go Regular"
      },
-     "d1": 496,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 1337,
+     "d2": 1728,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
      "glyphs": 6,
-     "penalized": 4,
-     "spread": 0.18114653087797622,
-     "low_confidence": false,
-     "reading": "50",
-     "digit_confidence": 0.5586692044063458
+     "penalized": 0,
+     "competitor": "375",
+     "competitor_text": "0.375 L",
+     "spread": 0.09640208134034862,
+     "low_confidence": false
     }
    }
   ],
@@ -8603,7 +8642,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 781313400,
+  "latency": 1099310900,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -8713,7 +8752,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 53527758500,
+  "latency": 4662656600,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -8751,30 +8790,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 652,
-       "Y": 701
+       "X": 634,
+       "Y": 78
       },
       "Max": {
-       "X": 733,
-       "Y": 727
+       "X": 792,
+       "Y": 114
       }
      },
-     "text": "SUPER LYTE",
+     "text": "Super Lyte",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "SUPELYE",
-      "emphasis": "RT",
+      "synthesized": "SuperLyte",
       "face": "Anton Regular"
      },
-     "d1": 364,
+     "d1": 2865,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
-     "penalized": 4,
-     "spread": 0.17146131727430555,
+     "penalized": 2,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -8786,29 +8824,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 595,
-       "Y": 1062
+       "X": 201,
+       "Y": 716
       },
       "Max": {
-       "X": 831,
-       "Y": 1089
+       "X": 1061,
+       "Y": 760
       }
      },
      "text": "Other Specialties \u0026 Proprietaries",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "OtherSpecialties\u0026Proprietaries",
-      "face": "Anton Regular"
+      "weight": "regular",
+      "synthesized": "therpecialties\u0026roprietaries",
+      "face": "Go Regular"
      },
-     "d1": 1733,
+     "d1": 11349,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 16,
-     "spread": 0.17146131727430555,
+     "penalized": 13,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -8820,30 +8858,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 572,
-       "Y": 958
+       "X": 583,
+       "Y": 445
       },
       "Max": {
-       "X": 792,
-       "Y": 984
+       "X": 757,
+       "Y": 472
       }
      },
-     "text": "PRIME BEVERAGE GROUP, LLC",
+     "text": "Prime Beverage Group, Llc",
      "params": {
-      "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "PIMEBEEGEGOUP,LLC",
-      "emphasis": "RVRAR",
-      "face": "Anton Regular"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "rimeeveragerouplc",
+      "face": "Go Regular"
      },
-     "d1": 1260,
+     "d1": 7931,
      "d2": -1,
-     "radius": 676,
-     "bits": 5632,
+     "radius": 4731,
+     "bits": 39424,
      "refined": true,
      "glyphs": 22,
-     "penalized": 12,
-     "spread": 0.17146131727430555,
+     "penalized": 9,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -8863,21 +8900,21 @@
        "Y": 1077
       }
      },
-     "text": "1858 KANNAPOLIS PKWY Kannapolis NC 28027",
+     "text": "1858 Kannapolis Pkwy Kannapolis Nc 28027",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "1858annapolis28027",
+      "synthesized": "1858annapoliskwyannapolisc28027",
       "face": "Go Regular"
      },
-     "d1": 2179,
+     "d1": 14776,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
      "penalized": 17,
-     "spread": 0.17146131727430555,
+     "spread": 0.0970307849702381,
      "low_confidence": false
     }
    },
@@ -8893,28 +8930,30 @@
        "Y": 1227
       },
       "Max": {
-       "X": 205,
+       "X": 188,
        "Y": 1254
       }
      },
-     "text": "4.5% Alc/Vol",
+     "text": "4.5% abv",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4.5%lc/ol",
+      "synthesized": "4.5%abv",
       "face": "Go Regular"
      },
-     "d1": 454,
-     "d2": -1,
-     "radius": 422,
-     "bits": 2816,
+     "d1": 2063,
+     "d2": 3358,
+     "radius": 1882,
+     "bits": 12544,
      "refined": true,
-     "glyphs": 11,
-     "penalized": 5,
-     "spread": 0.17146131727430555,
+     "glyphs": 7,
+     "penalized": 2,
+     "competitor": "22.5",
+     "competitor_text": "(45 Proof)",
+     "spread": 0.0970307849702381,
      "low_confidence": false,
-     "reading": "4.5%",
-     "digit_confidence": 0.9417978212993213
+     "reading": "4.6%",
+     "digit_confidence": 0.573170731707317
     }
    },
    {
@@ -8925,32 +8964,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 1380,
-       "Y": 1189
+       "X": 735,
+       "Y": 1114
       },
       "Max": {
-       "X": 1517,
-       "Y": 1232
+       "X": 798,
+       "Y": 1140
       }
      },
-     "text": "99 ml",
+     "text": "50 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "99ml",
+      "synthesized": "50",
       "face": "Go Regular"
      },
-     "d1": 299,
-     "d2": -1,
-     "radius": 154,
-     "bits": 1024,
+     "d1": 1088,
+     "d2": 1552,
+     "radius": 1075,
+     "bits": 7168,
      "refined": true,
      "glyphs": 4,
-     "penalized": 2,
-     "spread": 0.17146131727430555,
-     "low_confidence": false,
-     "reading": "99",
-     "digit_confidence": 0.7421049842693335
+     "penalized": 0,
+     "competitor": "750",
+     "competitor_text": "750 ML",
+     "spread": 0.0970307849702381,
+     "low_confidence": false
     }
    }
   ],
@@ -9397,7 +9436,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1148515800,
+  "latency": 1688550400,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -9507,7 +9546,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1162700700,
+  "latency": 1733661600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -9617,7 +9656,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1217634100,
+  "latency": 1762356700,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -9727,7 +9766,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1262594700,
+  "latency": 1887964600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -9837,7 +9876,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 579746300,
+  "latency": 865782900,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -9948,7 +9987,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 36177088500,
+  "latency": 7713484200,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -9975,7 +10014,8 @@
    "cap_height": 18,
    "letter_gap": 2,
    "word_gap": 8,
-   "rows": null
+   "rows": null,
+   "learned": "CDFPSU"
   },
   "claims": [
    {
@@ -9986,12 +10026,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 283,
-       "Y": 467
+       "X": 219,
+       "Y": 361
       },
       "Max": {
-       "X": 502,
-       "Y": 497
+       "X": 482,
+       "Y": 388
       }
      },
      "text": "VIÑA SALCEDA LA RELLANILLA",
@@ -10001,14 +10041,15 @@
       "synthesized": "Ñ",
       "face": "Go Regular"
      },
-     "d1": 1205,
+     "d1": 7037,
      "d2": -1,
-     "radius": 707,
-     "bits": 5888,
+     "radius": 4946,
+     "bits": 41216,
      "refined": true,
      "glyphs": 23,
-     "penalized": 8,
-     "spread": 0.021246667950953074,
+     "penalized": 3,
+     "spread": 0.02658250928875174,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10020,12 +10061,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 244,
-       "Y": 385
+       "X": 219,
+       "Y": 361
       },
       "Max": {
-       "X": 565,
-       "Y": 416
+       "X": 554,
+       "Y": 388
       }
      },
      "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
@@ -10035,26 +10076,24 @@
       "synthesized": "///",
       "face": "Go Regular"
      },
-     "d1": 2007,
+     "d1": 10313,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 17,
-     "spread": 0.021246667950953074,
+     "penalized": 10,
+     "spread": 0.02658250928875174,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "producer_1",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "VERIFIED",
     "expected": "THINK GLOBAL LLC",
-    "candidates": [
-     "THINK GLOBAL LLC"
-    ],
+    "observed": "THINK GLOBAL LLC",
     "evidence": {
      "region": {
       "Min": {
@@ -10071,14 +10110,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 255,
+     "d1": 2571,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
      "penalized": 3,
-     "spread": 0.021246667950953074,
+     "spread": 0.02658250928875174,
      "low_confidence": false
     }
    },
@@ -10105,14 +10144,15 @@
       "synthesized": "878930",
       "face": "Go Regular"
      },
-     "d1": 1524,
+     "d1": 9156,
      "d2": -1,
-     "radius": 1044,
-     "bits": 8704,
+     "radius": 7311,
+     "bits": 60928,
      "refined": true,
      "glyphs": 34,
-     "penalized": 12,
-     "spread": 0.021246667950953074,
+     "penalized": 9,
+     "spread": 0.02658250928875174,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10136,16 +10176,19 @@
      "text": "PRODUCT OF SPAIN",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "PDUCFSP",
+      "emphasis": "ROTOAIN",
+      "face": "FjallaOne Regular"
      },
-     "d1": 155,
+     "d1": 2340,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
      "penalized": 0,
-     "spread": 0.021246667950953074,
+     "spread": 0.02658250928875174,
      "low_confidence": false
     }
    },
@@ -10157,68 +10200,77 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 303,
-       "Y": 1513
+       "X": 154,
+       "Y": 467
       },
       "Max": {
-       "X": 405,
-       "Y": 1538
+       "X": 285,
+       "Y": 494
       }
      },
-     "text": "65% alc./vol.",
+     "text": "16,0% ALC/VOL",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "65%alc/vol",
+      "synthesized": "60%/",
       "face": "Go Regular"
      },
-     "d1": 828,
-     "d2": 771,
-     "radius": 461,
-     "bits": 3072,
+     "d1": 3392,
+     "d2": 5249,
+     "radius": 3226,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 6,
-     "competitor": "32.5",
-     "competitor_text": "(65 PROOF)",
-     "spread": 0.021246667950953074,
+     "penalized": 1,
+     "competitor": "64",
+     "competitor_text": "64 % ALC/VOL",
+     "spread": 0.02658250928875174,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "65",
-     "digit_confidence": 0.5121705273813764
+     "reading": "16,0%",
+     "digit_confidence": 0.5097087378640777
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "REVIEW",
+    "reason": "regions_disagree",
     "expected": "750",
+    "candidates": [
+     "500",
+     "750"
+    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 265,
-       "Y": 335
+       "X": 175,
+       "Y": 386
       },
       "Max": {
-       "X": 290,
-       "Y": 366
+       "X": 219,
+       "Y": 413
       }
      },
-     "text": "1L",
+     "text": "0.5 L",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "regular",
+      "synthesized": "05",
+      "face": "Go Regular"
      },
-     "d1": 250,
-     "d2": -1,
-     "radius": 77,
-     "bits": 512,
+     "d1": 851,
+     "d2": 926,
+     "radius": 1075,
+     "bits": 7168,
      "refined": true,
-     "glyphs": 2,
-     "penalized": 1,
-     "spread": 0.021246667950953074,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.7525483576306342
+     "glyphs": 4,
+     "penalized": 0,
+     "competitor": "200",
+     "competitor_text": "0.2 L",
+     "spread": 0.02658250928875174,
+     "relearned": true,
+     "low_confidence": false
     }
    }
   ],
@@ -10441,7 +10493,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 436323900,
+  "latency": 615519400,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "claims": [
@@ -10526,7 +10578,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 27588488100,
+  "latency": 5639261300,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -10547,13 +10599,14 @@
    "coverage": 0.4730290456431535,
    "recovered": 20,
    "spread": 0.06361407844387755,
-   "characters": "().12ACGSabcdefghiklmnoprstuvwy",
+   "characters": "().12ACGLSabcdefghiklmnoprstuvwy",
    "face": "PTSans Bold",
    "x_height": 5,
    "cap_height": 7,
    "letter_gap": 1,
    "word_gap": 4,
-   "rows": null
+   "rows": null,
+   "learned": "L"
   },
   "claims": [
    {
@@ -10564,30 +10617,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 239,
-       "Y": 945
+       "X": 248,
+       "Y": 1302
       },
       "Max": {
-       "X": 410,
-       "Y": 979
+       "X": 294,
+       "Y": 1317
       }
      },
-     "text": "20 SURCOS",
+     "text": "20 Surcos",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "0U",
-      "emphasis": "RO",
+      "synthesized": "0",
       "face": "PTSans Bold"
      },
-     "d1": 363,
+     "d1": 2871,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
      "penalized": 2,
-     "spread": 0.08397276551573425,
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10599,30 +10652,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 332,
-       "Y": 643
+       "X": 248,
+       "Y": 1302
       },
       "Max": {
-       "X": 408,
-       "Y": 661
+       "X": 294,
+       "Y": 1317
       }
      },
      "text": "Mezcal Fb",
      "params": {
       "casing": "title",
-      "weight": "regular",
-      "synthesized": "zF",
+      "weight": "heavy",
+      "synthesized": "ezcalFb",
       "emphasis": "M",
-      "face": "PTSans Bold"
+      "face": "AlfaSlabOne Regular"
      },
-     "d1": 384,
+     "d1": 2922,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
      "penalized": 2,
-     "spread": 0.08397276551573425,
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10634,12 +10688,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 282,
-       "Y": 1155
+       "X": 406,
+       "Y": 1350
       },
       "Max": {
-       "X": 389,
-       "Y": 1174
+       "X": 461,
+       "Y": 1367
       }
      },
      "text": "Mex-cal, Inc.",
@@ -10650,14 +10704,15 @@
       "emphasis": "M",
       "face": "PTSans Bold"
      },
-     "d1": 579,
+     "d1": 4375,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 3,
-     "spread": 0.08397276551573425,
+     "penalized": 5,
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10669,30 +10724,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 102,
-       "Y": 690
+       "X": 260,
+       "Y": 1314
       },
       "Max": {
-       "X": 351,
-       "Y": 711
+       "X": 445,
+       "Y": 1331
       }
      },
-     "text": "979 O ST STE B FIREBAUGH CA 93622",
+     "text": "979 O St Ste B Firebaugh Ca 93622",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "979BFIBUH936",
-      "emphasis": "OTTERE",
+      "synthesized": "979BF936",
+      "emphasis": "O",
       "face": "PTSans Bold"
      },
-     "d1": 1524,
+     "d1": 10899,
      "d2": -1,
-     "radius": 799,
-     "bits": 6656,
+     "radius": 5591,
+     "bits": 46592,
      "refined": true,
      "glyphs": 26,
-     "penalized": 11,
-     "spread": 0.08397276551573425,
+     "penalized": 5,
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10720,14 +10776,15 @@
       "emphasis": "MM",
       "face": "PTSans Bold"
      },
-     "d1": 591,
+     "d1": 3971,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.08397276551573425,
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -10735,12 +10792,11 @@
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "unit_letter_unmatched:Y",
     "expected": "42",
     "evidence": {
      "region": {
       "Min": {
-       "X": 302,
+       "X": 340,
        "Y": 742
       },
       "Max": {
@@ -10748,35 +10804,66 @@
        "Y": 761
       }
      },
-     "text": "42% ALC. BY VOL.",
+     "text": "ALC 47% BY VOL",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4%LBYVL",
+      "synthesized": "47%BYV",
       "emphasis": "O",
       "face": "PTSans Bold"
      },
-     "d1": 405,
-     "d2": 467,
-     "radius": 499,
-     "bits": 3328,
+     "d1": 3653,
+     "d2": 3672,
+     "radius": 2957,
+     "bits": 19712,
      "refined": true,
-     "glyphs": 13,
-     "penalized": 1,
-     "competitor": "45",
-     "competitor_text": "45% ALC. BY VOL.",
-     "spread": 0.08397276551573425,
+     "glyphs": 11,
+     "penalized": 2,
+     "competitor": "42",
+     "competitor_text": "ALC 42% BY VOL",
+     "spread": 0.06361407844387755,
+     "relearned": true,
      "low_confidence": false,
      "reading": "42%",
-     "digit_confidence": 0.526130238870896
+     "digit_confidence": 0.8388704318936877
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "no_region_fits",
-    "expected": "750"
+    "expected": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 206,
+       "Y": 742
+      },
+      "Max": {
+       "X": 273,
+       "Y": 761
+      }
+     },
+     "text": "750mL",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "750",
+      "face": "PTSans Bold"
+     },
+     "d1": 1430,
+     "d2": 1444,
+     "radius": 1344,
+     "bits": 8960,
+     "refined": true,
+     "glyphs": 5,
+     "penalized": 0,
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.06361407844387755,
+     "relearned": true,
+     "low_confidence": false
+    }
    }
   ],
   "reference": [
@@ -11331,7 +11418,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 33021036800,
+  "latency": 5110533000,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -11352,13 +11439,14 @@
    "coverage": 0.38589211618257263,
    "recovered": 6,
    "spread": 0.07705284237092272,
-   "characters": ")ACGSabcdefghiklmnoprstuvwy",
+   "characters": ")ACGLSabcdefghiklmnoprstuvwy",
    "face": "AlfaSlabOne Regular",
    "x_height": 6,
    "cap_height": 7,
    "letter_gap": 1,
    "word_gap": 3,
-   "rows": null
+   "rows": null,
+   "learned": "L"
   },
   "claims": [
    {
@@ -11369,30 +11457,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 127,
-       "Y": 541
+       "X": 287,
+       "Y": 640
       },
       "Max": {
-       "X": 189,
-       "Y": 560
+       "X": 388,
+       "Y": 658
       }
      },
-     "text": "20 SURCOS",
+     "text": "20 Surcos",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "20U",
-      "emphasis": "RO",
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "20Surcos",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 401,
+     "d1": 2668,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
-     "penalized": 4,
-     "spread": 0.13116253011621312,
+     "penalized": 0,
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -11404,30 +11492,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 127,
-       "Y": 541
+       "X": 287,
+       "Y": 1292
       },
       "Max": {
-       "X": 189,
-       "Y": 560
+       "X": 344,
+       "Y": 1307
       }
      },
-     "text": "MEZCAL FB",
+     "text": "Mezcal Fb",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "ZLFB",
-      "emphasis": "ME",
+      "synthesized": "zF",
+      "emphasis": "M",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 387,
+     "d1": 2606,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
-     "penalized": 4,
-     "spread": 0.13116253011621312,
+     "penalized": 2,
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -11439,30 +11528,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 370,
-       "Y": 1328
+       "X": 293,
+       "Y": 1352
       },
       "Max": {
-       "X": 431,
-       "Y": 1343
+       "X": 372,
+       "Y": 1368
       }
      },
-     "text": "MEX-CAL, INC.",
+     "text": "Mex-cal, Inc.",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "X-L,I.",
-      "emphasis": "MEN",
+      "synthesized": "x-,I.",
+      "emphasis": "M",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 718,
+     "d1": 4438,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 5,
-     "spread": 0.13116253011621312,
+     "penalized": 3,
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -11474,30 +11564,31 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 186,
-       "Y": 1047
+       "X": 244,
+       "Y": 1304
       },
       "Max": {
-       "X": 382,
-       "Y": 1064
+       "X": 408,
+       "Y": 1319
       }
      },
-     "text": "979 O ST STE B FIREBAUGH CA 93622",
+     "text": "979 O St Ste B Firebaugh Ca 93622",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "979SSBFIBUHC93622",
-      "emphasis": "OTTEREAGA",
+      "synthesized": "979StSteBFirebaughCa93622",
+      "emphasis": "O",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 1480,
+     "d1": 9506,
      "d2": -1,
-     "radius": 799,
-     "bits": 6656,
+     "radius": 5591,
+     "bits": 46592,
      "refined": true,
      "glyphs": 26,
-     "penalized": 14,
-     "spread": 0.13116253011621312,
+     "penalized": 3,
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -11509,105 +11600,114 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 370,
-       "Y": 1328
+       "X": 229,
+       "Y": 640
       },
       "Max": {
-       "X": 431,
-       "Y": 1343
+       "X": 388,
+       "Y": 658
       }
      },
-     "text": "MADE IN MEXICO",
+     "text": "Made In Mexico",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "DIXI",
-      "emphasis": "MENMEO",
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "adeInexico",
+      "emphasis": "MM",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 642,
+     "d1": 3244,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 5,
-     "spread": 0.13116253011621312,
+     "penalized": 0,
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "REVIEW",
     "expected": "45",
+    "candidates": [
+     "45",
+     "49"
+    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 350,
-       "Y": 1160
+       "X": 283,
+       "Y": 738
       },
       "Max": {
-       "X": 380,
-       "Y": 1177
+       "X": 431,
+       "Y": 757
       }
      },
-     "text": "1% abv",
+     "text": "45% ALC. BY VOL.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1%",
+      "synthesized": "45%.BY.",
+      "emphasis": "VO",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 220,
-     "d2": 831,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 3238,
+     "d2": 3278,
+     "radius": 3494,
+     "bits": 23296,
      "refined": true,
-     "glyphs": 5,
-     "penalized": 2,
-     "competitor": "0.5",
-     "competitor_text": "1 PROOF",
-     "spread": 0.13116253011621312,
+     "glyphs": 13,
+     "penalized": 1,
+     "competitor": "49",
+     "competitor_text": "49% ALC. BY VOL.",
+     "spread": 0.07705284237092272,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.6344022969377963
+     "reading": "45%",
+     "digit_confidence": 0.6333333333333332
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "750",
+    "observed": "750",
     "evidence": {
      "region": {
       "Min": {
-       "X": 350,
-       "Y": 1160
+       "X": 189,
+       "Y": 738
       },
       "Max": {
-       "X": 380,
-       "Y": 1177
+       "X": 255,
+       "Y": 757
       }
      },
-     "text": "1 Litre",
+     "text": "750ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1L",
+      "synthesized": "750L",
+      "emphasis": "M",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 295,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 1172,
+     "d2": 1505,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "spread": 0.13116253011621312,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.6344022969377963
+     "glyphs": 5,
+     "penalized": 0,
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.07705284237092272,
+     "low_confidence": false
     }
    }
   ],
@@ -12001,7 +12101,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 23770924800,
+  "latency": 2906827800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -12039,12 +12139,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 288,
-       "Y": 1305
+       "X": 342,
+       "Y": 1315
       },
       "Max": {
-       "X": 329,
-       "Y": 1318
+       "X": 390,
+       "Y": 1330
       }
      },
      "text": "20 Surcos",
@@ -12054,14 +12154,14 @@
       "synthesized": "20Surcos",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 411,
+     "d1": 2871,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
-     "penalized": 4,
-     "spread": 0.07752634805751314,
+     "penalized": 2,
+     "spread": 0.046619173237476816,
      "low_confidence": false
     }
    },
@@ -12073,12 +12173,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 317,
-       "Y": 646
+       "X": 342,
+       "Y": 1315
       },
       "Max": {
-       "X": 393,
-       "Y": 664
+       "X": 390,
+       "Y": 1330
       }
      },
      "text": "Mezcal Fb",
@@ -12088,14 +12188,14 @@
       "synthesized": "MzF",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 387,
+     "d1": 2855,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
-     "penalized": 2,
-     "spread": 0.07752634805751314,
+     "penalized": 3,
+     "spread": 0.046619173237476816,
      "low_confidence": false
     }
    },
@@ -12123,14 +12223,14 @@
       "emphasis": "EN",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 502,
+     "d1": 4305,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
      "penalized": 3,
-     "spread": 0.07752634805751314,
+     "spread": 0.046619173237476816,
      "low_confidence": false
     }
    },
@@ -12142,30 +12242,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 218,
-       "Y": 1054
+       "X": 244,
+       "Y": 1112
       },
       "Max": {
-       "X": 430,
-       "Y": 1073
+       "X": 436,
+       "Y": 1130
       }
      },
-     "text": "979 O ST STE B FIREBAUGH CA 93622",
+     "text": "979 O St Ste B Firebaugh Ca 93622",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "979OTTBFIBUGH936",
-      "emphasis": "ERE",
+      "synthesized": "979OBF936",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 1516,
+     "d1": 10618,
      "d2": -1,
-     "radius": 799,
-     "bits": 6656,
+     "radius": 5591,
+     "bits": 46592,
      "refined": true,
      "glyphs": 26,
-     "penalized": 10,
-     "spread": 0.07752634805751314,
+     "penalized": 4,
+     "spread": 0.046619173237476816,
      "low_confidence": false
     }
    },
@@ -12192,14 +12291,14 @@
       "synthesized": "MIMx",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 519,
+     "d1": 3474,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.07752634805751314,
+     "spread": 0.046619173237476816,
      "low_confidence": false
     }
    },
@@ -12211,72 +12310,75 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 309,
-       "Y": 1012
+       "X": 287,
+       "Y": 745
       },
       "Max": {
-       "X": 392,
-       "Y": 1033
+       "X": 436,
+       "Y": 764
       }
      },
-     "text": "(1 PROOF)",
+     "text": "45% ALC. BY VOL.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "POOF",
-      "emphasis": "R",
+      "synthesized": "45%L.BYOL.",
+      "emphasis": "V",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 441,
-     "d2": 668,
-     "radius": 307,
-     "bits": 2048,
+     "d1": 4292,
+     "d2": 4322,
+     "radius": 3494,
+     "bits": 23296,
      "refined": true,
-     "glyphs": 8,
-     "penalized": 2,
-     "competitor": "1",
-     "competitor_text": "1 % ALC/VOL",
-     "spread": 0.07752634805751314,
+     "glyphs": 13,
+     "penalized": 1,
+     "competitor": "46",
+     "competitor_text": "46% ALC. BY VOL.",
+     "spread": 0.046619173237476816,
      "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5013152037086259
+     "reading": "45%",
+     "digit_confidence": 0.5689655172413793
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "REVIEW",
     "expected": "750",
+    "candidates": [
+     "750",
+     "700"
+    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 277,
-       "Y": 1012
+       "X": 192,
+       "Y": 745
       },
       "Max": {
-       "X": 337,
-       "Y": 1033
+       "X": 258,
+       "Y": 764
       }
      },
-     "text": "1 LITER",
+     "text": "750 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "LIT",
-      "emphasis": "ER",
+      "synthesized": "750ML",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 461,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 1132,
+     "d2": 1199,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.07752634805751314,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5013152037086259
+     "glyphs": 5,
+     "penalized": 0,
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.046619173237476816,
+     "low_confidence": false
     }
    }
   ],
@@ -12741,7 +12843,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 28207852300,
+  "latency": 5392572800,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -12762,13 +12864,14 @@
    "coverage": 0.3983402489626556,
    "recovered": 14,
    "spread": 0.051395641454633795,
-   "characters": "()12ACGSabcdefghiklmnoprstuvwy",
+   "characters": "%()12ABCGLMOSVYabcdefghiklmnoprstuvwy",
    "face": "AlfaSlabOne Regular",
    "x_height": 6,
    "cap_height": 8,
    "letter_gap": 1,
    "word_gap": 4,
-   "rows": null
+   "rows": null,
+   "learned": "%BLMOVY"
   },
   "claims": [
    {
@@ -12779,30 +12882,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 234,
-       "Y": 951
+       "X": 287,
+       "Y": 1295
       },
       "Max": {
-       "X": 405,
-       "Y": 984
+       "X": 345,
+       "Y": 1311
       }
      },
-     "text": "20 SURCOS",
+     "text": "20 Surcos",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "20SURCS",
-      "emphasis": "O",
-      "face": "PTSerif Bold"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "0",
+      "face": "AlfaSlabOne Regular"
      },
-     "d1": 382,
+     "d1": 2817,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
      "penalized": 2,
-     "spread": 0.11168150918683589,
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -12814,29 +12917,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 381,
-       "Y": 1046
+       "X": 293,
+       "Y": 1356
       },
       "Max": {
-       "X": 440,
-       "Y": 1063
+       "X": 342,
+       "Y": 1373
       }
      },
      "text": "Mezcal Fb",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "MezcalFb",
-      "face": "PTSerif Bold"
+      "weight": "regular",
+      "synthesized": "zF",
+      "face": "AlfaSlabOne Regular"
      },
-     "d1": 387,
+     "d1": 2895,
      "d2": -1,
-     "radius": 246,
-     "bits": 2048,
+     "radius": 1720,
+     "bits": 14336,
      "refined": true,
      "glyphs": 8,
-     "penalized": 3,
-     "spread": 0.11168150918683589,
+     "penalized": 2,
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -12848,30 +12952,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 299,
-       "Y": 1046
+       "X": 345,
+       "Y": 1295
       },
       "Max": {
-       "X": 366,
-       "Y": 1063
+       "X": 416,
+       "Y": 1312
       }
      },
-     "text": "MEX-CAL, INC.",
+     "text": "Mex-cal, Inc.",
      "params": {
-      "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "MX-CL,IC.",
-      "emphasis": "EAN",
-      "face": "PTSerif Bold"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "x-,I.",
+      "face": "AlfaSlabOne Regular"
      },
-     "d1": 677,
+     "d1": 4129,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 6,
-     "spread": 0.11168150918683589,
+     "penalized": 3,
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -12883,30 +12987,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 87,
-       "Y": 694
+       "X": 287,
+       "Y": 1295
       },
       "Max": {
-       "X": 367,
-       "Y": 716
+       "X": 447,
+       "Y": 1312
       }
      },
-     "text": "979 O ST STE B FIREBAUGH CA 93622",
+     "text": "979 O St Ste B Firebaugh Ca 93622",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "979BFIRBUH936",
-      "emphasis": "OTTEE",
+      "synthesized": "979F936",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 1476,
+     "d1": 9497,
      "d2": -1,
-     "radius": 799,
-     "bits": 6656,
+     "radius": 5591,
+     "bits": 46592,
      "refined": true,
      "glyphs": 26,
-     "penalized": 8,
-     "spread": 0.11168150918683589,
+     "penalized": 6,
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -12930,27 +13034,28 @@
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "MDIMXI",
-      "emphasis": "ENEO",
+      "synthesized": "DIXI",
+      "emphasis": "ENE",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 625,
+     "d1": 3929,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 1,
-     "spread": 0.11168150918683589,
+     "penalized": 0,
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "reason": "number_not_on_reading",
+    "status": "MISMATCH",
     "expected": "45",
+    "observed": "15",
     "evidence": {
      "region": {
       "Min": {
@@ -12962,63 +13067,64 @@
        "Y": 765
       }
      },
-     "text": "4% ALC BY VOL",
+     "text": "15% ALC BY VOL",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4%LBYVL",
-      "emphasis": "O",
+      "synthesized": "5",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 354,
-     "d2": 936,
-     "radius": 384,
-     "bits": 2560,
+     "d1": 1641,
+     "d2": 1831,
+     "radius": 2957,
+     "bits": 19712,
      "refined": true,
-     "glyphs": 10,
-     "penalized": 1,
-     "competitor": "2",
-     "competitor_text": "4 PROOF",
-     "spread": 0.11168150918683589,
+     "glyphs": 11,
+     "penalized": 0,
+     "competitor": "45",
+     "competitor_text": "45% ALC BY VOL",
+     "spread": 0.051395641454633795,
+     "relearned": true,
      "low_confidence": false,
-     "reading": "4",
-     "digit_confidence": 0.628555582098579
+     "reading": "45%",
+     "digit_confidence": 0.6196013289036546
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "VERIFIED",
     "expected": "750",
+    "observed": "750",
     "evidence": {
      "region": {
       "Min": {
-       "X": 318,
-       "Y": 1161
+       "X": 193,
+       "Y": 746
       },
       "Max": {
-       "X": 381,
-       "Y": 1178
+       "X": 259,
+       "Y": 765
       }
      },
-     "text": "1 Liter",
+     "text": "750 ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "L",
+      "synthesized": "750ML",
       "face": "AlfaSlabOne Regular"
      },
-     "d1": 323,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 870,
+     "d2": 1281,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 1,
-     "spread": 0.11168150918683589,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.7091031875786021
+     "glyphs": 5,
+     "penalized": 0,
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.051395641454633795,
+     "low_confidence": false
     }
    }
   ],
@@ -13541,7 +13647,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 47642643800,
+  "latency": 10593327100,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -13562,14 +13668,14 @@
    "coverage": 0.9585062240663901,
    "recovered": 2,
    "spread": 0.02037711048088147,
-   "characters": "(),.01257ACGPSabcdefghiklmnoprstuvwy",
+   "characters": "(),.12ACGPSabcdefghiklmnoprstuvwy",
    "face": "FjallaOne Regular",
    "x_height": 19,
    "cap_height": 24,
    "letter_gap": 2,
    "word_gap": 9,
    "rows": null,
-   "learned": "057P"
+   "learned": "P"
   },
   "claims": [
    {
@@ -13596,14 +13702,14 @@
       "emphasis": "OEVINEOVEEO",
       "face": "FjallaOne Regular"
      },
-     "d1": 846,
+     "d1": 6190,
      "d2": -1,
-     "radius": 768,
-     "bits": 6400,
+     "radius": 5376,
+     "bits": 44800,
      "refined": true,
      "glyphs": 25,
      "penalized": 5,
-     "spread": 0.015448457994493112,
+     "spread": 0.02037711048088147,
      "relearned": true,
      "low_confidence": false
     }
@@ -13616,30 +13722,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 275,
-       "Y": 370
+       "X": 351,
+       "Y": 507
       },
       "Max": {
-       "X": 759,
-       "Y": 409
+       "X": 773,
+       "Y": 547
       }
      },
-     "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+     "text": "Dessert /port/sherry/(cooking) Wine",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "D//HY/K",
-      "emphasis": "EERTORTERROOINWINE",
+      "synthesized": "D///",
+      "emphasis": "W",
       "face": "FjallaOne Regular"
      },
-     "d1": 1976,
+     "d1": 10738,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 14,
-     "spread": 0.015448457994493112,
+     "penalized": 11,
+     "spread": 0.02037711048088147,
      "relearned": true,
      "low_confidence": false
     }
@@ -13652,30 +13758,28 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 341,
-       "Y": 370
+       "X": 529,
+       "Y": 618
       },
       "Max": {
-       "X": 812,
-       "Y": 409
+       "X": 774,
+       "Y": 658
       }
      },
-     "text": "CROD TRADING CORP, CROD TRADING CO CORP.",
+     "text": "Crod Trading Co Corp.",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "DDDD",
-      "emphasis": "ROTRINORROTRINOOR",
-      "face": "FjallaOne Regular"
+      "emphasis": "T"
      },
-     "d1": 1504,
+     "d1": 5298,
      "d2": -1,
-     "radius": 1044,
-     "bits": 8704,
+     "radius": 3871,
+     "bits": 32256,
      "refined": true,
-     "glyphs": 34,
-     "penalized": 12,
-     "spread": 0.015448457994493112,
+     "glyphs": 18,
+     "penalized": 5,
+     "spread": 0.02037711048088147,
      "relearned": true,
      "low_confidence": false
     }
@@ -13700,18 +13804,18 @@
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "K86BB#K86B",
+      "synthesized": "K86BB#K86B0075",
       "emphasis": "RR",
       "face": "FjallaOne Regular"
      },
-     "d1": 4110,
+     "d1": 20481,
      "d2": -1,
-     "radius": 1782,
-     "bits": 14848,
+     "radius": 12472,
+     "bits": 103936,
      "refined": true,
      "glyphs": 58,
-     "penalized": 25,
-     "spread": 0.015448457994493112,
+     "penalized": 21,
+     "spread": 0.02037711048088147,
      "relearned": true,
      "low_confidence": false
     }
@@ -13740,14 +13844,14 @@
       "synthesized": "P",
       "face": "FjallaOne Regular"
      },
-     "d1": 80,
+     "d1": 1084,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
      "penalized": 0,
-     "spread": 0.015448457994493112,
+     "spread": 0.02037711048088147,
      "low_confidence": false
     }
    },
@@ -13759,36 +13863,35 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 225,
-       "Y": 314
+       "X": 595,
+       "Y": 698
       },
       "Max": {
-       "X": 447,
-       "Y": 365
+       "X": 801,
+       "Y": 737
       }
      },
-     "text": "14 % ALC/VOL",
+     "text": "72,96006 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4%L/L",
-      "emphasis": "VO",
+      "synthesized": "796006",
       "face": "FjallaOne Regular"
      },
-     "d1": 548,
-     "d2": 815,
-     "radius": 384,
-     "bits": 2560,
+     "d1": 3686,
+     "d2": 5406,
+     "radius": 3494,
+     "bits": 23296,
      "refined": true,
-     "glyphs": 10,
-     "penalized": 5,
-     "competitor": "7",
-     "competitor_text": "14 PROOF",
-     "spread": 0.015448457994493112,
+     "glyphs": 13,
+     "penalized": 2,
+     "competitor": "73",
+     "competitor_text": "72,96006 % ALC/VOL",
+     "spread": 0.02037711048088147,
      "relearned": true,
      "low_confidence": false,
-     "reading": "14",
-     "digit_confidence": 0.9414348537418241
+     "reading": "72,96066",
+     "digit_confidence": 0.5038022813688212
     }
    },
    {
@@ -13808,24 +13911,24 @@
        "Y": 358
       }
      },
-     "text": "750 ml",
+     "text": "750ml",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "750",
       "face": "FjallaOne Regular"
      },
-     "d1": 31,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 570,
+     "d2": 920,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "spread": 0.015448457994493112,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.9252696827264475
+     "competitor": "700",
+     "competitor_text": "700 ml",
+     "spread": 0.02037711048088147,
+     "low_confidence": false
     }
    }
   ],
@@ -14078,7 +14181,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6626028300,
+  "latency": 1998704100,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -14129,14 +14232,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 1958,
+     "d1": 17119,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 6021,
+     "bits": 50176,
      "refined": true,
      "glyphs": 28,
      "penalized": 17,
-     "spread": 0.16307291666666665,
+     "spread": 0.08122497696995465,
      "low_confidence": false
     }
    },
@@ -14155,27 +14258,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 44,
-       "Y": 474
+       "X": 43,
+       "Y": 183
       },
       "Max": {
-       "X": 1559,
-       "Y": 534
+       "X": 1558,
+       "Y": 287
       }
      },
-     "text": "THE CROSSING AT BIG CREEK BREWERY",
+     "text": "Tcbc Development Company",
      "params": {
-      "casing": "upper",
-      "weight": "regular"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "cbcevelopmentompany",
+      "face": "Go Regular"
      },
-     "d1": 1958,
+     "d1": 11471,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 4731,
+     "bits": 39424,
      "refined": true,
-     "glyphs": 28,
-     "penalized": 17,
-     "spread": 0.16307291666666665,
+     "glyphs": 22,
+     "penalized": 14,
+     "spread": 0.08122497696995465,
      "low_confidence": false
     }
    },
@@ -14194,32 +14299,34 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 816,
+       "X": 770,
        "Y": 708
       },
       "Max": {
        "X": 935,
-       "Y": 737
+       "Y": 738
       }
      },
-     "text": "55% alc./vol.",
+     "text": "ALC. 11% BY VOL.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "55%alc./vol.",
+      "synthesized": ".%.",
       "face": "Go Regular"
      },
-     "d1": 601,
-     "d2": -1,
-     "radius": 461,
-     "bits": 3072,
+     "d1": 4670,
+     "d2": 4711,
+     "radius": 3494,
+     "bits": 23296,
      "refined": true,
-     "glyphs": 12,
-     "penalized": 6,
-     "spread": 0.16307291666666665,
+     "glyphs": 13,
+     "penalized": 5,
+     "competitor": "18",
+     "competitor_text": "ALC. 18% BY VOL.",
+     "spread": 0.08122497696995465,
      "low_confidence": false,
-     "reading": "55%",
-     "digit_confidence": 0.9119430230808636
+     "reading": "11%",
+     "digit_confidence": 0.5795454545454546
     }
    },
    {
@@ -14230,30 +14337,32 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 666,
-       "Y": 711
+       "X": 891,
+       "Y": 712
       },
       "Max": {
-       "X": 757,
-       "Y": 739
+       "X": 935,
+       "Y": 737
       }
      },
-     "text": "1 LITER",
+     "text": "1 Liter",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "regular",
+      "synthesized": "iter",
+      "face": "Go Regular"
      },
-     "d1": 325,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 1998,
+     "d2": 2068,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
      "glyphs": 6,
-     "penalized": 3,
-     "spread": 0.16307291666666665,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5002727404363945
+     "penalized": 2,
+     "competitor": "350",
+     "competitor_text": "350 ml",
+     "spread": 0.08122497696995465,
+     "low_confidence": false
     }
    }
   ],
@@ -14453,7 +14562,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 39042904300,
+  "latency": 10155079000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -14474,22 +14583,21 @@
    "coverage": 0.983402489626556,
    "recovered": 0,
    "spread": 0.036230040409827545,
-   "characters": "(),.1257ABCDEFGHIKLMNOPRSTUVWYacdeklnrsvy",
-   "face": "PTSerif Bold",
+   "characters": "(),.12ABCDEFGHIKLMNOPRSTUVWY",
+   "face": "Go Regular",
    "x_height": 8.965517241379311,
    "cap_height": 12,
    "letter_gap": 3,
    "word_gap": 8,
    "rows": null,
-   "learned": "57acdeklnrsvy"
+   "learned": "PSY"
   },
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "MCKELVEY VINEYARDS",
-    "observed": "MCKELVEY VINEYARDS",
     "evidence": {
      "region": {
       "Min": {
@@ -14508,14 +14616,15 @@
       "synthesized": "ckelveyineyards",
       "face": "Go Regular"
      },
-     "d1": 336,
+     "d1": 3665,
      "d2": -1,
-     "radius": 522,
-     "bits": 4352,
+     "radius": 3656,
+     "bits": 30464,
      "refined": true,
      "glyphs": 17,
-     "penalized": 1,
-     "spread": 0.026766187061945983,
+     "penalized": 2,
+     "spread": 0.036230040409827545,
+     "relearned": true,
      "low_confidence": false
     }
    },
@@ -14527,29 +14636,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 559,
-       "Y": 942
+       "X": 676,
+       "Y": 965
       },
       "Max": {
-       "X": 694,
-       "Y": 964
+       "X": 823,
+       "Y": 991
       }
      },
      "text": "Table White Wine",
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "bhiti",
-      "face": "PTSerif Bold"
+      "synthesized": "ablehiteine",
+      "face": "Go Regular"
      },
-     "d1": 800,
+     "d1": 4591,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
-     "penalized": 5,
-     "spread": 0.026766187061945983,
+     "penalized": 1,
+     "spread": 0.036230040409827545,
      "relearned": true,
      "low_confidence": false
     }
@@ -14574,16 +14683,19 @@
      "text": "SVP WINERY",
      "params": {
       "casing": "upper",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "SPY",
+      "emphasis": "VWINER",
+      "face": "PTSans Bold"
      },
-     "d1": 96,
+     "d1": 1310,
      "d2": -1,
-     "radius": 276,
-     "bits": 2304,
+     "radius": 1935,
+     "bits": 16128,
      "refined": true,
      "glyphs": 9,
      "penalized": 0,
-     "spread": 0.026766187061945983,
+     "spread": 0.036230040409827545,
      "low_confidence": false
     }
    },
@@ -14595,30 +14707,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 474,
-       "Y": 1291
+       "X": 160,
+       "Y": 1389
       },
       "Max": {
-       "X": 773,
-       "Y": 1312
+       "X": 459,
+       "Y": 1410
       }
      },
      "text": "111 CLARK RD SHANDON CA 93461",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "111CLKDSHDC93461",
-      "emphasis": "ARRANONA",
-      "face": "PTSans Bold"
+      "weight": "regular",
+      "synthesized": "9346",
+      "face": "Go Regular"
      },
-     "d1": 1294,
+     "d1": 7857,
      "d2": -1,
-     "radius": 737,
-     "bits": 6144,
+     "radius": 5161,
+     "bits": 43008,
      "refined": true,
      "glyphs": 24,
-     "penalized": 4,
-     "spread": 0.026766187061945983,
+     "penalized": 0,
+     "spread": 0.036230040409827545,
      "relearned": true,
      "low_confidence": false
     }
@@ -14631,43 +14742,44 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 617,
-       "Y": 1389
+       "X": 160,
+       "Y": 1412
       },
       "Max": {
-       "X": 693,
-       "Y": 1410
+       "X": 337,
+       "Y": 1434
       }
      },
-     "text": "7% ALC/VOL",
+     "text": "2,0709676078 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "%/",
-      "face": "PTSerif Bold"
+      "synthesized": "0709676078roof",
+      "face": "Go Regular"
      },
-     "d1": 572,
-     "d2": 558,
-     "radius": 346,
-     "bits": 2304,
+     "d1": 4926,
+     "d2": -1,
+     "radius": 4570,
+     "bits": 30464,
      "refined": true,
-     "glyphs": 9,
-     "penalized": 3,
-     "competitor": "3.5",
-     "competitor_text": "(7 Proof)",
-     "spread": 0.026766187061945983,
+     "glyphs": 17,
+     "penalized": 2,
+     "spread": 0.036230040409827545,
      "relearned": true,
      "low_confidence": false,
-     "reading": "7",
-     "digit_confidence": 0.7129872196553002
+     "reading": "2,0709676078",
+     "digit_confidence": 0.5108459869848158
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "REVIEW",
     "expected": "750",
-    "observed": "750",
+    "candidates": [
+     "750",
+     "700"
+    ],
     "evidence": {
      "region": {
       "Min": {
@@ -14686,17 +14798,18 @@
       "synthesized": "750",
       "face": "Go Regular"
      },
-     "d1": 82,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 836,
+     "d2": 869,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
      "glyphs": 5,
      "penalized": 0,
-     "spread": 0.026766187061945983,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.9398491725737147
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.036230040409827545,
+     "relearned": true,
+     "low_confidence": false
     }
    }
   ],
@@ -14994,7 +15107,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 71409447800,
+  "latency": 10510510100,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15032,30 +15145,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 443,
-       "Y": 1441
+       "X": 608,
+       "Y": 1504
       },
       "Max": {
-       "X": 542,
-       "Y": 1460
+       "X": 722,
+       "Y": 1523
       }
      },
-     "text": "LEGACY RESERVE",
+     "text": "Legacy Reserve",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "LEYREERVE",
-      "emphasis": "GA",
+      "synthesized": "LR",
       "face": "PTSans Bold"
      },
-     "d1": 676,
+     "d1": 4222,
      "d2": -1,
-     "radius": 399,
-     "bits": 3328,
+     "radius": 2796,
+     "bits": 23296,
      "refined": true,
      "glyphs": 13,
-     "penalized": 5,
-     "spread": 0.09975825498286436,
+     "penalized": 4,
+     "spread": 0.06790502249486625,
      "low_confidence": false
     }
    },
@@ -15067,29 +15179,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 443,
-       "Y": 1441
+       "X": 444,
+       "Y": 1457
       },
       "Max": {
-       "X": 542,
-       "Y": 1460
+       "X": 564,
+       "Y": 1478
       }
      },
-     "text": "BOURBON WHISKY",
+     "text": "Bourbon Whisky",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "BOURBONWHIKY",
+      "synthesized": "BW",
       "face": "PTSans Bold"
      },
-     "d1": 666,
+     "d1": 4418,
      "d2": -1,
-     "radius": 399,
-     "bits": 3328,
+     "radius": 2796,
+     "bits": 23296,
      "refined": true,
      "glyphs": 13,
-     "penalized": 6,
-     "spread": 0.09975825498286436,
+     "penalized": 5,
+     "spread": 0.06790502249486625,
      "low_confidence": false
     }
    },
@@ -15101,29 +15213,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 443,
-       "Y": 1441
+       "X": 615,
+       "Y": 1267
       },
       "Max": {
-       "X": 620,
-       "Y": 1460
+       "X": 758,
+       "Y": 1286
       }
      },
-     "text": "BEMIS DISTILLERS, LLC",
+     "text": "Bemis Distillers, Llc",
      "params": {
-      "casing": "upper",
-      "weight": "regular",
-      "synthesized": "BEMIDITILLERLL",
-      "face": "PTSans Bold"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "BemisDistillers,Llc",
+      "face": "Anton Regular"
      },
-     "d1": 1093,
+     "d1": 6345,
      "d2": -1,
-     "radius": 584,
-     "bits": 4864,
+     "radius": 4086,
+     "bits": 34048,
      "refined": true,
      "glyphs": 19,
-     "penalized": 8,
-     "spread": 0.09975825498286436,
+     "penalized": 6,
+     "spread": 0.06790502249486625,
      "low_confidence": false
     }
    },
@@ -15135,12 +15247,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 449,
-       "Y": 1521
+       "X": 560,
+       "Y": 1457
       },
       "Max": {
-       "X": 679,
-       "Y": 1542
+       "X": 782,
+       "Y": 1475
       }
      },
      "text": "81 E Wayne St Ste A Franklin In 46131",
@@ -15151,14 +15263,14 @@
       "emphasis": "A",
       "face": "PTSans Bold"
      },
-     "d1": 1798,
+     "d1": 10482,
      "d2": -1,
-     "radius": 891,
-     "bits": 7424,
+     "radius": 6236,
+     "bits": 51968,
      "refined": true,
      "glyphs": 29,
-     "penalized": 12,
-     "spread": 0.09975825498286436,
+     "penalized": 10,
+     "spread": 0.06790502249486625,
      "low_confidence": false
     }
    },
@@ -15170,6 +15282,48 @@
     "evidence": {
      "region": {
       "Min": {
+       "X": 739,
+       "Y": 1472
+      },
+      "Max": {
+       "X": 781,
+       "Y": 1491
+      }
+     },
+     "text": "68 Proof",
+     "params": {
+      "casing": "as_given",
+      "weight": "regular",
+      "synthesized": "68P",
+      "face": "PTSans Bold"
+     },
+     "d1": 2252,
+     "d2": 932,
+     "radius": 1882,
+     "bits": 12544,
+     "refined": true,
+     "glyphs": 7,
+     "penalized": 3,
+     "competitor": "68",
+     "competitor_text": "68 % ALC/VOL",
+     "spread": 0.06790502249486625,
+     "low_confidence": false,
+     "reading": "68",
+     "digit_confidence": 0.5154639175257733
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "3acb08a3df88",
+    "status": "REVIEW",
+    "expected": "750",
+    "candidates": [
+     "750",
+     "700"
+    ],
+    "evidence": {
+     "region": {
+      "Min": {
        "X": 552,
        "Y": 911
       },
@@ -15178,62 +15332,24 @@
        "Y": 948
       }
      },
-     "text": "75 PROOF",
+     "text": "750ML",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "75PROOF",
+      "synthesized": "750ML",
       "face": "PTSans Bold"
      },
-     "d1": 345,
-     "d2": 414,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 1211,
+     "d2": 1279,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 2,
-     "competitor": "75",
-     "competitor_text": "75% ABV",
-     "spread": 0.09975825498286436,
-     "low_confidence": false,
-     "reading": "75",
-     "digit_confidence": 0.8800852311562588
-    }
-   },
-   {
-    "claim": "net",
-    "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
-    "expected": "750",
-    "evidence": {
-     "region": {
-      "Min": {
-       "X": 678,
-       "Y": 417
-      },
-      "Max": {
-       "X": 905,
-       "Y": 503
-      }
-     },
-     "text": "1 Litre",
-     "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "1L",
-      "face": "PTSans Bold"
-     },
-     "d1": 773,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
-     "refined": true,
-     "glyphs": 6,
-     "penalized": 3,
-     "spread": 0.09975825498286436,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.5995761968589881
+     "glyphs": 5,
+     "penalized": 1,
+     "competitor": "700",
+     "competitor_text": "700 ML",
+     "spread": 0.06790502249486625,
+     "low_confidence": false
     }
    }
   ],
@@ -15605,7 +15721,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 451389200,
+  "latency": 628825600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -15715,7 +15831,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 64427173700,
+  "latency": 5379561900,
   "orientation": "as_is",
   "reference_casing": "as_given",
   "alphabet": {
@@ -15736,52 +15852,46 @@
    "coverage": 0.31950207468879666,
    "recovered": 0,
    "spread": 0.05158082764355742,
-   "characters": "%(,24ACGabcdefghiklmnoprstuvwy",
+   "characters": "(,ACGabcdefghiklmnoprstuvwy",
    "face": "FjallaOne Regular",
    "x_height": 9,
    "cap_height": 12,
    "letter_gap": 1,
    "word_gap": 3,
-   "rows": null,
-   "learned": "%24"
+   "rows": null
   },
   "claims": [
    {
     "claim": "brand",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "NOT_FOUND",
     "expected": "45TH PARALLEL",
-    "candidates": [
-     "45TH PARALLEL"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 304,
-       "Y": 1248
+       "X": 378,
+       "Y": 426
       },
       "Max": {
-       "X": 386,
-       "Y": 1271
+       "X": 464,
+       "Y": 455
       }
      },
      "text": "45th Parallel",
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "5P",
+      "synthesized": "45P",
       "face": "FjallaOne Regular"
      },
-     "d1": 354,
+     "d1": 3743,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
-     "penalized": 3,
-     "spread": 0.09224877450980391,
-     "relearned": true,
+     "penalized": 4,
+     "spread": 0.05158082764355742,
      "low_confidence": false
     }
    },
@@ -15793,30 +15903,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 263,
-       "Y": 1313
+       "X": 288,
+       "Y": 1248
       },
       "Max": {
-       "X": 489,
-       "Y": 1340
+       "X": 525,
+       "Y": 1276
       }
      },
      "text": "Other Specialties \u0026 Proprietaries",
      "params": {
       "casing": "title",
-      "weight": "heavy",
-      "synthesized": "OtherSpecialties\u0026Proprietaries",
-      "face": "PTSans Bold"
+      "weight": "regular",
+      "synthesized": "OS\u0026P",
+      "face": "FjallaOne Regular"
      },
-     "d1": 1705,
+     "d1": 10069,
      "d2": -1,
-     "radius": 922,
-     "bits": 7680,
+     "radius": 6451,
+     "bits": 53760,
      "refined": true,
      "glyphs": 30,
-     "penalized": 14,
-     "spread": 0.09224877450980391,
-     "relearned": true,
+     "penalized": 10,
+     "spread": 0.05158082764355742,
      "low_confidence": false
     }
    },
@@ -15828,7 +15937,7 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 288,
+       "X": 250,
        "Y": 1248
       },
       "Max": {
@@ -15840,18 +15949,17 @@
      "params": {
       "casing": "title",
       "weight": "regular",
-      "synthesized": "5PSL",
+      "synthesized": "45PSL",
       "face": "FjallaOne Regular"
      },
-     "d1": 1253,
+     "d1": 7717,
      "d2": -1,
-     "radius": 707,
-     "bits": 5888,
+     "radius": 4946,
+     "bits": 41216,
      "refined": true,
      "glyphs": 23,
-     "penalized": 9,
-     "spread": 0.09224877450980391,
-     "relearned": true,
+     "penalized": 7,
+     "spread": 0.05158082764355742,
      "low_confidence": false
     }
    },
@@ -15863,83 +15971,77 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 191,
-       "Y": 1481
+       "X": 342,
+       "Y": 1362
       },
       "Max": {
-       "X": 330,
-       "Y": 1500
+       "X": 611,
+       "Y": 1390
       }
      },
-     "text": "1570 MADISON AVE NEW RICHMOND WI 54017",
+     "text": "1570 Madison Ave New Richmond Wi 54017",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "1570MDISOVEEWRIHMODWI5017",
-      "emphasis": "NNN",
+      "synthesized": "1570MRW54017",
+      "emphasis": "N",
       "face": "FjallaOne Regular"
      },
-     "d1": 1741,
+     "d1": 12041,
      "d2": -1,
-     "radius": 983,
-     "bits": 8192,
+     "radius": 6881,
+     "bits": 57344,
      "refined": true,
      "glyphs": 32,
-     "penalized": 16,
-     "spread": 0.09224877450980391,
-     "relearned": true,
+     "penalized": 14,
+     "spread": 0.05158082764355742,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "42",
-    "observed": "42",
     "evidence": {
      "region": {
       "Min": {
-       "X": 295,
-       "Y": 427
+       "X": 454,
+       "Y": 426
       },
       "Max": {
-       "X": 382,
-       "Y": 450
+       "X": 531,
+       "Y": 455
       }
      },
-     "text": "42% Alc/Vol",
+     "text": "(164 Proof)",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "42%/V",
+      "synthesized": "164P)",
       "face": "FjallaOne Regular"
      },
-     "d1": 337,
-     "d2": 616,
-     "radius": 384,
-     "bits": 2560,
+     "d1": 2805,
+     "d2": 3139,
+     "radius": 2688,
+     "bits": 17920,
      "refined": true,
      "glyphs": 10,
-     "penalized": 2,
+     "penalized": 3,
      "competitor": "92",
      "competitor_text": "(184 Proof)",
-     "spread": 0.09224877450980391,
+     "spread": 0.05158082764355742,
      "low_confidence": false,
-     "reading": "42%",
-     "digit_confidence": 0.972114144270426
+     "reading": "184",
+     "digit_confidence": 0.7256944444444445
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "regions_disagree",
+    "status": "VERIFIED",
     "expected": "750",
-    "candidates": [
-     "1750",
-     "750"
-    ],
+    "observed": "750",
     "evidence": {
      "region": {
       "Min": {
@@ -15951,25 +16053,24 @@
        "Y": 450
       }
      },
-     "text": "750 ml",
+     "text": "750ml",
      "params": {
       "casing": "as_given",
       "weight": "regular",
       "synthesized": "750",
       "face": "FjallaOne Regular"
      },
-     "d1": 101,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 760,
+     "d2": 1053,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
      "glyphs": 5,
-     "penalized": 1,
-     "spread": 0.09224877450980391,
-     "relearned": true,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.9523951395475654
+     "penalized": 0,
+     "competitor": "700",
+     "competitor_text": "700 ml",
+     "spread": 0.05158082764355742,
+     "low_confidence": false
     }
    }
   ],
@@ -16293,7 +16394,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 682212100,
+  "latency": 1001942600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -16403,7 +16504,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 35077238400,
+  "latency": 7783339300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -16424,14 +16525,14 @@
    "coverage": 0.941908713692946,
    "recovered": 2,
    "spread": 0.03296086790010401,
-   "characters": "(),12ABCDEFGHIKLMNOPRSTUVWYZ",
+   "characters": "(),.12ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 10.344827586206897,
    "cap_height": 15,
    "letter_gap": 1,
    "word_gap": 6,
    "rows": null,
-   "learned": "Z"
+   "learned": ".CDLSZ"
   },
   "claims": [
    {
@@ -16454,18 +16555,19 @@
      "text": "CASTILLO DE MENDOZA",
      "params": {
       "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "Z",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "CSLLDDZ",
+      "emphasis": "ATIOEMENOA",
+      "face": "PTSans Bold"
      },
-     "d1": 117,
+     "d1": 2567,
      "d2": -1,
-     "radius": 522,
-     "bits": 4352,
+     "radius": 3656,
+     "bits": 30464,
      "refined": true,
      "glyphs": 17,
      "penalized": 0,
-     "spread": 0.018487114656819518,
+     "spread": 0.03296086790010401,
      "low_confidence": false
     }
    },
@@ -16477,29 +16579,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 373,
-       "Y": 283
+       "X": 372,
+       "Y": 390
       },
       "Max": {
-       "X": 679,
-       "Y": 309
+       "X": 704,
+       "Y": 421
       }
      },
-     "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+     "text": "Dessert /port/sherry/(cooking) Wine",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "///",
+      "synthesized": "essert/port/sherry/cookingine",
       "face": "Go Regular"
      },
-     "d1": 1875,
+     "d1": 11719,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 15,
-     "spread": 0.018487114656819518,
+     "penalized": 12,
+     "spread": 0.03296086790010401,
      "relearned": true,
      "low_confidence": false
     }
@@ -16525,14 +16627,14 @@
       "casing": "upper",
       "weight": "regular"
      },
-     "d1": 993,
+     "d1": 7376,
      "d2": -1,
-     "radius": 768,
-     "bits": 6400,
+     "radius": 5376,
+     "bits": 44800,
      "refined": true,
      "glyphs": 25,
      "penalized": 5,
-     "spread": 0.018487114656819518,
+     "spread": 0.03296086790010401,
      "relearned": true,
      "low_confidence": false
     }
@@ -16545,30 +16647,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 840,
-       "Y": 260
+       "X": 786,
+       "Y": 212
       },
       "Max": {
-       "X": 1054,
-       "Y": 282
+       "X": 1108,
+       "Y": 238
       }
      },
      "text": "3134 MARJAN DR DORAVILLE GA 30340",
      "params": {
       "casing": "upper",
-      "weight": "heavy",
-      "synthesized": "3134JDDLL30340",
-      "emphasis": "MARANRORAVIEGA",
-      "face": "PTSans Bold"
+      "weight": "regular",
+      "synthesized": "334J30340",
+      "face": "Go Regular"
      },
-     "d1": 1518,
+     "d1": 10565,
      "d2": -1,
-     "radius": 860,
-     "bits": 7168,
+     "radius": 6021,
+     "bits": 50176,
      "refined": true,
      "glyphs": 28,
-     "penalized": 13,
-     "spread": 0.018487114656819518,
+     "penalized": 10,
+     "spread": 0.03296086790010401,
      "relearned": true,
      "low_confidence": false
     }
@@ -16581,70 +16682,73 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 719,
-       "Y": 448
+       "X": 618,
+       "Y": 1467
       },
       "Max": {
-       "X": 770,
-       "Y": 472
+       "X": 732,
+       "Y": 1504
       }
      },
-     "text": "PROOF 33",
+     "text": "116 PROOF",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "33",
+      "synthesized": "6",
       "face": "Go Regular"
      },
-     "d1": 279,
-     "d2": 365,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 2580,
+     "d2": 2601,
+     "radius": 2150,
+     "bits": 14336,
      "refined": true,
-     "glyphs": 7,
+     "glyphs": 8,
      "penalized": 3,
-     "competitor": "2.5",
-     "competitor_text": "PROOF 5",
-     "spread": 0.018487114656819518,
+     "competitor": "57.5",
+     "competitor_text": "115 PROOF",
+     "spread": 0.03296086790010401,
      "relearned": true,
      "low_confidence": false,
-     "reading": "38",
-     "digit_confidence": 0.6368300250546512
+     "reading": "116",
+     "digit_confidence": 0.5710900473933649
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "NOT_FOUND",
+    "status": "MISMATCH",
     "expected": "750",
+    "observed": "500",
     "evidence": {
      "region": {
       "Min": {
-       "X": 438,
-       "Y": 162
+       "X": 684,
+       "Y": 449
       },
       "Max": {
-       "X": 502,
-       "Y": 193
+       "X": 721,
+       "Y": 472
       }
      },
-     "text": "1 LITER",
+     "text": "0.5L",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "regular",
+      "synthesized": "05",
+      "face": "Go Regular"
      },
-     "d1": 343,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 1014,
+     "d2": 1096,
+     "radius": 1075,
+     "bits": 7168,
      "refined": true,
-     "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.018487114656819518,
+     "glyphs": 4,
+     "penalized": 0,
+     "competitor": "200",
+     "competitor_text": "0.2 L",
+     "spread": 0.03296086790010401,
      "relearned": true,
-     "low_confidence": false,
-     "reading": "1",
-     "digit_confidence": 0.9552338137635776
+     "low_confidence": false
     }
    }
   ],
@@ -16859,7 +16963,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 856592800,
+  "latency": 1233774500,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -16969,7 +17073,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 413783800,
+  "latency": 591975600,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -17079,7 +17183,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1511723500,
+  "latency": 2159797800,
   "reason": "no_alphabet",
   "orientation": "rot90",
   "alphabet": {
@@ -17190,7 +17294,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 36309358100,
+  "latency": 4795562100,
   "orientation": "rot90",
   "reference_casing": "upper",
   "alphabet": {
@@ -17245,14 +17349,14 @@
       "synthesized": "NotreDameWines",
       "face": "Lato Bold"
      },
-     "d1": 165,
+     "d1": 2591,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
      "penalized": 1,
-     "spread": 0.03320844040012566,
+     "spread": 0.02657194520037313,
      "low_confidence": true
     }
    },
@@ -17264,30 +17368,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 286,
-       "Y": 1225
+       "X": 451,
+       "Y": 1384
       },
       "Max": {
-       "X": 752,
-       "Y": 1264
+       "X": 1215,
+       "Y": 1431
       }
      },
-     "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+     "text": "Dessert /port/sherry/(cooking) Wine",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "EERT/ORT/HERRY/(COOKI)IE",
-      "emphasis": "DSSPSNGWN",
+      "synthesized": "/p/hy/(kg)",
+      "emphasis": "DessertortserrcooinWine",
       "face": "Lato Bold"
      },
-     "d1": 2127,
+     "d1": 12264,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 16,
-     "spread": 0.03320844040012566,
+     "penalized": 7,
+     "spread": 0.02657194520037313,
      "relearned": true,
      "low_confidence": true
     }
@@ -17300,12 +17404,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 804,
-       "Y": 1384
+       "X": 548,
+       "Y": 1460
       },
       "Max": {
-       "X": 988,
-       "Y": 1423
+       "X": 752,
+       "Y": 1506
       }
      },
      "text": "VINOVAE, INC.",
@@ -17315,14 +17419,14 @@
       "synthesized": ",",
       "face": "Go Regular"
      },
-     "d1": 595,
+     "d1": 3943,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
      "penalized": 3,
-     "spread": 0.03320844040012566,
+     "spread": 0.02657194520037313,
      "relearned": true,
      "low_confidence": true
     }
@@ -17346,19 +17450,19 @@
      "text": "1620 Carneros Meadows Ln Ste 103 Sonoma Ca 95476",
      "params": {
       "casing": "title",
-      "weight": "regular",
-      "synthesized": "1620w103m95476",
-      "emphasis": "arneroseadosnteonoaa",
-      "face": "Go Regular"
+      "weight": "heavy",
+      "synthesized": "1620CMwL103mC95476",
+      "emphasis": "arneroseadosnSteSonoaa",
+      "face": "Lato Bold"
      },
-     "d1": 2790,
+     "d1": 16435,
      "d2": -1,
-     "radius": 1229,
-     "bits": 10240,
+     "radius": 8602,
+     "bits": 71680,
      "refined": true,
      "glyphs": 40,
-     "penalized": 14,
-     "spread": 0.03320844040012566,
+     "penalized": 16,
+     "spread": 0.02657194520037313,
      "relearned": true,
      "low_confidence": true
     }
@@ -17387,14 +17491,14 @@
       "synthesized": "ProductofUSA",
       "face": "Lato Bold"
      },
-     "d1": 96,
+     "d1": 1758,
      "d2": -1,
-     "radius": 369,
-     "bits": 3072,
+     "radius": 2580,
+     "bits": 21504,
      "refined": true,
      "glyphs": 12,
      "penalized": 0,
-     "spread": 0.03320844040012566,
+     "spread": 0.02657194520037313,
      "low_confidence": false
     }
    },
@@ -17406,35 +17510,36 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 1077,
-       "Y": 1347
+       "X": 754,
+       "Y": 1224
       },
       "Max": {
-       "X": 1219,
-       "Y": 1387
+       "X": 859,
+       "Y": 1258
       }
      },
-     "text": "(1 PROOF)",
+     "text": "64 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "1)",
+      "synthesized": "64",
+      "emphasis": "roof",
       "face": "Go Regular"
      },
-     "d1": 411,
-     "d2": 514,
-     "radius": 307,
-     "bits": 2048,
+     "d1": 2771,
+     "d2": 820,
+     "radius": 1882,
+     "bits": 12544,
      "refined": true,
-     "glyphs": 8,
+     "glyphs": 7,
      "penalized": 3,
-     "competitor": "1",
-     "competitor_text": "1 % ALC/VOL",
-     "spread": 0.03320844040012566,
+     "competitor": "64",
+     "competitor_text": "64 % ALC/VOL",
+     "spread": 0.02657194520037313,
      "relearned": true,
      "low_confidence": true,
-     "reading": "1",
-     "digit_confidence": 0.6733432803111796
+     "reading": "64",
+     "digit_confidence": 0.625
     }
    },
    {
@@ -17446,10 +17551,10 @@
      "region": {
       "Min": {
        "X": 1077,
-       "Y": 1348
+       "Y": 1347
       },
       "Max": {
-       "X": 1153,
+       "X": 1219,
        "Y": 1387
       }
      },
@@ -17460,18 +17565,18 @@
       "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 301,
-     "d2": -1,
-     "radius": 230,
-     "bits": 1536,
+     "d1": 2058,
+     "d2": 2182,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
      "glyphs": 6,
-     "penalized": 2,
-     "spread": 0.03320844040012566,
+     "penalized": 1,
+     "competitor": "375",
+     "competitor_text": "0.375 L",
+     "spread": 0.02657194520037313,
      "relearned": true,
-     "low_confidence": true,
-     "reading": "1",
-     "digit_confidence": 0.6733432803111796
+     "low_confidence": true
     }
    }
   ],
@@ -17701,7 +17806,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 464942100,
+  "latency": 632070000,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -17819,7 +17924,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 626183800,
+  "latency": 904849200,
   "reason": "no_alphabet",
   "orientation": "as_is",
   "alphabet": {
@@ -17937,7 +18042,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 37009706100,
+  "latency": 4169923000,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -17958,14 +18063,13 @@
    "coverage": 0.4605809128630705,
    "recovered": 0,
    "spread": 0.09435615924873737,
-   "characters": "%().012457ABCDEFGHIKLMNOPRSTUVWY",
+   "characters": "()2ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 10.344827586206897,
    "cap_height": 15,
    "letter_gap": 2,
    "word_gap": 5,
-   "rows": null,
-   "learned": "%.01457"
+   "rows": null
   },
   "claims": [
    {
@@ -17976,30 +18080,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 353,
-       "Y": 47
+       "X": 241,
+       "Y": 1438
       },
       "Max": {
-       "X": 678,
-       "Y": 105
+       "X": 375,
+       "Y": 1461
       }
      },
-     "text": "Clos Fourtet",
+     "text": "CLOS FOURTET",
      "params": {
-      "casing": "title",
-      "weight": "regular",
-      "synthesized": "losourtet",
-      "face": "Go Regular"
+      "casing": "as_given",
+      "weight": "regular"
      },
-     "d1": 416,
+     "d1": 3587,
      "d2": -1,
-     "radius": 338,
-     "bits": 2816,
+     "radius": 2365,
+     "bits": 19712,
      "refined": true,
      "glyphs": 11,
      "penalized": 2,
-     "spread": 0.14506885258838384,
-     "relearned": true,
+     "spread": 0.09435615924873737,
      "low_confidence": false
     }
    },
@@ -18012,11 +18113,11 @@
      "region": {
       "Min": {
        "X": 66,
-       "Y": 1541
+       "Y": 1490
       },
       "Max": {
-       "X": 446,
-       "Y": 1567
+       "X": 407,
+       "Y": 1517
       }
      },
      "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
@@ -18026,15 +18127,14 @@
       "synthesized": "///",
       "face": "Go Regular"
      },
-     "d1": 1901,
+     "d1": 11857,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 12,
-     "spread": 0.14506885258838384,
-     "relearned": true,
+     "penalized": 9,
+     "spread": 0.09435615924873737,
      "low_confidence": false
     }
    },
@@ -18047,27 +18147,29 @@
      "region": {
       "Min": {
        "X": 66,
-       "Y": 1515
+       "Y": 1438
       },
       "Max": {
-       "X": 267,
-       "Y": 1538
+       "X": 328,
+       "Y": 1461
       }
      },
      "text": "GRAPEVINE DISTRIBUTORS",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "PIDISIBUS",
+      "emphasis": "GRAEVNETRTOR",
+      "face": "Go Mono"
      },
-     "d1": 1025,
+     "d1": 6563,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 8,
-     "spread": 0.14506885258838384,
-     "relearned": true,
+     "penalized": 4,
+     "spread": 0.09435615924873737,
      "low_confidence": false
     }
    },
@@ -18079,39 +18181,38 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 66,
+       "X": 128,
        "Y": 1490
       },
       "Max": {
-       "X": 439,
+       "X": 555,
        "Y": 1517
       }
      },
-     "text": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027",
+     "text": "980 Derita Rd Ste D - Unit 1 Concord Nc 28027",
      "params": {
-      "casing": "as_given",
-      "weight": "regular",
-      "synthesized": "98-8",
-      "face": "Go Regular"
+      "casing": "title",
+      "weight": "heavy",
+      "synthesized": "980DeritadSteD-Unit1Concordc28027",
+      "emphasis": "RN",
+      "face": "Go Mono"
      },
-     "d1": 2105,
+     "d1": 12860,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
-     "penalized": 11,
-     "spread": 0.14506885258838384,
-     "relearned": true,
+     "penalized": 8,
+     "spread": 0.09435615924873737,
      "low_confidence": false
     }
    },
    {
     "claim": "origin",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "SKIPPED",
     "expected": "PRODUCT OF FRANCE",
-    "observed": "PRODUCT OF FRANCE",
     "evidence": {
      "region": {
       "Min": {
@@ -18128,89 +18229,94 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 252,
+     "d1": 4450,
      "d2": -1,
-     "radius": 461,
-     "bits": 3840,
+     "radius": 3226,
+     "bits": 26880,
      "refined": true,
      "glyphs": 15,
-     "penalized": 0,
-     "spread": 0.14506885258838384,
+     "penalized": 3,
+     "spread": 0.09435615924873737,
      "low_confidence": false
     }
    },
    {
     "claim": "abv",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "14.5",
-    "observed": "14.5",
     "evidence": {
      "region": {
       "Min": {
-       "X": 735,
-       "Y": 1465
+       "X": 384,
+       "Y": 306
       },
       "Max": {
-       "X": 930,
-       "Y": 1487
+       "X": 435,
+       "Y": 326
       }
      },
-     "text": "14.5% ALC. BY VOL.",
+     "text": "5 Proof",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "14.5%..",
+      "synthesized": "5roof",
       "face": "Go Regular"
      },
-     "d1": 390,
-     "d2": -1,
-     "radius": 576,
-     "bits": 3840,
+     "d1": 1994,
+     "d2": 2207,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
-     "glyphs": 15,
-     "penalized": 2,
-     "spread": 0.14506885258838384,
+     "glyphs": 6,
+     "penalized": 1,
+     "competitor": "0.5",
+     "competitor_text": "1 Proof",
+     "spread": 0.09435615924873737,
      "low_confidence": false,
-     "reading": "14.5%",
-     "digit_confidence": 0.9512355992020279
+     "reading": "1",
+     "digit_confidence": 0.7056737588652482
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "REVIEW",
+    "reason": "too_few_glyphs",
     "expected": "750",
-    "observed": "750",
+    "candidates": [
+     "1000",
+     "50"
+    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 659,
-       "Y": 1465
+       "X": 513,
+       "Y": 262
       },
       "Max": {
-       "X": 737,
-       "Y": 1487
+       "X": 537,
+       "Y": 281
       }
      },
-     "text": "750mL",
+     "text": "1 L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "750m",
+      "synthesized": "1",
       "face": "Go Regular"
      },
-     "d1": 94,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 504,
+     "d2": 1546,
+     "radius": 538,
+     "bits": 3584,
      "refined": true,
-     "glyphs": 5,
+     "glyphs": 2,
      "penalized": 0,
-     "spread": 0.14506885258838384,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.9434034498233995
+     "competitor": "50",
+     "competitor_text": "50ml",
+     "spread": 0.09435615924873737,
+     "low_confidence": false
     }
    }
   ],
@@ -18408,7 +18514,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 38981540800,
+  "latency": 4411110300,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -18429,14 +18535,13 @@
    "coverage": 0.48132780082987553,
    "recovered": 0,
    "spread": 0.08338031713450242,
-   "characters": "().0257ABCDEFGHIKLMNOPRSTUVWY",
+   "characters": "().2ABCDEFGHIKLMNOPRSTUVWY",
    "face": "Go Regular",
    "x_height": 11.03448275862069,
    "cap_height": 16,
    "letter_gap": 2,
    "word_gap": 6,
-   "rows": null,
-   "learned": "057"
+   "rows": null
   },
   "claims": [
    {
@@ -18447,28 +18552,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 423,
-       "Y": 287
+       "X": 39,
+       "Y": 1426
       },
       "Max": {
-       "X": 572,
-       "Y": 306
+       "X": 322,
+       "Y": 1450
       }
      },
      "text": "CHATEAU COTE DE BALEAU",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "CHUCDBLU",
+      "emphasis": "ATEAOTEEAEA",
+      "face": "PTSans Regular"
      },
-     "d1": 808,
+     "d1": 5921,
      "d2": -1,
-     "radius": 584,
-     "bits": 4864,
+     "radius": 4086,
+     "bits": 34048,
      "refined": true,
      "glyphs": 19,
-     "penalized": 5,
-     "spread": 0.13761393229166669,
-     "relearned": true,
+     "penalized": 2,
+     "spread": 0.08338031713450242,
      "low_confidence": false
     }
    },
@@ -18480,12 +18587,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 39,
-       "Y": 1537
+       "X": 210,
+       "Y": 1481
       },
       "Max": {
-       "X": 449,
-       "Y": 1564
+       "X": 567,
+       "Y": 1510
       }
      },
      "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
@@ -18495,15 +18602,14 @@
       "synthesized": "///",
       "face": "Go Regular"
      },
-     "d1": 1892,
+     "d1": 12159,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 11,
-     "spread": 0.13761393229166669,
-     "relearned": true,
+     "penalized": 9,
+     "spread": 0.08338031713450242,
      "low_confidence": false
     }
    },
@@ -18515,12 +18621,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 681,
-       "Y": 1537
+       "X": 39,
+       "Y": 1426
       },
       "Max": {
-       "X": 907,
-       "Y": 1561
+       "X": 322,
+       "Y": 1450
       }
      },
      "text": "GRAPEVINE DISTRIBUTORS",
@@ -18531,15 +18637,14 @@
       "emphasis": "GRAEVNETRTOR",
       "face": "PTSans Regular"
      },
-     "d1": 1115,
+     "d1": 6290,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 7,
-     "spread": 0.13761393229166669,
-     "relearned": true,
+     "penalized": 4,
+     "spread": 0.08338031713450242,
      "low_confidence": false
     }
    },
@@ -18551,40 +18656,38 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 166,
-       "Y": 1453
+       "X": 106,
+       "Y": 1481
       },
       "Max": {
-       "X": 565,
-       "Y": 1477
+       "X": 567,
+       "Y": 1510
       }
      },
-     "text": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027",
+     "text": "980 Derita Rd Ste D - Unit 1 Concord Nc 28027",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "980DIDSD-UI1CCDC28027",
-      "emphasis": "ERTARTENTONORN",
+      "synthesized": "980DeritadSteD-Unit1Concordc28027",
+      "emphasis": "RN",
       "face": "PTSans Regular"
      },
-     "d1": 2167,
+     "d1": 12390,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
-     "penalized": 10,
-     "spread": 0.13761393229166669,
-     "relearned": true,
+     "penalized": 9,
+     "spread": 0.08338031713450242,
      "low_confidence": false
     }
    },
    {
     "claim": "origin",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "SKIPPED",
     "expected": "PRODUCT OF FRANCE",
-    "observed": "PRODUCT OF FRANCE",
     "evidence": {
      "region": {
       "Min": {
@@ -18601,14 +18704,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 286,
+     "d1": 4636,
      "d2": -1,
-     "radius": 461,
-     "bits": 3840,
+     "radius": 3226,
+     "bits": 26880,
      "refined": true,
      "glyphs": 15,
-     "penalized": 1,
-     "spread": 0.13761393229166669,
+     "penalized": 3,
+     "spread": 0.08338031713450242,
      "low_confidence": false
     }
    },
@@ -18616,77 +18719,72 @@
     "claim": "abv",
     "engine": "3acb08a3df88",
     "status": "NOT_FOUND",
-    "reason": "unit_letter_unmatched:A",
     "expected": "14.5",
     "evidence": {
      "region": {
       "Min": {
-       "X": 763,
-       "Y": 1454
+       "X": 346,
+       "Y": 1149
       },
       "Max": {
-       "X": 972,
-       "Y": 1478
+       "X": 719,
+       "Y": 1184
       }
      },
-     "text": "14.5% ALC. BY VOL.",
+     "text": "6.4855 % ALC/VOL",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "14%",
+      "synthesized": "64855%/",
       "face": "Go Regular"
      },
-     "d1": 516,
-     "d2": 1437,
-     "radius": 576,
-     "bits": 3840,
+     "d1": 4177,
+     "d2": -1,
+     "radius": 3763,
+     "bits": 25088,
      "refined": true,
-     "glyphs": 15,
-     "penalized": 3,
-     "competitor": "3",
-     "competitor_text": "Alcohol 3% by volume",
-     "spread": 0.13761393229166669,
-     "relearned": true,
+     "glyphs": 14,
+     "penalized": 0,
+     "spread": 0.08338031713450242,
      "low_confidence": false,
-     "reading": "14.5%",
-     "digit_confidence": 0.9550780927442849
+     "reading": "664855",
+     "digit_confidence": 0.5091185410334347
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "750",
-    "observed": "750",
     "evidence": {
      "region": {
       "Min": {
-       "X": 681,
-       "Y": 1454
+       "X": 578,
+       "Y": 1149
       },
       "Max": {
-       "X": 764,
-       "Y": 1478
+       "X": 719,
+       "Y": 1184
       }
      },
-     "text": "750mL",
+     "text": "0.187 L",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "750m",
+      "synthesized": "0187",
       "face": "Go Regular"
      },
-     "d1": 110,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 1646,
+     "d2": 1701,
+     "radius": 1613,
+     "bits": 10752,
      "refined": true,
-     "glyphs": 5,
+     "glyphs": 6,
      "penalized": 0,
-     "spread": 0.13761393229166669,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.93662967776898
+     "competitor": "375",
+     "competitor_text": "0.375 L",
+     "spread": 0.08338031713450242,
+     "low_confidence": false
     }
    }
   ],
@@ -18885,7 +18983,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 51396103300,
+  "latency": 4047517400,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -18906,14 +19004,13 @@
    "coverage": 0.5062240663900415,
    "recovered": 0,
    "spread": 0.10026068712440513,
-   "characters": "(),.1257ABCDEFGHIKLMNOPRSTUVYm",
-   "face": "AbrilFatface Regular",
+   "characters": "(),.12ABCDEFGHIKLMNOPRSTUVY",
+   "face": "Go Regular",
    "x_height": 9.655172413793103,
    "cap_height": 14,
    "letter_gap": 2,
    "word_gap": 6,
-   "rows": null,
-   "learned": "57m"
+   "rows": null
   },
   "claims": [
    {
@@ -18924,12 +19021,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 599,
-       "Y": 1520
+       "X": 33,
+       "Y": 1446
       },
       "Max": {
-       "X": 808,
-       "Y": 1542
+       "X": 284,
+       "Y": 1468
       }
      },
      "text": "CHATEAU LA GAFFELIERE",
@@ -18940,15 +19037,14 @@
       "emphasis": "ATEAAGAEERE",
       "face": "Go Medium"
      },
-     "d1": 921,
+     "d1": 6030,
      "d2": -1,
-     "radius": 584,
-     "bits": 4864,
+     "radius": 4086,
+     "bits": 34048,
      "refined": true,
      "glyphs": 19,
-     "penalized": 7,
-     "spread": 0.15911175271739128,
-     "relearned": true,
+     "penalized": 1,
+     "spread": 0.10026068712440513,
      "low_confidence": false
     }
    },
@@ -18960,31 +19056,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 184,
-       "Y": 1495
+       "X": 227,
+       "Y": 1260
       },
       "Max": {
-       "X": 499,
-       "Y": 1521
+       "X": 698,
+       "Y": 1295
       }
      },
-     "text": "DESSERT /PORT/SHERRY/(COOKING) WINE",
+     "text": "Dessert /port/sherry/(cooking) Wine",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "heavy",
-      "synthesized": "DSS/P/SHY/(CKI)WI",
-      "emphasis": "EERTORTERROONGNE",
+      "synthesized": "Dessert/port/sherry/(cooking)Wine",
       "face": "Go Medium"
      },
-     "d1": 1891,
+     "d1": 11326,
      "d2": -1,
-     "radius": 1014,
-     "bits": 8448,
+     "radius": 7096,
+     "bits": 59136,
      "refined": true,
      "glyphs": 33,
-     "penalized": 15,
-     "spread": 0.15911175271739128,
-     "relearned": true,
+     "penalized": 6,
+     "spread": 0.10026068712440513,
      "low_confidence": false
     }
    },
@@ -18996,28 +19090,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 222,
-       "Y": 1471
+       "X": 408,
+       "Y": 1260
       },
       "Max": {
-       "X": 429,
-       "Y": 1493
+       "X": 698,
+       "Y": 1295
       }
      },
-     "text": "GRAPEVINE DISTRIBUTORS",
+     "text": "Grapevine Distributors",
      "params": {
-      "casing": "as_given",
-      "weight": "regular"
+      "casing": "title",
+      "weight": "regular",
+      "synthesized": "rapevineistributors",
+      "face": "Go Regular"
      },
-     "d1": 1105,
+     "d1": 6961,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 8,
-     "spread": 0.15911175271739128,
-     "relearned": true,
+     "penalized": 5,
+     "spread": 0.10026068712440513,
      "low_confidence": false
     }
    },
@@ -19029,12 +19124,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 121,
-       "Y": 1544
+       "X": 145,
+       "Y": 1471
       },
       "Max": {
-       "X": 470,
-       "Y": 1569
+       "X": 573,
+       "Y": 1493
       }
      },
      "text": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027",
@@ -19045,24 +19140,22 @@
       "emphasis": "ERTARTENTONORN",
       "face": "Go Medium"
      },
-     "d1": 2126,
+     "d1": 12285,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
-     "penalized": 12,
-     "spread": 0.15911175271739128,
-     "relearned": true,
+     "penalized": 4,
+     "spread": 0.10026068712440513,
      "low_confidence": false
     }
    },
    {
     "claim": "origin",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "SKIPPED",
     "expected": "PRODUCT OF FRANCE",
-    "observed": "PRODUCT OF FRANCE",
     "evidence": {
      "region": {
       "Min": {
@@ -19079,14 +19172,14 @@
       "casing": "as_given",
       "weight": "regular"
      },
-     "d1": 260,
+     "d1": 3808,
      "d2": -1,
-     "radius": 461,
-     "bits": 3840,
+     "radius": 3226,
+     "bits": 26880,
      "refined": true,
      "glyphs": 15,
-     "penalized": 1,
-     "spread": 0.15911175271739128,
+     "penalized": 2,
+     "spread": 0.10026068712440513,
      "low_confidence": false
     }
    },
@@ -19098,70 +19191,68 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 670,
+       "X": 496,
        "Y": 1471
       },
       "Max": {
-       "X": 855,
+       "X": 573,
        "Y": 1493
       }
      },
-     "text": "14.5% ALC. BY VOL.",
+     "text": "96 PROOF",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "4%",
-      "face": "AbrilFatface Regular"
+      "synthesized": "96",
+      "face": "Go Regular"
      },
-     "d1": 585,
+     "d1": 2269,
      "d2": -1,
-     "radius": 576,
-     "bits": 3840,
+     "radius": 1882,
+     "bits": 12544,
      "refined": true,
-     "glyphs": 15,
-     "penalized": 3,
-     "spread": 0.15911175271739128,
-     "relearned": true,
+     "glyphs": 7,
+     "penalized": 1,
+     "spread": 0.10026068712440513,
      "low_confidence": false,
-     "reading": "14.5%",
-     "digit_confidence": 0.9408609449836717
+     "reading": "06",
+     "digit_confidence": 0.5583941605839418
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "VERIFIED",
+    "status": "NOT_FOUND",
     "expected": "750",
-    "observed": "750",
     "evidence": {
      "region": {
       "Min": {
-       "X": 598,
-       "Y": 1471
+       "X": 478,
+       "Y": 1300
       },
       "Max": {
-       "X": 672,
-       "Y": 1493
+       "X": 536,
+       "Y": 1324
       }
      },
-     "text": "750 mL",
+     "text": "375 ml",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "750m",
+      "synthesized": "375ml",
       "face": "Go Regular"
      },
-     "d1": 122,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 1580,
+     "d2": 2036,
+     "radius": 1344,
+     "bits": 8960,
      "refined": true,
      "glyphs": 5,
-     "penalized": 0,
-     "spread": 0.15911175271739128,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.9208664261114842
+     "penalized": 1,
+     "competitor": "1750",
+     "competitor_text": "1750ml",
+     "spread": 0.10026068712440513,
+     "low_confidence": false
     }
    }
   ],
@@ -19378,7 +19469,7 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 35782815100,
+  "latency": 4018595200,
   "orientation": "as_is",
   "reference_casing": "upper",
   "alphabet": {
@@ -19431,14 +19522,14 @@
       "synthesized": "hateauaymond-lafon",
       "face": "Go Regular"
      },
-     "d1": 881,
+     "d1": 5920,
      "d2": -1,
-     "radius": 614,
-     "bits": 5120,
+     "radius": 4301,
+     "bits": 35840,
      "refined": true,
      "glyphs": 20,
-     "penalized": 7,
-     "spread": 0.15884103641456582,
+     "penalized": 5,
+     "spread": 0.10018507402961185,
      "low_confidence": false
     }
    },
@@ -19450,30 +19541,27 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 287,
-       "Y": 1471
+       "X": 826,
+       "Y": 1509
       },
       "Max": {
-       "X": 422,
-       "Y": 1490
+       "X": 959,
+       "Y": 1529
       }
      },
      "text": "TABLE WHITE WINE",
      "params": {
       "casing": "as_given",
-      "weight": "heavy",
-      "synthesized": "BLHII",
-      "emphasis": "TAEWTEWNE",
-      "face": "PTSerif Regular"
+      "weight": "regular"
      },
-     "d1": 781,
+     "d1": 4796,
      "d2": -1,
-     "radius": 430,
-     "bits": 3584,
+     "radius": 3011,
+     "bits": 25088,
      "refined": true,
      "glyphs": 14,
-     "penalized": 5,
-     "spread": 0.15884103641456582,
+     "penalized": 3,
+     "spread": 0.10018507402961185,
      "low_confidence": false
     }
    },
@@ -19485,12 +19573,12 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 734,
-       "Y": 1549
+       "X": 287,
+       "Y": 1471
       },
       "Max": {
-       "X": 894,
-       "Y": 1568
+       "X": 487,
+       "Y": 1490
       }
      },
      "text": "GRAPEVINE DISTRIBUTORS",
@@ -19501,14 +19589,14 @@
       "emphasis": "GRAEVNETRTOR",
       "face": "PTSerif Regular"
      },
-     "d1": 1085,
+     "d1": 6656,
      "d2": -1,
-     "radius": 645,
-     "bits": 5376,
+     "radius": 4516,
+     "bits": 37632,
      "refined": true,
      "glyphs": 21,
-     "penalized": 11,
-     "spread": 0.15884103641456582,
+     "penalized": 7,
+     "spread": 0.10018507402961185,
      "low_confidence": false
     }
    },
@@ -19520,29 +19608,29 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 376,
-       "Y": 1529
+       "X": 287,
+       "Y": 1548
       },
       "Max": {
-       "X": 683,
-       "Y": 1548
+       "X": 576,
+       "Y": 1570
       }
      },
-     "text": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027",
+     "text": "980 Derita Rd Ste D - Unit 1 Concord Nc 28027",
      "params": {
-      "casing": "as_given",
+      "casing": "title",
       "weight": "regular",
-      "synthesized": "980-1807",
+      "synthesized": "980eritadte-nit1oncordc807",
       "face": "Go Regular"
      },
-     "d1": 2201,
+     "d1": 13296,
      "d2": -1,
-     "radius": 1075,
-     "bits": 8960,
+     "radius": 7526,
+     "bits": 62720,
      "refined": true,
      "glyphs": 35,
-     "penalized": 14,
-     "spread": 0.15884103641456582,
+     "penalized": 13,
+     "spread": 0.10018507402961185,
      "low_confidence": false
     }
    },
@@ -19554,27 +19642,30 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 735,
-       "Y": 1529
+       "X": 485,
+       "Y": 1471
       },
       "Max": {
-       "X": 903,
-       "Y": 1548
+       "X": 650,
+       "Y": 1490
       }
      },
      "text": "PRODUCT OF FRANCE",
      "params": {
       "casing": "as_given",
-      "weight": "regular"
+      "weight": "heavy",
+      "synthesized": "PDUCFFC",
+      "emphasis": "ROTORANE",
+      "face": "PTSerif Regular"
      },
-     "d1": 631,
+     "d1": 5346,
      "d2": -1,
-     "radius": 461,
-     "bits": 3840,
+     "radius": 3226,
+     "bits": 26880,
      "refined": true,
      "glyphs": 15,
-     "penalized": 4,
-     "spread": 0.15884103641456582,
+     "penalized": 3,
+     "spread": 0.10018507402961185,
      "low_confidence": false
     }
    },
@@ -19586,74 +19677,70 @@
     "evidence": {
      "region": {
       "Min": {
-       "X": 792,
-       "Y": 1490
+       "X": 463,
+       "Y": 623
       },
       "Max": {
-       "X": 841,
-       "Y": 1510
+       "X": 950,
+       "Y": 772
       }
      },
-     "text": "PROOF 13",
+     "text": "6% alc./vol.",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "13",
+      "synthesized": "6%alc./vol.",
       "face": "Go Regular"
      },
-     "d1": 324,
-     "d2": 1067,
-     "radius": 269,
-     "bits": 1792,
+     "d1": 3859,
+     "d2": 3892,
+     "radius": 2957,
+     "bits": 19712,
      "refined": true,
-     "glyphs": 7,
-     "penalized": 3,
-     "competitor": "13",
-     "competitor_text": "13 % ALC/VOL",
-     "spread": 0.15884103641456582,
+     "glyphs": 11,
+     "penalized": 4,
+     "competitor": "8",
+     "competitor_text": "8% alc./vol.",
+     "spread": 0.10018507402961185,
      "low_confidence": false,
-     "reading": "13",
-     "digit_confidence": 0.9513399010237714
+     "reading": "6%",
+     "digit_confidence": 0.5279898218829517
     }
    },
    {
     "claim": "net",
     "engine": "3acb08a3df88",
-    "status": "REVIEW",
-    "reason": "step_compared_nothing:merge3",
+    "status": "NOT_FOUND",
     "expected": "750",
-    "candidates": [
-     "750"
-    ],
     "evidence": {
      "region": {
       "Min": {
-       "X": 760,
-       "Y": 1491
+       "X": 477,
+       "Y": 345
       },
       "Max": {
-       "X": 796,
-       "Y": 1510
+       "X": 576,
+       "Y": 377
       }
      },
-     "text": "750mL",
+     "text": "0.2 Liter",
      "params": {
       "casing": "as_given",
       "weight": "regular",
-      "synthesized": "750m",
+      "synthesized": "0.iter",
       "face": "Go Regular"
      },
-     "d1": 149,
-     "d2": -1,
-     "radius": 192,
-     "bits": 1280,
+     "d1": 2613,
+     "d2": 2690,
+     "radius": 2150,
+     "bits": 14336,
      "refined": true,
-     "glyphs": 5,
-     "penalized": 2,
-     "spread": 0.15884103641456582,
-     "low_confidence": false,
-     "reading": "750",
-     "digit_confidence": 0.8033587214038388
+     "glyphs": 8,
+     "penalized": 1,
+     "competitor": "500",
+     "competitor_text": "0.5 Liter",
+     "spread": 0.10018507402961185,
+     "low_confidence": false
     }
    }
   ],
