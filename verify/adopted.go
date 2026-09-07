@@ -36,7 +36,7 @@ type Constant struct {
 // tuned; a constant present here and different in the code is a defect.
 var Adopted = []Constant{
 	// The engine's own options.
-	{"free_radius", 0.12, "10c, kept at 14d", "Options.LearnedRadius"},
+	{"free_radius", 0.12, "10c, re-measured and kept at 14d and 16a", "Options.LearnedRadius"},
 	{"numeric_radius", 0.15, "10c, kept at 14d", "Options.LearnedNumericRadius"},
 	{"tie", 0.01, "7a", "Options.LearnedTie"},
 	{"char_spread", 0.18, "10c", "Options.MaxCharSpread"},

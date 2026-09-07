@@ -284,7 +284,7 @@ func (o Options) withDefaults() Options {
 		// corpus it verifies a brand on two labels that print a different
 		// one, because the declared brand also stands in the producer
 		// line. Precision is a constraint, so it stays at 0.12.
-		o.LearnedRadius = 0.12 // 0.15 gained on the subset and cost brand precision on half B (14d)
+		o.LearnedRadius = 0.12 // 16a measured 0.15 and gave it back: two corpus brands verified on labels printing another
 	}
 	if o.ViolationFraction == 0 {
 		o.ViolationFraction = 0.15 // retuned (10c): +7 claims, and labels with no alphabet 20 to 8 on the sweep subset

@@ -1881,6 +1881,29 @@ the nearest uncarried claim sits at 0.071; the next five at 0.155, 0.173, 0.175,
 
 **The finding: rank is the sounder rule for choosing, and it cannot replace the radius.** Ranking picks the claim's own region first on twenty-three of the twenty-four benched pairs, and the engine's margin rule already turns that ranking into the decision — which is why precision holds at 1.00 while the radius admits a wrong region on ten of them. But a ranking always has a first place, including for the 126 claims the labels do not carry, and those have to come back not found. Absence is what the radius decides, and no ordering of candidates decides it. The sound arrangement is the one the engine has, with the two jobs separated: rank and margin for which reading, an absolute threshold for whether there is one at all. What the measurement adds is where that threshold should sit — 0.15 rather than 0.12, on this evidence, which is a change and therefore a step of its own rather than a line in a report.
 
+### Step 16a: the free-text radius at 0.15, measured and given back (2026-09-07)
+
+Gate, stated before the run: both corpora before and after, per claim recall and precision, precision a hard constraint; if a false assertion appears anywhere the change is reverted and the measurement stated either way.
+
+**What 15b's curve promised.** On the fifty the interval from 0.08 to 0.15 holds no claim the labels do not carry: the nearest sits at 0.071 and the next at 0.155, and 32 of the 188 carried claims are inside 0.15 against 21 inside 0.12.
+
+**What both corpora say.**
+
+| claim | the fifty at 0.12 | at 0.15 | half B at 0.12 | at 0.15 | half B precision at 0.12 | at 0.15 |
+|---|---|---|---|---|---|---|
+| brand | 0.08 | 0.12 | 0.19 | 0.22 | 1.00 | 0.97 |
+| class | 0.00 | 0.00 | 0.18 | 0.22 | 1.00 | 1.00 |
+| producer_1 | 0.11 | 0.11 | 0.15 | 0.18 | 1.00 | 1.00 |
+| origin | 0.43 | 0.43 | 0.22 | 0.25 | 1.00 | 1.00 |
+| abv | 0.04 | 0.04 | 0.12 | 0.13 | 1.00 | 1.00 |
+| net | 0.12 | 0.12 | 0.15 | 0.15 | 1.00 | 1.00 |
+
+**The fifty keep their promise: two more brands verify, nothing else moves, precision stays 1.00.** Half B gains more — brand 0.19 to 0.22, class 0.18 to 0.22, producer 0.15 to 0.18, origin 0.22 to 0.25 — and **brand precision falls from 1.00 to 0.97**.
+
+**The two false assertions, named.** Labels 0099 and 0309 of half B print a brand other than the one filed, and print the filed brand's words inside their producer's name: "Valley Mill" and "Heron Black". At 0.12 the engine finds neither; at 0.15 it finds both and reports the brand verified. It is the same pair 10c refused this value for and 14d refused it for again, on an engine that has changed a great deal in between, which says the cause is the label rather than the tuning: a brand claim matched anywhere on the label is not a brand claim.
+
+**The change is reverted**, as the gate required, and the radius stays at 0.12. What the measurement leaves is a sharper statement of the ceiling than 15b's: the free interval 15b found is free on the fifty and not on the corpus, and the thing standing in the way is not the separation between right and wrong text but the fact that a claim's own words appear elsewhere on the label. A radius cannot tell those apart; only knowing where the brand is could.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
