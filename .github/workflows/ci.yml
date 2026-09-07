@@ -53,6 +53,12 @@ jobs:
       - name: leak check and identity
         run: go test -count=1 ./internal/fontset/ ./internal/buildid/ ./cmd/eval/
 
+      # The apparatus: every constant the doc records as adopted must be the
+      # value the engine runs, and an override must reach the code path it
+      # names (step 15a).
+      - name: adopted constants and overrides
+        run: go test -count=1 -run 'TestAdoptedValuesAreLive|TestEveryTunableIsRecorded|TestOverrideReachesTheCode' -v ./verify/
+
       - name: determinism
         run: go test -count=1 -timeout 40m -run TestDeterminismSample -v ./verify/
 

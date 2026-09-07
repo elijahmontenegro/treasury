@@ -1802,6 +1802,27 @@ Precision is 1.00 on every claim of both sets, before and after. The refit moves
 
 **What the step also shows about its own method.** A twenty-four-label subset cannot price a constant that acts on the stage before the claims: two minimum-area settings gained a claim each on the subset and cost ten labels their alphabet on the full corpus, which the subset had no way to show. The sweep needs the labels the constant acts on, and at twenty-seven seconds a label that is expensive; the honest reading is that this refit is reliable for the claim-side constants and thin for the ones that decide whether a label is read at all.
 
+### Step 15a: the apparatus, tested (2026-09-07)
+
+Gate, stated before the run: the tests exist, pass, and the first fails when a constant is put back to the value the code carried before 14d.
+
+**Why the apparatus needed a test.** Four defects have now been found in the measurement path rather than in the engine: a metric that priced a false assertion as a miss (8a), an evaluation set sharing font families with the models' training (8a), a sweep whose overrides never reached the options they named and so reported every constant insensitive (10c), and constants recorded as adopted that were never written into the binary (found at 14d, four amendments after they were recorded). Three of the four were caught by noticing something odd in a number. That is not a method.
+
+**One list, checked against the engine.** `verify.Adopted` records every constant this build has adopted: the name the sweep knows it by, the value, the step that adopted it, and the field or variable that carries it. `TestAdoptedValuesAreLive` reads the live value out of the engine's own options and out of the packages the rest live in, and requires each to equal what is recorded. `TestEveryTunableIsRecorded` keeps the two lists together: a constant the sweep can set is one the build can adopt, so it must appear in the list at whatever value it stands.
+
+**And the override path.** `TestOverrideReachesTheCode` sets every name to a probe value and requires the destination to carry it. For the constants that live in the engine's options it goes through `verify.New`, which is the path 10c's sweep used and where the defect was; for the rest it calls the same function the engine calls inside a verification, which is as far as a unit test reaches, and the test says so.
+
+**The gate, run rather than asserted.** Putting the per-letter unit bound back to 1.6, the value the code carried from 10c to 14d while the doc said 2.2:
+
+```
+adopted_test.go:38: unit_bound: the doc records Engine.unitBound adopted at 2.2
+    in step 10c, shipped at 14d, the engine runs at 1.6
+```
+
+Restored, it passes. All three run in CI, named there as a gate rather than left inside the suite.
+
+**What the list makes visible.** Thirty-five constants, of which twelve live in the engine's options, five in packages the claims path reaches into, and eighteen in the region proposer and the separation. The five that 10c recorded at other values and never shipped are in the list at the values the code has actually been running, with the step that re-swept them, so the record and the binary now say the same thing.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
