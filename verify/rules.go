@@ -543,7 +543,13 @@ type ClaimBreakdown struct {
 	Punctuation1    int             `json:"punctuation_steps"`
 	RegionXHeight   float64         `json:"region_x_height"`
 	AlphabetXHeight float64         `json:"alphabet_x_height"`
-	Chars           []CharTerm      `json:"chars"`
+	// Where the region sits, for step 17a: the page, the warning block,
+	// and the tallest text on the label, so that a region's size and
+	// position can be measured against them.
+	Bounds     image.Rectangle `json:"bounds"`
+	Block      image.Rectangle `json:"block"`
+	MaxXHeight float64         `json:"max_x_height"`
+	Chars      []CharTerm      `json:"chars"`
 }
 
 // ClaimTrace, when set, receives the best candidate of every claim decided
@@ -557,12 +563,23 @@ var ClaimTraceAll func(claim string, pairs []ClaimBreakdown)
 
 // breakdown takes a scored pair apart for ClaimTrace.
 func breakdown(name string, p scored, sp *spell.Speller, regions []encodedRegion, radius float64) ClaimBreakdown {
+	var bounds image.Rectangle
+	var maxXH float64
+	for _, r := range regions {
+		bounds = bounds.Union(r.box)
+		if x := regionXHeight(r.comps); x > maxXH {
+			maxXH = x
+		}
+	}
 	text := []rune(p.word_.Text)
 	b := ClaimBreakdown{
 		Name: name, Candidate: p.word_.Text, Region: regions[p.region].box,
 		Dist: p.dist, Radius: radius, Glyphs: p.glyphs, Bits: p.bits,
 		RegionXHeight:   regionXHeight(regions[p.region].comps),
 		AlphabetXHeight: sp.A.XHeight,
+		Bounds:          bounds,
+		Block:           sp.A.Block.Box,
+		MaxXHeight:      maxXH,
 	}
 	bits := p.obs.Enc.Bits()
 	var hamming, structural, unexplained, punct int

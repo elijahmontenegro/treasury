@@ -472,14 +472,14 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			}
 			if AttemptTrace != nil {
 				AttemptTrace(at.name, c.name, b.Block.Box, len(b.Block.Glyphs), b.Matched, b.Unexplained,
-					b.ViolationFraction(), b.Spread, b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage))
+					b.ViolationFraction(), b.Spread, b.Coverage(), b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage))
 			}
 			if b.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) && better(b, a, c.name) {
 				a, casing = b, c.name
 			}
 		}
 		if AttemptTrace != nil && len(candidates) == 0 {
-			AttemptTrace(at.name, "", image.Rectangle{}, 0, 0, 0, 0, 0, false)
+			AttemptTrace(at.name, "", image.Rectangle{}, 0, 0, 0, 0, 0, 0, false)
 		}
 		if a != nil && a.OK(e.opt.MaxUnexplained, e.opt.ViolationFraction, e.opt.MinCoverage) {
 			found = at
@@ -705,7 +705,7 @@ func (e *Engine) harvest(a *alphabet.Alphabet, regions []encodedRegion, winners 
 // label that fails can then be attributed to the stage that failed rather
 // than to the last thing tried. It is a diagnostic; the engine does not
 // set it.
-var AttemptTrace func(orientation, casing string, block image.Rectangle, glyphs, matched, unexplained int, violations, spread float64, accepted bool)
+var AttemptTrace func(orientation, casing string, block image.Rectangle, glyphs, matched, unexplained int, violations, spread, coverage float64, accepted bool)
 
 // stamp writes the build fingerprint onto every verdict a result carries.
 func stamp(res *Result) {

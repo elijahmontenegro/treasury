@@ -1973,6 +1973,94 @@ The label's own reading sits at 0.024 to 0.132 and the nearest other reading at 
 
 Nothing here is a radius that is set too tight in the way 15b found for free text: forty-two of the ninety-seven never reach the question, and of the thirty-eight that do, widening to 0.18 would admit nine more and let in the first wrong-value claim the fifty have. **No value is adopted.**
 
+### Step 17b: where the alphabet still dies (2026-09-07)
+
+Gate, stated before the run: for each failing label the stage and the measured cause, grouped, with the largest identified.
+
+Twenty-two of the fifty learn no alphabet on the engine as it now stands, and forty-two of the ninety-seven numeric claims the labels carry die there rather than at any radius. Each is attributed below to the bound that refused it, in the order acceptance applies them: ink the statute cannot explain, then characters contradicting their shape class, then too little of the statute matched.
+
+| label | attempt | block located | glyphs | matched | coverage | violations | unexplained | the stage that failed |
+|---|---|---|---|---|---|---|---|---|
+| 0001 | as_is | yes | 233 | 67 | 0.28 | 0.09 | 0 | too little of the statute matched |
+| 0002 | rot90 | yes | 164 | 66 | 0.27 | 0.13 | 0 | too little of the statute matched |
+| 0012 | rot90 | yes | 185 | 55 | 0.23 | 0.43 | 1 | characters contradicting their shape class, warning set vertically |
+| 0014 | as_is | yes | 179 | 56 | 0.23 | 0.26 | 1 | characters contradicting their shape class |
+| 0015 | as_is | **no** | -- | -- | -- | -- | -- | the block was never located, warning set vertically |
+| 0016 | as_is | yes | 100 | 15 | 0.06 | 0.95 | 16 | ink the statute cannot explain, warning set vertically |
+| 0017 | as_is | **no** | -- | -- | -- | -- | -- | the block was never located, warning set vertically |
+| 0018 | as_is | yes | 158 | 52 | 0.22 | 0.27 | 0 | characters contradicting their shape class |
+| 0020 | as_is | yes | 178 | 53 | 0.22 | 0.24 | 1 | characters contradicting their shape class |
+| 0022 | as_is | yes | 159 | 40 | 0.17 | 0.24 | 0 | characters contradicting their shape class |
+| 0023 | as_is | yes | 112 | 15 | 0.06 | 0.42 | 2 | characters contradicting their shape class |
+| 0024 | as_is | yes | 200 | 71 | 0.29 | 0.15 | 1 | characters contradicting their shape class |
+| 0025 | as_is | yes | 117 | 27 | 0.11 | 0.29 | 0 | characters contradicting their shape class |
+| 0026 | rot90 | yes | 123 | 25 | 0.10 | 0.56 | 2 | characters contradicting their shape class, warning set vertically |
+| 0028 | as_is | **no** | -- | -- | -- | -- | -- | the block was never located, warning set vertically |
+| 0037 | as_is | yes | 156 | 50 | 0.21 | 0.17 | 0 | characters contradicting their shape class |
+| 0039 | as_is | yes | 134 | 36 | 0.15 | 0.13 | 0 | too little of the statute matched |
+| 0041 | as_is | yes | 210 | 66 | 0.27 | 0.15 | 1 | too little of the statute matched |
+| 0042 | as_is | yes | 222 | 57 | 0.24 | 0.13 | 1 | too little of the statute matched |
+| 0043 | rot90 | yes | 207 | 52 | 0.22 | 0.46 | 0 | characters contradicting their shape class, warning set vertically |
+| 0045 | as_is | yes | 220 | 52 | 0.22 | 0.19 | 0 | characters contradicting their shape class |
+| 0046 | as_is | yes | 212 | 61 | 0.25 | 0.10 | 2 | too little of the statute matched |
+
+| the stage that failed | labels |
+|---|---|
+| characters contradicting their shape class | 9 |
+| too little of the statute matched | 6 |
+| characters contradicting their shape class, warning set vertically | 3 |
+| the block was never located, warning set vertically | 3 |
+| ink the statute cannot explain, warning set vertically | 1 |
+
+
+**The largest single cause is the shape-class bound, twelve of the twenty-two.** Three never locate a block at all and all three set the warning vertically; one is refused for unexplained ink; six for coverage.
+
+**But the bounds are not really six causes, they are one.** Every one of the twenty-two matched at most 29 percent of the statute — the highest is 0.29 and the median 0.22 — so the coverage bound at 0.30 would have refused twenty-one of them whichever bound fired first. Against that, of the twenty-eight labels that do learn an alphabet, the lowest coverage is 0.31 and the median 0.42, and the twelve that verify anything run from 0.32 to 0.98. The two populations do not overlap at all on this measurement.
+
+So the question is not which bound to loosen. It is why, on twenty-two labels, the alignment explains a quarter of the statute when on the others it explains half or more. The trace says where to look: these blocks are found — nineteen of twenty-two locate one — and then the alignment matches fifty to seventy characters of two hundred and forty-one, with the rest consumed by merges, splits and deletions. That is a segmentation failure at the reference, the same term 13b found dominating the claims, and it is upstream of every bound this step counted.
+
+### Step 17a: position as evidence (2026-09-07)
+
+Gate, stated before the run: for every verified claim and every claim's best candidate on the fifty, the region's size against the largest text on the label, its position on the panel and its distance from the warning block; whether those separate brand regions from producer regions; and whether they would have refused 0099 and 0309 without costing a true verification. No engine change.
+
+**The measurements.** Three, added to the claim breakdown and to nothing else: the region's x-height as a fraction of the tallest text the label has, the height of its centre down the panel, and its distance from the warning block in its own x-heights, zero when it touches or overlaps it.
+
+| group | n | size against the largest text | height on the panel | distance from the warning, x-heights |
+|---|---|---|---|---|
+| brand, best candidate | 26 | 0.11 | 0.49 | 13.0 |
+| brand, verified | 4 | 0.17 | 0.53 | 4.0 |
+| producer, best candidate | 28 | 0.09 | 0.70 | 0.6 |
+| producer, verified | 2 | 0.08 | 0.90 | 31.8 |
+
+**By the region that actually holds each claim**, on the twenty-five whose true region is known:
+
+| the true region of a claim | n | size | height | distance from the warning |
+|---|---|---|---|---|
+| abv | 3 | 1.00 | 0.52 | 0.0 |
+| brand | 4 | 0.20 | 0.61 | 9.9 |
+| net | 6 | 1.00 | 0.51 | 2.4 |
+| origin | 7 | 0.14 | 0.97 | 0.0 |
+| producer_1 | 4 | 0.09 | 0.77 | 15.5 |
+
+The medians do point the way the intuition says: a brand's own region is about twice the height of a producer line and sits higher up the panel, and the statement claims — origin, alcohol content, net contents — sit on or beside the warning block while the names sit ten to sixteen x-heights away.
+
+**But the ranges overlap, and the two false assertions fall inside them.** The four brands the fifty verify, against the two the corpus verified wrongly at 0.15:
+
+| label | what it is | size against the largest text | height on the panel | distance from the warning |
+|---|---|---|---|---|
+| 0005 | a true brand | 0.03 | 0.29 | 0.0 |
+| 0035 | a true brand | 0.05 | 0.77 | 13.6 |
+| 0040 | a true brand | 0.29 | 0.04 | 6.2 |
+| 0044 | a true brand | 0.30 | 0.81 | 1.8 |
+| 0099 | **the false assertion** | 0.27 | 0.23 | 8.4 |
+| 0309 | **the false assertion** | 0.07 | 0.28 | 8.8 |
+
+**On every one of the three features the false assertions lie inside the range of the true verifications**, and not near an edge of it. A floor on size that refuses 0309 at 0.07 also refuses 0005 at 0.03 and 0035 at 0.05; a ceiling that refuses 0099 at 0.27 also refuses 0040 and 0044. A band on distance that refuses both at 8.4 and 8.8 has 6.2 and 13.6 on either side of it. No threshold on any of the three, and no box in the three together, separates them.
+
+**And the intuition the step began from is wrong on this population.** A brand's own region is 0.03 to 0.30 of the tallest text on its label, never the tallest: the display type a brand is set in is usually rejected by the separation step as not-text-like, so what the engine sees as the brand is a smaller instance of the name somewhere else on the label — in a legal line, a back-panel repeat, or the producer's own name. That is exactly what made 0099 and 0309 false, and it is why size cannot fix them.
+
+**The finding.** Where the text sits does separate kinds of claim — statements sit against the warning, names sit away from it, by an order of magnitude — and it does not separate a brand from a producer. What would is knowing which region is the brand, which is a different question from where it is; the sample here is four true brand verifications and two false ones, which is thin, and it is thin in the direction that matters: every one of the six is a small instance of the name, not the brand as a person reads it.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

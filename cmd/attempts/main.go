@@ -34,6 +34,7 @@ type attempt struct {
 	Unexplained int     `json:"unexplained"`
 	Violations  float64 `json:"violations"`
 	Spread      float64 `json:"spread"`
+	Coverage    float64 `json:"coverage"`
 	Accepted    bool    `json:"accepted"`
 	Located     bool    `json:"located"`
 }
@@ -68,8 +69,8 @@ func one(path string, asJSON bool) error {
 		return err
 	}
 	var tries []attempt
-	verify.AttemptTrace = func(orientation, casing string, block image.Rectangle, glyphs, matched, unexplained int, violations, spread float64, accepted bool) {
-		tries = append(tries, attempt{orientation, casing, glyphs, matched, unexplained, violations, spread, accepted, casing != ""})
+	verify.AttemptTrace = func(orientation, casing string, block image.Rectangle, glyphs, matched, unexplained int, violations, spread, coverage float64, accepted bool) {
+		tries = append(tries, attempt{orientation, casing, glyphs, matched, unexplained, violations, spread, coverage, accepted, casing != ""})
 	}
 	defer func() { verify.AttemptTrace = nil }()
 	eng, err := verify.New(verify.Options{ClaimEncoder: "learned"})
