@@ -1904,6 +1904,75 @@ Gate, stated before the run: both corpora before and after, per claim recall and
 
 **The change is reverted**, as the gate required, and the radius stays at 0.12. What the measurement leaves is a sharper statement of the ceiling than 15b's: the free interval 15b found is free on the fifty and not on the corpus, and the thing standing in the way is not the separation between right and wrong text but the fact that a claim's own words appear elsewhere on the label. A radius cannot tell those apart; only knowing where the brand is could.
 
+### Step 16b: the same question for the numeric radius (2026-09-07)
+
+Gate, stated before the run: the curve for alcohol content and net contents on both corpora, and either an adopted value with its evidence or a statement that no value is free.
+
+**The fifty.**
+
+the fifty: 97 numeric claims whose value the label carries, 3 it does not
+| radius | value carried, inside | share | value not carried, inside |
+|---|---|---|---|
+| 0.08 | 5 of 97 | 0.05 | 0 of 3 |
+| 0.10 | 7 of 97 | 0.07 | 0 of 3 |
+| 0.12 | 8 of 97 | 0.08 | 0 of 3 |
+| 0.15 | 15 of 97 | 0.15 | 0 of 3 |
+| 0.18 | 24 of 97 | 0.25 | 1 of 3 |
+| 0.20 | 30 of 97 | 0.31 | 1 of 3 |
+| 0.25 | 42 of 97 | 0.43 | 1 of 3 |
+| 0.30 | 47 of 97 | 0.48 | 1 of 3 |
+the nearest claim the label does not carry sits at 0.176; the next five at 
+
+**Half B, where the corpus prints wrong values on purpose and those are what a radius must keep out.**
+
+half B: 482 numeric claims whose value the label carries, 18 it does not
+| radius | value carried, inside | share | value not carried, inside |
+|---|---|---|---|
+| 0.08 | 39 of 482 | 0.08 | 2 of 18 |
+| 0.10 | 55 of 482 | 0.11 | 3 of 18 |
+| 0.12 | 74 of 482 | 0.15 | 3 of 18 |
+| 0.15 | 95 of 482 | 0.20 | 4 of 18 |
+| 0.18 | 145 of 482 | 0.30 | 5 of 18 |
+| 0.20 | 179 of 482 | 0.37 | 6 of 18 |
+| 0.25 | 224 of 482 | 0.46 | 8 of 18 |
+| 0.30 | 237 of 482 | 0.49 | 8 of 18 |
+the nearest claim the label does not carry sits at 0.035; the next five at 0.043, 0.088, 0.137, 0.160, 0.187
+
+**No value is free.** On half B the nearest claim whose value the label does not carry sits at **0.035**, inside any radius worth having, and the next four at 0.043, 0.088, 0.137 and 0.160. There is no interval, at any width, that admits readings of the right value and no readings of a wrong one. The fifty look free up to 0.176, but they hold three numeric claims the labels do not carry against the corpus's eighteen, which is too few to price anything with.
+
+**Why precision is 1.00 anyway.** At the radius the engine runs, four of the eighteen wrong-value claims on half B are inside it, and none of them is asserted. What refuses them is the reading path step 7a built: a number decides only when the alignment puts every character of the number on the run's own glyphs, every glyph of the run under the number, and a measured glyph under every letter of the unit. The radius admits; those rules decide. Widening the radius is therefore not a question about separation at all, it is a question about how much more work those rules would have to do, and the curve cannot answer it.
+
+**The benched numeric claims, for the same reading as 15b.**
+
+| label | claim | value | the label's own reading | nearest other reading | radius |
+|---|---|---|---|---|---|
+| 0033 | net | 750 | 0.024 | 0.106 | 0.15 |
+| 0035 | net | 750 | 0.064 | 0.105 | 0.15 |
+| 0038 | abv | 42 | 0.132 | 0.159 | 0.15 |
+| 0038 | net | 750 | 0.079 | 0.098 | 0.15 |
+| 0047 | abv | 14.5 | -- | 0.123 | 0.15 |
+| 0047 | net | 750 | 0.073 | 0.106 | 0.15 |
+| 0048 | abv | 14.5 | -- | 0.139 | 0.15 |
+| 0048 | net | 750 | 0.086 | 0.104 | 0.15 |
+| 0049 | net | 750 | 0.095 | -- | 0.15 |
+| 0050 | net | 750 | -- | 0.116 | 0.15 |
+
+
+The label's own reading sits at 0.024 to 0.132 and the nearest other reading at 0.098 to 0.159, a separation of two to eight hundredths, the same thin margin free text shows. On three of the ten the reading of the label's own value was never scored at all: the digit run never produced that value, so no radius could have helped.
+
+**Where the numeric loss actually is.** Of the 97 numeric claims the fifty carry, the reasons they do not verify are:
+
+| why | claims |
+|---|---|
+| the label learned no alphabet | 42 |
+| a candidate was scored and none was inside the radius | 38 |
+| verified | 8 |
+| a structural step compared no shape | 4 |
+| no region fit the reading | 2 |
+| the number was not on the reading, the regions disagreed, or a unit letter was unmatched | 3 |
+
+Nothing here is a radius that is set too tight in the way 15b found for free text: forty-two of the ninety-seven never reach the question, and of the thirty-eight that do, widening to 0.18 would admit nine more and let in the first wrong-value claim the fifty have. **No value is adopted.**
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
