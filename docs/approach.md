@@ -3268,6 +3268,89 @@ The finding is the same one step 17a reached about the retired engine, on a diff
 with a different reader and a different failure: **where a claim sits on a label does not say
 whether the text found there is that claim.** The nine stay refused.
 
+### Step 25a: the ceiling, and a word the regulation says is one word (2026-09-08)
+
+The free-text radius had been held at 0.07 since step 19c by a single label. 0036 prints
+`BOURBON WHISKEY` and its application files `BOURBON WHISKY`, one character in thirteen, so any
+radius at or above 0.077 would have asserted a class the label was recorded as not carrying.
+
+**Whether it carries it is a question about the regulation, and the regulation answers it.**
+27 CFR 5.143, fetched from govinfo as the statute was at step 0:
+
+> The word whisky may be spelled as either "whisky" or "whiskey".
+
+Searching all of parts 4, 5 and 7 for spelling provisions turns up three, and only that one adds
+anything: the liter may be spelled "litre" or abbreviated "L", which the net-contents formats
+already carry, and "Cachaça" may be set with or without its diacritic, which normalization
+already sets aside, as it does part 4's grape-variety names. So `ttb.Spellings` generates the
+other whisky spelling for every free-text claim, from the filed value, and cannot let a
+different designation through.
+
+**A truth correction follows from it, and it is stated with its size.** The 12a transcription
+recorded 0036's class as not printed. The label prints it, in the spelling the regulation
+allows. One entry of 191 is corrected; 0041, whose filed class also contains the word, was
+checked and left, because `WHISKY SPECIALTIES` is nowhere in its reading at any radius and is a
+registry code description of the kind 12a found on many labels.
+
+**The ceiling moves from 0.077 to 0.158**, and the corpus turns out never to have been the
+constraint at all:
+
+| radius | the fifty: carried in / **not carried in** | corpus half A: carried in / **not carried in** | corpus half B: carried in / **not carried in** |
+|---|---|---|---|
+| 0.050 | 53 / **0** | 670 / **0** | 635 / **0** |
+| 0.070 | 54 / **0** | 716 / **0** | 678 / **0** |
+| 0.077 | 55 / **0** | 720 / **0** | 686 / **0** |
+| 0.080 | 55 / **0** | 720 / **0** | 686 / **0** |
+| 0.090 | 56 / **0** | 742 / **0** | 701 / **0** |
+| 0.100 | 56 / **0** | 747 / **0** | 711 / **0** |
+| 0.120 | 57 / **0** | 756 / **0** | 726 / **0** |
+| 0.150 | 61 / **0** | 769 / **0** | 733 / **0** |
+| 0.200 | 63 / **4** | 797 / **0** | 764 / **0** |
+| 0.250 | 69 / **9** | 811 / **0** | 790 / **0** |
+
+The nearest claim the fifty do not carry now sits at 0.158, and nothing they *do* carry sits
+between 0.136 and 0.160. So **0.14 is adopted**: it takes every claim 0.15 would take and leaves
+0.018 of margin instead of 0.008. Step 16a is why that margin is worth having — there the fifty
+said 0.15 was free and the corpus said otherwise. Here both halves admit nothing uncarried at
+any radius up to 0.25, so the choice rests on the fifty, which is the report set, and that is
+said rather than hidden.
+
+| set | claim | at 0.07 | at 0.14 |
+|---|---|---|---|
+| the fifty | brand | 0.51 | 0.55 |
+| the fifty | class | 0.17 | 0.43 |
+| the fifty | producer, first line | 0.68 | 0.84 |
+| the fifty | producer, second line | 0.33 | 0.67 |
+| the fifty | origin | 0.93 | 0.93 |
+| the fifty | alcohol content | 0.92 | 0.92 |
+| the fifty | net contents | 0.94 | 0.94 |
+| the fifty | *median / p95* | 2.5 / 4.7 s | 2.8 / 5.3 s |
+| corpus half A | brand | 0.79 | 0.84 |
+| corpus half A | class | 0.87 | 0.88 |
+| corpus half A | producer, first line | 0.30 | 0.34 |
+| corpus half A | producer, second line | 0.36 | 0.40 |
+| corpus half A | origin | 0.65 | 0.72 |
+| corpus half A | alcohol content | 0.81 | 0.81 |
+| corpus half A | net contents | 0.86 | 0.86 |
+| corpus half A | *median / p95* | 1.5 / 4.2 s | 1.4 / 4.4 s |
+| corpus half B | brand | 0.78 | 0.82 |
+| corpus half B | class | 0.84 | 0.89 |
+| corpus half B | producer, first line | 0.22 | 0.27 |
+| corpus half B | producer, second line | 0.35 | 0.36 |
+| corpus half B | origin | 0.63 | 0.66 |
+| corpus half B | alcohol content | 0.80 | 0.80 |
+| corpus half B | net contents | 0.89 | 0.89 |
+| corpus half B | *median / p95* | 1.3 / 3.8 s | 1.5 / 4.2 s |
+
+**Precision is 1.00 on every claim of all three sets, no false assertion anywhere, and 0099 and
+0309 are still refused.** The fifty go from 146 to **154 of the 192 claims they carry** — the
+permittee 0.68 to 0.84, its address 0.33 to 0.67, class 0.17 to 0.43, brand 0.51 to 0.55 — and
+the corpus gains on five rows, the first time it has moved since step 21b.
+
+**One thing given back: the p95 on the fifty is 5.3 s, over the 5 s step 24a had just reached.**
+A wider radius admits more candidate and reading pairs to compare. Step 25b's gate requires it
+back under five.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

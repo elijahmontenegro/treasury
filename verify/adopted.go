@@ -33,7 +33,7 @@ type Constant struct {
 // Adopted is every constant the build has adopted, with the step that
 // adopted it. A constant present here and different in the code is a defect.
 var Adopted = []Constant{
-	{"radius", 0.07, "19c", "Options.Radius"},
+	{"radius", 0.14, "25a", "Options.Radius"},
 	{"numeric_radius", 0.12, "19c", "Options.NumericRadius"},
 	{"tie", 0.15, "19c", "Options.TieMargin"},
 	{"min_confidence", 0.5, "19c, measured insensitive", "Options.MinConfidence"},

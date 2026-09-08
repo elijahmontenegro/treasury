@@ -16,7 +16,7 @@
   "carried": {
    "abv": "=",
    "brand": "=",
-   "class": "",
+   "class": "=",
    "net": "=",
    "producer_1": "=",
    "producer_2": ""

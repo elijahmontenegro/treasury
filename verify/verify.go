@@ -187,7 +187,14 @@ type Options struct {
 
 func (o Options) withDefaults() Options {
 	if o.Radius == 0 {
-		o.Radius = 0.07
+		// 25a: the ceiling was 0.077, held there by label 0036 printing
+		// BOURBON WHISKEY against a filed BOURBON WHISKY. 27 CFR 5.143
+		// makes those one word, so the ceiling is now 0.158, set by the
+		// nearest claim the fifty do not carry. Nothing carried sits
+		// between 0.136 and 0.160, so 0.14 takes every claim 0.15 would
+		// and leaves twice the margin. Both corpus halves admit nothing
+		// uncarried at any radius up to 0.25.
+		o.Radius = 0.14
 	}
 	if o.NumericRadius == 0 {
 		o.NumericRadius = 0.12

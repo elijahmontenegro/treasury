@@ -27,6 +27,15 @@ func Inputs(exp Expected) ([]verify.Reference, []verify.Claim) {
 				cands = append(cands, verify.Candidate{Text: alt, Value: text})
 			}
 		}
+		// Spellings the regulation itself says are the same word. Case,
+		// hyphens and diacritics are already set aside in the comparison,
+		// which covers 27 CFR 4.91's grape variety names and part 5's
+		// "Cachaca"; what is left is the whisky spelling.
+		for _, c := range append([]verify.Candidate{}, cands...) {
+			for _, alt := range Spellings(c.Text) {
+				cands = append(cands, verify.Candidate{Text: alt, Value: text})
+			}
+		}
 		// The radius is the engine's, not the domain's: it is a property
 		// of how the reader reads, and it was a bit-code quantity until
 		// step 19a retired the bit codes. It is fitted in 19c and lives
@@ -207,4 +216,31 @@ func responsibilityForms(name string, address string) []string {
 		}
 	}
 	return out
+}
+
+// Spellings returns the other spellings the regulation allows for a
+// designation. 27 CFR 5.143: "The word whisky may be spelled as either
+// 'whisky' or 'whiskey'." A label printing BOURBON WHISKEY against a
+// filed BOURBON WHISKY prints the class that was filed, and until step
+// 25a the engine held its whole free-text radius down to avoid saying so.
+func Spellings(text string) []string {
+	var out []string
+	for _, sw := range [][2]string{{"whiskey", "whisky"}, {"whisky", "whiskey"}} {
+		for _, c := range []func(string) string{strings.ToLower, strings.ToUpper, capitalise} {
+			from, to := c(sw[0]), c(sw[1])
+			if strings.Contains(text, from) {
+				out = append(out, strings.ReplaceAll(text, from, to))
+			}
+		}
+	}
+	return out
+}
+
+// capitalise upper-cases the first letter and lower-cases the rest, which
+// is how a label sets a word inside a title-cased designation.
+func capitalise(s string) string {
+	if s == "" {
+		return s
+	}
+	return strings.ToUpper(s[:1]) + strings.ToLower(s[1:])
 }
