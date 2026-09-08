@@ -3706,6 +3706,71 @@ generic trade term.
 
 No fix in this step.
 
+### Step 27b: whether the label prints the filed value alone somewhere else (2026-09-08)
+
+Position does not separate the eight names refused for want of a delimiter from the three the
+refusal exists for (step 24b), and the abutting word separates them the wrong way round (26c).
+One question was left, and it asks the label rather than the claim: a brand printed once inside a
+company's name is a different object from a brand printed as a brand and also mentioned in body
+copy. If the eight have a clean second instance and the three never do, the label supplies the
+separation itself.
+
+"Alone" is the engine's own boundary test and not a looser one: the claim fills a whole
+detection, or a mark, a digit or the detection's edge stands at both ends of it, or it spans two
+adjacent detections — a printed line the detector cut in half is still printed alone, which is
+how 0007's `JOHNNY` + `TEJAS` verifies. Every detection of the label is searched, not only the
+nearest.
+
+**The eight**
+
+| label | claim | filed | printed alone elsewhere? | where |
+|---|---|---|---|---|
+| 0024 | brand | `OWL'S BREW` | no | nearest anywhere: `Iteamedupwith Owl'sBrew to` |
+| 0025 | brand | `OWL'S BREW` | no | nearest anywhere: `IteamedupwithOwl'sBrew to` |
+| 0034 | brand | `THE CROSSING AT BIG CREEK ` | no | nearest anywhere: `CANNED By THE CROSSING AT BIG CREEK BREWERY` |
+| 0042 | brand | `ALPAS VINEYARDS` | no | nearest anywhere: `spirit of Alpas Vineyards and the` |
+| 0043 | brand | `TENHEAD` | no | nearest anywhere: `ID TENHEAD` |
+| 0044 | brand | `NOTRE DAME WINES` | no | nearest anywhere: `Bottled by Vinovae, Sonoma, CA for Notre Dam` |
+| 0044 | origin | `Product of USA` | no | nearest anywhere: `Contains sulfites, Product of USA ALC.14,5% ` |
+| 0048 | brand | `CHATEAU COTE DE BALEAU` | no | nearest anywhere: `SCEA CHATEAU COTEDE BALEAU,PROPRIETAIRE` |
+
+**The three the refusal exists for**
+
+| label | claim | filed | printed alone elsewhere? | where |
+|---|---|---|---|---|
+| 0038 | brand | `45TH PARALLEL` | no | nearest anywhere: `Distilled & Bottled by 45th Parallel Spirits` |
+| 0099 | brand | `Valley Mill` | no | nearest anywhere: `Li` |
+| 0309 | brand | `HERON BLACK` | no | nearest anywhere: `PROBLEMS.` |
+
+**The answer is no on both sides, so the label does not supply the separation.** Not one of the
+eight prints its filed value alone anywhere; every instance is inside a longer reading, which is
+what made it one of the eight. The three do not either. A test that says no to everything
+separates nothing, and no rule is adopted.
+
+**A defect in a diagnostic tool, found here and fixed.** `cmd/read` built its reader from
+`ocr.Default()`, which is still step 19b's 960-pixel cap and single upright pass, while the
+engine has detected at 1600 since 20c and run a second pass on the turned page since 21d. The
+tool had been reporting a weaker reading than the one every verdict rests on. On 0043 that made
+the brand look absent: at 960 the label returns 43 detections and none holds `TENHEAD`, and at
+the engine's own settings it returns 64 and one of them is `ID TENHEAD`. Fixed to read the
+adopted values out of `verify.Adopted`, so the tool cannot drift from the engine again.
+
+**The finding that matters more than the question.** Every gate since step 21b has checked that
+corpus labels 0099 and 0309 stay refused, by name, because step 16a's two false assertions came
+from them and they are cited as the reason the boundary rule may not be loosened. On this engine
+that check passes for the wrong reason. Their brand claims sit at a distance of **0.60 and 0.60**
+against a radius of 0.14 — nowhere near it. The reader does not read their producer lines at all:
+0099 returns 16 detections, of which the nearest thing to `Valley Mill` is `Li`, and 0309 returns
+20, the nearest to `HERON BLACK` being `PROBLEMS.`. They are refused because they are unread, not
+because the rule refuses them.
+
+**0038 is the only live guard left**, and it is a real label: its brand sits at **0.00** inside
+`Distilled & Bottled by 45th Parallel Spirits, LLC`, which is exactly step 16a's shape and
+exactly what the boundary rule refuses on purpose. The by-name check stays in every gate, since a
+refusal is still a refusal, but from here the doc will say which of the three is testing the rule
+and which two are testing the reader. This is step 26d's finding arriving from another direction:
+the corpus's guard labels have stopped guarding, and nothing in the gates would have said so.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

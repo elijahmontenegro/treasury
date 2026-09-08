@@ -17,11 +17,45 @@ import (
 	"time"
 
 	"treasury/internal/ocr"
+	"treasury/verify"
 )
+
+var turned bool
+
+// sideOn is the engine's own reading-conditional test for the second
+// detection pass (step 24a): a page whose upright pass returned a
+// detection taller than it is wide has text the detector saw side-on.
+func sideOn(rs []ocr.Region) bool {
+	for _, r := range rs {
+		if r.Box.Dy() > r.Box.Dx() {
+			return true
+		}
+	}
+	return false
+}
 
 func main() {
 	flag.Parse()
-	r, err := ocr.New(ocr.Default())
+	// Read the way the engine reads. `ocr.Default` is still the 960 px
+	// cap and the single upright pass of step 19b, and the engine has
+	// detected at 1600 with a second pass on the turned page since 20c
+	// and 21d, so this tool had been reporting a weaker reading than the
+	// one every verdict rests on - found at step 27b, where it made a
+	// brand the engine reads look unread.
+	rp := ocr.Default()
+	for _, c := range verify.Adopted {
+		switch c.Name {
+		case "read_max_side":
+			rp.MaxSide = int(c.Value)
+		case "read_box_thresh":
+			rp.BoxThresh = c.Value
+		case "read_unclip":
+			rp.Unclip = c.Value
+		case "read_turned":
+			turned = c.Value > 0
+		}
+	}
+	r, err := ocr.New(rp)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "read:", err)
 		os.Exit(1)
@@ -42,6 +76,14 @@ func main() {
 		}
 		start := time.Now()
 		regions, err := r.Read(img)
+		if err == nil && turned && sideOn(regions) {
+			more, terr := r.ReadTurned(img, regions)
+			if terr != nil {
+				err = terr
+			} else {
+				regions = append(regions, more...)
+			}
+		}
 		took := time.Since(start)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, path, err)
