@@ -59,12 +59,6 @@ type Params struct {
 	MinSide     int     // regions thinner than this, in the detector's own scale, are dropped
 	RecHeight   int     // the height every crop is resized to before recognition
 	MaxRecWidth int     // the widest crop the recogniser is given
-	// Turned runs detection a second time on the page turned a quarter,
-	// which is how text set vertically is offered to a detector that
-	// proposes horizontal lines. Step 21c measured it recovering
-	// seventeen of the twenty-six claims the reader had not read at all.
-	Turned bool
-
 	// Det and Rec replace the embedded models, with the names of the
 	// tensors they read and write. They exist so a step can measure a
 	// second detector or a second recogniser against the ones shipped
@@ -76,7 +70,7 @@ type Params struct {
 // Default is what the models were trained to see.
 func Default() Params {
 	return Params{MaxSide: 960, BoxThresh: 0.3, ScoreThresh: 0.5, Unclip: 1.6,
-		MinSide: 3, RecHeight: 48, MaxRecWidth: 640, Turned: true}
+		MinSide: 3, RecHeight: 48, MaxRecWidth: 640}
 }
 
 // Region is one piece of text: where it is in the image as given, what it
@@ -191,25 +185,39 @@ func (r *Reader) Read(img image.Image) ([]Region, error) {
 	if err != nil {
 		return nil, err
 	}
-	if r.p.Turned {
-		// A detector trained on horizontal lines does not propose a word
-		// set bottom to top, so the page is offered to it turned as well
-		// and the boxes are brought back. A turned box that already
-		// overlaps an upright one is the same line seen twice and is
-		// dropped, so nothing is read or joined twice.
-		turned, err := r.detect(turn90(img))
-		if err != nil {
-			return nil, err
-		}
-		h := img.Bounds().Dy()
-		for _, t := range turned {
-			b := image.Rect(t.Min.Y, h-t.Max.X, t.Max.Y, h-t.Min.X).Add(img.Bounds().Min)
-			if covered(b, boxes) {
-				continue
-			}
-			boxes = append(boxes, b)
-		}
+	return r.readBoxes(img, boxes)
+}
+
+// ReadTurned offers the page to the detector turned a quarter, which is
+// how a word set bottom to top reaches a detector trained on horizontal
+// lines, and returns only what the first pass did not already find. It is
+// separate from Read so that a caller can spend it on the labels that need
+// it: step 24a runs it only where the upright pass left a required claim
+// unread.
+func (r *Reader) ReadTurned(img image.Image, have []Region) ([]Region, error) {
+	turned, err := r.detect(turn90(img))
+	if err != nil {
+		return nil, err
 	}
+	seen := make([]image.Rectangle, 0, len(have))
+	for _, x := range have {
+		seen = append(seen, x.Box)
+	}
+	h := img.Bounds().Dy()
+	var boxes []image.Rectangle
+	for _, t := range turned {
+		b := image.Rect(t.Min.Y, h-t.Max.X, t.Max.Y, h-t.Min.X).Add(img.Bounds().Min)
+		if covered(b, seen) {
+			continue
+		}
+		boxes = append(boxes, b)
+		seen = append(seen, b)
+	}
+	return r.readBoxes(img, boxes)
+}
+
+// readBoxes recognises every box and returns them in reading order.
+func (r *Reader) readBoxes(img image.Image, boxes []image.Rectangle) ([]Region, error) {
 	out := make([]Region, 0, len(boxes))
 	for _, b := range boxes {
 		text, conf, rot, err := r.recognise(img, b)

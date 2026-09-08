@@ -40,7 +40,7 @@ var Adopted = []Constant{
 	{"read_max_side", 1600, "20c", "Options.MaxSide"},
 	{"read_box_thresh", 0.3, "20c", "Options.BoxThresh"},
 	{"read_unclip", 1.6, "20c", "Options.Unclip"},
-	{"read_turned", 1, "21d", "Options.Turned"},
+	{"read_turned", 1, "21d, made conditional at 24a", "Options.Turned"},
 }
 
 // TuneNames is every constant a sweep may set.

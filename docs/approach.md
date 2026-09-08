@@ -3140,6 +3140,71 @@ a word beside it, and the remaining 12 are spread across joins, misreads and tex
 The fifty verify **144 of the 191 claims they carry**, up from 63 when step 19c first measured
 this engine.
 
+### Step 24a: the second detection pass, spent where it is needed (2026-09-08)
+
+The turned pass ran on every label. It is now conditional, and `ocr.Reader.ReadTurned` exists so
+that the upright pass is not repeated: it detects on the turned page, drops what the first pass
+already covers, and recognises only the rest.
+
+**The condition the step asked for makes one claim's verdict depend on another claim being in
+the call.** That was stated in the plan before the run, not found afterwards. "A required claim
+is unread" is a property of the claim set, so dropping a claim can stop the second pass running
+and change what is read for the claims that remain. Run that way, `TestClaimSetIndependence`
+fails, and names the case:
+
+```
+determinism_test.go:205: label 1, without brand: claim "net" differs from the full run
+```
+
+That is the coupling step 13a spent a step removing, and the test exists to catch it.
+
+**So a second condition was measured beside it, which asks the reading instead of the claims:**
+a page whose upright pass returned any detection taller than it is wide has text the detector
+saw side-on, and is worth offering turned. Both are implemented — `read_turned` at 2 is the
+condition as asked, at 1 the reading's own — and both are reported here.
+
+| set | claim | at 23c, every label | asking the claims | asking the reading |
+|---|---|---|---|---|
+| the fifty | brand | 0.51 | 0.51 | 0.51 |
+| the fifty | class | 0.17 | 0.17 | 0.17 |
+| the fifty | producer, first line | 0.68 | 0.68 | 0.68 |
+| the fifty | producer, second line | 0.33 | 0.33 | 0.33 |
+| the fifty | origin | 0.93 | 0.93 | 0.93 |
+| the fifty | alcohol content | 0.90 | 0.92 | 0.92 |
+| the fifty | net contents | 0.92 | 0.94 | 0.94 |
+| the fifty | *median / p95* | 3.1 / 6.3 s | 2.9 / 5.7 s | **2.5 / 4.7 s** |
+| corpus half A | brand | 0.79 | 0.79 | 0.79 |
+| corpus half A | class | 0.87 | 0.87 | 0.87 |
+| corpus half A | producer, first line | 0.30 | 0.30 | 0.30 |
+| corpus half A | producer, second line | 0.36 | 0.36 | 0.36 |
+| corpus half A | origin | 0.65 | 0.65 | 0.65 |
+| corpus half A | alcohol content | 0.82 | 0.82 | 0.81 |
+| corpus half A | net contents | 0.88 | 0.88 | 0.86 |
+| corpus half A | *median / p95* | 2.2 / 6.3 s | 2.0 / 5.6 s | **1.5 / 4.2 s** |
+| corpus half B | brand | 0.79 | 0.79 | 0.78 |
+| corpus half B | class | 0.84 | 0.84 | 0.84 |
+| corpus half B | producer, first line | 0.22 | 0.22 | 0.22 |
+| corpus half B | producer, second line | 0.35 | 0.35 | 0.35 |
+| corpus half B | origin | 0.62 | 0.63 | 0.63 |
+| corpus half B | alcohol content | 0.80 | 0.80 | 0.80 |
+| corpus half B | net contents | 0.89 | 0.90 | 0.89 |
+| corpus half B | *median / p95* | 2.4 / 6.6 s | 2.1 / 5.0 s | **1.3 / 3.8 s** |
+
+**Both hold precision at 1.00 on all three sets with no false assertion, and both leave the
+fifty at 146 of 191** — three more than step 23c, because the second pass now recognises boxes
+the first pass had suppressed with detections it went on to discard.
+
+**The reading's own condition is shipped, and the reason is that it does what the step was for.**
+The p95 on the fifty was 5.4 s against the 5 s this build has carried since step 3. Asking the
+claims brings it to 5.7 s — it did not help, because the labels that leave a claim unread are
+most labels. Asking the reading brings it to **4.7 s**, under the requirement for the first time
+since the turned pass was adopted. It costs three claims on the corpus — half A's net contents
+0.88 to 0.86 and alcohol 0.82 to 0.81, half B's brand and net one each — and nothing at all on
+the fifty. And it keeps the property.
+
+The condition as asked is one setting away and its numbers are in the table; if the corpus
+claims are worth more than the property and the second and a bit, `read_turned=2` is it.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

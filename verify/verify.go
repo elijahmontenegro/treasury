@@ -21,6 +21,7 @@ package verify
 import (
 	"context"
 	"image"
+	"sort"
 
 	"treasury/internal/buildid"
 	"treasury/internal/ocr"
@@ -229,7 +230,6 @@ func New(o Options) (*Engine, error) {
 	rp.MaxSide = int(o.MaxSide)
 	rp.BoxThresh = o.BoxThresh
 	rp.Unclip = o.Unclip
-	rp.Turned = o.Turned > 0
 	r, err := ocr.New(rp)
 	if err != nil {
 		return nil, err
@@ -251,15 +251,38 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		return Result{}, err
 	}
 	var res Result
-	for _, r := range read {
-		res.Regions = append(res.Regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence, Rotated: r.Rotated})
+	add := func(rs []ocr.Region) {
+		for _, r := range rs {
+			res.Regions = append(res.Regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence, Rotated: r.Rotated})
+		}
+	}
+	add(read)
+	decide := func() []Verdict {
+		rs := buildRuns(res.Regions, e.opt.MinConfidence)
+		out := make([]Verdict, 0, len(claims))
+		for _, c := range claims {
+			out = append(out, e.decide(c, rs))
+		}
+		return out
+	}
+	res.Claims = decide()
+	// The page is offered to the detector turned a quarter only where the
+	// upright pass left a required claim unread (step 24a). Reading every
+	// label twice cost a second a label for the labels that needed it and
+	// for the labels that did not.
+	if e.opt.Turned > 0 && worthTurning(read, res.Claims, e.opt.Turned) {
+		more, err := e.reader.ReadTurned(img, read)
+		if err != nil {
+			return Result{}, err
+		}
+		if len(more) > 0 {
+			add(more)
+			sortRegions(res.Regions)
+			res.Claims = decide()
+		}
 	}
 	if len(res.Regions) == 0 {
 		res.Reason = "no_text"
-	}
-	rs := buildRuns(res.Regions, e.opt.MinConfidence)
-	for _, c := range claims {
-		res.Claims = append(res.Claims, e.decide(c, rs))
 	}
 	stamp(&res)
 	return res, nil
@@ -280,4 +303,46 @@ func stamp(res *Result) {
 	for i := range res.Emphasis {
 		res.Emphasis[i].Engine = f
 	}
+}
+
+// worthTurning decides whether to spend the second detection pass.
+//
+// Step 24a asked for it where the upright pass leaves a required claim
+// unread, and that is what a setting of 2 does. It is not the default,
+// because it makes the reading depend on which claims were asked and so
+// lets one claim's verdict turn on another claim being in the call - the
+// coupling step 13a removed and TestClaimSetIndependence exists to catch.
+// Run as asked, that test fails, naming label 1's net contents changing
+// when the brand is dropped from the call.
+//
+// The default asks the reading instead of the claims: a page whose
+// upright pass returned a detection taller than it is wide has text the
+// detector saw side-on, and is worth offering turned. That is the same
+// saving without the coupling, and step 24a reports both.
+func worthTurning(read []ocr.Region, vs []Verdict, mode float64) bool {
+	if mode >= 2 {
+		for _, v := range vs {
+			if v.Status == NotFound || v.Status == Review {
+				return true
+			}
+		}
+		return false
+	}
+	for _, r := range read {
+		if r.Box.Dy() > r.Box.Dx() {
+			return true
+		}
+	}
+	return false
+}
+
+// sortRegions puts the regions back in reading order after a second pass
+// has added to them, so that everything downstream sees one order.
+func sortRegions(rs []Region) {
+	sort.SliceStable(rs, func(i, j int) bool {
+		if rs[i].Box.Min.Y != rs[j].Box.Min.Y {
+			return rs[i].Box.Min.Y < rs[j].Box.Min.Y
+		}
+		return rs[i].Box.Min.X < rs[j].Box.Min.X
+	})
 }
