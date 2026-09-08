@@ -1,6 +1,98 @@
 # Approach
 
-## The problem as decoding
+## What this engine does
+
+An application states what a label must say; the engine says whether the label says it, and
+refuses rather than guesses when it cannot tell.
+
+A label is **scene text**, not a document: words set in whatever face the designer chose, at
+whatever size and angle, over artwork. A pretrained detector proposes the regions that hold
+text and a pretrained recogniser reads each region whole. Both are ONNX models carried inside
+the Go binary and run on the CPU, in one process, with no network at run time.
+
+What the reader returns is then **judged**, and the judging is the part of this build that has
+been right from the start and is unchanged in principle: a claim is compared to what was read,
+a distance decides whether the claim is present at all, a margin decides which value is present
+when several are close, absence is reported as absence, and every verdict carries the region it
+rests on, the text read there, the spelling it was matched to, and the distances.
+
+Nothing in the core knows what a label is. The engine takes claims - expected text, or a field
+whose legal values and printed forms are known - and returns verdicts. The TTB case is a thin
+configuration in `ttb`: brand, class, the permittee, origin, alcohol content, net contents,
+the standards of fill, the printed forms the regulation allows, and the phrases a statement of
+responsibility may begin with. A photograph of anything carrying known text goes through the
+same path.
+
+**This was not the original design, and the record below says why it changed.** The engine
+built through steps 1 to 18 read a label by cutting the ink into glyphs and learning the
+label's own alphabet from the statutory warning. Step 18a measured the stage everything rested
+on and found it correct on 0.39 of characters, and on 0.25 through a camera channel. Step 19
+replaced it. Every table from step 1 onward is kept, in the order it was measured, because
+those tables are the evidence for the decision.
+
+## Pipeline
+
+1. **Detect.** The image as uploaded, scaled so its long side is at most 960, through PP-OCRv4's
+   DBNet. The probability map is thresholded at 0.3, each connected region of it is a text
+   instance, and its box is expanded by 1.6 to undo the shrink the network predicts. Nothing is
+   binarised and no components are labelled.
+2. **Recognise.** Each box is cropped from the original image, scaled to 48 pixels tall, and
+   decoded greedily over 6,625 classes by PP-OCRv4's CRNN. A box taller than it is wide is read
+   both ways and the surer reading kept, which is how vertical text is read without turning the
+   page. The output is a region, its text, and a confidence.
+3. **Candidate regions.** Detections the recogniser was unsure of are dropped; the rest are put
+   in reading order and joined into runs of up to four, only where the members are really
+   adjacent. A printed line often arrives as several detections, and a claim is compared to a
+   run rather than to a detection. Nothing is matched as a substring of a longer line.
+4. **Spellings.** A free-text claim's accepted spellings are the filed value and whatever the
+   application itself supplies beside it - the permittee's second filed name, the prescribed
+   responsibility phrases, the filed address. A numeric claim's are every value the field may
+   legally hold crossed with every printed form of it, so the winner names a value.
+5. **Decide.** Edit distance over the claim's own length, with case, accents, punctuation and
+   spacing set aside and the decimal separator kept, because it is part of the number. The
+   claim's own value inside the radius verifies; another legal value has to beat it by the
+   margin to be named; a number's figure has to be read exactly; a reading with characters
+   missing may not contradict the application. Otherwise REVIEW or NOT_FOUND.
+6. **Verdicts.** VERIFIED, MISMATCH with the observed value named, REVIEW, NOT_FOUND, SKIPPED,
+   each stamped with the build identity, which includes the SHA-256 of both models.
+
+## Evaluation protocol
+
+Two sets, and the second is the one that counts.
+
+The **corpus** is 500 generated labels whose parameters were drawn from the fifty real ones
+(step 10b) and whose faces come from a committed partition (step 8a) that the label generator
+and the evaluation both read; a set drawn with training faces fails the run rather than warning.
+Twenty per cent of labels carry a deliberate error - a wrong brand, class, alcohol content or
+net contents - so precision is tested and not assumed. Constants are chosen on the
+even-numbered half and reported on the odd-numbered half.
+
+The **fifty** are real TTB registry approvals with their applications, and they are scored
+against what each label actually prints, transcribed claim by claim (step 12a), not against
+what was filed: a claim the label does not carry in the filed form is missing, so refusing it
+is right and asserting it is false. That correction took the real set's published precision
+from 1.00 to 0.94 at the time it was made, and it is why the number means something now.
+
+Two rules the build learned the hard way and now enforces in code: **precision is a constraint,
+not a term to trade** - a setting that produces one false assertion on either set is given back
+whatever it buys - and **every adopted constant is tested against the value the binary runs**
+(step 15a), because between steps 10c and 14d the document described an engine that was not
+running.
+
+## How to read the record below
+
+It is chronological, and it is kept that way on purpose. Sections carry the step that produced
+them, findings that were later corrected are followed by the correction rather than edited
+away, and the passages describing the retired mechanism are kept as they were written. Three
+of those come first, since they were the head of this document until step 19.
+
+---
+
+# The record, in the order it was measured
+
+## Part one: the engine that read by cutting glyphs (steps 1 to 18, retired)
+
+### The problem as decoding (as stated through step 18)
 
 An application states what a label must say. The label image is that message received over a noisy channel: an unknown typeface at unknown sizes, lighting, angle, blur, and compression. Verification asks, for each expected value, whether the image contains a region whose code lies within a Hamming ball around a codeword for that value. Text is never the unit; bit codes are.
 
@@ -8,7 +100,7 @@ The codebook does not come from a font library. It comes from the image. Every c
 
 Nothing in the core knows what a label is. The engine takes a reference (text known to be printed, with spans expected in a heavier weight) and claims (expected text, or an enumeration of the values a field may take). The TTB case is a thin configuration: the reference is 27 CFR 16.21, the emphasis span is "GOVERNMENT WARNING:", the claims are brand, class, producer, origin, alcohol content, and net contents. A random photo of anything containing a known string goes through the same path.
 
-## Pipeline
+### The pipeline as it stood
 
 1. **Preprocess.** Grayscale, longer side to 1600 px, Sauvola threshold (window 31, k 0.2), deskew by projection-profile sweep, glare mask when the brightest percentile stands clear of the paper.
 2. **Regions.** Connected components with dots folded into the glyph beneath; lines by vertical centre; regions are lines, bands, and every run of up to five words, so a value inside a sentence has a region of its own.
@@ -17,7 +109,7 @@ Nothing in the core knows what a label is. The engine takes a reference (text kn
 5. **Decode.** Every structurally plausible (region, candidate) pair is scored by aligning the region's components to the candidate's glyph codes with the same DP, so a single differing digit counts. The nearest region reads as its nearest candidate; the competitor is the nearest candidate of a different value on the same region under the same geometry. A claim is decided when the decisive readings among the regions near the best agree.
 6. **Verdicts.** VERIFIED, MISMATCH (observed value named), REVIEW (candidates named), NOT_FOUND, SKIPPED. Reference rows verify, review, or fail on their own alignment anomalies; the emphasis span is heavy or regular by comparing it to itself at the body's stroke width and at 1.25 times it. Every verdict carries the region, distances, radius, what was synthesized, and the deskew angle.
 
-## The glyph code
+### The glyph code
 
 The spec's line hash (64×16 coverage plus a difference hash) is kept for regions without components and as evidence, but it does not decide anything. Measured against real lines it has a phase-noise floor near fifteen percent of its bits, larger than one differing digit, and as a ranker it put dozens of short spurious pairs ahead of the true one whenever the label's face differed from the synthesized one.
 
@@ -25,7 +117,7 @@ The code that decides is per glyph: a positional view of the glyph inside a fram
 
 This code is the error-correcting code of the channel in the sense the spec asks for: the alphabet's centroids are the codewords, the within-character spread is the noise, and the tie margin is set from that spread.
 
-## Evaluation protocol
+### The evaluation protocol as it stood
 
 The synthetic set is drawn with faces the engine does not bundle. Labels drawn in the bundled faces would match synthesized digits by the same face that synthesized them; the evaluation refuses such a set unless told otherwise, and then stamps its table. The reported set uses the machine's installed faces: 26 families with both a regular and a bold, 117 text-capable faces for brand lines, including handwriting and decorative faces. Twenty percent of labels carry a deliberate error (wrong brand, wrong class, wrong alcohol content, wrong net contents, title-case header, regular-weight header, altered warning wording, a missing claim); eighty percent are pushed through the channel (rotation ±10°, perspective, blur σ ≤ 1.5, JPEG 40–95, brightness and contrast, glare). Thresholds are chosen on the even-numbered labels and reported on the odd-numbered ones.
 
@@ -2162,6 +2254,32 @@ Kept text sits at a contrast of 0.22 to 0.50 against its own surround, median 0.
 
 **The finding on the criteria.** They already admit display type: a modulated serif and an outlined sans both survive on these labels, because both have consistent stroke width within a glyph and stand at a contrast of a fifth or more against their ground. What they discard at text size is overwhelmingly ink whose contrast against its immediate surround is under a tenth — ten thousand pieces of it — and the two evidence images show what lives in that band beside any faint text: the bee at contrast 0.04 to 0.09, the frame lines, the ghosted watermark behind the type. Lowering the bound would admit those with whatever text it gained. So the answer is that the criteria as they stand cannot be loosened into low-contrast display type without admitting ornament, because on this evidence the two are not separated by contrast, by stroke consistency or by size — the three things the step measures. Admitting them would need a fourth thing, and this step does not have one to offer.
 
+## Part one's closing sections, as they stood
+
+The two sections that follow were the end of this document from step 6 until the pivot. They
+describe the retired engine and are kept as written.
+
+### What the numbers said (step 6)
+
+Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
+
+Recall of free-text claims is about 0.70 over the whole set and about 0.95 among labels that learned an alphabet; the gap is the 27 percent of labels that did not. Those are labels blurred until letters fuse (a warning with 240 characters arriving as 70 to 90 components), rotated and compressed until the block does not align, or low in contrast under JPEG noise; they return NOT_FOUND on every claim rather than a guess. A printed class that differs from the application is NOT_FOUND rather than MISMATCH, because free text has no enumeration to name the other value against.
+
+Alcohol content and net contents are decided by digits, and the reference teaches only 1 and 2. Digits synthesized from bundled faces separate a held-out font's digits poorly; alternatives from the three nearest faces and digits learned from claims that verified raise net recall to 0.59 and alcohol content to 0.33 on the reported half, and every wrong net-contents value that decoded at all was called MISMATCH. The remaining alcohol-content claims mostly stop at REVIEW with the two nearest values named, which is the honest outcome when a 7 and a 1 in an unfamiliar face sit within one alphabet spread of each other. This is where the spec's learned encoder belongs: a code trained to keep the same digit together across faces and channel would lift exactly these numbers.
+
+The reference rows verify completely on 38 percent of compliant labels, review on 48, and fail on 14; half of the altered-wording and title-case errors are caught. The threshold sweep at the end of the table shows the trade: a lower failure threshold catches more altered wordings and fails more compliant labels, and no setting separates them well, because a blurred letter and a substituted one look alike to the code. The emphasis test is right on 70 percent of labels. Both would improve with the same encoder.
+
+### Limits as they stood (step 6)
+
+- A brand in a display face outside the alphabet decodes as NOT_FOUND.
+- A label without a legible warning block yields no alphabet; every claim is NOT_FOUND with reason `no_alphabet`.
+- Heavy blur that fuses letters, steep angles, and low contrast with compression noise degrade alignment; the engine says so rather than guessing.
+- Digits are the least reliable glyphs because they are never in the reference; the learned encoder of the spec's stretch section is the remedy if the table below target is not enough.
+- Unusual net-contents sizes outside the enumeration decode as REVIEW.
+- One alignment slip and one substituted letter look the same; a reference row with a single anomaly goes to review with the glyph as evidence.
+
+---
+
 ## The pivot: the reading engine is replaced (step 19a, 2026-09-07)
 
 Everything above this line describes an engine that read a label by cutting it into glyphs. It is retired here, and the tables stay where they are, in the order they were measured, because they are the evidence for retiring it.
@@ -2178,7 +2296,7 @@ Everything above this line describes an engine that read a label by cutting it i
 
 **What was kept.** The claim and verdict types and the decision rules they serve; the evidence attached to every verdict; the build identity and its fingerprint; the CLI and the eval harness with its scoring, including the printed-text truth 12a established; the fifty real labels, their transcriptions and their audits; the corpus generator, the faces it draws with and the font partition that keeps evaluation faces out of training; and the apparatus tests — determinism, claim-set independence, and the adopted-constant checks.
 
-**Between the two steps the engine cannot read.** `Verify` returns every claim not found with the reason `no_reader` until step 19b lands the detector and the recogniser. That is stated here rather than papered over, and the build is green with the old engine absent from the tree.
+**Between 19a and 19b the engine could not read at all.** `Verify` returned every claim not found, with that as the reason, and the build was green with the old engine absent from the tree. The two steps that follow put a reader and a decision layer back on top of it, and the sections after this one report what they measure.
 
 ### Step 19b: detection and recognition (2026-09-07)
 
@@ -2346,19 +2464,45 @@ designation containing the filed one.
 
 ## What the numbers say
 
-Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
+**Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
+both corpus halves and the fifty**: 2,112 verifications over 550 labels and not one assertion
+the label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and
+on the fifty it correctly reports the absence of **all 123** of the claims the labels do not
+carry.
 
-Recall of free-text claims is about 0.70 over the whole set and about 0.95 among labels that learned an alphabet; the gap is the 27 percent of labels that did not. Those are labels blurred until letters fuse (a warning with 240 characters arriving as 70 to 90 components), rotated and compressed until the block does not align, or low in contrast under JPEG noise; they return NOT_FOUND on every claim rather than a guess. A printed class that differs from the application is NOT_FOUND rather than MISMATCH, because free text has no enumeration to name the other value against.
+**Recall depends on how big the type is.** Statements set at a legible size come back well -
+on the corpus, net contents 0.86, class 0.81, alcohol content 0.79, brand 0.74 - and the
+permittee's name, which is the smallest type on a back label and often the only thing printed
+at six pixels of x-height, comes back at 0.18. On the fifty the same ordering holds at lower
+absolute values: origin 0.64, alcohol content 0.40, brand 0.35, the permittee 0.26, net
+contents 0.22. The corpus is easier than the population on every row, which it was not before
+step 19: the reader's failures are concentrated in exactly the conditions a generator is worst
+at reproducing.
 
-Alcohol content and net contents are decided by digits, and the reference teaches only 1 and 2. Digits synthesized from bundled faces separate a held-out font's digits poorly; alternatives from the three nearest faces and digits learned from claims that verified raise net recall to 0.59 and alcohol content to 0.33 on the reported half, and every wrong net-contents value that decoded at all was called MISMATCH. The remaining alcohol-content claims mostly stop at REVIEW with the two nearest values named, which is the honest outcome when a 7 and a 1 in an unfamiliar face sit within one alphabet spread of each other. This is where the spec's learned encoder belongs: a code trained to keep the same digit together across faces and channel would lift exactly these numbers.
+**A wrong value is named only when the reading is clearly not the filed one.** Half B names 5 of
+the 10 values the corpus prints wrongly on purpose. The other 5 differ from the filed value by
+about one character in a printed form, and one character is what a recogniser gets wrong, so
+the engine reviews. That is a limit of the reader and it is reported as a review, not as a
+verdict.
 
-The reference rows verify completely on 38 percent of compliant labels, review on 48, and fail on 14; half of the altered-wording and title-case errors are caught. The threshold sweep at the end of the table shows the trade: a lower failure threshold catches more altered wordings and fails more compliant labels, and no setting separates them well, because a blurred letter and a substituted one look alike to the code. The emphasis test is right on 70 percent of labels. Both would improve with the same encoder.
+**A verification is now about a second's work.** Median 1.0 s a label single-threaded against
+21.0 s for the retired engine, which is seventeen times faster for a stage that reads more.
 
 ## Limits, stated
 
-- A brand in a display face outside the alphabet decodes as NOT_FOUND.
-- A label without a legible warning block yields no alphabet; every claim is NOT_FOUND with reason `no_alphabet`.
-- Heavy blur that fuses letters, steep angles, and low contrast with compression noise degrade alignment; the engine says so rather than guessing.
-- Digits are the least reliable glyphs because they are never in the reference; the learned encoder of the spec's stretch section is the remedy if the table below target is not enough.
-- Unusual net-contents sizes outside the enumeration decode as REVIEW.
-- One alignment slip and one substituted letter look the same; a reference row with a single anomaly goes to review with the glyph as evidence.
+- **The permittee's name is the weakest claim** and it is a reading limit, not a decision one:
+  on the fifty the name comes back damaged as often as not - "BlugrasBotling" for "Bluegrass
+  Bottling" - at distances of 0.17 and worse against a radius of 0.07.
+- **A claim printed inside a longer line is not found.** The class row on the fifty is 0 of 6
+  because five of those labels print a longer designation containing the filed one. Matching
+  inside a line is refused, deliberately: it is how the filed brand's words inside a producer's
+  name became a false assertion at step 16a.
+- **A wrong value one character away from the filed one is reviewed, not named.**
+- **The corpus cannot price two things** the fifty can: a printed string within a few characters
+  of a claim the label does not carry, and the statutory statement of responsibility, whose
+  phrase its generator files as part of the permittee's name.
+- **The engine verifies text, not layout.** A claim matched anywhere on the label is verified;
+  a caller that needs the brand on the brand front must say so.
+- **The models are pretrained and general.** Nothing here was trained on labels, which is why
+  the font partition that step 8a built no longer constrains anything; it is kept because the
+  corpus generator still draws from it.
