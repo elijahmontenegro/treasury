@@ -2667,6 +2667,74 @@ So the loop stops here, and what stops it is the reader rather than the decision
 that remains is a different recogniser — a larger model, or one trained on display type — which
 is a change of model, not of engine, and it is not a tuning question.
 
+### Step 21a: the claims the whole-run rule refuses, judged one by one (2026-09-08)
+
+Step 20c reported twenty-one claims as ones "the rule against matching inside a line is right to
+refuse". **That was more than had been shown, and the correction is the first thing this step
+owes.** At 20a sixteen free-text claims sitting inside a longer detection were judged by eye:
+twelve correct refusals and four two statements sharing a line. When 20c raised the detector's
+cap the bucket grew to twenty-one, and the nine that joined it went into the "the rule is right"
+row because that is where the classifier put anything not on the hand-list — not because anyone
+looked at them. Here they are looked at.
+
+Twenty-five claims are refused this way in all. Each is judged on one question: is the filed
+string printed *whole*, with other matter around it, or is it *part of* a longer piece of the
+same kind of text?
+
+25 claims are refused because a run holds more than the claim; 21 of them are the twenty-one step 20c reported, the other four being the origins 20a hand-listed.
+
+**The filed string is printed whole, with other matter around it: 18** (14 of the twenty-one).
+
+| label | claim | filed | the reading it sits inside | what surrounds it |
+|---|---|---|---|---|
+| 0001 | origin | `PRODUCT OF MEXICO` | `4 PRODUCTOFMEXICO 750 ML` | a stray digit and the fill statement |
+| 0015 | brand | `WASATCH BREWERY` | `BREWEDANCANNEDWASATCHBREWERYSALTLAKEIU` | the statement of responsibility and the address, run together |
+| 0016 | brand | `WASATCH BREWERY` | `BREWEDANDCANNEDBYWASATCHBREWERY-SALLAKECIYUT` | the statement of responsibility and the address |
+| 0017 | brand | `WASATCH BREWERY` | `BREWEDANDCANNEDBYWASATCHBREWERY-SALLAKECITYUT` | the statement of responsibility and the address |
+| 0024 | brand | `OWL'S BREW` | `Iteamedupwith Owl'sBrew to` | body copy either side |
+| 0025 | brand | `OWL'S BREW` | `IteamedupwithOwl'sBrew to` | body copy either side |
+| 0028 | brand | `APONA VINEYARDS` | `APONA VINEYARDS, VENETA, OR` | the address, after a comma |
+| 0033 | origin | `Product of Spain` | `Red Wine - Product of Spain` | the class designation and a dash |
+| 0037 | producer_2 | `1944 GARDENA AVE GLENDALE CA 91204` | `1944GardenaAve,Glendale,CA91204USA` | "USA" run onto the end |
+| 0041 | brand | `PEAKY BLINDERS` | `and Peaky Blinders partnership, this spirit` | body copy either side |
+| 0041 | producer_1 | `BLUEGRASS BOTTLING, Bluegrass Bottling LLC` | `Bottled By Bluegrass Bottling, Lancaster, KY` | the responsibility phrase before, the address after a comma |
+| 0042 | brand | `ALPAS VINEYARDS` | `spirit of Alpas Vineyards and the` | body copy either side |
+| 0042 | producer_1 | `Engelheim Vineyards, Engelheim Vineyards, LLC` | `Engelheim Vineyards, Ellijay, Georgia` | the address, after a comma |
+| 0043 | brand | `TENHEAD` | `ID TENHEAD` | a two-letter fragment before it |
+| 0045 | origin | `PRODUCT OF ITALY` | `WHITE WINE - PRODUCT OF ITALY` | the class designation and a dash |
+| 0046 | brand | `PASSIONE NATURA` | `Bottled by: PASSIONE NATURA, Paglieta (CH),IT` | the responsibility phrase before, the address after a comma |
+| 0046 | origin | `PRODUCT OF ITALY` | `WHITE WINE - PRODUCT OF ITALY` | the class designation and a dash |
+| 0048 | brand | `CHATEAU COTE DE BALEAU` | `SCEA CHATEAU COTEDE BALEAU,PROPRIETAIRE` | a company form before, "PROPRIETAIRE" after a comma |
+
+**The filed string is part of a longer piece of the same kind: 7** (all of the twenty-one).
+
+| label | claim | filed | the reading it sits inside | why the refusal is right |
+|---|---|---|---|---|
+| 0012 | class | `ALE` | `INDIA PALE ALE` | "ALE" is part of the designation "INDIA PALE ALE" |
+| 0015 | class | `ALE` | `STARGAZE-INDIA PALE ALE` | "ALE" is part of "STARGAZE-INDIA PALE ALE" |
+| 0016 | class | `ALE` | `GHOSTRIDERINDIA PALEALE` | "ALE" is part of "GHOSTRIDER INDIA PALE ALE" |
+| 0017 | class | `ALE` | `HOLY HAZE M-HAZY PALE ALE` | "ALE" is part of "HOLY HAZE M-HAZY PALE ALE" |
+| 0022 | brand | `OWL'S BREW` | `followusGtheowlsbrew` | inside the single token "theowlsbrew" of a social handle |
+| 0023 | brand | `OWL'S BREW` | `followus @theowlsbrew` | inside the single token "@theowlsbrew" of a social handle |
+| 0038 | brand | `45TH PARALLEL` | `Distilled & Bottled by 45th Parallel Spirits, LLC` | "45th Parallel" is the start of the longer name "45th Parallel Spirits, LLC" |
+
+**Fourteen of the twenty-one are refused only because a printed line carries more than the
+filed string**, and seven are refused rightly. The seven are of three shapes, and each is a
+shape the build has already reasoned about: a class designation inside a longer designation,
+which step 12b refused as "a class designation with a word dropped" read backwards; a brand
+inside a single unbroken token, which is a social handle and not a printed instance of the
+name; and a brand that is the opening of a longer company name — "45th Parallel" inside "45th
+Parallel Spirits, LLC" — which is exactly the shape of step 16a's two false assertions.
+
+**What separates the two sets is visible in the quoted readings and it is punctuation.** In
+every one of the eighteen, what abuts the filed string is a comma, a dash, a colon, a digit, or
+the edge of the detection. In every one of the seven, what abuts it is another letter of the
+same word or another word of the same name. Step 20b said a number is delimited by its unit and
+a name has nothing playing that part; the readings say a name has punctuation. Step 21b tests
+whether that is enough.
+
+No fix in this step.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
