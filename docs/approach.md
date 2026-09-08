@@ -2966,6 +2966,48 @@ prediction of recall; the honest figure for what the change buys is the seven.
 Also corrected: 21c named 0003's producer name and address as the place "the recogniser itself
 is the wall". Both now verify.
 
+### Step 23a: where the fifty-five are lost, on the engine as it stands (2026-09-08)
+
+The causes have moved four times since 20a — at 20b, 20c, 21b and 21d — so nothing is carried
+forward. Every unverified claim is classified again from probes taken on this engine, and
+`verify.Diagnose` gains one: the best distance over **two detections joined in either order**,
+whether or not they are next to each other and whether or not the run builder would join them.
+
+**Latency on the fifty, single-threaded: median 3.1 s, 95th percentile 5.4 s.** 21d gave only
+the median; the p95 is here.
+
+| cause | claims | brand | class | producer 1 | producer 2 | origin | alcohol | net |
+|---|---|---|---|---|---|---|---|---|
+| read inside one detection, not delimited by punctuation | **27** | 20 | 4 | 1 | 1 | 1 | - | - |
+| the words are across two detections the builder will not join | **11** | 3 | - | 5 | - | - | 3 | - |
+| matched, outside the radius | **7** | 5 | 1 | - | - | - | - | 1 |
+| printed in a form the enumeration lacks | **5** | - | - | - | - | - | 3 | 2 |
+| not detected at all | **2** | - | - | 1 | 1 | - | - | - |
+| detected and misread | **2** | - | - | 1 | - | - | - | 1 |
+| refused by one of the six rules | **1** | - | - | - | - | - | 1 | - |
+| **all** | **55** | 28 | 5 | 8 | 2 | 1 | 7 | 4 |
+
+**The largest cause is the boundary rule, 27 claims, and it is not all one thing.** About half
+are refusals the rule is right about and the readings say why: `DRINKSUPERLYTE SUPERLYTE.COM`
+and `followus @theowlsbrew` are web addresses with the brand inside an unbroken token, `INDIA
+PALE ALE` and `HOLY HAZE M-HAZY PALE ALE` are longer class designations, `Distilled & Bottled by
+45th Parallel Spirits, LLC` is step 16a's own shape. The other half are refused because the
+*reading* lost the punctuation the label printed, or because a word abuts the claim where a mark
+would have delimited it: `CANNED By THE CROSSING AT BIG CREEK BREWERY`, `for Notre Dame Wines`,
+`1944GardenaAve,Glendale,CA91204USA` with USA run onto the end, and
+`BREWEDANCANNEDWASATCHBREWERYSALTLAKEIU`, which is a whole statement of responsibility returned
+without a single space or mark in it.
+
+**The second is eleven claims whose words are across two detections the builder will not join,
+and they are not what 21d predicted.** 21d named the logotype — 0013's `Super` and `Lyte` in
+boxes of different shape. Not one of the eleven is that. Every one is a single printed statement
+that arrived as two detections: `IMPORTED BY: CRAPEVINE` and `DISTrIbUTors CoNCord, NC` on four
+Grapevine labels, `JOHNNY` and `TEJAS`, `Dancing Pand` and `A`, and a figure separated from its
+unit — `50` and `%ALC. /VOL`. The logotype claims are in the first bucket instead, matched
+inside the web address and refused there.
+
+No fix in this step.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

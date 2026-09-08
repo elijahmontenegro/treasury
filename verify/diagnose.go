@@ -50,6 +50,16 @@ type Diagnosis struct {
 	SeqText string  `json:"seq_text,omitempty"`
 	SeqLen  int     `json:"seq_len,omitempty"`
 
+	// Pair is the best distance over two detections joined in either
+	// order, whether or not the run builder would join them and whether
+	// or not they are next to each other in reading order. A small Pair
+	// with a large Run and a large Box is a claim whose words are all
+	// read and never compared to it together, which is the shape a
+	// logotype makes: one word set vertically, one horizontally.
+	Pair  float64 `json:"pair"`
+	PairA string  `json:"pair_a,omitempty"`
+	PairB string  `json:"pair_b,omitempty"`
+
 	// Figure says, for a numeric claim, whether the value the application
 	// filed appears anywhere as a run of digits. A read figure with no
 	// spelling inside the radius is a printed form the enumeration lacks,
@@ -88,7 +98,7 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) 
 
 	var out []Diagnosis
 	for _, c := range claims {
-		d := Diagnosis{Claim: c.Name, Numeric: c.Numeric != nil, Run: 1, Box: 1, Seq: 1}
+		d := Diagnosis{Claim: c.Name, Numeric: c.Numeric != nil, Run: 1, Box: 1, Seq: 1, Pair: 1}
 		v := e.decide(c, rs)
 		d.Status, d.Reason = v.Status.String(), v.Reason
 		d.Radius = e.opt.Radius
@@ -112,6 +122,17 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) 
 					d.Box, d.BoxText = x, texts[j]
 					d.BoxLetter = (from > 0 && isLetter(rune(norms[j][from-1]))) ||
 						(to < len(norms[j]) && isLetter(rune(norms[j][to])))
+				}
+			}
+			// Any two detections, in either order, however far apart.
+			for a := range norms {
+				for b := range norms {
+					if a == b {
+						continue
+					}
+					if x := infix(cd.norm, norms[a]+norms[b]); x < d.Pair {
+						d.Pair, d.PairA, d.PairB = x, texts[a], texts[b]
+					}
 				}
 			}
 			// Any contiguous sequence of detections, joined, with the
