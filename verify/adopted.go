@@ -36,11 +36,14 @@ var Adopted = []Constant{
 	{"radius", 0.07, "19c", "Options.Radius"},
 	{"numeric_radius", 0.12, "19c", "Options.NumericRadius"},
 	{"tie", 0.15, "19c", "Options.TieMargin"},
-	{"min_confidence", 0.5, "19a, to be refitted in 19c", "Options.MinConfidence"},
+	{"min_confidence", 0.5, "19c, measured insensitive", "Options.MinConfidence"},
+	{"read_max_side", 1600, "20c", "Options.MaxSide"},
+	{"read_box_thresh", 0.3, "20c", "Options.BoxThresh"},
+	{"read_unclip", 1.6, "20c", "Options.Unclip"},
 }
 
 // TuneNames is every constant a sweep may set.
-var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence"}
+var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence", "read_max_side", "read_box_thresh", "read_unclip"}
 
 // applyOptions writes the overrides a sweep asked for.
 func applyOptions(o Options) Options {
@@ -57,6 +60,9 @@ func applyOptions(o Options) Options {
 	set("numeric_radius", func(v float64) { o.NumericRadius = v })
 	set("tie", func(v float64) { o.TieMargin = v })
 	set("min_confidence", func(v float64) { o.MinConfidence = v })
+	set("read_max_side", func(v float64) { o.MaxSide = v })
+	set("read_box_thresh", func(v float64) { o.BoxThresh = v })
+	set("read_unclip", func(v float64) { o.Unclip = v })
 	return o
 }
 
@@ -77,6 +83,12 @@ func liveIn(c Constant, o Options) (float64, error) {
 		return o.TieMargin, nil
 	case "Options.MinConfidence":
 		return o.MinConfidence, nil
+	case "Options.MaxSide":
+		return o.MaxSide, nil
+	case "Options.BoxThresh":
+		return o.BoxThresh, nil
+	case "Options.Unclip":
+		return o.Unclip, nil
 	}
 	return 0, fmt.Errorf("no live value known for %q", c.Where)
 }

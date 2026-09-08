@@ -168,6 +168,14 @@ type Options struct {
 	// MinConfidence is the recogniser's own confidence below which a
 	// region is not evidence for anything.
 	MinConfidence float64
+	// MaxSide is the longer side the detector sees. The recogniser always
+	// crops from the image as given, so this bounds where text is found
+	// and not how well it is read.
+	MaxSide float64
+	// BoxThresh is the probability above which the detector calls a pixel
+	// text, and Unclip is how far a proposed region is grown.
+	BoxThresh float64
+	Unclip    float64
 	// Tune overrides an adopted constant by name, for a sweep.
 	Tune map[string]float64
 }
@@ -185,6 +193,18 @@ func (o Options) withDefaults() Options {
 	if o.MinConfidence == 0 {
 		o.MinConfidence = 0.5
 	}
+	if o.BoxThresh == 0 {
+		o.BoxThresh = 0.3
+	}
+	if o.Unclip == 0 {
+		o.Unclip = 1.6
+	}
+	if o.MaxSide == 0 {
+		// 20c: chosen on half A, where 960 verifies 1048 claims, 1280
+		// verifies 1079, 1600 verifies 1115 and 2048 verifies 1108 and
+		// costs half a second a label more.
+		o.MaxSide = 1600
+	}
 	return o
 }
 
@@ -198,7 +218,11 @@ type Engine struct {
 func New(o Options) (*Engine, error) {
 	o = applyOptions(o)
 	o = o.withDefaults()
-	r, err := ocr.New(ocr.Default())
+	rp := ocr.Default()
+	rp.MaxSide = int(o.MaxSide)
+	rp.BoxThresh = o.BoxThresh
+	rp.Unclip = o.Unclip
+	r, err := ocr.New(rp)
 	if err != nil {
 		return nil, err
 	}

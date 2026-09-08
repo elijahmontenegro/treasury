@@ -2576,47 +2576,142 @@ from the other direction: what the corpus cannot model is exactly where the real
 Half B also names one more wrong fill than before, 4 of 5 against 3 of 5, because the fill it
 had to find was beside another statement. Latency is unchanged at about a second a label.
 
+### Step 20c: the loop, and where it stops (2026-09-08)
+
+20a was run again after 20b, and again after the change below. Two things came out of it.
+
+**A correction to 20a's own threshold.** 20a separated "detected and misread" from "not detected
+at all" at a distance of 0.60, on the reasoning that past that a string stops resembling the
+claim. Listing the bucket showed the reasoning was wrong: the claims that really are the claim
+read badly sit at 0.31 to 0.38 — "DISTrIbUTors CoNCord, NC", "S URCO" — and past 0.40 the
+nearest string in the whole image is unrelated text of the same length, a brand whose best
+match is "OPERATE MACHINERY AND MAY" out of the warning. The boundary is 0.40, and 20a's
+counts are restated at it below: what it reported as 35 misreads was 10 misread and 25 never
+read.
+
+**One more cause taken: the detector's cap.** The recogniser crops from the image as given, so
+resolution never limited *reading*; the detector, though, saw the image scaled to 960 on its
+long side, which bounds where text is *found*. Chosen on half A as the protocol requires — 960
+verifies 1048 claims, 1280 verifies 1079, 1600 verifies 1115, 2048 verifies 1108 and costs half
+a second a label more — the cap is adopted at **1600** and recorded in `verify.Adopted`.
+
+| set | claim | recall at 960 | at 1600 | precision at 960 | at 1600 |
+|---|---|---|---|---|---|
+| the fifty | brand | 0.35 | 0.37 | 1.00 | 1.00 |
+| the fifty | class | 0.00 | 0.17 | -- | 1.00 |
+| the fifty | producer, first line | 0.26 | 0.37 | 1.00 | 1.00 |
+| the fifty | producer, second line | 0.33 | 0.00 | 1.00 | -- |
+| the fifty | origin | 0.64 | 0.64 | 1.00 | 1.00 |
+| the fifty | alcohol content | 0.80 | 0.80 | 1.00 | 1.00 |
+| the fifty | net contents | 0.84 | 0.90 | 1.00 | 1.00 |
+| the fifty | *median latency* | 1.1 s | 1.8 s | | |
+| corpus half A | brand | 0.80 | 0.79 | 1.00 | 1.00 |
+| corpus half A | class | 0.85 | 0.87 | 1.00 | 1.00 |
+| corpus half A | producer, first line | 0.27 | 0.30 | 1.00 | 1.00 |
+| corpus half A | producer, second line | 0.30 | 0.36 | 1.00 | 1.00 |
+| corpus half A | origin | 0.55 | 0.65 | 1.00 | 1.00 |
+| corpus half A | alcohol content | 0.76 | 0.81 | 1.00 | 1.00 |
+| corpus half A | net contents | 0.85 | 0.86 | 1.00 | 1.00 |
+| corpus half A | *median latency* | 1.0 s | 1.4 s | | |
+| corpus half B | brand | 0.74 | 0.78 | 1.00 | 1.00 |
+| corpus half B | class | 0.81 | 0.84 | 1.00 | 1.00 |
+| corpus half B | producer, first line | 0.18 | 0.22 | 1.00 | 1.00 |
+| corpus half B | producer, second line | 0.26 | 0.35 | 1.00 | 1.00 |
+| corpus half B | origin | 0.55 | 0.62 | 1.00 | 1.00 |
+| corpus half B | alcohol content | 0.79 | 0.80 | 1.00 | 1.00 |
+| corpus half B | net contents | 0.88 | 0.89 | 1.00 | 1.00 |
+| corpus half B | *median latency* | 1.1 s | 1.4 s | | |
+
+The fifty go from **114 of 191 to 120**, and the corpus gains across the board this time,
+because a cap is not something the generator sidesteps. Precision stays **1.00 on every claim
+of all three sets, with no false assertion anywhere**. Latency roughly doubles, to 1.8 s a
+label on the fifty.
+
+**Where the seventy-one that remain are lost**, at the corrected threshold:
+
+| cause | claims | brand | class | producer 1 | producer 2 | origin | alcohol | net |
+|---|---|---|---|---|---|---|---|---|
+| not detected at all | **26** | 10 | 1 | 5 | 2 | 1 | 3 | 4 |
+| inside more of the same kind of text, where the rule is right | **21** | 14 | 4 | 2 | 1 | - | - | - |
+| detected and misread | **9** | 4 | - | 5 | - | - | - | - |
+| printed in a form the enumeration lacks | **7** | - | - | - | - | - | 6 | 1 |
+| read correctly, beside another statement in one detection | **4** | - | - | - | - | 4 | - | - |
+| matched, outside the radius | **2** | 2 | - | - | - | - | - | - |
+| read correctly, but split across detections | **1** | 1 | - | - | - | - | - | - |
+| refused by one of the four rules | **1** | - | - | - | - | - | 1 | - |
+| **all** | **71** | 31 | 5 | 12 | 3 | 5 | 10 | 5 |
+
+**The largest remaining cause is that the reader does not read the text at all, and the engine
+cannot address it.** Twenty-six of the seventy-one, and the measurements that put it out of
+reach:
+
+- The detector's cap has been raised and that is what most of 20c bought; **2048 is worse than
+  1600 on half A**, so there is nothing further there.
+- The detector's own thresholds are **insensitive**. Its probability threshold at 0.3, 0.2 and
+  0.15, and its unclip ratio at 1.6 and 2.0, verify 120, 120, 120 and 121 claims of the fifty.
+  The text is not being missed because the detector is too strict.
+- The recogniser already sees the best pixels there are: every crop is taken from the image as
+  uploaded, at full resolution, not from anything scaled or binarised.
+- And the text itself says why. Label 0013's brand is a stacked logotype — "Super" set
+  vertically bottom-to-top, "Lyte" horizontal above it, a lightning device between the two
+  words. That is not a line of text, and a detector that proposes lines and a recogniser that
+  reads them will not return it however they are tuned. The rest of the bucket is the smallest
+  type on a back label.
+
+**The second-largest is not a loss at all: 21 claims the rule against matching inside a line is
+right to refuse** — fourteen brands inside body copy, a social handle, or the producer's own
+name, and four class designations inside a longer one. That bucket grew from 12 as the reader
+found more text; undoing the rule to claim them is exactly the false assertion of step 16a.
+
+So the loop stops here, and what stops it is the reader rather than the decision. The lever
+that remains is a different recogniser — a larger model, or one trained on display type — which
+is a change of model, not of engine, and it is not a tuning question.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,112 verifications over 550 labels and not one assertion
+both corpus halves and the fifty**: 2,315 verifications over 550 labels and not one assertion
 the label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and
 on the fifty it correctly reports the absence of **all 123** of the claims the labels do not
 carry.
 
-**Recall depends on how big the type is.** Statements set at a legible size come back well -
-on the corpus, net contents 0.86, class 0.81, alcohol content 0.79, brand 0.74 - and the
-permittee's name, which is the smallest type on a back label and often the only thing printed
-at six pixels of x-height, comes back at 0.18. On the fifty the same ordering holds at lower
-absolute values: origin 0.64, alcohol content 0.40, brand 0.35, the permittee 0.26, net
-contents 0.22. The corpus is easier than the population on every row, which it was not before
-step 19: the reader's failures are concentrated in exactly the conditions a generator is worst
-at reproducing.
+**The fifty verify 120 of the 191 claims they carry.** By claim: net contents 0.90, alcohol
+content 0.80, origin 0.64, the permittee 0.37, brand 0.37, class 0.17. On the corpus, where
+every statement gets a line of its own and the type is never as small: net contents 0.89,
+class 0.84, alcohol content 0.80, brand 0.78, origin 0.62, the permittee 0.22.
+
+**Where the remaining loss is** (step 20c, on the fifty): 26 of the 71 unverified carried
+claims were never read — brand logotypes that are not lines of text, and the smallest type on a
+back label; 21 are claims the rule against matching inside a line is right to refuse; 9 are
+read too badly to match; 7 are printed in a form the enumeration lacks; the rest are singles.
+The decision layer is not what is holding recall down.
 
 **A wrong value is named only when the reading is clearly not the filed one.** Half B names 5 of
-the 10 values the corpus prints wrongly on purpose. The other 5 differ from the filed value by
-about one character in a printed form, and one character is what a recogniser gets wrong, so
-the engine reviews. That is a limit of the reader and it is reported as a review, not as a
-verdict.
+the 10 values the corpus prints wrongly on purpose. The other five differ from the filed value
+by about one character in a printed form, and one character is what a recogniser gets wrong, so
+the engine reviews.
 
-**A verification is now about a second's work.** Median 1.0 s a label single-threaded against
-21.0 s for the retired engine, which is seventeen times faster for a stage that reads more.
+**A verification is about two seconds' work**: median 1.8 s a label on the fifty
+single-threaded, against 21.0 s for the retired engine.
 
 ## Limits, stated
 
-- **The permittee's name is the weakest claim** and it is a reading limit, not a decision one:
-  on the fifty the name comes back damaged as often as not - "BlugrasBotling" for "Bluegrass
-  Bottling" - at distances of 0.17 and worse against a radius of 0.07.
-- **A claim printed inside a longer line is not found.** The class row on the fifty is 0 of 6
-  because five of those labels print a longer designation containing the filed one. Matching
-  inside a line is refused, deliberately: it is how the filed brand's words inside a producer's
-  name became a false assertion at step 16a.
+- **The reader is the ceiling, not the decision.** A brand set as a logotype - one word
+  vertical, one horizontal, a device between them - is not a line of text and no detector and
+  recogniser pair returns it. The detector's cap has been raised to the point where more hurts
+  (2048 is worse than 1600 on half A) and its probability threshold and unclip ratio are
+  insensitive. What is left is a different recogniser, which is a change of model.
+- **A claim printed inside a longer line is not found**, and that is deliberate: it is how the
+  filed brand's words inside a producer's name became a false assertion at step 16a. It costs
+  21 claims on the fifty, listed in step 20c.
+- **A number, unlike a name, is taken from inside a longer line**, because its unit delimits it
+  and the figure must be a whole number of the reading.
 - **A wrong value one character away from the filed one is reviewed, not named.**
 - **The corpus cannot price two things** the fifty can: a printed string within a few characters
   of a claim the label does not carry, and the statutory statement of responsibility, whose
-  phrase its generator files as part of the permittee's name.
-- **The engine verifies text, not layout.** A claim matched anywhere on the label is verified;
-  a caller that needs the brand on the brand front must say so.
+  phrase its generator files as part of the permittee's name. A third, which 20b measured: it
+  sets each statement on its own line, where real labels run them together.
+- **The engine verifies text, not layout.** A claim matched anywhere on the label is verified.
 - **The models are pretrained and general.** Nothing here was trained on labels, which is why
   the font partition that step 8a built no longer constrains anything; it is kept because the
   corpus generator still draws from it.

@@ -1,16 +1,16 @@
 ## The set
 
-50 labels, 0 the reader found nothing on, latency median 1.6s p95 2.5s
+50 labels, 0 the reader found nothing on, latency median 1.8s p95 3.5s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|
 | brand | 50 | 1.00 | 0.37 | 0.00 | 0/0 | 1 |
 | class | 50 | 1.00 | 0.17 | 0.00 | 0/0 | 44 |
-| producer_1 | 50 | 1.00 | 0.32 | 0.00 | 0/0 | 31 |
-| producer_2 | 50 | 1.00 | 0.33 | 0.00 | 0/0 | 47 |
+| producer_1 | 50 | 1.00 | 0.37 | 0.00 | 0/0 | 31 |
+| producer_2 | 50 | 0.00 | 0.00 | 0.00 | 0/0 | 47 |
 | origin | 14 | 1.00 | 0.64 | 0.00 | 0/0 | 0 |
-| abv | 50 | 1.00 | 0.80 | 0.00 | 0/0 | 0 |
-| net | 50 | 1.00 | 0.92 | 0.00 | 0/0 | 0 |
+| abv | 50 | 1.00 | 0.80 | 0.02 | 0/0 | 0 |
+| net | 50 | 1.00 | 0.90 | 0.00 | 0/0 | 0 |
 | brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
 
 Reference rows: compliant labels with every row verified 0/50 (50 reviewed, 0 failed); wording and title-case errors caught 0/0.
