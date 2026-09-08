@@ -66,6 +66,13 @@ func sampleLabels(t testing.TB) ([]*image.Gray, []ttb.Expected) {
 
 // digestOnce verifies the sample and returns a digest of every verdict and
 // every piece of evidence.
+//
+// The stage timings step 26a added are cleared first, and the reason is
+// the property itself: a wall-clock duration is not reproducible on any
+// machine, so hashing one would make this test fail forever and say
+// nothing. What the timings carry that IS deterministic - how many boxes
+// were detected and how many runs were built from them - stays in the
+// digest, so a change in what the reader found still moves it.
 func digestOnce(t testing.TB) string {
 	t.Helper()
 	imgs, exps := sampleLabels(t)
@@ -80,6 +87,9 @@ func digestOnce(t testing.TB) string {
 		if err != nil {
 			t.Fatal(err)
 		}
+		res.Stages.Detect, res.Stages.Recognise = 0, 0
+		res.Stages.TurnedPass, res.Stages.SecondPass = 0, 0
+		res.Stages.Runs, res.Stages.Decide = 0, 0
 		b, err := json.Marshal(res)
 		if err != nil {
 			t.Fatal(err)

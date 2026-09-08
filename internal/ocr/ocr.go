@@ -25,6 +25,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	ort "github.com/yalue/onnxruntime_go"
 	"golang.org/x/image/draw"
@@ -71,6 +72,15 @@ type Params struct {
 func Default() Params {
 	return Params{MaxSide: 960, BoxThresh: 0.3, ScoreThresh: 0.5, Unclip: 1.6,
 		MinSide: 3, RecHeight: 48, MaxRecWidth: 640}
+}
+
+// Timing is how long a read spent in each of its stages. Nothing below a
+// whole verification was measurable until step 26a asked where the time
+// goes.
+type Timing struct {
+	Detect    time.Duration `json:"detect"`
+	Recognise time.Duration `json:"recognise"`
+	Boxes     int           `json:"boxes"`
 }
 
 // Region is one piece of text: where it is in the image as given, what it
@@ -195,11 +205,22 @@ func (r *Reader) Close() {
 
 // Read finds the text in an image and reads it.
 func (r *Reader) Read(img image.Image) ([]Region, error) {
+	out, _, err := r.ReadTimed(img)
+	return out, err
+}
+
+// ReadTimed is Read with the time each stage took.
+func (r *Reader) ReadTimed(img image.Image) ([]Region, Timing, error) {
+	start := time.Now()
 	boxes, err := r.detect(img)
 	if err != nil {
-		return nil, err
+		return nil, Timing{}, err
 	}
-	return r.readBoxes(img, boxes)
+	t := Timing{Detect: time.Since(start), Boxes: len(boxes)}
+	start = time.Now()
+	out, err := r.readBoxes(img, boxes)
+	t.Recognise = time.Since(start)
+	return out, t, err
 }
 
 // ReadTurned offers the page to the detector turned a quarter, which is

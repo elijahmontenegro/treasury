@@ -3438,10 +3438,196 @@ the liquid in the bottle, not between the label and the application, and widenin
 0.05 to it would let a label printing 40.3% verify a filed 40%, which is a different claim about
 a different thing. It stays where it is.
 
+### Step 26a: latency measured three times, then profiled (2026-09-08)
+
+Every latency figure from here is the median of three identical runs. Step 25b is why: one run of
+one configuration read 5.3 s where three read 6.2, 6.6 and 6.9, and the 5.3 had been reported as
+a result.
+
+`verify.Stages` times a verification's parts — detection, recognition, the turned pass, building
+the runs, deciding — which nothing in this build had measured in twenty-six steps of measuring
+whole verifications.
+
+**Over the fifty: median 3.7 s, p95 6.9 s. Detection is 17 per cent of it, recognition 39, the
+turned pass 20 (it runs on 34 of the fifty), and deciding 23.**
+
+| label | total | detect | recognise | turned pass | runs | decide | boxes | runs built |
+|---|---|---|---|---|---|---|---|---|
+| 0026 | 8.8 s | 0.1 | 2.6 | 1.1 | 0.05 | 4.8 | 98 | 2590 |
+| 0007 | 8.1 s | 0.6 | 1.5 | 1.6 | 0.02 | 4.3 | 69 | 1202 |
+| 0012 | 6.9 s | 0.7 | 2.2 | 1.2 | 0.00 | 2.7 | 77 | 1201 |
+| 0044 | 6.6 s | 0.8 | 2.2 | 1.2 | 0.04 | 2.3 | 36 | 1057 |
+| 0018 | 5.8 s | 1.1 | 2.8 | 1.5 | 0.00 | 0.6 | 111 | 339 |
+
+**The slow labels are slow at deciding, and deciding scales with the number of runs built.** On
+0026 the chain builder produces 2,590 runs from 98 detections, and every candidate of every
+numeric claim is compared against them. Two changes follow from that and neither can alter a
+verdict: **runs whose normalized text another run already carries are dropped** — of two that
+compare identically the one kept is a single detection over a chain, and the smaller box over
+the larger, which is the preference the decision already applied — and **the spellings of a
+numeric field are built once and shared**, since they depend on the field's vocabulary and forms
+and not on the label, which step 25c had flagged when it made the list a quarter longer. Together
+they take the p95 from 6.9 s to **6.6 s** with the fifty's 154 of 192 unchanged.
+
+**What a p95 under 5 s costs in recall: three claims.**
+
+| configuration | verified | median | p95 (median of three) |
+|---|---|---|---|
+| as shipped | **154 of 192** | 3.4 s | 6.6 s |
+| without the second detection pass | 151 | 2.6 s | **4.6 s** |
+| free-text radius back at 0.07 | 147 | 3.3 s | 6.6 s |
+
+**The radius is not the lever it looked like.** Returning it to 0.07 costs seven claims and buys
+nothing at all in latency — 6.6 s either way. The second detection pass is the lever: a fifth of
+the time, and giving it up brings the p95 to 4.6 s for three claims. Step 21c is what those three
+cost: that pass is how a word set bottom to top reaches a detector trained on horizontal lines.
+
+Nothing is adopted here. The trade is stated and the pass stays, because this amendment's
+subject is recall.
+
+### Step 26c: whether the abutting word separates the nine (2026-09-08)
+
+Position does not separate the nine names refused for want of a delimiter from the three the
+refusal exists for (step 24b). The distinction to test here is textual: a filed name printed
+whole and followed only by a generic trade term — Company, Distillery, Winery, Brewing,
+Vineyards, Cellars, Estate — is not the same case as a filed brand's words inside a different
+company's name. Each of the twelve, with the word on either side of the claim:
+
+**The nine**
+
+| label | claim | filed | the reading it sits inside | word before | word after | generic? |
+|---|---|---|---|---|---|---|
+| 0024 | brand | `OWL'S BREW` | `Iteamedupwith Owl'sBrew to` | `Iteamedupwith` | `to` | no |
+| 0025 | brand | `OWL'S BREW` | `IteamedupwithOwl'sBrew to` | the start | the end | no |
+| 0034 | brand | `THE CROSSING AT BIG CREEK BREWERY` | `CANNED By THE CROSSING AT BIG CREEK BREWERY` | `By` | the end | no |
+| 0037 | producer_2 | `1944 GARDENA AVE GLENDALE CA 91204` | `1944GardenaAve,Glendale,CA91204USA` | the start | `1944GardenaAve,Glendale,CA91204USA` | no |
+| 0042 | brand | `ALPAS VINEYARDS` | `spirit of Alpas Vineyards and the` | `of` | `and` | no |
+| 0043 | brand | `TENHEAD` | `ID TENHEAD` | `ID` | the end | no |
+| 0044 | brand | `NOTRE DAME WINES` | `Bottled by Vinovae, Sonoma, CA for Notre Dame ` | `for` | the end | no |
+| 0044 | origin | `Product of USA` | `Contains sulfites, Product of USA ALC.14,5% BY` | `sulfites,` | `ALC.14,5` | no |
+| 0048 | brand | `CHATEAU COTE DE BALEAU` | `SCEA CHATEAU COTEDE BALEAU,PROPRIETAIRE` | `SCEA` | `BALEAU,PROPRIETAIRE` | no |
+
+**The three the refusal exists for**
+
+| label | claim | filed | the reading it sits inside | word before | word after | generic? |
+|---|---|---|---|---|---|---|
+| 0038 | brand | `45TH PARALLEL` | `Distilled & Bottled by 45th Parallel Spirits, ` | `by` | `Spirits,` | yes |
+| 0099 | brand | `Valley Mill` | `wwapeam` | the start | the end | no |
+| 0309 | brand | `HERON BLACK` | `PROBLEMS.` | the start | the end | no |
+
+**The distinction is exactly inverted on this evidence, and it is refused.**
+
+**Not one of the nine is followed by a generic term.** What abuts them is `to`, `and`, `By`,
+`for`, `SCEA`, `ID`, `ALC.14,5`, or the end of the detection. A rule admitting a name followed
+only by a generic term would admit none of them.
+
+**And the one of the three whose producer line the reader actually reads is followed by exactly
+such a term**: 0038's `Distilled & Bottled by 45th Parallel Spirits, LLC`, where `Spirits` is as
+generic as `Company`. The rule would admit it, and 0038 is the shape of step 16a's false
+assertions.
+
+The other two cannot be tested from a reading, because this reader does not read their producer
+lines at all — 0099 returns `wwapeam` and 0309 `PROBLEMS.` — so the test is made against what the
+corpus prints, which is what the truth records:
+
+| label | filed brand | printed brand | printed producer |
+|---|---|---|---|
+| 0099 | `Valley Mill` | `Tom Copper` | `Produced and Bottled by Valley Mill Company` |
+| 0309 | `HERON BLACK` | `SAINT STONE` | `Produced and Bottled by Heron Black Company` |
+
+**Both are the filed brand followed by `Company`.** The proposed distinction admits both, and
+both are false assertions by construction: the labels print a different brand.
+
+So the rule refuses everything it was meant to admit and admits everything it was meant to
+refuse. Nothing is adopted, which is what the gate required of any rule that admits one of the
+three. The nine stay refused, and what would separate them is not in the text either: `for Notre
+Dame Wines` and `by Valley Mill Company` differ in which of the two names is the brand and which
+the bottler, and the label says that with layout and typography rather than with words.
+
+### Step 26b: the middle path on recogniser damage (2026-09-08)
+
+The server recogniser is loaded once, as a recogniser only with no detector session beside it
+(step 25b found a detector it never called costing more than the reading), and used on nothing
+but the boxes whose best candidate sits between the radius and twice it. Three runs each, and
+step 25b's figures are superseded because they were single runs and one of them was taken while
+another measurement had the machine.
+
+| | claims verified | boxes re-read | median | p95 (median of three) |
+|---|---|---|---|---|
+| as shipped | 154 of 192 | — | 3.4 s | **6.6 s** |
+| the middle path | **156 of 192** | 19, one each on 19 labels | 3.2 s | **6.8 s** |
+
+**It costs nothing measurable and it is not adopted, because the gate is the requirement and not
+the comparison.** Two hundredths of a second of p95 separate the two, which is inside the spread
+of three runs of either. What separates them from the gate is 1.8 s: the requirement is 5 s and
+neither configuration is under it. The gate said adopt if the p95 holds under the requirement and
+otherwise report the trade and stop, so the trade is:
+
+- **two claims**, 154 to 156 — 0050's producer, where the server model reads `IMPORTED BY:
+  GRAPEVINE DISTRIBUTORS` and the shipped model reads `CRAPEVINE`, and one net contents;
+- **19 boxes re-read** over the fifty, one on each of nineteen labels and none on the
+  other thirty-one, so the work is genuinely rare;
+- **no measurable latency**, 6.8 s against 6.6 s;
+- and a **90 MB model** that would have to be shipped, fetched rather than committed as the
+  runtime library is.
+
+`second_opinion` is 2 for it and stays recorded at 0. Precision is 1.00 on every claim either
+way.
+
+**What the step says about the damage itself.** With the radius at 0.14 rather than 0.07, most
+single-character recogniser errors already verify: step 23c counted seven claims lost to them and
+five of those now pass. What is left is not one character but several — `S URCO` for SURCOS,
+`40%alcl` for `40% alc/vol` — and a second reading of the same crop by a better model is the only
+thing that has moved any of them.
+
+### Step 26d: what the corpus lacks (2026-09-08)
+
+The corpus did not move for five steps while the fifty went from 63 verified to 154, and moved
+again only at 25a. Measured on the reading rather than on the generator, because what matters is
+what reaches the decision:
+
+| | the fifty | corpus half A |
+|---|---|---|
+| runs the builder must chain per detection | 3.5 | 1.7 |
+| detections a label returns | 41 | 36 |
+| labels whose reading shows text seen side-on | 0.68 | 0.18 |
+| verified claims whose reading is not exact | 0.09 | 0.10 |
+| verified claims taken from inside a longer reading | 0.11 | 0.10 |
+| claims a label leaves just outside the radius | 0.38 | 0.24 |
+
+**Three of these are the whole story, and each names the step it starved.**
+
+- **A label's text needs twice as much joining: 3.5 chained runs per detection against 1.7.** The
+  fifty print statements that arrive as several detections and have to be put back together;
+  the corpus prints them as one. That is what step 23b's chain builder was for, and it gained
+  seven claims on the fifty and none here.
+- **Text seen side-on reaches the detector on 0.68 of the fifty and 0.18 of the corpus.** The
+  generator sets vertical text at the rate the fifty *carry* it (step 10b measured 14 of 50), but
+  a detector sees side-on text wherever a line is taller than wide, which happens on far more
+  labels than carry a vertical warning. Steps 21c, 21d and 24a are all about that pass.
+- **A claim lands just outside the radius on 0.38 of the fifty's claims and 0.24 of the corpus's.**
+  That is recogniser damage on small type, and it is what steps 19c, 20b and 25a's radius all
+  answer.
+
+**And two are the same on both sets, which is the more useful finding.** *Given* that a claim
+verifies, the share whose reading is not exact is 0.09 against 0.10, and the share taken from
+inside a longer reading is 0.11 against 0.10. The corpus models the *shape* of the hard cases
+correctly; what it does not model is how often they happen. That is why every rule since 19c
+could be reasoned about on the corpus and none of them could be *found* there.
+
+**What it would take to fix.** The generator was built at step 10b for an engine that cut glyphs,
+from parameters measured off the fifty with a tool that measured ink: contrast, stroke width,
+polarity, type size. None of those is what a detector responds to. A corpus that predicted this
+engine would have to be measured with this engine's own probes — detections per printed
+statement, how often a statement spans two boxes, how often a line is taller than wide — and
+`verify.Diagnose` and `verify.Stages` now produce all three. That is a rebuild of the corpus and
+its own step, and it is worth saying that the corpus has cost more than it has caught since the
+pivot: it has held precision, which is not nothing, and it has found no defect since 21b.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,352 verifications over 550 labels and not one assertion the
+both corpus halves and the fifty**: 2,459 verifications over 550 labels and not one assertion the
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
@@ -3464,9 +3650,11 @@ engine reviews.
 
 **A verification is about three and a half seconds' work**: median 3.4 s a label on the fifty
 single-threaded against 21.0 s for the retired engine. **The 95th percentile is 6.6 s and the
-requirement this build has carried since step 3 is 5 s, so it is not met.** Step 24a had it at
-4.7 s; step 25a's wider radius bought eight claims and put it back over. Latency on this machine
-varies by about a fifth between runs, which is why the figure here is the median of three.
+requirement this build has carried since step 3 is 5 s, so it is not met.** Step 26a priced it:
+dropping the second detection pass brings the p95 to 4.6 s and costs three claims, and the
+radius, which looked like the culprit, costs seven claims for nothing. Every latency figure from
+step 26a on is the median of three runs, because a single run of one configuration varies by
+about a fifth.
 
 ## Limits, stated
 

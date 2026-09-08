@@ -65,6 +65,7 @@ type Record struct {
 	Printed   ttb.Printed      `json:"printed"`
 	Augmented bool             `json:"augmented"`
 	Latency   time.Duration    `json:"latency"`
+	Stages    verify.Stages    `json:"stages"`
 	Reason    string           `json:"reason,omitempty"`
 	Claims    []verify.Verdict `json:"claims"`
 	Reference []verify.Verdict `json:"reference"`
@@ -195,7 +196,7 @@ func one(eng *verify.Engine, truthPath string) (Record, error) {
 	}
 	rec := Record{
 		Label: filepath.Base(base), Printed: t.Printed, Augmented: len(t.Aug) > 0,
-		Latency: time.Since(start), Reason: res.Reason, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
+		Latency: time.Since(start), Stages: res.Stages, Reason: res.Reason, Claims: res.Claims, Reference: res.Reference, Emphasis: res.Emphasis,
 	}
 	return rec, nil
 }

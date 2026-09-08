@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"unicode"
 	"unicode/utf8"
 )
@@ -218,7 +219,37 @@ func buildRuns(regions []Region, minConf float64) []run {
 		r := keep[order[i]]
 		walk(i, r.Box, r.Text, r.Confidence, 1)
 	}
+	return dedupe(out)
+}
+
+// dedupe drops runs whose normalized text another run already carries. A
+// dense label chains its detections into thousands of runs and most of
+// them read alike; comparing every claim to each is where step 26a found
+// the time going. Of two runs that compare identically, the one kept is a
+// single detection over a chain and the smaller box over the larger,
+// which is the preference the decision already applies.
+func dedupe(rs []run) []run {
+	best := make(map[string]int, len(rs))
+	for i := range rs {
+		j, seen := best[rs[i].norm]
+		if !seen || better(rs[i], rs[j]) {
+			best[rs[i].norm] = i
+		}
+	}
+	out := rs[:0:0]
+	for i := range rs {
+		if best[rs[i].norm] == i {
+			out = append(out, rs[i])
+		}
+	}
 	return out
+}
+
+func better(a, b run) bool {
+	if (a.parts == 1) != (b.parts == 1) {
+		return a.parts == 1
+	}
+	return a.box.Dx()*a.box.Dy() < b.box.Dx()*b.box.Dy()
 }
 
 func newRun(box image.Rectangle, text string, conf float64, parts int) run {
@@ -349,6 +380,28 @@ func readingOrder(rs []Region) []int {
 	return out
 }
 
+// numericCache holds the spellings of a numeric field, which depend on
+// the field's own vocabulary and forms and not on the label being read.
+// Building them is thousands of strings; step 25c added forms that made
+// that worse and step 26a measured it.
+var numericCache sync.Map // string -> []candidate
+
+func numericKey(n *Numeric) string {
+	var b strings.Builder
+	for _, f := range n.Formats {
+		b.WriteString(f.Template)
+		b.WriteByte(0)
+		b.WriteString(strconv.FormatFloat(f.Scale, 'g', -1, 64))
+		b.WriteByte(0)
+	}
+	b.WriteByte('|')
+	for _, v := range n.Valid {
+		b.WriteString(strconv.FormatFloat(v, 'g', -1, 64))
+		b.WriteByte(',')
+	}
+	return b.String()
+}
+
 // spellings is every accepted spelling of a claim, with the value each
 // stands for.
 func spellings(c Claim) []candidate {
@@ -374,6 +427,17 @@ func spellings(c Claim) []candidate {
 	// to be printed in. The winner names a value, so the margin separates
 	// 14.5 from 14.0 rather than separating spellings.
 	want, _ := strconv.ParseFloat(c.Expected, 64)
+	key := numericKey(c.Numeric)
+	if v, ok := numericCache.Load(key); ok {
+		// Only which value the application filed differs between labels.
+		cached := v.([]candidate)
+		out = make([]candidate, len(cached))
+		copy(out, cached)
+		for i := range out {
+			out[i].claimed = math.Abs(out[i].value-want) <= c.Numeric.Tolerance
+		}
+		return out
+	}
 	for _, v := range c.Numeric.Valid {
 		name := trimNum(v)
 		claimed := math.Abs(v-want) <= c.Numeric.Tolerance
@@ -387,6 +451,7 @@ func spellings(c Claim) []candidate {
 			}
 		}
 	}
+	numericCache.Store(key, append([]candidate{}, out...))
 	return out
 }
 

@@ -24,6 +24,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"time"
 
 	"treasury/internal/buildid"
 	"treasury/internal/ocr"
@@ -143,12 +144,29 @@ type Verdict struct {
 	Evidence   *Evidence `json:"evidence,omitempty"`
 }
 
+// Stages is where a verification spent its time. Step 26a needed it: the
+// build had measured whole verifications for twenty-six steps and never
+// the parts of one.
+type Stages struct {
+	Detect      time.Duration `json:"detect"`
+	Recognise   time.Duration `json:"recognise"`
+	TurnedPass  time.Duration `json:"turned_pass,omitempty"`
+	SecondPass  time.Duration `json:"second_pass,omitempty"`
+	SecondBoxes int           `json:"second_boxes,omitempty"`
+	Runs        time.Duration `json:"runs"`
+	Decide      time.Duration `json:"decide"`
+	Boxes       int           `json:"boxes"`
+	TurnedBoxes int           `json:"turned_boxes,omitempty"`
+	RunCount    int           `json:"run_count"`
+}
+
 // Result is everything one verification produced.
 type Result struct {
 	Engine    buildid.Identity `json:"engine"`
 	Reason    string           `json:"reason,omitempty"` // why nothing could be decided
 	Regions   []Region         `json:"regions,omitempty"`
 	Claims    []Verdict        `json:"claims"`
+	Stages    Stages           `json:"stages"`
 	Reference []Verdict        `json:"reference,omitempty"`
 	Emphasis  []Verdict        `json:"emphasis,omitempty"`
 }
@@ -298,11 +316,12 @@ func (e *Engine) Close() {
 
 // Verify reads the image and judges what it read against the claims.
 func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, claims []Claim) (Result, error) {
-	read, err := e.reader.Read(img)
+	read, t, err := e.reader.ReadTimed(img)
 	if err != nil {
 		return Result{}, err
 	}
 	var res Result
+	res.Stages.Detect, res.Stages.Recognise, res.Stages.Boxes = t.Detect, t.Recognise, t.Boxes
 	add := func(rs []ocr.Region) {
 		for _, r := range rs {
 			res.Regions = append(res.Regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence, Rotated: r.Rotated})
@@ -310,11 +329,16 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	add(read)
 	decide := func() []Verdict {
+		start := time.Now()
 		rs := buildRuns(res.Regions, e.opt.MinConfidence)
+		res.Stages.Runs += time.Since(start)
+		res.Stages.RunCount = len(rs)
+		start = time.Now()
 		out := make([]Verdict, 0, len(claims))
 		for _, c := range claims {
 			out = append(out, e.decide(c, rs))
 		}
+		res.Stages.Decide += time.Since(start)
 		return out
 	}
 	res.Claims = decide()
@@ -323,7 +347,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// label twice cost a second a label for the labels that needed it and
 	// for the labels that did not.
 	if e.opt.Turned > 0 && worthTurning(read, res.Claims, e.opt.Turned) {
+		start := time.Now()
 		more, err := e.reader.ReadTurned(img, read)
+		res.Stages.TurnedPass = time.Since(start)
+		res.Stages.TurnedBoxes = len(more)
 		if err != nil {
 			return Result{}, err
 		}
@@ -340,7 +367,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// it inside the radius on its own merits.
 	if e.second != nil {
 		if boxes := nearMisses(res.Claims); len(boxes) > 0 {
+			start := time.Now()
 			again, err := e.second.ReadBoxes(img, boxes)
+			res.Stages.SecondPass = time.Since(start)
+			res.Stages.SecondBoxes = len(boxes)
 			if err != nil {
 				return Result{}, err
 			}
