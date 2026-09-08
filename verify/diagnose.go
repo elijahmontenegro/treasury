@@ -32,8 +32,9 @@ type Diagnosis struct {
 	// single detection, allowing text either side of it to be free. A
 	// small Box with a large Run means the detection holds the claim and
 	// more, so the whole-run comparison could not match it.
-	Box     float64 `json:"box"`
-	BoxText string  `json:"box_text,omitempty"`
+	Box     float64         `json:"box"`
+	BoxText string          `json:"box_text,omitempty"`
+	BoxRect image.Rectangle `json:"box_rect,omitempty"`
 	// BoxLetter says a letter sits immediately before or after the span
 	// the claim matched inside that detection. A claim bounded by letters
 	// is a piece of a longer piece of the same kind of text - "ALE"
@@ -72,10 +73,17 @@ type Diagnosis struct {
 
 // Diagnose reads the image once and reports, for every claim, both the
 // verdict and the probes above.
-func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) ([]Region, []Diagnosis, error) {
+func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference, claims []Claim) ([]Region, []Diagnosis, Frame, error) {
 	read, err := e.reader.Read(img)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, Frame{}, err
+	}
+	if e.opt.Turned > 0 {
+		more, err := e.reader.ReadTurned(img, read)
+		if err != nil {
+			return nil, nil, Frame{}, err
+		}
+		read = append(read, more...)
 	}
 	regions := make([]Region, 0, len(read))
 	for _, r := range read {
@@ -122,7 +130,7 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) 
 			for j := range norms {
 				x, from, to := infixSpan(cd.norm, norms[j])
 				if x < d.Box {
-					d.Box, d.BoxText = x, texts[j]
+					d.Box, d.BoxText, d.BoxRect = x, texts[j], kept[order[j]].Box
 					d.BoxLetter = (from > 0 && isLetter(rune(norms[j][from-1]))) ||
 						(to < len(norms[j]) && isLetter(rune(norms[j][to])))
 				}
@@ -172,7 +180,46 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) 
 		out = append(out, d)
 	}
 	sort.SliceStable(out, func(i, j int) bool { return out[i].Claim < out[j].Claim })
-	return regions, out, nil
+	return regions, out, frameOf(kept, refs), nil
+}
+
+// Frame is what a claim's position is measured against: the page, the
+// tallest text on it, and where the reference block sits.
+type Frame struct {
+	Page    image.Rectangle `json:"page"`
+	Tallest int             `json:"tallest"`
+	Ref     image.Rectangle `json:"ref"`
+	RefN    int             `json:"ref_n"`
+}
+
+// frameOf locates the reference block in the reading. Nothing in this
+// engine looks for it any more, so it is found the way anything else is:
+// a detection whose text is a piece of the known reference is part of it.
+func frameOf(kept []Region, refs []Reference) Frame {
+	f := Frame{Tallest: 0}
+	for _, r := range kept {
+		f.Page = f.Page.Union(r.Box)
+		if r.Box.Dy() > f.Tallest {
+			f.Tallest = r.Box.Dy()
+		}
+	}
+	for _, ref := range refs {
+		want := normalize(ref.Text)
+		if want == "" {
+			continue
+		}
+		for _, r := range kept {
+			n := normalize(r.Text)
+			if len(n) < 8 {
+				continue
+			}
+			if infix(n, want) <= 0.25 {
+				f.Ref = f.Ref.Union(r.Box)
+				f.RefN++
+			}
+		}
+	}
+	return f
 }
 
 // infix is the edit distance from claim to the nearest substring of read,

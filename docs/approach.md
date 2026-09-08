@@ -3205,6 +3205,69 @@ the fifty. And it keeps the property.
 The condition as asked is one setting away and its numbers are in the table; if the corpus
 claims are worth more than the property and the second and a bit, `read_turned=2` is it.
 
+### Step 24b: whether position or size separates the nine (2026-09-08)
+
+Nine names on the fifty are refused because an ordinary word abuts them, and step 23c said the
+text alone cannot separate them from `Valley Mill Company`. Position and size had not been asked
+this question on this engine. Three features, the ones step 17a used on the retired one: the
+region's height against the tallest text on the label, the height of its centre down the panel,
+and its distance from the warning block in its own heights. The warning block is found from the
+reading itself — a detection whose text is a piece of the statute is part of it — since nothing
+in this engine looks for it any more.
+
+**The nine, refused because a word abuts the name**
+
+| label | claim | size against the tallest text | height down the panel | distance from the warning, in its own heights |
+|---|---|---|---|---|
+| 0024 | brand | 0.14 | 0.05 | 23.2 |
+| 0025 | brand | 0.15 | 0.05 | 23.2 |
+| 0034 | brand | 0.83 | 0.50 | 3.0 |
+| 0037 | producer_2 | 0.10 | 0.83 | 3.1 |
+| 0042 | brand | 0.16 | 0.73 | 10.5 |
+| 0043 | brand | 0.08 | 0.90 | 14.7 |
+| 0044 | brand | 0.80 | 0.43 | 0.0 |
+| 0044 | origin | 0.87 | 0.50 | 1.1 |
+| 0048 | brand | 0.22 | 0.17 | 63.0 |
+
+**The three the refusal exists for**
+
+| label | claim | size against the tallest text | height down the panel | distance from the warning, in its own heights |
+|---|---|---|---|---|
+| 0038 | brand | 0.22 | 0.90 | 2.5 |
+| 0099 | brand | 0.56 | 0.97 | no warning read |
+| 0309 | brand | 0.31 | 0.40 | 0.0 |
+
+**Every true verification of a name on the fifty: 53**
+
+- size against the tallest text: the nine 0.08 to 0.87, the three 0.22 to 0.56, true verifications 0.03 to 1.00
+- height down the panel: the nine 0.05 to 0.90, the three 0.40 to 0.97, true verifications 0.01 to 0.98
+- distance from the warning: the nine 0.0 to 63.0, the three 0.0 to 2.5, true verifications 0.3 to 62.7
+
+**The tightest box in size and height that holds all three**: size 0.22 to 0.56, height 0.40 to 0.97.
+
+- of the nine, 0 fall inside it
+- of the 53 true verifications, **10 fall inside it**: 0001 origin, 0001 producer_1, 0003 producer_1, 0029 producer_1, 0030 producer_1, 0031 producer_1, 0032 producer_1, 0036 producer_1, 0038 producer_1, 0043 producer_1
+
+So the box that refuses all three also refuses 10 claims the engine gets right.
+
+**Nothing separates them, and the gate says to say so and stop.**
+
+On each feature alone the three sit *inside* the nine's range rather than beyond it: size 0.22
+to 0.56 against the nine's 0.08 to 0.87, height down the panel 0.40 to 0.97 against 0.05 to
+0.90, distance from the warning 0.0 to 2.5 against 0.0 to 63.0. There is no threshold on one
+feature that refuses the three and admits the nine.
+
+**A pair does separate them, and it costs more than it saves.** The tightest box in size and
+height holding all three — size 0.22 to 0.56, height 0.40 to 0.97 — contains none of the nine.
+It also contains **ten of the fifty-three names the engine verifies correctly**, among them
+seven producer lines it took only in the last three steps. A rule built on it would give up ten
+true verifications to keep refusing three claims it already refuses. That is not a separation;
+it is a coincidence of twelve points in a plane, and 53 more points say so.
+
+The finding is the same one step 17a reached about the retired engine, on a different engine
+with a different reader and a different failure: **where a claim sits on a label does not say
+whether the text found there is that claim.** The nine stay refused.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
@@ -3212,8 +3275,8 @@ both corpus halves and the fifty**: 2,352 verifications over 550 labels and not 
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
-**The fifty verify 144 of the 191 claims they carry**, against 63 when step 19c first measured
-this engine. By claim: origin 0.93, net contents 0.92, alcohol content 0.90, the permittee 0.68,
+**The fifty verify 146 of the 191 claims they carry**, against 63 when step 19c first measured
+this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the permittee 0.68,
 brand 0.51, class 0.17. On the corpus, where every statement gets a line of its own: net contents
 0.89, class 0.84, brand 0.79, alcohol content 0.80, origin 0.62, the permittee 0.22.
 
@@ -3229,8 +3292,9 @@ the 10 values the corpus prints wrongly on purpose. The other five differ from t
 about one character in a printed form, and one character is what a recogniser gets wrong, so the
 engine reviews.
 
-**A verification is about three seconds' work**: median 3.1 s a label on the fifty
-single-threaded, 95th percentile 6.3 s, against 21.0 s for the retired engine.
+**A verification is about two and a half seconds' work**: median 2.5 s a label on the fifty
+single-threaded, 95th percentile 4.7 s, against 21.0 s for the retired engine. The second
+detection pass is spent only on pages whose upright reading shows text seen side-on.
 
 ## Limits, stated
 
@@ -3251,6 +3315,10 @@ single-threaded, 95th percentile 6.3 s, against 21.0 s for the retired engine.
   whose phrase its generator files as part of the permittee's name; statements printed on one
   line; and a printed line arriving as two detections. It has moved for none of the last five
   steps while the fifty moved from 63 to 144.
-- **The engine verifies text, not layout.** A claim matched anywhere on the label is verified.
+- **The engine verifies text, not layout, and step 24b measured why it has to.** Of the three
+  features that could say where a claim belongs - size against the tallest text, height down the
+  panel, distance from the warning - none separates the nine names refused for want of a
+  delimiter from the three the refusal exists for, and the tightest pair that does costs ten true
+  verifications. Step 17a reached the same finding about the retired engine.
 - **The models are pretrained and general.** Nothing here was trained on labels. The 113 MB
   PP-OCRv4 server detector was measured at step 21c and did not earn twenty-four times the size.

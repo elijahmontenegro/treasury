@@ -53,14 +53,15 @@ func one(eng *verify.Engine, enc *json.Encoder, path string) error {
 	if err := json.Unmarshal(b, &exp); err != nil {
 		return err
 	}
-	_, claims := ttb.Inputs(exp)
-	regions, diag, err := eng.Diagnose(context.Background(), img, claims)
+	refs, claims := ttb.Inputs(exp)
+	regions, diag, frame, err := eng.Diagnose(context.Background(), img, refs, claims)
 	if err != nil {
 		return err
 	}
 	return enc.Encode(struct {
 		Label   string             `json:"label"`
 		Regions int                `json:"regions"`
+		Frame   verify.Frame       `json:"frame"`
 		Claims  []verify.Diagnosis `json:"claims"`
-	}{filepath.Base(base), len(regions), diag})
+	}{filepath.Base(base), len(regions), frame, diag})
 }
