@@ -3,6 +3,7 @@ package buildid_test
 import (
 	"strings"
 	"testing"
+	_ "treasury/internal/ocr"
 
 	"treasury/internal/buildid"
 )
@@ -12,9 +13,7 @@ import (
 // weights are named.
 func TestIdentityCoversTheWeights(t *testing.T) {
 	id := buildid.Get()
-	// Step 19a retired the two models this used to check for; step 19b
-	// registers the detector and the recogniser in their place.
-	for _, name := range []string{} {
+	for _, name := range []string{"ocr-detector.onnx", "ocr-recogniser.onnx"} {
 		h, ok := id.Models[name]
 		if !ok {
 			t.Errorf("%s is not in the identity", name)

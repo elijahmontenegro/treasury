@@ -20,10 +20,10 @@ package verify
 
 import (
 	"context"
-	"fmt"
 	"image"
 
 	"treasury/internal/buildid"
+	"treasury/internal/ocr"
 )
 
 // Span is a half-open rune range of a reference expected in a heavier weight.
@@ -182,32 +182,58 @@ func (o Options) withDefaults() Options {
 
 // Engine verifies claims against images.
 type Engine struct {
-	opt Options
+	opt    Options
+	reader *ocr.Reader
 }
 
-// New builds an engine.
+// New builds an engine and loads the reader's models.
 func New(o Options) (*Engine, error) {
 	o = applyOptions(o)
 	o = o.withDefaults()
-	return &Engine{opt: o}, nil
+	r, err := ocr.New(ocr.Default())
+	if err != nil {
+		return nil, err
+	}
+	return &Engine{opt: o, reader: r}, nil
 }
 
-// ErrNoReader says what is missing between step 19a, which retired the
-// glyph-cutting engine, and step 19b, which supplies its replacement.
-var ErrNoReader = fmt.Errorf("no reader: the glyph-cutting engine was retired in step 19a and the scene-text reader arrives in 19b")
+// Close frees the reader's sessions.
+func (e *Engine) Close() {
+	if e.reader != nil {
+		e.reader.Close()
+	}
+}
 
 // Verify reads the image and judges what it read against the claims.
 func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, claims []Claim) (Result, error) {
-	res := Result{Reason: "no_reader"}
+	read, err := e.reader.Read(img)
+	if err != nil {
+		return Result{}, err
+	}
+	var res Result
+	for _, r := range read {
+		res.Regions = append(res.Regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence, Rotated: r.Rotated})
+	}
+	if len(res.Regions) == 0 {
+		res.Reason = "no_text"
+	}
 	for _, c := range claims {
-		status := NotFound
-		if !c.Required {
-			status = Skipped
-		}
-		res.Claims = append(res.Claims, Verdict{Claim: c.Name, Status: status, Reason: "no_reader", Expected: c.Expected})
+		res.Claims = append(res.Claims, e.decide(c, res.Regions))
 	}
 	stamp(&res)
 	return res, nil
+}
+
+// decide judges one claim against what was read. Step 19c gives it the
+// distance, the margin and the numeric reading; until then it reports the
+// claim as not found so that the engine never asserts what it has not
+// judged.
+func (e *Engine) decide(c Claim, regions []Region) Verdict {
+	status := NotFound
+	if !c.Required {
+		status = Skipped
+	}
+	return Verdict{Claim: c.Name, Status: status, Reason: "no_decision", Expected: c.Expected}
 }
 
 // stamp writes the build identity onto the result and its fingerprint onto

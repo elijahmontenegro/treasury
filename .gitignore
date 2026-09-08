@@ -13,3 +13,7 @@ python/encoder/data*/
 /decode
 /decode2
 real2b/
+
+# The ONNX Runtime shared library is a platform binary, fetched rather than
+# committed: see docs/approach.md, step 19b.
+/third_party/onnxruntime/

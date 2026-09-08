@@ -2180,6 +2180,61 @@ Everything above this line describes an engine that read a label by cutting it i
 
 **Between the two steps the engine cannot read.** `Verify` returns every claim not found with the reason `no_reader` until step 19b lands the detector and the recogniser. That is stated here rather than papered over, and the build is green with the old engine absent from the tree.
 
+### Step 19b: detection and recognition (2026-09-07)
+
+The reader is two pretrained models carried in the binary and run through ONNX Runtime in the
+same process, on the CPU, with no second process and no network at run time. Detection is
+PP-OCRv4's DBNet (4.7 MB): the image is scaled so its long side is at most 960, the network
+returns a probability map, the map is thresholded at 0.3, each connected region of it is taken
+as a text instance and its box expanded by 1.6 to undo the shrink the network was trained to
+predict. Recognition is PP-OCRv4's CRNN (10.9 MB): each box is cropped from the **original**
+image, not from any binarisation, scaled to 48 pixels tall, and decoded greedily over 6,625
+classes — a CTC blank, the 6,623 characters of the distribution's dictionary, and a space. A
+box taller than it is wide is read both ways and the surer reading kept, which is how a
+vertical line is read without turning the page: 143 of the 1,982 regions, 0.07 of them, came out
+of a crop turned upright.
+
+The two model files are hashed into the build identity by the same mechanism the retired
+models used, so a verdict still names the weights that produced it.
+
+**What it finds on the fifty.** 1,982 regions over the fifty labels, median 34 a label, range 3
+to 76. Median latency **1.0 s**, 95th percentile **1.9 s** — against 21.0 s median for the
+engine 14d measured, which is a twentieth of the time for a stage that does strictly more.
+Recogniser confidence runs at a median of 0.94 with a tenth of regions below 0.42.
+
+**What fraction of the printed claim text it recovers.** Scored against 12a's transcription of
+what each label prints: a claim counts as recovered when its expected string, or one of its
+accepted spellings, appears in the text of the regions once accents, punctuation and case are
+set aside.
+
+| claim | carried by the label | its text among the regions | share |
+|---|---|---|---|
+| brand | 49 | 27 | 0.55 |
+| class | 6 | 5 | 0.83 |
+| producer_1 | 19 | 4 | 0.21 |
+| producer_2 | 3 | 1 | 0.33 |
+| origin | 14 | 13 | 0.93 |
+| abv | 48 | 45 | 0.94 |
+| net | 49 | 42 | 0.86 |
+| **all seven** | 188 | 137 | **0.73** |
+
+50 labels, 1982 regions in all, median 34 a label; latency median 1.0 s, 95th percentile 1.9 s
+
+**Two thirds recovered, and the shortfall has a shape.** Statements come back almost whole —
+origin 0.93, alcohol 0.94, net contents 0.86 — and names do not: brand 0.55, the producer's
+first line **0.21**. The cause is visible in the regions themselves and it is not a reading
+failure. On 0047 the reader returns `IMPORTED BY: CRAPEVINE`, `DISTRIBUTORS,`, `SAN
+FRANCISCO, CA` as three separate detections of one printed line, with one letter of
+"GRAPEVINE" wrong. A producer's name is long, is set across several lines, and is exactly the
+kind of text a detector splits; a fill statement is four characters and is not. So 19c cannot
+compare a claim to a region: it has to build candidates from **runs of adjacent regions**, and
+it has to use a distance that survives a wrong character, which is what the decision layer was
+always for.
+
+**What this measurement is not.** It says what the reader puts in front of the decision layer,
+not what the engine will verify. Recovery is a ceiling on recall and says nothing about
+precision, which 19c gates.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.
