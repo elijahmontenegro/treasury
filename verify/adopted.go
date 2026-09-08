@@ -40,10 +40,11 @@ var Adopted = []Constant{
 	{"read_max_side", 1600, "20c", "Options.MaxSide"},
 	{"read_box_thresh", 0.3, "20c", "Options.BoxThresh"},
 	{"read_unclip", 1.6, "20c", "Options.Unclip"},
+	{"read_turned", 1, "21d", "Options.Turned"},
 }
 
 // TuneNames is every constant a sweep may set.
-var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence", "read_max_side", "read_box_thresh", "read_unclip"}
+var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence", "read_max_side", "read_box_thresh", "read_unclip", "read_turned"}
 
 // applyOptions writes the overrides a sweep asked for.
 func applyOptions(o Options) Options {
@@ -63,6 +64,7 @@ func applyOptions(o Options) Options {
 	set("read_max_side", func(v float64) { o.MaxSide = v })
 	set("read_box_thresh", func(v float64) { o.BoxThresh = v })
 	set("read_unclip", func(v float64) { o.Unclip = v })
+	set("read_turned", func(v float64) { o.Turned = v })
 	return o
 }
 
@@ -89,6 +91,8 @@ func liveIn(c Constant, o Options) (float64, error) {
 		return o.BoxThresh, nil
 	case "Options.Unclip":
 		return o.Unclip, nil
+	case "Options.Turned":
+		return o.Turned, nil
 	}
 	return 0, fmt.Errorf("no live value known for %q", c.Where)
 }

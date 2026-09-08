@@ -176,6 +176,10 @@ type Options struct {
 	// text, and Unclip is how far a proposed region is grown.
 	BoxThresh float64
 	Unclip    float64
+	// Turned reads the page a second time turned a quarter, so that text
+	// set vertically reaches the detector the way it was trained to see
+	// it. Nonzero is on.
+	Turned float64
 	// Tune overrides an adopted constant by name, for a sweep.
 	Tune map[string]float64
 }
@@ -198,6 +202,9 @@ func (o Options) withDefaults() Options {
 	}
 	if o.Unclip == 0 {
 		o.Unclip = 1.6
+	}
+	if o.Turned == 0 {
+		o.Turned = 1 // 21d: recovers seventeen of the twenty-six 21c measured
 	}
 	if o.MaxSide == 0 {
 		// 20c: chosen on half A, where 960 verifies 1048 claims, 1280
@@ -222,6 +229,7 @@ func New(o Options) (*Engine, error) {
 	rp.MaxSide = int(o.MaxSide)
 	rp.BoxThresh = o.BoxThresh
 	rp.Unclip = o.Unclip
+	rp.Turned = o.Turned > 0
 	r, err := ocr.New(rp)
 	if err != nil {
 		return nil, err

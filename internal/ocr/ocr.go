@@ -59,6 +59,11 @@ type Params struct {
 	MinSide     int     // regions thinner than this, in the detector's own scale, are dropped
 	RecHeight   int     // the height every crop is resized to before recognition
 	MaxRecWidth int     // the widest crop the recogniser is given
+	// Turned runs detection a second time on the page turned a quarter,
+	// which is how text set vertically is offered to a detector that
+	// proposes horizontal lines. Step 21c measured it recovering
+	// seventeen of the twenty-six claims the reader had not read at all.
+	Turned bool
 
 	// Det and Rec replace the embedded models, with the names of the
 	// tensors they read and write. They exist so a step can measure a
@@ -71,7 +76,7 @@ type Params struct {
 // Default is what the models were trained to see.
 func Default() Params {
 	return Params{MaxSide: 960, BoxThresh: 0.3, ScoreThresh: 0.5, Unclip: 1.6,
-		MinSide: 3, RecHeight: 48, MaxRecWidth: 640}
+		MinSide: 3, RecHeight: 48, MaxRecWidth: 640, Turned: true}
 }
 
 // Region is one piece of text: where it is in the image as given, what it
@@ -185,6 +190,25 @@ func (r *Reader) Read(img image.Image) ([]Region, error) {
 	boxes, err := r.detect(img)
 	if err != nil {
 		return nil, err
+	}
+	if r.p.Turned {
+		// A detector trained on horizontal lines does not propose a word
+		// set bottom to top, so the page is offered to it turned as well
+		// and the boxes are brought back. A turned box that already
+		// overlaps an upright one is the same line seen twice and is
+		// dropped, so nothing is read or joined twice.
+		turned, err := r.detect(turn90(img))
+		if err != nil {
+			return nil, err
+		}
+		h := img.Bounds().Dy()
+		for _, t := range turned {
+			b := image.Rect(t.Min.Y, h-t.Max.X, t.Max.Y, h-t.Min.X).Add(img.Bounds().Min)
+			if covered(b, boxes) {
+				continue
+			}
+			boxes = append(boxes, b)
+		}
 	}
 	out := make([]Region, 0, len(boxes))
 	for _, b := range boxes {
@@ -319,31 +343,42 @@ func (r *Reader) boxes(prob []float32, pw, ph int, sx, sy float64, w, h int) []i
 // recognise reads one region. A region taller than it is wide is text set
 // on its side, so it is read both ways and the surer reading is kept.
 func (r *Reader) recognise(img image.Image, box image.Rectangle) (string, float64, bool, error) {
-	text, conf, err := r.readCrop(img, box, false)
+	text, conf, err := r.readCrop(img, box, 0)
 	if err != nil {
 		return "", 0, false, err
 	}
 	if box.Dy() <= box.Dx()*3/2 {
 		return text, conf, false, nil
 	}
-	rot, rconf, err := r.readCrop(img, box, true)
-	if err != nil {
-		return "", 0, false, err
+	// A tall box holds text running one of two ways, and which one is not
+	// knowable from the box. Both are read and the surer kept. Reading
+	// only one of them was a defect step 21d found: the detector was
+	// proposing the vertical brands and the recogniser was turning them
+	// the wrong way, so they came back as nonsense.
+	turned := false
+	for _, dir := range []int{1, -1} {
+		rot, rconf, err := r.readCrop(img, box, dir)
+		if err != nil {
+			return "", 0, false, err
+		}
+		if rconf > conf {
+			text, conf, turned = rot, rconf, true
+		}
 	}
-	if rconf > conf {
-		return rot, rconf, true, nil
-	}
-	return text, conf, false, nil
+	return text, conf, turned, nil
 }
 
 // readCrop resizes a crop to the recogniser's height and decodes what it
 // returns.
-func (r *Reader) readCrop(img image.Image, box image.Rectangle, turn bool) (string, float64, error) {
+func (r *Reader) readCrop(img image.Image, box image.Rectangle, turn int) (string, float64, error) {
 	src := image.NewRGBA(image.Rect(0, 0, box.Dx(), box.Dy()))
 	draw.Copy(src, image.Point{}, img, box, draw.Src, nil)
 	crop := image.Image(src)
-	if turn {
+	switch {
+	case turn > 0:
 		crop = rotate90(src)
+	case turn < 0:
+		crop = rotate270(src)
 	}
 	cb := crop.Bounds()
 	if cb.Dx() == 0 || cb.Dy() == 0 {
@@ -427,10 +462,52 @@ func rotate90(src *image.RGBA) *image.RGBA {
 	return out
 }
 
+// rotate270 turns a crop the other way, for text that runs top to bottom
+// where rotate90 suits text that runs bottom to top.
+func rotate270(src *image.RGBA) *image.RGBA {
+	b := src.Bounds()
+	w, h := b.Dx(), b.Dy()
+	out := image.NewRGBA(image.Rect(0, 0, h, w))
+	for y := 0; y < h; y++ {
+		for x := 0; x < w; x++ {
+			out.Set(h-1-y, x, src.At(x, y))
+		}
+	}
+	return out
+}
+
 func roundTo32(v float64) int {
 	n := int(math.Round(v/32)) * 32
 	if n < 32 {
 		n = 32
 	}
 	return n
+}
+
+// turn90 rotates the page a quarter turn clockwise.
+func turn90(src image.Image) image.Image {
+	b := src.Bounds()
+	dst := image.NewRGBA(image.Rect(0, 0, b.Dy(), b.Dx()))
+	for y := b.Min.Y; y < b.Max.Y; y++ {
+		for x := b.Min.X; x < b.Max.X; x++ {
+			dst.Set(b.Max.Y-1-y, x-b.Min.X, src.At(x, y))
+		}
+	}
+	return dst
+}
+
+// covered says whether more than half of b already lies inside one of the
+// boxes given.
+func covered(b image.Rectangle, boxes []image.Rectangle) bool {
+	area := b.Dx() * b.Dy()
+	if area <= 0 {
+		return true
+	}
+	for _, o := range boxes {
+		in := b.Intersect(o)
+		if in.Dx()*in.Dy()*2 > area {
+			return true
+		}
+	}
+	return false
 }

@@ -2901,51 +2901,117 @@ printed at the smallest size on those labels; the best any pass returns is `Impo
 for "OZ TRADING GROUP INC", which is a recogniser limit and the only place the model itself is
 the wall.
 
+### Step 21d: reading the page both ways up (2026-09-08)
+
+Step 21c's gate was a measurement and amendment 21 does not ask for the quarter-turn pass to be
+adopted. It is adopted here, and the reason is in the plan before the change: leaving a measured
+recovery of seventeen claims unshipped would be the same fault amendment 21 exists to correct.
+The reader now detects a second time on the page turned a quarter, maps the boxes back, and
+keeps a turned box only where it does not already overlap an upright one by more than half its
+own area.
+
+**That alone gained nothing, and finding out why turned up a defect in the reader that had been
+there since 19b.** The tall boxes were proposed and came back as nonsense. A box taller than it
+is wide holds text running one of two ways, and `recognise` only ever tried one: it read the
+crop upright and then turned a quarter clockwise, keeping the surer of the two, so a word set
+top to bottom was always read upside down. Both directions are now tried. On label 0013 the
+brand comes back as `Super`, `Lyte` and `Super 7 Lyte` where it had come back as CJK nonsense.
+That is a fix to the reader rather than to this step's pass, it touches every vertical line on
+every label, and the measurement below is of the two together.
+
+| set | claim | recall before | after | precision before | after |
+|---|---|---|---|---|---|
+| the fifty | brand | 0.43 | 0.43 | 1.00 | 1.00 |
+| the fifty | class | 0.17 | 0.17 | 1.00 | 1.00 |
+| the fifty | producer, first line | 0.47 | 0.58 | 1.00 | 1.00 |
+| the fifty | producer, second line | 0.00 | 0.33 | -- | 1.00 |
+| the fifty | origin | 0.93 | 0.93 | 1.00 | 1.00 |
+| the fifty | alcohol content | 0.80 | 0.86 | 1.00 | 1.00 |
+| the fifty | net contents | 0.90 | 0.92 | 1.00 | 1.00 |
+| the fifty | *median latency* | 1.8 s | 3.1 s | | |
+| corpus half A | brand | 0.79 | 0.79 | 1.00 | 1.00 |
+| corpus half A | class | 0.87 | 0.87 | 1.00 | 1.00 |
+| corpus half A | producer, first line | 0.30 | 0.30 | 1.00 | 1.00 |
+| corpus half A | producer, second line | 0.36 | 0.36 | 1.00 | 1.00 |
+| corpus half A | origin | 0.65 | 0.65 | 1.00 | 1.00 |
+| corpus half A | alcohol content | 0.81 | 0.82 | 1.00 | 1.00 |
+| corpus half A | net contents | 0.86 | 0.87 | 1.00 | 1.00 |
+| corpus half A | *median latency* | 1.5 s | 2.6 s | | |
+| corpus half B | brand | 0.78 | 0.79 | 1.00 | 1.00 |
+| corpus half B | class | 0.84 | 0.84 | 1.00 | 1.00 |
+| corpus half B | producer, first line | 0.22 | 0.22 | 1.00 | 1.00 |
+| corpus half B | producer, second line | 0.35 | 0.35 | 1.00 | 1.00 |
+| corpus half B | origin | 0.62 | 0.62 | 1.00 | 1.00 |
+| corpus half B | alcohol content | 0.80 | 0.80 | 1.00 | 1.00 |
+| corpus half B | net contents | 0.89 | 0.89 | 1.00 | 1.00 |
+| corpus half B | *median latency* | 1.4 s | 2.4 s | | |
+
+**Precision is 1.00 on every claim of all three sets, no false assertion anywhere, and 0099 and
+0309 are still refused by name.** The fifty go from **129 of 191 to 136**: the permittee 0.47 to
+0.58, its address 0.00 to 0.33, alcohol content 0.80 to 0.86, net contents 0.90 to 0.92. The
+corpus gains a little on both halves. **The cost is latency, which roughly doubles** — 1.8 s to
+3.1 s a label on the fifty — because detection now runs twice and every tall box is recognised
+three ways.
+
+**A correction to 21c's own count.** 21c reported seventeen of the twenty-six as becoming
+readable under the turned pass. Readable is not the same as usable, and only **seven** of the
+twenty-six now verify. Two reasons, both instructive. Some of the seventeen were the claim's
+text found inside another token — 0013's brand is in `DRINKSUPERLYTE SUPERLYTE.COM`, a web
+address, which 21b's boundary rule refuses and should. And on 0013 the logotype's two words come
+back as two detections, one tall and one wide, which the run builder's adjacency test will not
+join, so `Super` and `Lyte` are both read and never compared to `SUPER LYTE` together. The probe
+21c used applied no radius and no rule, which was right for the question it asked and wrong as a
+prediction of recall; the honest figure for what the change buys is the seven.
+
+Also corrected: 21c named 0003's producer name and address as the place "the recogniser itself
+is the wall". Both now verify.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,315 verifications over 550 labels and not one assertion
+both corpus halves and the fifty**: 2,343 verifications over 550 labels and not one assertion
 the label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and
-on the fifty it correctly reports the absence of **all 123** of the claims the labels do not
-carry.
+on the fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
-**The fifty verify 120 of the 191 claims they carry.** By claim: net contents 0.90, alcohol
-content 0.80, origin 0.64, the permittee 0.37, brand 0.37, class 0.17. On the corpus, where
-every statement gets a line of its own and the type is never as small: net contents 0.89,
-class 0.84, alcohol content 0.80, brand 0.78, origin 0.62, the permittee 0.22.
+**The fifty verify 136 of the 191 claims they carry.** By claim: origin 0.93, net contents 0.92,
+alcohol content 0.86, the permittee 0.58, brand 0.43, class 0.17. On the corpus, where every
+statement gets a line of its own and nothing is printed inside a longer line: net contents 0.89,
+class 0.84, brand 0.79, alcohol content 0.80, origin 0.62, the permittee 0.22.
 
-**Where the remaining loss is** (step 20c, on the fifty): 26 of the 71 unverified carried
-claims were never read — brand logotypes that are not lines of text, and the smallest type on a
-back label; 21 are claims the rule against matching inside a line is right to refuse; 9 are
-read too badly to match; 7 are printed in a form the enumeration lacks; the rest are singles.
-The decision layer is not what is holding recall down.
+**Where the remaining loss is.** Brand and class, and the two are different problems. A class
+designation filed as "ALE" against a label printing "INDIA PALE ALE" cannot be matched without
+undoing a refusal made on merit at step 12b. A brand is more often a logotype than a line of
+text — one word vertical, one horizontal, a device between them — and the reader returns the
+words while the run builder cannot join two detections of such different shapes.
 
 **A wrong value is named only when the reading is clearly not the filed one.** Half B names 5 of
 the 10 values the corpus prints wrongly on purpose. The other five differ from the filed value
 by about one character in a printed form, and one character is what a recogniser gets wrong, so
 the engine reviews.
 
-**A verification is about two seconds' work**: median 1.8 s a label on the fifty
-single-threaded, against 21.0 s for the retired engine.
+**A verification is about three seconds' work**: median 3.1 s a label on the fifty
+single-threaded, against 21.0 s for the retired engine. Detection runs twice, on the page as
+given and on the page turned a quarter, and every tall box is recognised three ways.
 
 ## Limits, stated
 
-- **The reader is the ceiling, not the decision.** A brand set as a logotype - one word
-  vertical, one horizontal, a device between them - is not a line of text and no detector and
-  recogniser pair returns it. The detector's cap has been raised to the point where more hurts
-  (2048 is worse than 1600 on half A) and its probability threshold and unclip ratio are
-  insensitive. What is left is a different recogniser, which is a change of model.
-- **A claim printed inside a longer line is not found**, and that is deliberate: it is how the
-  filed brand's words inside a producer's name became a false assertion at step 16a. It costs
-  21 claims on the fifty, listed in step 20c.
-- **A number, unlike a name, is taken from inside a longer line**, because its unit delimits it
-  and the figure must be a whole number of the reading.
+- **A brand set as a logotype is read and not verified.** The words come back — `Super`, `Lyte`
+  — but as two detections of different shapes that the run builder will not join, so the claim
+  is never compared to them together. This is the largest single thing left.
+- **A claim printed inside more of the same kind of text is not found**, and that is deliberate:
+  a class designation inside a longer designation, a brand inside a longer company name, a
+  brand inside a web address. Step 21a lists the seven on the fifty; undoing the refusal is how
+  step 16a made two false assertions.
+- **A name is taken from inside a longer line only where punctuation, a digit, or the edge of
+  the detection delimits it**; a number is taken wherever its figure and unit are, since the
+  unit delimits it.
 - **A wrong value one character away from the filed one is reviewed, not named.**
-- **The corpus cannot price two things** the fifty can: a printed string within a few characters
-  of a claim the label does not carry, and the statutory statement of responsibility, whose
-  phrase its generator files as part of the permittee's name. A third, which 20b measured: it
-  sets each statement on its own line, where real labels run them together.
+- **The corpus cannot price several things** the fifty can: a printed string within a few
+  characters of a claim the label does not carry; the statutory statement of responsibility,
+  whose phrase its generator files as part of the permittee's name; and statements printed on
+  one line, which it always gives lines of their own.
 - **The engine verifies text, not layout.** A claim matched anywhere on the label is verified.
 - **The models are pretrained and general.** Nothing here was trained on labels, which is why
   the font partition that step 8a built no longer constrains anything; it is kept because the
-  corpus generator still draws from it.
+  corpus generator still draws from it. The 113 MB PP-OCRv4 server detector was measured at step
+  21c and did not earn twenty-four times the size.
