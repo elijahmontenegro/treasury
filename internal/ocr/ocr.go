@@ -124,7 +124,16 @@ func initialize() error {
 }
 
 // New loads the two models.
-func New(p Params) (*Reader, error) {
+func New(p Params) (*Reader, error) { return newReader(p, true) }
+
+// NewRecogniser builds a reader that can only read boxes someone else
+// chose. It leaves the detector unloaded, which matters: a second reader
+// in the process is a second set of sessions competing for the same cores,
+// and step 25b measured a detector it never called costing more than the
+// reading it was there to do.
+func NewRecogniser(p Params) (*Reader, error) { return newReader(p, false) }
+
+func newReader(p Params, withDetector bool) (*Reader, error) {
 	if p.MaxSide == 0 {
 		p = Default()
 	}
@@ -147,13 +156,18 @@ func New(p Params) (*Reader, error) {
 	if len(p.Rec) > 0 {
 		recBytes, recOut = p.Rec, p.RecOutput
 	}
-	det, err := ort.NewDynamicAdvancedSessionWithONNXData(detBytes, []string{"x"}, []string{detOut}, opts)
-	if err != nil {
-		return nil, fmt.Errorf("detector: %w", err)
+	var det *ort.DynamicAdvancedSession
+	if withDetector {
+		det, err = ort.NewDynamicAdvancedSessionWithONNXData(detBytes, []string{"x"}, []string{detOut}, opts)
+		if err != nil {
+			return nil, fmt.Errorf("detector: %w", err)
+		}
 	}
 	rec, err := ort.NewDynamicAdvancedSessionWithONNXData(recBytes, []string{"x"}, []string{recOut}, opts)
 	if err != nil {
-		det.Destroy()
+		if det != nil {
+			det.Destroy()
+		}
 		return nil, fmt.Errorf("recogniser: %w", err)
 	}
 	// The charset is a blank for the CTC decode, then the dictionary, then
@@ -213,6 +227,12 @@ func (r *Reader) ReadTurned(img image.Image, have []Region) ([]Region, error) {
 		boxes = append(boxes, b)
 		seen = append(seen, b)
 	}
+	return r.readBoxes(img, boxes)
+}
+
+// ReadBoxes recognises boxes someone else chose, which is how a second
+// opinion is taken on one reading without detecting the page again.
+func (r *Reader) ReadBoxes(img image.Image, boxes []image.Rectangle) ([]Region, error) {
 	return r.readBoxes(img, boxes)
 }
 

@@ -115,6 +115,19 @@ func abvClaim(expected float64, required bool, step float64) verify.Claim {
 		"ALC. {n}% BY VOL.", "Alc. {n}% by Vol.", "ALC {n}% BY VOL", "Alc {n}% by Vol.", "ALC {n}% BY VOL.",
 		"{n}% ALC BY VOL", "{n}% Alc by Vol", "{n}% alc. by vol.", "{n}% ALC. BY VOL.",
 		"ALC. BY VOL. {n}%", "Alc. by Vol. {n}%", "ALCOHOL {n}% BY VOLUME", "Alcohol {n}% by volume",
+		// The three forms the regulation prescribes, written out. 27 CFR
+		// 5.65(b)(2)(i), 7.65(b)(3)(i) and 4.36(b) all give "Alcohol ___
+		// percent by volume", "___ percent alcohol by volume" and
+		// "Alcohol by volume ___ percent", with alcohol abbreviated
+		// "alc", volume "vol", percent as "%" and "by" as "/", periods
+		// and parentheses optional - which normalization already sets
+		// aside, so only the words themselves need spelling out. Step
+		// 25c found the abbreviated forms enumerated and these not.
+		"Alcohol {n} percent by volume", "Alc. {n} percent by vol.",
+		"{n} percent alcohol by volume", "Alcohol by volume {n} percent",
+		"Alcohol by volume: {n} percent",
+		// And 5.65(b)(4)(iv)'s own example, which puts the figure first.
+		"{n}% Alcohol by Volume", "{n}% alcohol by vol.",
 	} {
 		formats = append(formats, verify.NumericFormat{Template: t, Scale: 1})
 	}
@@ -144,6 +157,10 @@ func netClaim(expectedML float64, valid []float64) verify.Claim {
 				{Template: "{n} mL", Scale: 1}, {Template: "{n} ml", Scale: 1}, {Template: "{n} ML", Scale: 1}, {Template: "{n}mL", Scale: 1}, {Template: "{n}ml", Scale: 1}, {Template: "{n}ML", Scale: 1},
 				{Template: "({n} ML)", Scale: 1}, {Template: "({n} mL)", Scale: 1}, {Template: "({n} ml)", Scale: 1},
 				{Template: "{n} L", Scale: 1000}, {Template: "{n}L", Scale: 1000}, {Template: "{n} Liter", Scale: 1000}, {Template: "{n} LITER", Scale: 1000}, {Template: "{n} Litre", Scale: 1000},
+				// 27 CFR 5.70: "The word 'milliliters' may be abbreviated
+				// as 'ml'." The abbreviation was enumerated and the word
+				// itself was not (step 25c).
+				{Template: "{n} milliliters", Scale: 1}, {Template: "{n} Milliliters", Scale: 1}, {Template: "{n} MILLILITERS", Scale: 1},
 				{Template: "{n} FL OZ", Scale: flOz}, {Template: "{n} FL. OZ.", Scale: flOz}, {Template: "{n} fl oz", Scale: flOz}, {Template: "{n} fl. oz.", Scale: flOz}, {Template: "{n} Fl. Oz.", Scale: flOz},
 			},
 			Valid:     admit(valid, expectedML, 5),

@@ -555,9 +555,29 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 	exact := nearest(cands, rs, radius, func(cd candidate) bool { return cd.claimed })
 	own := nearest(loosen(cands), rs, radius+e.opt.TieMargin, func(cd candidate) bool { return cd.claimed })
 	other := nearest(cands, rs, radius, func(cd candidate) bool { return !cd.claimed })
-	if own == nil && exact == nil && other == nil {
+	// nothingDecided names the nearest reading within twice the radius,
+	// so that a claim the engine could not decide still says what it
+	// looked at, and so that step 25b knows which one box to read again.
+	nothingDecided := func() Verdict {
 		v.Reason = "not_found"
+		// The claim's own value has already been looked for a margin
+		// beyond the radius, so where that found something there is
+		// nothing more to search for.
+		near := own
+		if near == nil {
+			near = nearest(cands, rs, 2*radius, func(cd candidate) bool { return cd.claimed })
+		}
+		if near != nil && near.dist <= 2*radius {
+			v.Evidence = &Evidence{
+				Region: near.run.box, Read: near.run.quote(near.from, near.to),
+				Matched: near.cand.text, Distance: near.dist, Radius: radius,
+				Confidence: near.run.conf,
+			}
+		}
 		return v
+	}
+	if own == nil && exact == nil && other == nil {
+		return nothingDecided()
 	}
 	verified := exact != nil && (other == nil || exact.dist <= other.dist+e.opt.TieMargin)
 	mismatch := !verified && other != nil && (own == nil || other.dist+e.opt.TieMargin < own.dist)
@@ -566,8 +586,7 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 		win, lose = other, own
 	}
 	if win == nil {
-		v.Reason = "not_found"
-		return v
+		return nothingDecided()
 	}
 	ev := &Evidence{
 		Region: win.run.box, Read: win.run.quote(win.from, win.to), Matched: win.cand.text,

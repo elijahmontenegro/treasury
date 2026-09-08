@@ -3324,7 +3324,7 @@ said rather than hidden.
 | the fifty | origin | 0.93 | 0.93 |
 | the fifty | alcohol content | 0.92 | 0.92 |
 | the fifty | net contents | 0.94 | 0.94 |
-| the fifty | *median / p95* | 2.5 / 4.7 s | 2.8 / 5.3 s |
+| the fifty | *median / p95* | 2.5 / 4.7 s | 3.4 / 6.6 s (three runs) |
 | corpus half A | brand | 0.79 | 0.84 |
 | corpus half A | class | 0.87 | 0.88 |
 | corpus half A | producer, first line | 0.30 | 0.34 |
@@ -3347,9 +3347,96 @@ said rather than hidden.
 permittee 0.68 to 0.84, its address 0.33 to 0.67, class 0.17 to 0.43, brand 0.51 to 0.55 — and
 the corpus gains on five rows, the first time it has moved since step 21b.
 
-**One thing given back: the p95 on the fifty is 5.3 s, over the 5 s step 24a had just reached.**
-A wider radius admits more candidate and reading pairs to compare. Step 25b's gate requires it
-back under five.
+**One thing given back: the p95 on the fifty goes over the 5 s step 24a had just reached.** A
+wider radius admits more candidate and reading pairs to compare. The single run above reads 5.3
+s; step 25b repeated the same configuration three times and got 6.2, 6.6 and 6.9, so **6.6 s is
+the honest figure and the 5.3 here is a low draw.** Latency on this machine varies by about a
+fifth between runs of one binary on one set, which is stated here because a single measurement
+of it was quoted as a result.
+
+### Step 25b: a second opinion on near misses, measured and not adopted (2026-09-08)
+
+Where a claim's nearest reading falls between the radius and twice it, the one box it was
+matched against is read again and the second reading accepted only if it brings the claim
+inside. `ocr.Reader.ReadBoxes` recognises boxes someone else chose, and a claim that decides
+nothing now names the nearest thing it found within twice the radius, which is better evidence
+whether or not anything is read twice.
+
+**The higher resolution the step asked for does not exist for this recogniser.** Every crop is
+already taken from the image as given, at full resolution, and normalised to 48 pixels tall.
+Asking for 96 does not give the model more to work with; it breaks it — `Concat node
+p2o.Concat.7: Non concat axis dimensions must match: Axis 2 has mismatched dimensions of 1 and
+2`, because the network's own downsampling fixes the height it can take. 64 runs, and is the
+tallest that does.
+
+**Three configurations, all at precision 1.00 on the fifty with no false assertion:**
+
+| second opinion | claims verified | brand | net contents | median / p95 |
+|---|---|---|---|---|
+| off (step 25a) | 154 of 192 | 0.55 | 0.94 | 3.4 / **6.6 s** |
+| the shipped recogniser, crop at 64 | 154 | 0.55 | 0.94 | 3.4 / **6.5 s** |
+| the 90 MB server recogniser | **156** | 0.57 | 0.96 | 3.8 / **7.8 s** |
+
+**The gate is not met and the step is reverted.** The shipped model reading the same box a
+second time gains nothing at all — unsurprising once the height turns out to be fixed, since the
+second reading is then very nearly the first. The server model gains two claims, and it earns
+them: on 0050 it reads `IMPORTED BY: GRAPEVINE DISTRIBUTORS` where the shipped model read
+`CRAPEVINE`. But the p95 requirement is 5 s and the server model puts it at 7.8.
+
+**The requirement was already breached before this step, and by step 25a.** Off entirely, the
+p95 is 6.6 s. What breached it is the radius at 0.14, which bought eight claims. The choice
+between them is the caller's and both numbers are here; `second_opinion` is 1 for the shipped
+model and 2 for the server one, and is recorded in `verify.Adopted` at 0.
+
+**One thing the step found that is worth more than what it was looking for.** Only 19 boxes over
+the fifty labels are ever re-read, 31 labels have none, and yet the first attempt took the median
+from 2.8 s to 6.4 s. The cost was not the reading: a second `ocr.Reader` builds a detector
+session it never calls, and two sets of ONNX sessions in one process contend for the same cores.
+`ocr.NewRecogniser` leaves the detector unloaded and took the same run to 3.4 s. That is kept.
+
+### Step 25c: the printed forms the enumeration lacks (2026-09-08)
+
+Five claims on the fifty were classified at step 23a as printed in a form no candidate spells.
+**Reading them shows the classification was wrong: none of the five is a missing form.**
+
+| label | claim | filed | what the reader returned |
+|---|---|---|---|
+| 0004 | alcohol | 40 | `40%alcl` |
+| 0005 | alcohol | 40 | `40% alcl.` |
+| 0034 | net contents | 355 | `12 FL. 0Z. * ALC. 5.5%o BY VOL.` |
+| 0039 | alcohol | 40 | `AC40% byvlR` |
+| 0043 | net contents | 1000 | `KNOWLTON` |
+
+Every one is the recogniser losing characters from a form the engine already spells — `40% alc/vol`
+arriving as `40%alcl`, a zero for the O of `OZ`. The bucket's name was "printed in a form the
+enumeration lacks" because the test behind it was "the figure was read somewhere and no spelling
+matched", which catches recogniser damage as readily as a missing form. That is corrected here.
+
+**The enumeration was nonetheless incomplete, and the regulation says how.** 27 CFR 5.65(b),
+7.65(b) and 4.36(b) each prescribe three formats:
+
+> (A) "Alcohol ____ percent by volume"; (B) "____ percent alcohol by volume"; or (C) "Alcohol by
+> volume ____ percent."
+
+with alcohol abbreviated "alc", volume "vol", percent as "%", "by" as "/", and periods and
+parentheses optional. The engine enumerated every *abbreviated* form and not one of the three
+written out, nor 5.65(b)(4)'s own example `40% Alcohol by Volume` with the figure first. Case,
+punctuation and spacing are already set aside, so only the words themselves were missing. They
+are added, with 5.70's `milliliters` beside its already-enumerated `ml`.
+
+**Nothing on either set prints them, so nothing verifies: 154 of 192 before and after, precision
+1.00 everywhere.** They are kept anyway, on the same ground as step 23c's responsibility
+phrases: a legal label may print them, and the engine's business is what the regulation allows,
+not what fifty labels happen to have chosen. What they cost is measurable — about a quarter more
+candidates for every numeric claim, and with it a median of 2.0 s against 1.4 s on half A. That
+cost is not inherent: the candidate list for a numeric claim depends only on the claim, and the
+engine rebuilds it for every label. Fixing that changes no verdict and is left as its own step.
+
+**One thing found in the regulation and deliberately not used.** 27 CFR 5.65(c) allows a
+tolerance of ±0.3 percentage points on alcohol content. It is a tolerance between the label and
+the liquid in the bottle, not between the label and the application, and widening the engine's
+0.05 to it would let a label printing 40.3% verify a filed 40%, which is a different claim about
+a different thing. It stays where it is.
 
 ## What the numbers say
 
@@ -3358,10 +3445,10 @@ both corpus halves and the fifty**: 2,352 verifications over 550 labels and not 
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
-**The fifty verify 146 of the 191 claims they carry**, against 63 when step 19c first measured
-this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the permittee 0.68,
-brand 0.51, class 0.17. On the corpus, where every statement gets a line of its own: net contents
-0.89, class 0.84, brand 0.79, alcohol content 0.80, origin 0.62, the permittee 0.22.
+**The fifty verify 154 of the 192 claims they carry**, against 63 when step 19c first measured
+this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the permittee 0.84,
+its address 0.67, brand 0.55, class 0.43. On the corpus: class 0.89, net contents 0.89, brand
+0.82, alcohol content 0.80, origin 0.66, the permittee 0.27.
 
 **Where the remaining loss is** (step 23c): of the 47, fourteen are refusals the engine makes on
 purpose — a brand inside a web address or a social handle, a class designation inside a longer
@@ -3375,9 +3462,11 @@ the 10 values the corpus prints wrongly on purpose. The other five differ from t
 about one character in a printed form, and one character is what a recogniser gets wrong, so the
 engine reviews.
 
-**A verification is about two and a half seconds' work**: median 2.5 s a label on the fifty
-single-threaded, 95th percentile 4.7 s, against 21.0 s for the retired engine. The second
-detection pass is spent only on pages whose upright reading shows text seen side-on.
+**A verification is about three and a half seconds' work**: median 3.4 s a label on the fifty
+single-threaded against 21.0 s for the retired engine. **The 95th percentile is 6.6 s and the
+requirement this build has carried since step 3 is 5 s, so it is not met.** Step 24a had it at
+4.7 s; step 25a's wider radius bought eight claims and put it back over. Latency on this machine
+varies by about a fifth between runs, which is why the figure here is the median of three.
 
 ## Limits, stated
 
@@ -3389,9 +3478,11 @@ detection pass is spent only on pages whose upright reading shows text seen side
   detection delimits it**; a number is taken wherever its figure and unit are, since the unit
   delimits it. Where an ordinary word abuts the name instead, nothing in the text distinguishes
   it from a longer name, and only knowing what that word *is* would.
-- **The free-text radius cannot be raised above 0.077**, because 0036 prints "BOURBON WHISKEY"
-  against a filed "BOURBON WHISKY". Seven claims are lost to single-character recogniser errors
-  under that ceiling.
+- **The free-text radius is 0.14 and its ceiling is 0.158**, set by the nearest claim the fifty
+  do not carry. Step 25a moved it there by settling 0036 against 27 CFR 5.143, which says whisky
+  and whiskey are one word.
+- **The 5 s p95 requirement is not met**, at 6.6 s. The radius is what breached it and eight
+  claims are what it bought; returning the radius returns the latency.
 - **A wrong value one character away from the filed one is reviewed, not named.**
 - **The corpus cannot price several things** the fifty can: a printed string within a few
   characters of a claim the label does not carry; the statutory statement of responsibility,

@@ -21,6 +21,8 @@ package verify
 import (
 	"context"
 	"image"
+	"os"
+	"path/filepath"
 	"sort"
 
 	"treasury/internal/buildid"
@@ -181,6 +183,10 @@ type Options struct {
 	// set vertically reaches the detector the way it was trained to see
 	// it. Nonzero is on.
 	Turned float64
+	// SecondOpinion reads one box again, taller and with a larger
+	// recogniser, where a claim's nearest candidate fell just outside the
+	// radius. Nonzero is on.
+	SecondOpinion float64
 	// Tune overrides an adopted constant by name, for a sweep.
 	Tune map[string]float64
 }
@@ -214,6 +220,14 @@ func (o Options) withDefaults() Options {
 	if o.Turned == 0 {
 		o.Turned = 1 // 21d: recovers seventeen of the twenty-six 21c measured
 	}
+	// 25b measured this and it is off: with the shipped recogniser a
+	// second reading of the one box gained nothing at all, and with the
+	// 90 MB server recogniser it gained two claims and put the p95 on the
+	// fifty at 7.8 s against a 5 s requirement. 1 is the shipped model, 2
+	// the server one; the numbers for both are in the doc.
+	if o.SecondOpinion < 0 {
+		o.SecondOpinion = 0
+	}
 	if o.MaxSide == 0 {
 		// 20c: chosen on half A, where 960 verifies 1048 claims, 1280
 		// verifies 1079, 1600 verifies 1115 and 2048 verifies 1108 and
@@ -227,6 +241,10 @@ func (o Options) withDefaults() Options {
 type Engine struct {
 	opt    Options
 	reader *ocr.Reader
+	// second reads one box again where the first reading fell just
+	// outside the radius: taller, and with the larger recogniser if the
+	// build has it. It is nil when neither is available.
+	second *ocr.Reader
 }
 
 // New builds an engine and loads the reader's models.
@@ -241,13 +259,40 @@ func New(o Options) (*Engine, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Engine{opt: o, reader: r}, nil
+	e := &Engine{opt: o, reader: r}
+	if o.SecondOpinion > 0 {
+		sp := rp
+		sp.RecHeight = 64
+		// The 90 MB server recogniser was measured here and is not used:
+		// it read one Grapevine label's producer correctly where the
+		// shipped model read CRAPEVINE, and took the fifty's median from
+		// 2.7 s to 7.8 s and the p95 from 5.0 s to 17.6 s. Setting
+		// second_opinion to 2 loads it, for anyone who wants that trade.
+		if o.SecondOpinion >= 2 {
+			if b, err := os.ReadFile(secondRecogniser); err == nil {
+				sp.Rec, sp.RecOutput = b, "softmax_2.tmp_0"
+			}
+		}
+		if s, err := ocr.NewRecogniser(sp); err == nil {
+			e.second = s
+		}
+	}
+	return e, nil
 }
+
+// secondRecogniser is where the larger recogniser is looked for. It is
+// fetched rather than committed, like the runtime library, and its absence
+// is not an error: without it the second opinion is the same model reading
+// a taller crop, which is most of what it buys.
+var secondRecogniser = filepath.Join("third_party", "models", "rec_server.onnx")
 
 // Close frees the reader's sessions.
 func (e *Engine) Close() {
 	if e.reader != nil {
 		e.reader.Close()
+	}
+	if e.second != nil {
+		e.second.Close()
 	}
 }
 
@@ -286,6 +331,24 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			add(more)
 			sortRegions(res.Regions)
 			res.Claims = decide()
+		}
+	}
+	// A claim whose nearest reading fell just outside the radius gets one
+	// box read again, taller and with the larger recogniser (step 25b).
+	// Only the reading changes; every rule applies to the second as to
+	// the first, and a claim is verified only if the new reading brings
+	// it inside the radius on its own merits.
+	if e.second != nil {
+		if boxes := nearMisses(res.Claims); len(boxes) > 0 {
+			again, err := e.second.ReadBoxes(img, boxes)
+			if err != nil {
+				return Result{}, err
+			}
+			if len(again) > 0 {
+				add(again)
+				sortRegions(res.Regions)
+				res.Claims = decide()
+			}
 		}
 	}
 	if len(res.Regions) == 0 {
@@ -352,4 +415,23 @@ func sortRegions(rs []Region) {
 		}
 		return rs[i].Box.Min.X < rs[j].Box.Min.X
 	})
+}
+
+// nearMisses gathers the one box behind each claim whose nearest reading
+// sat between the radius and twice it, without repeating a box.
+func nearMisses(vs []Verdict) []image.Rectangle {
+	var out []image.Rectangle
+	seen := map[image.Rectangle]bool{}
+	for _, v := range vs {
+		if v.Status == Verified || v.Status == Mismatch || v.Evidence == nil {
+			continue
+		}
+		e := v.Evidence
+		if e.Distance <= e.Radius || e.Distance > 2*e.Radius || seen[e.Region] {
+			continue
+		}
+		seen[e.Region] = true
+		out = append(out, e.Region)
+	}
+	return out
 }
