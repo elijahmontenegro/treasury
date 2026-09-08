@@ -40,12 +40,13 @@ type candidate struct {
 
 // run is a candidate region: one detection, or several joined.
 type run struct {
-	box  image.Rectangle
-	text string
-	norm string
-	at   []int    // where each character of norm came from in text
-	nums []string // the numbers in it, as printed
-	conf float64
+	box   image.Rectangle
+	text  string
+	norm  string
+	at    []int    // where each character of norm came from in text
+	nums  []string // the numbers in it, as printed
+	parts int      // how many detections were joined to make it
+	conf  float64
 }
 
 // fold maps a letter carrying a diacritic to the letter. A label sets
@@ -181,7 +182,7 @@ func buildRuns(regions []Region, minConf float64) []run {
 	for i := range order {
 		cur := keep[order[i]]
 		box, text, conf := cur.Box, cur.Text, cur.Confidence
-		out = append(out, newRun(box, text, conf))
+		out = append(out, newRun(box, text, conf, 1))
 		for n := 1; n < maxRun && i+n < len(order); n++ {
 			prev, next := keep[order[i+n-1]], keep[order[i+n]]
 			if !adjacent(prev.Box, next.Box) {
@@ -192,15 +193,57 @@ func buildRuns(regions []Region, minConf float64) []run {
 			if next.Confidence < conf {
 				conf = next.Confidence
 			}
-			out = append(out, newRun(box, text, conf))
+			out = append(out, newRun(box, text, conf, n+1))
 		}
 	}
 	return out
 }
 
-func newRun(box image.Rectangle, text string, conf float64) run {
+func newRun(box image.Rectangle, text string, conf float64, parts int) run {
 	n, at := normalizeIdx(text)
-	return run{box: box, text: text, norm: n, at: at, nums: numbers(n), conf: conf}
+	return run{box: box, text: text, norm: n, at: at, nums: numbers(n), parts: parts, conf: conf}
+}
+
+// bounded says whether a span of a reading is delimited at both ends by
+// something that is not more of the same name: a punctuation mark, a
+// digit, or the edge of the detection. Step 20b took a number from inside
+// a longer reading because its unit delimits it and said a name had
+// nothing playing that part; step 21a read the twenty-five claims the
+// whole-run rule refuses and found that a name does have one. Where the
+// filed string is printed whole with other matter around it, what abuts it
+// is a comma, a dash, a colon, a digit or the end of the detection; where
+// the filed string is part of a longer name, what abuts it is another
+// letter of that name. "APONA VINEYARDS, VENETA, OR" gives up the brand;
+// "Produced and Bottled by Valley Mill Company" does not, which is the
+// false assertion of step 16a.
+func (r run) bounded(from, to int) bool {
+	return r.free(from, -1) && r.free(to, 1)
+}
+
+func (r run) free(at, dir int) bool {
+	next := at
+	if dir < 0 {
+		next = at - 1
+	}
+	if next < 0 || next >= len(r.norm) {
+		return true // the edge of the detection
+	}
+	if c := r.norm[next]; c >= '0' && c <= '9' {
+		return true // a figure is a different statement
+	}
+	// Anything normalization dropped between the two characters is
+	// punctuation or space, since letters and digits are kept. A mark
+	// between them delimits; a bare space does not.
+	lo, hi := next, at
+	if dir > 0 {
+		lo, hi = at-1, at
+	}
+	if lo < 0 || hi >= len(r.at) {
+		return true
+	}
+	_, size := utf8.DecodeRuneInString(r.text[r.at[lo]:])
+	gap := r.text[r.at[lo]+size : r.at[hi]]
+	return strings.ContainsFunc(gap, func(c rune) bool { return !unicode.IsSpace(c) })
 }
 
 // quote gives back the part of a reading a match covered, as printed.
@@ -379,9 +422,7 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 		}
 		n := float64(len(cd.norm))
 		lo, hi := n*(1-radius), n*(1+radius)
-		if cd.num != "" {
-			hi = math.Inf(1) // the reading may hold another statement too
-		}
+		hi = math.Inf(1) // the reading may hold another statement too
 		for j := range rs {
 			r := &rs[j]
 			// An alignment cannot be inside the radius when the two
@@ -401,8 +442,25 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 			// inside "Valley Mill Distillery" is indistinguishable from
 			// the brand and is not taken (step 16a).
 			d, from, to := distance(cd.norm, r.norm), 0, len(r.norm)
-			if cd.num != "" {
+			switch {
+			case cd.form >= 0:
+				// A number, exact or loosened for the margin, is looked
+				// for inside the reading: its unit delimits it. The
+				// figure test above is what the loosened form drops, and
+				// nothing else.
 				d, from, to = infixSpan(cd.norm, r.norm)
+			case r.parts == 1 && len(r.norm) > len(cd.norm) &&
+				len(r.norm) <= 3*len(cd.norm)+24:
+				// A name may be taken from inside one detection when
+				// punctuation, a digit or the detection's own edge
+				// delimits it at both ends. Joins are not searched this
+				// way: every claim step 21a found printed whole inside a
+				// longer reading was inside a single detection, and a
+				// join is a construction of this engine rather than a
+				// line the label printed.
+				if id, ifrom, ito := infixSpan(cd.norm, r.norm); id < d && r.bounded(ifrom, ito) {
+					d, from, to = id, ifrom, ito
+				}
 			}
 			span := to - from
 			if d > radius {

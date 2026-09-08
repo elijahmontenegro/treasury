@@ -145,3 +145,35 @@ func TestAClaimIsNotMatchedInsideALongerLine(t *testing.T) {
 		t.Errorf("a brand read inside a longer name verified: %+v", v.Evidence)
 	}
 }
+
+// TestANameIsTakenOnlyWherePunctuationDelimitsIt pins step 21b. A name
+// printed whole with other matter around it is the claim; a name that runs
+// on into more of the same name is not, and step 16a's two false brands
+// are of the second kind.
+func TestANameIsTakenOnlyWherePunctuationDelimitsIt(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	brand := func(text string) Claim {
+		return Claim{Name: "brand", Expected: text, Required: true}
+	}
+	cases := []struct {
+		claim, read string
+		want        bool
+	}{
+		{"APONA VINEYARDS", "APONA VINEYARDS, VENETA, OR", true},
+		{"PRODUCT OF ITALY", "WHITE WINE - PRODUCT OF ITALY", true},
+		{"PRODUCT OF MEXICO", "4 PRODUCTOFMEXICO 750 ML", true},
+		{"PASSIONE NATURA", "Bottled by: PASSIONE NATURA, Paglieta (CH), IT", true},
+		// The shapes that must stay refused.
+		{"Valley Mill", "Produced and Bottled by Valley Mill Company", false},
+		{"HERON BLACK", "Produced and Bottled by Heron Black Company", false},
+		{"45TH PARALLEL", "Distilled & Bottled by 45th Parallel Spirits, LLC", false},
+		{"ALE", "STARGAZE-INDIA PALE ALE", false},
+		{"OWL'S BREW", "followus @theowlsbrew", false},
+	}
+	for _, c := range cases {
+		v := e.decide(brand(c.claim), buildRuns(regionsOf(c.read), 0.5))
+		if got := v.Status == Verified; got != c.want {
+			t.Errorf("%q in %q: verified=%v, want %v", c.claim, c.read, got, c.want)
+		}
+	}
+}

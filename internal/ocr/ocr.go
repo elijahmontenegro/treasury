@@ -59,6 +59,13 @@ type Params struct {
 	MinSide     int     // regions thinner than this, in the detector's own scale, are dropped
 	RecHeight   int     // the height every crop is resized to before recognition
 	MaxRecWidth int     // the widest crop the recogniser is given
+
+	// Det and Rec replace the embedded models, with the names of the
+	// tensors they read and write. They exist so a step can measure a
+	// second detector or a second recogniser against the ones shipped
+	// (step 21c); left empty, the embedded models are used.
+	Det, Rec             []byte
+	DetOutput, RecOutput string
 }
 
 // Default is what the models were trained to see.
@@ -133,11 +140,19 @@ func New(p Params) (*Reader, error) {
 	if err := opts.SetIntraOpNumThreads(runtime.NumCPU()); err != nil {
 		return nil, err
 	}
-	det, err := ort.NewDynamicAdvancedSessionWithONNXData(detModel, []string{"x"}, []string{"sigmoid_0.tmp_0"}, opts)
+	detBytes, detOut := detModel, "sigmoid_0.tmp_0"
+	if len(p.Det) > 0 {
+		detBytes, detOut = p.Det, p.DetOutput
+	}
+	recBytes, recOut := recModel, "softmax_11.tmp_0"
+	if len(p.Rec) > 0 {
+		recBytes, recOut = p.Rec, p.RecOutput
+	}
+	det, err := ort.NewDynamicAdvancedSessionWithONNXData(detBytes, []string{"x"}, []string{detOut}, opts)
 	if err != nil {
 		return nil, fmt.Errorf("detector: %w", err)
 	}
-	rec, err := ort.NewDynamicAdvancedSessionWithONNXData(recModel, []string{"x"}, []string{"softmax_11.tmp_0"}, opts)
+	rec, err := ort.NewDynamicAdvancedSessionWithONNXData(recBytes, []string{"x"}, []string{recOut}, opts)
 	if err != nil {
 		det.Destroy()
 		return nil, fmt.Errorf("recogniser: %w", err)

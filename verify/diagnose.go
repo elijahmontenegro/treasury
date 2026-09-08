@@ -5,6 +5,8 @@ import (
 	"image"
 	"sort"
 	"strings"
+
+	"treasury/internal/ocr"
 )
 
 // Diagnosis reports, for one claim, the measurements that separate the
@@ -198,4 +200,31 @@ func infixSpan(claim, read string) (float64, int, int) {
 		}
 	}
 	return float64(best) / float64(len(a)), pfrom[to], to
+}
+
+// Reach reports how near a claim's own text comes to being read at all:
+// the smallest distance from an accepted spelling to any part of any
+// detection, with whatever surrounds it free. It applies no radius, no
+// margin and no rule, so it answers a question about the reader rather
+// than about a verdict, which is what step 21c asks of a second detector
+// or a second pass.
+func Reach(c Claim, read []ocr.Region) (float64, string) {
+	best, where := 1.0, ""
+	regions := make([]Region, 0, len(read))
+	for _, r := range read {
+		regions = append(regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence})
+	}
+	rs := buildRuns(regions, 0)
+	for _, cd := range spellings(c) {
+		if !cd.claimed {
+			continue
+		}
+		for i := range rs {
+			d, from, to := infixSpan(cd.norm, rs[i].norm)
+			if d < best {
+				best, where = d, rs[i].quote(from, to)
+			}
+		}
+	}
+	return best, where
 }

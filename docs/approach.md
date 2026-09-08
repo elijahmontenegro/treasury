@@ -2735,6 +2735,89 @@ whether that is enough.
 
 No fix in this step.
 
+### Step 21b: what delimits a name (2026-09-08)
+
+Step 20b took a number from inside a longer reading because its unit delimits it, and said a
+name has nothing playing that part. Step 21a read the twenty-five claims the whole-run rule
+refuses and found that it does.
+
+**A name may be taken from inside one detection when punctuation, a digit, or the detection's
+own edge stands at both ends of it.** Nothing else counts: a space is not a delimiter, and a
+letter certainly is not. Normalization throws punctuation away, so the test is made on the
+original text through the index map the reading keeps, and it asks only whether anything other
+than whitespace was dropped between the span and the character beside it — everything dropped
+is punctuation, because letters and digits are kept.
+
+That is what separates the two sets 21a listed, and it separates them without a threshold:
+
+| the reading | what abuts the claim | taken |
+|---|---|---|
+| `APONA VINEYARDS, VENETA, OR` | the start, and a comma | yes |
+| `WHITE WINE - PRODUCT OF ITALY` | a dash, and the end | yes |
+| `4 PRODUCTOFMEXICO 750 ML` | a figure either side | yes |
+| `Bottled by: PASSIONE NATURA, Paglieta (CH), IT` | a colon, and a comma | yes |
+| `Produced and Bottled by Valley Mill Company` | " Company" | **no** |
+| `Distilled & Bottled by 45th Parallel Spirits, LLC` | " Spirits" | **no** |
+| `STARGAZE-INDIA PALE ALE` | "PALE " | **no** |
+| `followus @theowlsbrew` | "the" with nothing between | **no** |
+
+Two limits are part of the rule rather than tuning. It searches **a single detection only**:
+every claim 21a found printed whole inside a longer reading was inside one detection, and a
+join of several is a construction of this engine rather than a line the label printed. And it
+does not search a reading more than three times the claim's own length, because a long enough
+string contains a short claim by accident.
+
+**A second change came with it, and it is the reason two corpus detections were given up.** The
+claim's own value is searched twice — exactly, to verify, and loosened, to give the margin
+something to protect. The loosened search was falling into the new branch for names; it now uses
+the same search as the exact one with only the figure test dropped, which is what "loosened"
+should mean. The margin can therefore see the filed value inside a longer reading, as the winner
+already could, and on two corpus labels it now does: 0265 prints 13.5 where 15 was filed and the
+two spellings are one character apart, so the engine reviews instead of naming 13.5.
+
+| set | claim | recall before | after | precision before | after |
+|---|---|---|---|---|---|
+| the fifty | brand | 0.37 | 0.43 | 1.00 | 1.00 |
+| the fifty | class | 0.17 | 0.17 | 1.00 | 1.00 |
+| the fifty | producer, first line | 0.37 | 0.47 | 1.00 | 1.00 |
+| the fifty | producer, second line | 0.00 | 0.00 | -- | -- |
+| the fifty | origin | 0.64 | 0.93 | 1.00 | 1.00 |
+| the fifty | alcohol content | 0.80 | 0.80 | 1.00 | 1.00 |
+| the fifty | net contents | 0.90 | 0.90 | 1.00 | 1.00 |
+| the fifty | *median latency* | 1.8 s | 1.8 s | | |
+| corpus half A | brand | 0.79 | 0.79 | 1.00 | 1.00 |
+| corpus half A | class | 0.87 | 0.87 | 1.00 | 1.00 |
+| corpus half A | producer, first line | 0.30 | 0.30 | 1.00 | 1.00 |
+| corpus half A | producer, second line | 0.36 | 0.36 | 1.00 | 1.00 |
+| corpus half A | origin | 0.65 | 0.65 | 1.00 | 1.00 |
+| corpus half A | alcohol content | 0.81 | 0.81 | 1.00 | 1.00 |
+| corpus half A | net contents | 0.86 | 0.86 | 1.00 | 1.00 |
+| corpus half A | *median latency* | 1.4 s | 1.5 s | | |
+| corpus half B | brand | 0.78 | 0.78 | 1.00 | 1.00 |
+| corpus half B | class | 0.84 | 0.84 | 1.00 | 1.00 |
+| corpus half B | producer, first line | 0.22 | 0.22 | 1.00 | 1.00 |
+| corpus half B | producer, second line | 0.35 | 0.35 | 1.00 | 1.00 |
+| corpus half B | origin | 0.62 | 0.62 | 1.00 | 1.00 |
+| corpus half B | alcohol content | 0.80 | 0.80 | 1.00 | 1.00 |
+| corpus half B | net contents | 0.89 | 0.89 | 1.00 | 1.00 |
+| corpus half B | *median latency* | 1.4 s | 1.4 s | | |
+
+**The gate: no false assertion on any of the three sets, and 0099 and 0309 stay refused**, which
+is checked by name and pinned by a test carrying both readings verbatim along with the four
+shapes the rule admits.
+
+**The fifty go from 120 of 191 to 129.** Origin 0.64 to **0.93** — twelve of the fourteen labels
+that carry one now verify it, where before the class designation printed on the same line hid it
+— the permittee 0.37 to 0.47, brand 0.37 to 0.43. **The corpus does not move at all**, for the
+third time in this build: its generator gives every statement a line of its own, so it has
+nothing printed inside a longer line to find. What it costs is one wrong alcohol value named per
+half, given up to the margin change above.
+
+Six of the eighteen 21a found are still refused, and the rule is right about them by its own
+terms: `BREWEDANCANNEDWASATCHBREWERYSALTLAKEIU` has no punctuation anywhere in it, `ID TENHEAD`
+and `SCEA CHATEAU COTEDE BALEAU` have a word before the name, and three brands sit in body copy
+between two ordinary words.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
