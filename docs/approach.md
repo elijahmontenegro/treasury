@@ -2462,6 +2462,62 @@ designation with a word dropped" read backwards. Both would have bought recall. 
 on the fifty is 0 of 6 for exactly that reason: five of the six labels print a longer
 designation containing the filed one.
 
+### Step 20a: where the fifty's unverified claims are lost (2026-09-07)
+
+The fifty carry 191 claims and verify 63. `verify.Diagnose` and `cmd/whymissed` report, for each
+of the other 128, what was available to the decision with no radius and no rule applied: the
+best distance from an accepted spelling to a run the engine actually built, the best distance to
+the claim's text found *inside* one detection with text either side of it free, the best across
+any contiguous sequence of detections, and for a number whether the filed figure was read at
+all. Those four separate the causes.
+
+| cause | claims | brand | class | producer 1 | producer 2 | origin | alcohol | net |
+|---|---|---|---|---|---|---|---|---|
+| read correctly, beside another statement in one detection | **55** | - | - | - | - | 4 | 20 | 31 |
+| detected and misread | **35** | 16 | 1 | 9 | - | 1 | 2 | 6 |
+| inside more of the same kind of text, where the rule is right | **12** | 7 | 5 | - | - | - | - | - |
+| not detected at all | **9** | 2 | - | 1 | 2 | - | 3 | 1 |
+| matched, outside the radius | **8** | 3 | - | 4 | - | - | 1 | - |
+| printed in a form the enumeration lacks | **5** | - | - | - | - | - | 4 | 1 |
+| read correctly, but split across detections | **4** | 4 | - | - | - | - | - | - |
+| **all** | **128** | 32 | 6 | 14 | 2 | 5 | 30 | 39 |
+
+**The largest cause is one detection holding two statements: 55 of 128, and it is not a reading
+failure at all.** The text is read correctly and exactly — a distance of 0.00 inside the box on
+most of them — and the engine cannot use it, because a claim is compared to a whole run and the
+run holds more than the claim. The labels do this constantly: `53%ALC/VOLNET.CONT.750ML`,
+`12FL.OZ.(355ML)`, `4.5%ALC. BY VOL. 19.2 FL.OZ.(570mL)`, `750 ML 14.5% AlC. BY voL.`,
+`WHITE WINE - PRODUCT OF ITALY`. Fifty-one of the fifty-five are the alcohol content and the
+net contents, which is why those two rows are the worst on the fifty and among the best on the
+corpus: the generator sets each statement on its own line and real labels do not.
+
+**Second is misreading, 35 claims, and it is the brand and the producer.** Sixteen brands and
+nine producer lines are recognisably present and too damaged to match — "BlugrasBotling" for
+"Bluegrass Bottling", "CRAPEVINE" for "GRAPEVINE" — which is the reader's limit on small back-
+label type and on display faces, not the decision layer's.
+
+**Twelve are claims the rule against matching inside a line is right to refuse**, and they are
+listed rather than counted: five class designations inside a longer one ("ALE" inside "INDIA
+PALE ALE", "BEER" inside "LAGER BEER"), five brands inside body copy or a social handle
+("Iteamedup with Owl's Brewto", "followus@theowlsbrew"), and two brands inside the producer's
+own name — which is exactly the case step 16a made a false assertion on. Those sixteen and the
+four beside them were judged from the text of the detection by eye, because the boundary
+between two statements on one line is punctuation and spacing, and normalization removes both;
+no measurement on the normalized text separates them.
+
+**Nine were never read.** Checked against the images: the clearest is 0039, a 2561 by 5391
+label whose alcohol and fill statements are set in about eight pixels of type, which the
+reader's cap of 960 on the long side reduces to under two. Image size does not predict recall
+in general, though — the six labels over 3000 pixels verify 9 of 23 carried claims against 54
+of 168 for the other forty-four — so the cap is a cause on that label and not a cause across
+the set.
+
+**Five are a printed form the enumeration lacks**: the figure was read, and no spelling of the
+value in the engine's list matches what the label prints. This cause is not one of the six the
+amendment names, and it is the engine having no candidate rather than failing to read.
+
+No fix in this step.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
