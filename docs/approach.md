@@ -2518,6 +2518,64 @@ amendment names, and it is the engine having no candidate rather than failing to
 
 No fix in this step.
 
+### Step 20b: a number is taken from beside another statement (2026-09-07)
+
+20a's largest cause was 55 claims read correctly and exactly and sitting in a detection that
+held another statement too, 51 of them the alcohol content and the fill. The engine could not
+use them because a claim is compared to a whole run.
+
+**A number may now be taken from inside a longer reading; a name may not.** The reason is not
+that one matters less: it is that a number is delimited by its own unit and a name is not. The
+figure has to be a whole number of the reading — "50" is not a number of "750ML", so a clipped
+detection cannot become a smaller fill — and the unit has to sit against it inside the radius.
+"Valley Mill" inside "Valley Mill Distillery" has nothing playing the unit's part, which is
+why step 16a's false assertion is still refused and why free text keeps the whole-run rule.
+
+Two supporting changes. The winner is now the **smallest reading that holds the match**, and the
+evidence quotes **the part of the reading that matched** rather than the whole run: without
+that, a verdict on 0047's alcohol content cited a box holding four joined detections of warning
+prose. And a fifth rule was needed, which the corpus found: **a value that is the claim's own
+figure with digits missing from an end may not be named.** On half A the reader clipped the
+seven off "750 mL", read a perfectly legal 50 mL, and the engine called it a mismatch. A reader
+drops and doubles characters; it does not usually turn one legal value into another. Both new
+rules are pinned by tests beside the four from 19c, which still pass.
+
+| set | claim | recall before | after | precision before | after |
+|---|---|---|---|---|---|
+| the fifty | brand | 0.35 | 0.35 | 1.00 | 1.00 | 
+| the fifty | class | 0.00 | 0.00 | -- | -- | 
+| the fifty | producer, first line | 0.26 | 0.26 | 1.00 | 1.00 | 
+| the fifty | producer, second line | 0.33 | 0.33 | 1.00 | 1.00 | 
+| the fifty | origin | 0.64 | 0.64 | 1.00 | 1.00 | 
+| the fifty | alcohol content | 0.40 | 0.80 | 1.00 | 1.00 | 
+| the fifty | net contents | 0.22 | 0.84 | 1.00 | 1.00 | 
+| the fifty | *median latency* | 1.0 s | 1.1 s | | |
+| corpus half A | brand | 0.80 | 0.80 | 1.00 | 1.00 | 
+| corpus half A | class | 0.85 | 0.85 | 1.00 | 1.00 | 
+| corpus half A | producer, first line | 0.27 | 0.27 | 1.00 | 1.00 | 
+| corpus half A | producer, second line | 0.30 | 0.30 | 1.00 | 1.00 | 
+| corpus half A | origin | 0.55 | 0.55 | 1.00 | 1.00 | 
+| corpus half A | alcohol content | 0.76 | 0.76 | 1.00 | 1.00 | 
+| corpus half A | net contents | 0.84 | 0.85 | 1.00 | 1.00 | 
+| corpus half A | *median latency* | 0.9 s | 1.0 s | | |
+| corpus half B | brand | 0.74 | 0.74 | 1.00 | 1.00 | 
+| corpus half B | class | 0.81 | 0.81 | 1.00 | 1.00 | 
+| corpus half B | producer, first line | 0.18 | 0.18 | 1.00 | 1.00 | 
+| corpus half B | producer, second line | 0.26 | 0.26 | 1.00 | 1.00 | 
+| corpus half B | origin | 0.55 | 0.55 | 1.00 | 1.00 | 
+| corpus half B | alcohol content | 0.79 | 0.79 | 1.00 | 1.00 | 
+| corpus half B | net contents | 0.86 | 0.88 | 1.00 | 1.00 | 
+| corpus half B | *median latency* | 0.9 s | 1.1 s | | |
+
+**Precision is 1.00 on every claim of all three sets, before and after, with no false assertion
+anywhere.** The fifty go from **63 of the 191 claims they carry to 114** — alcohol content 0.40
+to 0.80, net contents 0.22 to 0.84 — and the corpus barely moves, because its generator sets
+each statement on its own line and never had this problem. That is the same finding as 19c's,
+from the other direction: what the corpus cannot model is exactly where the real loss was.
+
+Half B also names one more wrong fill than before, 4 of 5 against 3 of 5, because the fill it
+had to find was beside another statement. Latency is unchanged at about a second a label.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

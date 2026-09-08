@@ -82,6 +82,58 @@ func TestAReadingWithCharactersMissingDoesNotContradict(t *testing.T) {
 	}
 }
 
+// TestADroppedDigitIsNotADifferentValue pins the rule step 20b needed: a
+// detection that clipped the seven off "750 mL" reads a legal 50 mL, and
+// naming it would be a false assertion about the label.
+func TestADroppedDigitIsNotADifferentValue(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	c := Claim{
+		Name: "net", Expected: "750", Required: true,
+		Numeric: &Numeric{
+			Formats:   []NumericFormat{{Template: "{n} mL", Scale: 1}},
+			Valid:     []float64{50, 750},
+			Tolerance: 5,
+		},
+	}
+	v := e.decide(c, buildRuns(regionsOf("50 mL"), 0.5))
+	if v.Status == Mismatch {
+		t.Errorf("a clipped figure was named as a different value: %s %q", v.Status, v.Observed)
+	}
+	// A value that is not the filed one with digits missing is still named.
+	c.Numeric.Valid = []float64{375, 750}
+	v = e.decide(c, buildRuns(regionsOf("375 mL"), 0.5))
+	if v.Status != Mismatch || v.Observed != "375" {
+		t.Errorf("a plainly different fill is %s %q, want MISMATCH 375", v.Status, v.Observed)
+	}
+}
+
+// TestANumberIsTakenFromBesideAnotherStatement pins step 20b's own
+// change: labels print the alcohol content and the fill on one line and
+// the detector returns them together.
+func TestANumberIsTakenFromBesideAnotherStatement(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	c := Claim{
+		Name: "net", Expected: "750", Required: true,
+		Numeric: &Numeric{
+			Formats:   []NumericFormat{{Template: "{n} mL", Scale: 1}},
+			Valid:     []float64{750},
+			Tolerance: 5,
+		},
+	}
+	v := e.decide(c, buildRuns(regionsOf("53%ALC/VOLNET.CONT.750ML"), 0.5))
+	if v.Status != Verified {
+		t.Errorf("a fill beside an alcohol statement is %s (%s), want VERIFIED", v.Status, v.Reason)
+	}
+	if v.Evidence == nil || v.Evidence.Read != "750ML" {
+		t.Errorf("the evidence quotes %q, want the part that matched", v.Evidence.Read)
+	}
+	// A fill inside a longer figure is not that fill.
+	v = e.decide(c, buildRuns(regionsOf("1750ML"), 0.5))
+	if v.Status == Verified {
+		t.Errorf("750 mL verified inside 1750 mL: %+v", v.Evidence)
+	}
+}
+
 // TestAClaimIsNotMatchedInsideALongerLine pins step 16a's lesson in the
 // new representation: the filed brand's words appearing inside a
 // producer's name is not the brand.

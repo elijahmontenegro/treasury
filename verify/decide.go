@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 // The decision layer, rebuilt over recognised text (step 19c). Its rules
@@ -42,6 +43,7 @@ type run struct {
 	box  image.Rectangle
 	text string
 	norm string
+	at   []int    // where each character of norm came from in text
 	nums []string // the numbers in it, as printed
 	conf float64
 }
@@ -62,15 +64,33 @@ var fold = map[rune]rune{
 // an equivalence on merit, and here they cost nothing, because two strings
 // are compared rather than a spelled codeword aligned to ink.
 func normalize(s string) string {
-	rs := []rune(strings.ToUpper(s))
+	n, _ := normalizeIdx(s)
+	return n
+}
+
+// normalizeIdx is normalize with the byte offset in s of the rune that
+// produced each character it kept, so a matched span can be quoted back
+// as the label printed it.
+func normalizeIdx(s string) (string, []int) {
 	var b strings.Builder
+	idx := make([]int, 0, len(s))
+	rs := []rune(s)
+	off := make([]int, len(rs)+1)
+	n := 0
 	for i, r := range rs {
+		off[i] = n
+		n += utf8.RuneLen(r)
+	}
+	off[len(rs)] = n
+	for i, r := range rs {
+		r = unicode.ToUpper(r)
 		if f, ok := fold[r]; ok {
 			r = f
 		}
 		switch {
 		case unicode.IsLetter(r) || unicode.IsDigit(r):
 			b.WriteRune(r)
+			idx = append(idx, off[i])
 		case r == '.' || r == ',':
 			// A separator between two digits is the number, not
 			// punctuation: dropping it makes 4.5 percent and 45 percent
@@ -80,10 +100,12 @@ func normalize(s string) string {
 			// labels that print "14,5%".
 			if i > 0 && i+1 < len(rs) && unicode.IsDigit(rs[i-1]) && unicode.IsDigit(rs[i+1]) {
 				b.WriteRune('.')
+				idx = append(idx, off[i])
 			}
 		}
 	}
-	return b.String()
+	idx = append(idx, off[len(rs)])
+	return b.String(), idx
 }
 
 // distance is the edit distance between two normalized strings as a share
@@ -177,8 +199,16 @@ func buildRuns(regions []Region, minConf float64) []run {
 }
 
 func newRun(box image.Rectangle, text string, conf float64) run {
-	n := normalize(text)
-	return run{box: box, text: text, norm: n, nums: numbers(n), conf: conf}
+	n, at := normalizeIdx(text)
+	return run{box: box, text: text, norm: n, at: at, nums: numbers(n), conf: conf}
+}
+
+// quote gives back the part of a reading a match covered, as printed.
+func (r run) quote(from, to int) string {
+	if from >= to || to >= len(r.at) {
+		return r.text
+	}
+	return strings.TrimSpace(r.text[r.at[from]:r.at[to]])
 }
 
 // adjacent says whether two detections are close enough to be one piece of
@@ -327,9 +357,16 @@ func trimNum(v float64) string {
 
 // scored is one candidate matched against one run.
 type scored struct {
-	cand candidate
-	run  run
-	dist float64
+	cand     candidate
+	run      run
+	dist     float64
+	from, to int
+	// span is how much of the reading the winner was matched against. For
+	// a name it is the whole run; for a number it is the part of the run
+	// the number's own statement occupies, since a label prints the
+	// alcohol content and the fill on one line and a detection returns
+	// them together.
+	span int
 }
 
 // nearest finds the closest run to any candidate the filter admits.
@@ -342,6 +379,9 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 		}
 		n := float64(len(cd.norm))
 		lo, hi := n*(1-radius), n*(1+radius)
+		if cd.num != "" {
+			hi = math.Inf(1) // the reading may hold another statement too
+		}
 		for j := range rs {
 			r := &rs[j]
 			// An alignment cannot be inside the radius when the two
@@ -352,7 +392,19 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 			if cd.num != "" && !holds(r.nums, cd.num) {
 				continue // the number itself has to be read exactly
 			}
-			d := distance(cd.norm, r.norm)
+			// A number is delimited by its own unit, so it can be taken
+			// from inside a longer reading: "750ML" in
+			// "53%ALC/VOLNET.CONT.750ML" is the fill however much else
+			// the detection holds, because the figure has to be a whole
+			// number of the reading and the unit has to sit against it.
+			// A name has no unit to bound it, which is why "Valley Mill"
+			// inside "Valley Mill Distillery" is indistinguishable from
+			// the brand and is not taken (step 16a).
+			d, from, to := distance(cd.norm, r.norm), 0, len(r.norm)
+			if cd.num != "" {
+				d, from, to = infixSpan(cd.norm, r.norm)
+			}
+			span := to - from
 			if d > radius {
 				continue
 			}
@@ -365,11 +417,17 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 				if d > best.dist+1e-9 {
 					continue
 				}
-				if d > best.dist-1e-9 && len(cd.norm) <= len(best.cand.norm) {
+				if d > best.dist-1e-9 && len(cd.norm) < len(best.cand.norm) {
+					continue
+				}
+				// Among readings that fit equally, the smallest one that
+				// holds the match is the evidence: a verdict has to name
+				// the line it rests on, not four lines joined.
+				if d > best.dist-1e-9 && len(cd.norm) == len(best.cand.norm) && span >= best.span {
 					continue
 				}
 			}
-			best = &scored{cand: *cd, run: *r, dist: d}
+			best = &scored{cand: *cd, run: *r, dist: d, span: span, from: from, to: to}
 		}
 	}
 	return best
@@ -428,7 +486,7 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 		return v
 	}
 	ev := &Evidence{
-		Region: win.run.box, Read: win.run.text, Matched: win.cand.text,
+		Region: win.run.box, Read: win.run.quote(win.from, win.to), Matched: win.cand.text,
 		Distance: win.dist, Radius: radius, Confidence: win.run.conf,
 	}
 	if lose != nil {
@@ -443,6 +501,15 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 	switch {
 	case verified:
 		v.Status = Verified
+	case mismatch && digitsDropped(cands, win):
+		// The value named is the claim's own figure with digits missing
+		// from an end, or with digits added to one: a detection that
+		// clipped the seven off "750 mL" reads a legal 50 mL. A reader
+		// drops and doubles characters; it does not usually turn one
+		// legal value into another, and where it could have, the engine
+		// says so instead of naming one.
+		v.Status = Review
+		v.Reason = "figure_incomplete"
 	case mismatch && own != nil && shorterThanClaimed(cands, win):
 		// The reading is shorter than the claim's own value set in the
 		// same printed form, so what separates them could be ink the
@@ -485,7 +552,7 @@ func shorterThanClaimed(cands []candidate, win *scored) bool {
 			best = len(cd.norm)
 		}
 	}
-	return best > 0 && len(win.run.norm) < best
+	return best > 0 && win.span < best
 }
 
 func holds(nums []string, want string) bool {
@@ -507,4 +574,24 @@ func loosen(cands []candidate) []candidate {
 		out[i].num = ""
 	}
 	return out
+}
+
+// digitsDropped says whether the value the winner names is the claim's own
+// figure with digits missing from an end or added to one, printed in the
+// same form. Two values that differ that way are not distinguishable from
+// one value read badly.
+func digitsDropped(cands []candidate, win *scored) bool {
+	if win.cand.num == "" {
+		return false
+	}
+	for i := range cands {
+		cd := &cands[i]
+		if !cd.claimed || cd.form != win.cand.form || cd.num == "" {
+			continue
+		}
+		if strings.Contains(cd.num, win.cand.num) || strings.Contains(win.cand.num, cd.num) {
+			return true
+		}
+	}
+	return false
 }
