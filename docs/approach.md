@@ -3078,52 +3078,114 @@ on its own line, in its own detection; it has no lines split across boxes to joi
 latency *falls*, 3.1 s to 2.7 s on the fifty, because a chain of adjacent detections is a
 smaller set of runs than every slice of the reading order up to four long.
 
+### Step 23c: the next cause, and where it stops (2026-09-08)
+
+23a and 23b were run again on the engine 23b left. Forty-eight claims remained, and the largest
+cause was the boundary rule at 24.
+
+**One thing in it was addressable and is fixed: the regulation's list of responsibility phrases
+was incomplete.** Label 0034 prints `CANNED By THE CROSSING AT BIG CREEK BREWERY`, and "Canned
+by" was not among the phrases `ttb.Responsibility` enumerates, so the accepted spellings the
+application generates did not include the form the label uses. Four phrases were added — canned
+by, canned for, packaged by, brewed and packaged by — from the same source as the rest. The
+fifty go to **144 of 191**, precision 1.00 on all three sets, no false assertion anywhere, 0099
+and 0309 still refused by name.
+
+| cause | claims | brand | class | producer 1 | producer 2 | origin | alcohol | net |
+|---|---|---|---|---|---|---|---|---|
+| read inside one detection, not delimited by punctuation | **23** | 17 | 4 | - | 1 | 1 | - | - |
+| the words are across two detections the builder will not join | **7** | 2 | - | 4 | - | - | 1 | - |
+| matched, outside the radius | **7** | 5 | 1 | - | - | - | - | 1 |
+| printed in a form the enumeration lacks | **5** | - | - | - | - | - | 3 | 2 |
+| not detected at all | **2** | - | - | 1 | 1 | - | - | - |
+| detected and misread | **2** | - | - | 1 | - | - | - | 1 |
+| refused by one of the six rules | **1** | - | - | - | - | - | 1 | - |
+| **all** | **47** | 24 | 5 | 6 | 2 | 1 | 5 | 4 |
+
+**It stops here, and the largest remaining cause is one the engine cannot address: 23 claims the
+boundary rule refuses, of which 14 are refusals it is right to make.** Not by argument — the
+readings say so, and they are listed in `real2/where_lost_23c.md`:
+
+- **Seven brands inside a web address**, `DRINKSUPERLYTESUPERLYTE.COM`, where the claim's letters
+  are part of one unbroken token.
+- **Two inside a social handle**, `followus @theowlsbrew`, the same shape.
+- **Four class designations inside a longer designation**, `INDIA PALE ALE`, `HOLY HAZE M-HAZY
+  PALE ALE`. Step 12b refused "a class designation with a word dropped" on merit and this is that
+  refusal read backwards.
+- **One brand that is the opening of a longer company name**, `Distilled & Bottled by 45th
+  Parallel Spirits, LLC`. That is exactly the shape of step 16a's two false assertions.
+
+Admitting any of them means admitting 0099 and 0309, which print a different brand and carry the
+filed brand's words inside their producer's name. **The other nine are a name with an ordinary
+word beside it** — body copy on three (`spirit of Alpas Vineyards and the`), a French company
+form on one (`SCEA CHATEAU COTE DE BALEAU`), a two-letter fragment on one (`ID TENHEAD`), the
+next statement running on with no mark between on two (`Product of USA ALC.14,5%`,
+`...CA91204USA`), and a responsibility phrase the brand claim has no affixes for on two. Nothing
+in the text distinguishes those from `Valley Mill Company`; distinguishing them needs to know
+what the abutting word *is*, and the regulation's list — now complete — is all the domain data
+this build has to say so with.
+
+**The second cause is out of reach for a measured reason too.** Seven claims matched outside the
+radius, and every one is a single-character recogniser error: `PASSONE NATURA` for PASSIONE
+NATURA at 0.071, `S URCO` for SURCOS at 0.25, `40%alcl` for `40% alc/vol` at 0.25. The radius
+cannot be raised: the ceiling measured at 15b and still binding is **0.077**, because 0036 prints
+`BOURBON WHISKEY` against a filed `BOURBON WHISKY` — one character in thirteen — and anything at
+or above it asserts a class the label does not carry. Choosing a value between 0.071 and 0.077
+to take the one and miss the other would be fitting to the report set, which this build does not
+do.
+
+**What that leaves.** Of the 47, 14 are deliberate refusals, 7 are the recogniser's accuracy
+against a ceiling that cannot move, 5 are printed forms the enumeration lacks, 9 are a name with
+a word beside it, and the remaining 12 are spread across joins, misreads and text never read.
+The fifty verify **144 of the 191 claims they carry**, up from 63 when step 19c first measured
+this engine.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,343 verifications over 550 labels and not one assertion
-the label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and
-on the fifty it correctly reports the absence of **all** the claims the labels do not carry.
+both corpus halves and the fifty**: 2,352 verifications over 550 labels and not one assertion the
+label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
+fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
-**The fifty verify 136 of the 191 claims they carry.** By claim: origin 0.93, net contents 0.92,
-alcohol content 0.86, the permittee 0.58, brand 0.43, class 0.17. On the corpus, where every
-statement gets a line of its own and nothing is printed inside a longer line: net contents 0.89,
-class 0.84, brand 0.79, alcohol content 0.80, origin 0.62, the permittee 0.22.
+**The fifty verify 144 of the 191 claims they carry**, against 63 when step 19c first measured
+this engine. By claim: origin 0.93, net contents 0.92, alcohol content 0.90, the permittee 0.68,
+brand 0.51, class 0.17. On the corpus, where every statement gets a line of its own: net contents
+0.89, class 0.84, brand 0.79, alcohol content 0.80, origin 0.62, the permittee 0.22.
 
-**Where the remaining loss is.** Brand and class, and the two are different problems. A class
-designation filed as "ALE" against a label printing "INDIA PALE ALE" cannot be matched without
-undoing a refusal made on merit at step 12b. A brand is more often a logotype than a line of
-text — one word vertical, one horizontal, a device between them — and the reader returns the
-words while the run builder cannot join two detections of such different shapes.
+**Where the remaining loss is** (step 23c): of the 47, fourteen are refusals the engine makes on
+purpose — a brand inside a web address or a social handle, a class designation inside a longer
+one, a brand that is the opening of a longer company name — seven are single-character
+recogniser errors against a radius ceiling that cannot move, five are printed forms the
+enumeration lacks, nine are a name with an ordinary word beside it, and twelve are spread across
+joins, misreads and text never read.
 
 **A wrong value is named only when the reading is clearly not the filed one.** Half B names 5 of
-the 10 values the corpus prints wrongly on purpose. The other five differ from the filed value
-by about one character in a printed form, and one character is what a recogniser gets wrong, so
-the engine reviews.
+the 10 values the corpus prints wrongly on purpose. The other five differ from the filed value by
+about one character in a printed form, and one character is what a recogniser gets wrong, so the
+engine reviews.
 
 **A verification is about three seconds' work**: median 3.1 s a label on the fifty
-single-threaded, against 21.0 s for the retired engine. Detection runs twice, on the page as
-given and on the page turned a quarter, and every tall box is recognised three ways.
+single-threaded, 95th percentile 6.3 s, against 21.0 s for the retired engine.
 
 ## Limits, stated
 
-- **A brand set as a logotype is read and not verified.** The words come back — `Super`, `Lyte`
-  — but as two detections of different shapes that the run builder will not join, so the claim
-  is never compared to them together. This is the largest single thing left.
-- **A claim printed inside more of the same kind of text is not found**, and that is deliberate:
-  a class designation inside a longer designation, a brand inside a longer company name, a
-  brand inside a web address. Step 21a lists the seven on the fifty; undoing the refusal is how
-  step 16a made two false assertions.
-- **A name is taken from inside a longer line only where punctuation, a digit, or the edge of
-  the detection delimits it**; a number is taken wherever its figure and unit are, since the
-  unit delimits it.
+- **A claim printed inside more of the same kind of text is refused, and that is deliberate.**
+  Twenty-three claims on the fifty sit inside a longer reading; fourteen of those are a brand
+  inside a URL or a handle, a class inside a longer designation, or a brand opening a longer
+  company name. Admitting them means admitting the two false assertions of step 16a.
+- **A name is taken from inside a longer line only where punctuation, a digit, or the edge of the
+  detection delimits it**; a number is taken wherever its figure and unit are, since the unit
+  delimits it. Where an ordinary word abuts the name instead, nothing in the text distinguishes
+  it from a longer name, and only knowing what that word *is* would.
+- **The free-text radius cannot be raised above 0.077**, because 0036 prints "BOURBON WHISKEY"
+  against a filed "BOURBON WHISKY". Seven claims are lost to single-character recogniser errors
+  under that ceiling.
 - **A wrong value one character away from the filed one is reviewed, not named.**
 - **The corpus cannot price several things** the fifty can: a printed string within a few
   characters of a claim the label does not carry; the statutory statement of responsibility,
-  whose phrase its generator files as part of the permittee's name; and statements printed on
-  one line, which it always gives lines of their own.
+  whose phrase its generator files as part of the permittee's name; statements printed on one
+  line; and a printed line arriving as two detections. It has moved for none of the last five
+  steps while the fifty moved from 63 to 144.
 - **The engine verifies text, not layout.** A claim matched anywhere on the label is verified.
-- **The models are pretrained and general.** Nothing here was trained on labels, which is why
-  the font partition that step 8a built no longer constrains anything; it is kept because the
-  corpus generator still draws from it. The 113 MB PP-OCRv4 server detector was measured at step
-  21c and did not earn twenty-four times the size.
+- **The models are pretrained and general.** Nothing here was trained on labels. The 113 MB
+  PP-OCRv4 server detector was measured at step 21c and did not earn twenty-four times the size.

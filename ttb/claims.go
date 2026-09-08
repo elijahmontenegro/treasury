@@ -180,6 +180,7 @@ var Responsibility = []string{
 	"Blended by", "Vinted and Bottled by", "Cellared and Bottled by",
 	"Made and Bottled by", "Manufactured by", "Packed by", "Prepared by",
 	"Brewed by", "Brewed and Bottled by", "Brewed and Canned by",
+	"Canned by", "Canned for", "Brewed and Packaged by", "Packaged by",
 	"Imported by", "Imported and Bottled by", "Sole Agent",
 }
 
