@@ -36,6 +36,12 @@ type Printed struct {
 	// is scored against its filed values as before.
 	Carried map[string]string `json:"carried,omitempty"`
 
+	// Which statements this label sets across two lines, so the detector
+	// returns them in pieces (amendment step 27d). Recorded so the corpus
+	// can be measured back against the population on this, as step 10b's
+	// conventions are.
+	Split map[string]bool `json:"split,omitempty"`
+
 	// The conventions real labels showed (amendment step 5a), at the
 	// frequencies seen in ten registry labels.
 	ClaimFaces  map[string]string `json:"claim_faces,omitempty"` // face per claim; a claim set in the body face shares the warning's alphabet
@@ -182,8 +188,22 @@ func Generate(rng *rand.Rand, pool FacePool, errorRate float64) (synth.Document,
 		ABV: exp.ABV, NetML: exp.NetML, BodyFace: body.Name, HeavyFace: heavy.Name, BrandFace: brandFace.Name,
 		ClaimFaces: claimFaces, WarningCaps: caps, Inverted: inverted, Vertical: vertical, Crowded: crowded,
 	}
+	// Which statements the detector will be made to return in pieces.
+	// The rate is the population's, measured at 27d from the fifty's own
+	// verdicts, and it is drawn per claim because that is the figure that
+	// differs: 0.45 of the claims the fifty verify are matched across a
+	// chain against 0.25 on the corpus, while the share of labels
+	// carrying at least one was already the same.
+	split := map[string]bool{}
+	for _, c := range []string{"brand", "class", "producer", "origin", "abv", "net"} {
+		if rng.Float64() < Measured().SplitStatement {
+			split[c] = true
+		}
+	}
+	pr.Split = split
 	v := Variant{BodyFace: body.Name, HeavyFace: heavy.Name, BrandFace: brandFace.Name,
-		ClaimFaces: claimFaces, WarningCaps: caps, Vertical: vertical, Crowded: crowded}
+		ClaimFaces: claimFaces, WarningCaps: caps, Vertical: vertical, Crowded: crowded,
+		Split: split}
 	if rng.Float64() < errorRate {
 		switch pr.Error = []string{"wrong_abv", "wrong_net", "title_header", "regular_header", "wording", "missing_abv", "missing_net", "missing_class", "wrong_brand", "wrong_class"}[rng.Intn(10)]; pr.Error {
 		case "wrong_brand":
@@ -376,22 +396,55 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		}
 		return v.BodyFace
 	}
-	item := func(text, face string, px float64, y int, claim string) {
+	// A statement the population sets across two lines is emitted as two
+	// items on consecutive lines, cut at the word boundary nearest the
+	// middle, so the detector returns it in pieces and the run builder
+	// has to chain them before a claim can be compared (step 27d). The
+	// second line is indented a little, as a wrapped line on a real label
+	// is, which also gives the adjacency test something to be tested by:
+	// the halves still overlap in x by far more than half their width.
+	//
+	// It returns the height it used, since a split statement takes two
+	// lines where the caller budgeted one.
+	item := func(text, face string, px float64, y int, claim string) int {
 		if text == "" {
-			return
+			return 0
 		}
-		doc.Items = append(doc.Items, synth.Item{Text: text, Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim, Ink: inkAt(y)})
+		ink := inkAt(y)
+		cut := -1
+		if v.Split[claim] {
+			mid := len(text) / 2
+			for off := 0; off < len(text)/2; off++ {
+				if mid-off > 0 && text[mid-off] == ' ' {
+					cut = mid - off
+					break
+				}
+				if mid+off < len(text) && text[mid+off] == ' ' {
+					cut = mid + off
+					break
+				}
+			}
+		}
+		if cut <= 0 {
+			doc.Items = append(doc.Items, synth.Item{Text: text, Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim, Ink: ink})
+			return 0
+		}
+		drop := int(px * 1.15)
+		doc.Items = append(doc.Items,
+			synth.Item{Text: text[:cut], Face: face, Px: px, X: cx, Y: y, Center: true, Claim: claim, Ink: ink},
+			synth.Item{Text: text[cut+1:], Face: face, Px: px, X: cx + int(px), Y: y + drop, Center: true, Claim: claim, Ink: inkAt(y + drop)})
+		return drop
 	}
 	step := func(mult float64) int { return int(math.Round(wpx * mult * (0.9 + rng.Float64()*0.3))) }
 
 	y := int(float64(h)*0.06) + rng.Intn(max(1, h/20))
-	item(pr.Brand, v.BrandFace, size(3.0+rng.Float64()), y, "brand")
+	y += item(pr.Brand, v.BrandFace, size(3.0+rng.Float64()), y, "brand")
 	y += step(4.5)
 	if rng.Intn(2) == 0 {
 		item([]string{"SMALL BATCH", "ESTATE BOTTLED", "LIMITED RELEASE", "CRAFT BREWED"}[rng.Intn(4)], v.HeavyFace, size(1.5), y, "")
 		y += step(3)
 	}
-	item(pr.Class, face("class"), size(1.8+rng.Float64()*0.6), y, "class")
+	y += item(pr.Class, face("class"), size(1.8+rng.Float64()*0.6), y, "class")
 	y += step(3.2)
 	if rng.Intn(2) == 0 {
 		item([]string{"AGED 8 YEARS", "Batch No. 12 - Est. 1887", "Distilled from grain", "Vintage 2019", "Unfiltered"}[rng.Intn(5)], v.BodyFace, size(1.3), y, "")
@@ -409,21 +462,21 @@ func layout(rng *rand.Rand, pr Printed, v Variant) synth.Document {
 		)
 		y += step(3.2)
 	} else {
-		item(pr.ABVText, face("abv"), npx, y, "abv")
+		y += item(pr.ABVText, face("abv"), npx, y, "abv")
 		if pr.ABVText != "" {
 			y += step(2.4)
 		}
-		item(pr.NetText, face("net"), npx, y, "net")
+		y += item(pr.NetText, face("net"), npx, y, "net")
 		if pr.NetText != "" {
 			y += step(3.2)
 		}
 	}
 	ppx := size(1.2 + rng.Float64()*0.3)
 	for _, line := range pr.Producer {
-		item(line, face("producer"), ppx, y, "producer")
+		y += item(line, face("producer"), ppx, y, "producer")
 		y += int(ppx * 1.4)
 	}
-	item(pr.Origin, face("origin"), ppx, y, "origin")
+	y += item(pr.Origin, face("origin"), ppx, y, "origin")
 	y += step(4)
 
 	text := Statute

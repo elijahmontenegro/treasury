@@ -87,6 +87,13 @@ type Variant struct {
 	WarningCaps     bool              // the warning set in capitals, as half of real labels do
 	Vertical        bool              // the warning set vertically along a side
 	Crowded         bool              // rows of other text in the warning's size directly above and below it
+
+	// Claims whose printed statement is set across two lines, so the
+	// detector returns it in pieces and a run has to be chained before
+	// the claim can be compared to it (amendment step 27d). Real labels
+	// do this constantly - a permittee's name and its address wrap, a
+	// figure parts from its unit - and the corpus did not do it at all.
+	Split map[string]bool
 }
 
 // LabelDocument lays exp out as a compliant spirits label for the generator.

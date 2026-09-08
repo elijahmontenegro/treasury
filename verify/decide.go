@@ -636,7 +636,7 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 			v.Evidence = &Evidence{
 				Region: near.run.box, Read: near.run.quote(near.from, near.to),
 				Matched: near.cand.text, Distance: near.dist, Radius: radius,
-				Confidence: near.run.conf,
+				Confidence: near.run.conf, Parts: near.run.parts,
 			}
 		}
 		return v
@@ -656,6 +656,7 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 	ev := &Evidence{
 		Region: win.run.box, Read: win.run.quote(win.from, win.to), Matched: win.cand.text,
 		Distance: win.dist, Radius: radius, Confidence: win.run.conf,
+		Parts: win.run.parts,
 	}
 	if lose != nil {
 		ev.Competitor = lose.cand.text

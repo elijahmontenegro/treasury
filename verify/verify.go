@@ -130,6 +130,11 @@ type Evidence struct {
 	Competitor string          `json:"competitor,omitempty"`
 	CompDist   float64         `json:"competitor_distance,omitempty"`
 	Reading    string          `json:"reading,omitempty"` // the number parsed, for a numeric claim
+	// How many detections were joined to make the reading. A verdict
+	// resting on a chain of four is different evidence from one resting
+	// on a single detection, and the doc has described runs as chains
+	// since step 23b without the evidence saying which a verdict used.
+	Parts int `json:"parts,omitempty"`
 }
 
 // Verdict is the answer for one claim.

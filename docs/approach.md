@@ -3900,10 +3900,79 @@ and adopting a distance is an engine change that has to be measured on all three
 precision as its constraint. What the measurement supports is a candidate for a step of its own:
 the shape-confusable set at half cost, which on this evidence buys five claims and costs nothing.
 
+### Step 27d: the corpus splits its statements (2026-09-08)
+
+Step 26d measured the gap and named its cause: the fifty arrive as 3.5 runs chained per
+detection and the corpus as 1.7, because the generator gave every statement its own line, so a
+detection was a statement and a run was a detection and every gain from step 20b through 23b had
+nothing in the corpus to bite on.
+
+**The rate comes from the population by measurement, as step 10b's parameters did.** Step 27d
+added the chain length to the evidence — a verdict resting on four joined detections is different
+evidence from one resting on a single detection, and the doc has described runs as chains since
+23b without recording which a verdict used — and it says that **69 of the 154 claims the fifty
+verify are matched across a chain, 0.45**, on 35 of the 50 labels. `Population.SplitStatement` is
+0.45, drawn per claim, and `ttb.Variant.Split` names the claims a label sets across two lines,
+cut at the word boundary nearest the middle with the second line indented, which is what a
+wrapped line on a real label looks like: `Produced and Bottled by` / `Mill Harbor Crown Company`,
+`Asheville, North` / `Carolina 28801`. 484 of the 500 labels carry at least one.
+
+## How much joining a label now needs
+
+| | runs chained per detection | verified claims matched across a chain | labels with at least one |
+|---|---|---|---|
+| the fifty | 3.47 | 0.45 | 0.70 |
+| corpus half A, before | 1.70 | 0.25 | 0.68 |
+| corpus half A, after | 2.12 | 0.52 | 0.90 |
+
+Chain lengths, the fifty then the split corpus: {1: 85, 2: 29, 3: 13, 4: 27} and {1: 556, 2: 396, 3: 27, 4: 190}.
+
+## Transfer, corpus half B against the fifty
+
+| claim | the fifty | half B before the split | half B after | gap after | within 0.15 |
+|---|---|---|---|---|---|
+| brand | 0.55 | 0.76 | 0.86 | 0.31 | **no** |
+| class | 0.43 | 0.87 | 0.89 | 0.46 | **no** |
+| producer_1 | 0.84 | 0.27 | 0.40 | 0.45 | **no** |
+| producer_2 | 0.67 | 0.36 | 0.47 | 0.20 | **no** |
+| origin | 0.93 | 0.66 | 0.81 | 0.12 | yes |
+| abv | 0.92 | 0.78 | 0.84 | 0.08 | yes |
+| net | 0.94 | 0.85 | 0.82 | 0.12 | yes |
+
+3 of 7 within the tolerance stated before the run. The split moved 4 of 7 toward
+the fifty and 3 away.
+
+**The gate is met on the thing 26d identified and not on the number the gate named, and the two
+are different measurements.** Claims that have to be chained before they can be compared went
+from 0.25 to **0.52** against the fifty's 0.45 — inside the tolerance, and slightly past the
+target. Runs chained per detection went from 1.70 to **2.12** against the fifty's 3.47, a gap of
+1.35 against a stated tolerance of 0.5, and that is not met.
+
+**Why the second did not follow the first.** Runs per detection is not a measure of split
+statements; it measures how densely detections sit near one another, since every detection that
+has neighbours starts chains through all of them. Splitting a statement gives it one neighbour.
+A real label's back panel packs a dozen statements of body copy at one type size into a block,
+and every one of those detections is adjacent to several others, so each contributes many chains.
+Reproducing that is a change to how crowded the corpus is, not to how its statements are split,
+and it is a separate thing to build.
+
+**Transfer: three of seven claims within 0.15, and the split moved four of seven toward the
+fifty.** Origin, alcohol content and net contents transfer. The four that do not divide into two
+kinds, and neither is about splitting. The corpus is much **easier** than the fifty on brand
+(0.86 against 0.55) and class (0.89 against 0.43), because a real brand is a display logotype and
+a real class designation hides inside a longer one, which steps 23c and 27a showed are the
+refusals the engine makes on purpose. And it is much **harder** on the permittee (0.40 against
+0.84), for a reason step 19c already recorded: the generator files the prescribed statement of
+responsibility as part of the permittee's name where the registry files the name alone, so the
+corpus's producer claim is a harder object than the real one and has been since 19c.
+
+Precision is 1.00 on every claim of both halves of the rebuilt corpus and the fifty: 2,563
+verifications, no false assertion.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,459 verifications over 550 labels and not one assertion the
+both corpus halves and the fifty**: 2,563 verifications over 550 labels and not one assertion the
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
 

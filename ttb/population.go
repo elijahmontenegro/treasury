@@ -70,6 +70,16 @@ type Population struct {
 
 	// A third of the marks on a label are light on dark.
 	LightShare float64
+
+	// How often a printed statement arrives as more than one detection,
+	// so a run has to be built before a claim can be compared to it.
+	// Measured at step 27d from the fifty's own verdicts, using the
+	// chain length step 27d added to the evidence: 69 of the 154 claims
+	// they verify are matched across a chain rather than a single
+	// detection, on 35 of the 50 labels. Step 26d is why it is here at
+	// all - the corpus gave each statement its own line, so every gain
+	// from step 20b through 23b had nothing in it to bite on.
+	SplitStatement float64
 }
 
 // Measured is the population as measured on the fifty.
@@ -83,6 +93,12 @@ func Measured() Population {
 		DarkGround: 209, LightGround: 106,
 		ContrastLow: 0.22, ContrastHigh: 0.50,
 		LightShare: 0.34,
+		// 69 of 154 verified claims on the fifty are matched across a
+		// chain of detections (0.45); half A managed 0.25. The rate is
+		// applied per claim, so it is the claim-level figure and not the
+		// label-level one (0.70 of labels carry at least one, and half A
+		// already reaches 0.68 - it is the share of CLAIMS that differs).
+		SplitStatement: 0.45,
 	}
 }
 
