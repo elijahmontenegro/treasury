@@ -3624,6 +3624,88 @@ statement, how often a statement spans two boxes, how often a line is taller tha
 its own step, and it is worth saying that the corpus has cost more than it has caught since the
 pivot: it has held precision, which is not nothing, and it has found no defect since 21b.
 
+### Step 27a: the 24, named one at a time (2026-09-08)
+
+The fifty carry 192 claims and verify 154. Fourteen of the 38 left are the refusals step 23c
+listed as correct — seven brands inside a web address, two inside a social handle, four class
+designations inside a longer designation, and 0038's brand opening a longer company name — and
+they are excluded here by name, taken from `real2/where_lost_23c.md` rather than re-derived.
+These are the other 24, listed before they are grouped.
+
+**Why the order matters.** Every earlier survey of this loss reported buckets, and the bucket
+names have twice been wrong about their own contents: step 20c found that 20a's threshold put
+25 never-read claims in a "misread" bucket, and step 25c found that 23a's "printed in a form the
+enumeration lacks" was five claims of recogniser damage. A bucket name is a hypothesis. So the
+claim comes first, with the reading quoted beside the distance that reading actually produced,
+and the grouping is done afterwards from what the twenty-four turned out to say.
+
+| label | claim | filed | the nearest reading | d | what would have to be true |
+|---|---|---|---|---|---|
+| 0002 | producer_1 | `OZ TRADING GROUP INC` | `Importedbradiup,al7 + SPICY SANDIA` | 0.41 | the nearest reading is a poor match; the text may not be read at all |
+| 0002 | producer_2 | `2806 E NOGAL AVE Hidalgo TX 78` | `Benzoate (as a preservative), lodized Salt, ` | 0.67 | nothing in the image resembles it: it was never read |
+| 0004 | abv | `40` | `40%alcl` | 0.25 | the figure is read but the reading around it is damaged, so no spelling of it fits |
+| 0005 | abv | `40` | `40% alcl.` | 0.25 | the figure is read but the reading around it is damaged, so no spelling of it fits |
+| 0024 | brand | `OWL'S BREW` | `Iteamedupwith Owl'sBrew to` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0025 | brand | `OWL'S BREW` | `IteamedupwithOwl'sBrew to` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0029 | brand | `20 SURCOS` | `S URCO + SUMR OO` | 0.25 | the reading is damaged: 7 characters would have to come back |
+| 0030 | brand | `20 SURCOS` | `RFC: PAGN9006285U0 + SURCOS` | 0.12 | the near pair is spurious - two unrelated detections - and the adjacency test refuses it correctly |
+| 0031 | brand | `20 SURCOS` | `RFC: PAGN9006285U0 + SURCOS` | 0.12 | the near pair is spurious - two unrelated detections - and the adjacency test refuses it correctly |
+| 0032 | brand | `20 SURCOS` | `RFC: PAGN9006285U0 + S URCOS` | 0.12 | the near pair is spurious - two unrelated detections - and the adjacency test refuses it correctly |
+| 0033 | brand | `BODEGAS Y VINEDOS VEGA DE YUSO` | `Produced and Elaborated by BODEGAS YVINEDOS ` | 0.00 | printed whole across two ADJACENT detections, whole-run distance 0.16: the boundary rule would have to look inside a chain, not one detection |
+| 0034 | brand | `THE CROSSING AT BIG CREEK BREW` | `CANNED By THE CROSSING AT BIG CREEK BREWERY` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0034 | net | `355` | `12 FL. 0Z. * ALC. 5.5%o BY VOL.` | 0.17 | the figure is read but the reading around it is damaged, so no spelling of it fits |
+| 0035 | producer_1 | `SVP Winery, SVP Winery, LLC` | `VINEYARDS + VINEYARDS` | 0.33 | the nearest reading is a poor match; the text may not be read at all |
+| 0039 | abv | `40` | `AC40% byvlR` | 0.20 | the figure is read but the reading around it is damaged, so no spelling of it fits |
+| 0041 | abv | `60` | `Proof + 120roor 6` | 0.00 | the near pair is spurious - two unrelated detections - and the adjacency test refuses it correctly |
+| 0042 | brand | `ALPAS VINEYARDS` | `spirit of Alpas Vineyards and the` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0043 | brand | `TENHEAD` | `ID TENHEAD` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0043 | net | `1000` | `KNOWLTON` | 0.50 | the figure is read but the reading around it is damaged, so no spelling of it fits |
+| 0044 | brand | `NOTRE DAME WINES` | `Bottled by Vinovae, Sonoma, CA for Notre Dam` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0044 | net | `50` | `Contains sulfites, Product of USA ALC.14,5% ` | 0.25 | the reading is damaged: 8 characters would have to come back |
+| 0044 | origin | `Product of USA` | `Contains sulfites, Product of USA ALC.14,5% ` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0048 | brand | `CHATEAU COTE DE BALEAU` | `SCEA CHATEAU COTEDE BALEAU,PROPRIETAIRE` | 0.00 | printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends |
+| 0050 | producer_1 | `GRAPEVINE DISTRIBUTORS, GRAPEV` | `ImPOrTed by: CRaPEViNE + DISTRIBUTORS CONCOR` | 0.03 | printed whole across two ADJACENT detections, whole-run distance 0.18: the boundary rule would have to look inside a chain, not one detection |
+
+## Grouped, after the listing
+
+- **8** printed whole inside one detection, undelimited: a mark, a digit or the edge would have to stand at both ends
+- **5** the figure is read but the reading around it is damaged, so no spelling of it fits
+- **4** the near pair is spurious - two unrelated detections - and the adjacency test refuses it correctly
+- **2** the nearest reading is a poor match; the text may not be read at all
+- **2** printed whole across two ADJACENT detections, whole-run distance N: the boundary rule would have to look inside a chain, not one detection
+- **1** nothing in the image resembles it: it was never read
+- **1** the reading is damaged: 7 characters would have to come back
+- **1** the reading is damaged: 8 characters would have to come back
+
+**A correction the listing forced, in the first draft of this very table.** The pair probe joins
+any two detections in either order and ignores adjacency, so a small pair distance was reported
+as "both halves are read". It is not. On 0030, 0031 and 0032 the `20` of `20 SURCOS` comes from
+a tax registration number, `RFC: PAGN9006285U0`, sitting 169 pixels away from the brand against a
+type height of 19. Four of the twenty-four are near pairs of that kind, and the engine's adjacency
+test refuses every one of them correctly. Each pair is now put through that test before it is
+described, which is how the two genuine ones were told from the four spurious ones.
+
+**The two genuine ones are a limit I set on purpose at step 21b, and it is the finding of this
+step.** On 0050 the permittee is printed across two detections that are stacked one pixel apart
+at a type height of 27 — `ImPOrTed by: CRaPEViNE` and `DISTRIBUTORS CONCORD,` — and on 0033 the
+brand across two stacked eleven pixels apart at a height of 52. The chain builder joins them: the
+whole-run distances are 0.178 and 0.160, just outside the radius of 0.14, because the joined text
+carries the responsibility phrase and the address as well as the claim. Step 21b's boundary rule
+is what takes a claim out of a longer reading, and it was deliberately restricted to a **single**
+detection, on the reasoning that "a join is this engine's construction rather than a printed
+line". Step 23b then made a run a chain of adjacent detections and did not revisit that
+restriction. These two are one printed line that the detector happened to cut in half.
+
+**A correction to step 26c.** It reported nine names refused for want of a delimiter. Eight is
+the number on the engine as it stands: 0037's producer address verifies at a distance of 0.103,
+inside the radius step 25a widened to 0.14. 26c measured from `out/why24b.jsonl`, the diagnostic
+file written at step 24b, which predates that widening — the file was reused rather than
+regenerated, and the count is one stale. The finding of 26c is unaffected: the abutting word
+still separates the remaining eight the wrong way round, and none of them is followed by a
+generic trade term.
+
+No fix in this step.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
