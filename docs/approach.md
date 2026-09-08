@@ -2235,6 +2235,115 @@ always for.
 not what the engine will verify. Recovery is a ceiling on recall and says nothing about
 precision, which 19c gates.
 
+### Step 19c: verification over recognised text (2026-09-07)
+
+The decision layer is the part of this build that has always worked, and it is rebuilt
+unchanged in principle. What a claim is compared to is now text rather than a spelled
+codeword, so the comparison is an edit distance over the claim's own length; everything above
+that is the same rule.
+
+**A candidate region is a run of adjacent detections, not a detection.** Step 19b found a
+producer's name arriving as three detections of one printed line, so runs of up to four
+detections contiguous in reading order are formed, joined only where the members really are
+adjacent — a gap no wider than the type is tall on one line, or successive lines overlapping
+across more than half their width. A detection the recogniser was not sure of is dropped
+before any joining, so a garbage reading cannot be half of a match. Nothing is matched as a
+*substring* of a longer line: that is exactly how "Valley Mill" inside a producer's name
+became a false brand at step 16a, and the detector's own segmentation is what now says where a
+piece of printed text begins and ends.
+
+**Case, accents, punctuation and spacing are set aside** — step 12b's adopted equivalences,
+which cost an alignment penalty there and cost nothing here. One exception, and the first run
+found it the hard way: a separator between two digits is part of the number, not punctuation.
+Dropping it made "4.5% ALC/VOL" and "45% ALC/VOL" the same string and the engine asserted 45
+percent alcohol on three labels printing 4.5.
+
+**A number is chosen among values, not matched as a string.** Every value the field may legally
+hold, in every printed form the regulation allows, is a candidate; the winner names a value.
+The rule is the spec's own 7.3: the claim's own value is measured against the reading, every
+other legal value is measured against the same reading, and the two distances decide.
+
+**The margin is not symmetric, and that is the step's substantive finding.** Agreeing with the
+application needs no margin; contradicting it must be won by one. The reason is not that the
+two errors differ in gravity — both are false assertions — but that the application is prior
+information, and a reading that fits the filed value and fits another legal value nearly as
+well has not overturned it. Measured with a symmetric rule, a recogniser that dropped the point
+in "8.5% alc/vol" reads a legal 85% and the engine asserts it; four half-A labels and two
+half-B labels failed that way. With the asymmetric rule none does, and the engine still names
+every value the corpus prints wrongly on purpose that it can tell apart.
+
+**A verdict may not contradict the application on a reading with characters missing.** Half B's
+next two false assertions were dropped characters — "13% ABV" read as "3%ABV", "ALC. 7.5% BY
+VOL." read as "ALC. 7.% BYVOL" — where what separates the two values is exactly the ink the
+recogniser lost. When the reading is shorter than the claim's own value set in the same printed
+form, and that value is near the reading in the first place, the engine reviews rather than
+contradicts. That is step 7a's completeness rule, restated: it was made for a reader that cut
+glyphs, and a detector and a recogniser drop characters too.
+
+**And the number itself is read exactly.** A wrong digit inside "ALC. 4.1% BY VOL." is a twelfth
+of the string, which any usable radius admits, so a claim of 5.1 percent would verify against a
+label printing 4.1. The radius is for the words around a number, not for the number: a numeric
+candidate matches only when its printed figure appears in the reading as a whole run of digits.
+That rule then needed one more distinction, which a false assertion on 0377 forced. The claim's
+own value plays two parts — the thing to verify, and the thing the margin protects — and they
+need different searches. "(10 Proof)" read as "(101Proof)" holds no "10", so the filed value
+cannot verify; but it is still visible a margin away, and that is what says the reading is
+ambiguous rather than decisive. Searched only exactly, the filed value disappeared and the
+engine named a hundred and one proof.
+
+**The constants.** Fitted on half A of the corpus with precision as a hard constraint, and
+recorded in `verify.Adopted` so 15a's tests cover them: free-text radius **0.07**, numeric
+radius **0.12**, margin **0.15**. The confidence floor is **insensitive** and stays at 0.5 —
+half A verifies 1047, 1047 and 1045 claims at floors of 0.0, 0.5 and 0.7 — so it is recorded as
+insensitive in the way step 10c's protocol requires rather than left as inherited.
+
+| claim | corpus at 14d | corpus now | its precision | the fifty at 14d | the fifty now | its precision | absences reported | wrong values named |
+|---|---|---|---|---|---|---|---|---|
+| brand | 0.19 | 0.74 | 1.00 | 0.08 | 0.35 | 1.00 | 1 | 0 of 6 |
+| class | 0.18 | 0.81 | 1.00 | 0.00 | 0.00 | -- | 44 | 0 of 3 |
+| producer, first line | 0.15 | 0.18 | 1.00 | 0.11 | 0.26 | 1.00 | 31 | 0 of 0 |
+| producer, second line | 0.21 | 0.26 | 1.00 | 0.00 | 0.33 | 1.00 | 47 | 0 of 0 |
+| origin | 0.22 | 0.55 | 1.00 | 0.43 | 0.64 | 1.00 | 0 | 0 of 0 |
+| alcohol content | 0.12 | 0.79 | 1.00 | 0.04 | 0.40 | 1.00 | 0 | 2 of 5 |
+| net contents | 0.15 | 0.86 | 1.00 | 0.12 | 0.22 | 1.00 | 0 | 3 of 5 |
+
+Precision is **1.00 on every claim of all three sets** — 2112 verifications over 550 labels and
+not one false assertion — which is the gate. On the corpus recall rises by between 1.2 times (the producer's
+two lines) and 6.6 times (alcohol content); on the fifty by between nothing at all (class) and
+ten times (alcohol content). The median latency is **1.0 s** against 17.9 s: reading a whole
+region at once is both more accurate and seventeen times faster than cutting it into glyphs.
+
+The fifty verify **63 of the 191 claims they carry**, against 20 of 188 at 14d.
+
+**What the step cost, stated with what it bought.** The completeness rule turns wrong values
+the engine would otherwise name into reviews: half B named 7 of the 10 values the corpus
+prints wrongly on purpose before it and 5 after. That is the honest trade — the engine cannot
+tell "the label prints 8 per cent" from "the label prints 18 per cent and the recogniser dropped the 1", and
+reviewing is the right answer to a question it cannot answer.
+
+**Two things the corpus cannot price, stated rather than smoothed.** It never prints a string
+within a few characters of a claim it does not carry, so half A shows no false assertion at any
+free-text radius up to 0.25 and would have chosen the widest; the fifty do print one — 0036
+sets "BOURBON WHISKEY" against a filed "BOURBON WHISKY", one character in thirteen — so the
+ceiling of 0.077 comes from the report set and not from the tuning half, and 0.07 is chosen
+below it. And its generator files the statutory phrase *as part of* the permittee's name where
+the registry files the name alone, so it cannot price the statement of responsibility either
+(below).
+
+**One domain rule adopted on merit**, by step 12b's standard. The regulation prescribes that a
+permittee is named as "Bottled by <name>" and the application files the name alone, so the
+prescribed phrase before the name and the filed address after it are accepted spellings of the
+same claim. Every piece comes from the regulation or from the application, never from the
+label, and no phrase on the list can let a different entity satisfy the claim. It takes the
+fifty's producer recall from **0.00 to 0.26** — five labels, every one at a distance of 0.026
+or less, with no false assertion — and changes nothing on the corpus, for the reason above.
+
+**Refused, and each refusal is step 12b's own:** matching a claim as a substring of a longer
+line, and matching a class designation inside a longer one, which is 12b's refusal of "a class
+designation with a word dropped" read backwards. Both would have bought recall. The class row
+on the fifty is 0 of 6 for exactly that reason: five of the six labels print a longer
+designation containing the filed one.
+
 ## What the numbers say
 
 Precision of VERIFIED is the number that matters for a compliance tool, and it holds at 0.97 to 1.00 on every claim: the engine does not confirm a wrong value. Where it lacks evidence it says REVIEW or NOT_FOUND. The seven brand verdicts counted against precision are labels whose producer line names the applicant's company with the expected brand words ("Distilled and Bottled by Highland Gate Company" under a brand line reading something else); the engine found the brand text where it genuinely is. A caller that needs the brand on the brand line must say so; the engine verifies text, not layout.

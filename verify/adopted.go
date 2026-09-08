@@ -33,13 +33,14 @@ type Constant struct {
 // Adopted is every constant the build has adopted, with the step that
 // adopted it. A constant present here and different in the code is a defect.
 var Adopted = []Constant{
-	{"radius", 0.15, "19a, to be refitted in 19c", "Options.Radius"},
-	{"tie", 0.05, "19a, to be refitted in 19c", "Options.TieMargin"},
+	{"radius", 0.07, "19c", "Options.Radius"},
+	{"numeric_radius", 0.12, "19c", "Options.NumericRadius"},
+	{"tie", 0.15, "19c", "Options.TieMargin"},
 	{"min_confidence", 0.5, "19a, to be refitted in 19c", "Options.MinConfidence"},
 }
 
 // TuneNames is every constant a sweep may set.
-var TuneNames = []string{"radius", "tie", "min_confidence"}
+var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence"}
 
 // applyOptions writes the overrides a sweep asked for.
 func applyOptions(o Options) Options {
@@ -53,6 +54,7 @@ func applyOptions(o Options) Options {
 		}
 	}
 	set("radius", func(v float64) { o.Radius = v })
+	set("numeric_radius", func(v float64) { o.NumericRadius = v })
 	set("tie", func(v float64) { o.TieMargin = v })
 	set("min_confidence", func(v float64) { o.MinConfidence = v })
 	return o
@@ -69,6 +71,8 @@ func liveIn(c Constant, o Options) (float64, error) {
 	switch c.Where {
 	case "Options.Radius":
 		return o.Radius, nil
+	case "Options.NumericRadius":
+		return o.NumericRadius, nil
 	case "Options.TieMargin":
 		return o.TieMargin, nil
 	case "Options.MinConfidence":

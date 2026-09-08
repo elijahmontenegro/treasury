@@ -157,6 +157,11 @@ type Options struct {
 	// Radius is how far a claim's text may be from what was read and still
 	// be that claim, as a share of the claim's length.
 	Radius float64
+	// NumericRadius is the same bound for a claim that is a number in a
+	// unit. The two have been measured separately since step 16b, where
+	// the free-text distributions and the numeric ones behaved
+	// differently, and they are fitted separately here.
+	NumericRadius float64
 	// TieMargin is how much closer the winner must be than the nearest
 	// candidate of a different value.
 	TieMargin float64
@@ -169,10 +174,13 @@ type Options struct {
 
 func (o Options) withDefaults() Options {
 	if o.Radius == 0 {
-		o.Radius = 0.15
+		o.Radius = 0.07
+	}
+	if o.NumericRadius == 0 {
+		o.NumericRadius = 0.12
 	}
 	if o.TieMargin == 0 {
-		o.TieMargin = 0.05
+		o.TieMargin = 0.15
 	}
 	if o.MinConfidence == 0 {
 		o.MinConfidence = 0.5
@@ -217,23 +225,12 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	if len(res.Regions) == 0 {
 		res.Reason = "no_text"
 	}
+	rs := buildRuns(res.Regions, e.opt.MinConfidence)
 	for _, c := range claims {
-		res.Claims = append(res.Claims, e.decide(c, res.Regions))
+		res.Claims = append(res.Claims, e.decide(c, rs))
 	}
 	stamp(&res)
 	return res, nil
-}
-
-// decide judges one claim against what was read. Step 19c gives it the
-// distance, the margin and the numeric reading; until then it reports the
-// claim as not found so that the engine never asserts what it has not
-// judged.
-func (e *Engine) decide(c Claim, regions []Region) Verdict {
-	status := NotFound
-	if !c.Required {
-		status = Skipped
-	}
-	return Verdict{Claim: c.Name, Status: status, Reason: "no_decision", Expected: c.Expected}
 }
 
 // stamp writes the build identity onto the result and its fingerprint onto
