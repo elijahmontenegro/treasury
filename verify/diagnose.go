@@ -56,9 +56,12 @@ type Diagnosis struct {
 	// with a large Run and a large Box is a claim whose words are all
 	// read and never compared to it together, which is the shape a
 	// logotype makes: one word set vertically, one horizontally.
-	Pair  float64 `json:"pair"`
-	PairA string  `json:"pair_a,omitempty"`
-	PairB string  `json:"pair_b,omitempty"`
+	Pair     float64         `json:"pair"`
+	PairA    string          `json:"pair_a,omitempty"`
+	PairB    string          `json:"pair_b,omitempty"`
+	PairBoxA image.Rectangle `json:"pair_box_a,omitempty"`
+	PairBoxB image.Rectangle `json:"pair_box_b,omitempty"`
+	PairStep int             `json:"pair_step,omitempty"` // how far apart in reading order
 
 	// Figure says, for a numeric claim, whether the value the application
 	// filed appears anywhere as a run of digits. A read figure with no
@@ -132,6 +135,8 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, claims []Claim) 
 					}
 					if x := infix(cd.norm, norms[a]+norms[b]); x < d.Pair {
 						d.Pair, d.PairA, d.PairB = x, texts[a], texts[b]
+						d.PairBoxA, d.PairBoxB = kept[order[a]].Box, kept[order[b]].Box
+						d.PairStep = b - a
 					}
 				}
 			}

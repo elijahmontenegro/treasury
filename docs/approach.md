@@ -3008,6 +3008,76 @@ inside the web address and refused there.
 
 No fix in this step.
 
+### Step 23b: a run is a chain, not a slice of the reading order (2026-09-08)
+
+Twelve of the fifty-five have the claim's words across two detections. **Nine of the twelve
+already pass the adjacency test**, measured pair by pair, and were refused for one reason only:
+a run had to be a slice of the *flattened reading order* as well, and other text sat between the
+two halves. On 0001 the two detections are stacked with no gap at all and share 99 per cent of
+their width, and two positions apart in that order; on 0007 they are eight apart.
+
+**A run is now a chain of detections each following the one before it on the page.** The
+geometric test is what it was — side by side on a shared band within a character's width, or one
+line under the other overlapping across more than half the narrower, within a line's leading.
+What is dropped is the requirement of contiguity in a global ordering, which was never a
+statement about the label; it was a convenience for presenting detections. What such a rule
+could join that should stay apart is the three of the twelve it still refuses, and they are far
+apart on the page rather than near: 928 and 289 pixels of vertical separation, and a
+side-by-side gap of 118 pixels against a type height of 34.
+
+**One correction the first measurement forced.** Making the relation directional cost a
+verification: 0037's class had been reaching the engine through `B EER`, where a large drop
+capital and the letters beside it overlap, and requiring the second detection to begin after the
+first ended refused it. The test now orders by where the two *start* rather than by the sign of
+the gap between them — which keeps the joined text in the order the label prints it, and admits
+the overlap two detections of one word commonly have. The class came back and nothing else
+moved.
+
+| set | claim | recall before | after | precision before | after |
+|---|---|---|---|---|---|
+| the fifty | brand | 0.43 | 0.51 | 1.00 | 1.00 |
+| the fifty | class | 0.17 | 0.17 | 1.00 | 1.00 |
+| the fifty | producer, first line | 0.58 | 0.63 | 1.00 | 1.00 |
+| the fifty | producer, second line | 0.33 | 0.33 | 1.00 | 1.00 |
+| the fifty | origin | 0.93 | 0.93 | 1.00 | 1.00 |
+| the fifty | alcohol content | 0.86 | 0.90 | 1.00 | 1.00 |
+| the fifty | net contents | 0.92 | 0.92 | 1.00 | 1.00 |
+| the fifty | *latency, median and p95* | 3.1 / 5.4 s | 2.7 / 4.9 s | | |
+| corpus half A | brand | 0.79 | 0.79 | 1.00 | 1.00 |
+| corpus half A | class | 0.87 | 0.87 | 1.00 | 1.00 |
+| corpus half A | producer, first line | 0.30 | 0.30 | 1.00 | 1.00 |
+| corpus half A | producer, second line | 0.36 | 0.36 | 1.00 | 1.00 |
+| corpus half A | origin | 0.65 | 0.65 | 1.00 | 1.00 |
+| corpus half A | alcohol content | 0.82 | 0.82 | 1.00 | 1.00 |
+| corpus half A | net contents | 0.87 | 0.88 | 1.00 | 1.00 |
+| corpus half A | *latency, median and p95* | 2.6 / 7.3 s | 2.2 / 6.6 s | | |
+| corpus half B | brand | 0.79 | 0.79 | 1.00 | 1.00 |
+| corpus half B | class | 0.84 | 0.84 | 1.00 | 1.00 |
+| corpus half B | producer, first line | 0.22 | 0.22 | 1.00 | 1.00 |
+| corpus half B | producer, second line | 0.35 | 0.35 | 1.00 | 1.00 |
+| corpus half B | origin | 0.62 | 0.62 | 1.00 | 1.00 |
+| corpus half B | alcohol content | 0.80 | 0.80 | 1.00 | 1.00 |
+| corpus half B | net contents | 0.89 | 0.89 | 1.00 | 1.00 |
+| corpus half B | *latency, median and p95* | 2.4 / 6.4 s | 2.6 / 7.3 s | | |
+
+**Precision is 1.00 on every claim of all three sets, no false assertion anywhere, and 0099 and
+0309 are still refused by name.** The fifty go from **136 of 191 to 143**, and nothing is lost:
+
+| label | claim | the reading the chain built |
+|---|---|---|
+| 0001 | producer_1 | `IMPORTED BYFOLEY FAMILY WINES AND` |
+| 0007 | brand | `JOHNNY TEJAS` |
+| 0015 | brand | `WASATCH BREWERY` |
+| 0016 | brand | `WASATCH BREWERY` |
+| 0017 | brand | `WASATCH BREWERY` |
+| 0036 | abv | `50 %ALC. /VOL` |
+| 0050 | abv | `13.5% ALC. BY vol.` |
+
+**The corpus barely moves for the fifth time in this build.** Its generator sets each statement
+on its own line, in its own detection; it has no lines split across boxes to join. And the
+latency *falls*, 3.1 s to 2.7 s on the fifty, because a chain of adjacent detections is a
+smaller set of runs than every slice of the reading order up to four long.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

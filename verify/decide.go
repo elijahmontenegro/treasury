@@ -170,6 +170,13 @@ func numbers(norm string) []string {
 // compared to. A detection the recogniser was not confident of is not
 // evidence for anything and is dropped before any joining, so a garbage
 // reading cannot be half of a match.
+//
+// A run is a chain of detections each following the one before it on the
+// page. Until step 23b it was a slice of the flattened reading order as
+// well, and that was the wrong requirement: the order is a convenience
+// for presenting detections, not a statement about the label, and it put
+// other text between the two halves of one printed statement on nine of
+// the twelve claims 23a found split. The geometric test is unchanged.
 func buildRuns(regions []Region, minConf float64) []run {
 	var keep []Region
 	for _, r := range regions {
@@ -178,23 +185,38 @@ func buildRuns(regions []Region, minConf float64) []run {
 		}
 	}
 	order := readingOrder(keep)
-	var out []run
+	// Who may follow whom, in reading order so the chains are the same
+	// whatever order the reader returned its detections in.
+	next := make([][]int, len(order))
 	for i := range order {
-		cur := keep[order[i]]
-		box, text, conf := cur.Box, cur.Text, cur.Confidence
-		out = append(out, newRun(box, text, conf, 1))
-		for n := 1; n < maxRun && i+n < len(order); n++ {
-			prev, next := keep[order[i+n-1]], keep[order[i+n]]
-			if !adjacent(prev.Box, next.Box) {
-				break
+		for j := range order {
+			if i != j && follows(keep[order[i]].Box, keep[order[j]].Box) {
+				next[i] = append(next[i], j)
+				if len(next[i]) == maxFollow {
+					break
+				}
 			}
-			box = box.Union(next.Box)
-			text += " " + next.Text
-			if next.Confidence < conf {
-				conf = next.Confidence
-			}
-			out = append(out, newRun(box, text, conf, n+1))
 		}
+	}
+	var out []run
+	var walk func(at int, box image.Rectangle, text string, conf float64, n int)
+	walk = func(at int, box image.Rectangle, text string, conf float64, n int) {
+		out = append(out, newRun(box, text, conf, n))
+		if n == maxRun {
+			return
+		}
+		for _, j := range next[at] {
+			r := keep[order[j]]
+			c := conf
+			if r.Confidence < c {
+				c = r.Confidence
+			}
+			walk(j, box.Union(r.Box), text+" "+r.Text, c, n+1)
+		}
+	}
+	for i := range order {
+		r := keep[order[i]]
+		walk(i, r.Box, r.Text, r.Confidence, 1)
 	}
 	return out
 }
@@ -202,6 +224,14 @@ func buildRuns(regions []Region, minConf float64) []run {
 func newRun(box image.Rectangle, text string, conf float64, parts int) run {
 	n, at := normalizeIdx(text)
 	return run{box: box, text: text, norm: n, at: at, nums: numbers(n), parts: parts, conf: conf}
+}
+
+// quote gives back the part of a reading a match covered, as printed.
+func (r run) quote(from, to int) string {
+	if from >= to || to >= len(r.at) {
+		return r.text
+	}
+	return strings.TrimSpace(r.text[r.at[from]:r.at[to]])
 }
 
 // bounded says whether a span of a reading is delimited at both ends by
@@ -246,36 +276,32 @@ func (r run) free(at, dir int) bool {
 	return strings.ContainsFunc(gap, func(c rune) bool { return !unicode.IsSpace(c) })
 }
 
-// quote gives back the part of a reading a match covered, as printed.
-func (r run) quote(from, to int) string {
-	if from >= to || to >= len(r.at) {
-		return r.text
-	}
-	return strings.TrimSpace(r.text[r.at[from]:r.at[to]])
-}
+// maxFollow bounds how many detections one may be chained to, so a dense
+// label cannot make the number of runs grow without limit.
+const maxFollow = 4
 
-// adjacent says whether two detections are close enough to be one piece of
-// printed text: side by side on a line with a gap no wider than a
-// character, or one line under the other in the same column. Joining
-// detections that are not adjacent would invent text the label does not
-// print, which is the way this stage could assert something false.
-func adjacent(a, b image.Rectangle) bool {
+// follows says whether b reads as the continuation of a: to its right on
+// the same band with a gap no wider than a character, or on the line under
+// it in the same column. Joining detections that do not follow one another
+// would invent text the label does not print, which is the way this stage
+// could assert something false.
+func follows(a, b image.Rectangle) bool {
 	h := min(a.Dy(), b.Dy())
 	if h <= 0 {
 		return false
 	}
-	// Side by side: the two share a band, and the gap between them is no
-	// wider than the type is tall.
+	// Side by side: the two share a band, b starts no earlier than a, and
+	// it begins within a character's width of where a ends. Starting no
+	// earlier is what keeps the joined text in the order the label prints
+	// it; the gap may be negative, because two detections of one word
+	// commonly overlap - on label 0037 the large B of "BEER" and the
+	// "EER" beside it do.
 	overlapY := min(a.Max.Y, b.Max.Y) - max(a.Min.Y, b.Min.Y)
 	if overlapY > h/2 {
-		gap := b.Min.X - a.Max.X
-		if gap < 0 {
-			gap = -gap
-		}
-		return gap <= h
+		return b.Min.X >= a.Min.X && b.Min.X-a.Max.X <= h
 	}
-	// Stacked: the next line sits under this one, overlapping it across
-	// more than half its width, within a line's leading.
+	// Stacked: b sits under a, overlapping it across more than half the
+	// narrower of the two, within a line's leading.
 	overlapX := min(a.Max.X, b.Max.X) - max(a.Min.X, b.Min.X)
 	if overlapX*2 < min(a.Dx(), b.Dx()) {
 		return false
