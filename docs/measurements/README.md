@@ -207,9 +207,9 @@ altered one: the corpus's own alteration is four characters in 241 and the recog
 compliant labels is larger than that.
 
 **Deployed, it is slower, and step 30f says by how much.** The figures below are local, on this
-machine, at the core counts named. On Cloud Run at four vCPU the same fifty measure 4.2 s median
-and 9.1 s at the 95th percentile end to end, of which 3.2 s and 8.6 s are the engine and the rest
-is the network and the upload. A Cloud Run vCPU is roughly half a core of the machine below, so
+machine, at the core counts named. On Cloud Run at four vCPU, warm, the same fifty measure 4.5 s
+median and 10.1 s at the 95th percentile end to end, of which 3.6 s and 9.5 s are the engine and
+the rest is the network and the upload. A Cloud Run vCPU is roughly half a core of the machine below, so
 the five-second requirement is met there and not here.
 
 **This was not the original design, and the record below says why it changed.** The engine
@@ -4633,7 +4633,7 @@ work on the engine touches.
 | local, four cores | — | — | 1.3 s | **3.9 s** | — |
 | deployed, 2 vCPU, pool sized from `NumCPU` | 5.6 s | 10.5 s | 4.6 s | 9.8 s | 7.3–9.0 s |
 | deployed, 2 vCPU, pool told its allocation | 5.0 s | 11.3 s | 3.9 s | 10.7 s | 7.2–8.1 s |
-| deployed, 4 vCPU, pool told its allocation | **4.2 s** | **9.1 s** | **3.2 s** | **8.6 s** | 6.3–7.1 s |
+| deployed, 4 vCPU, pool told its allocation | 4.2 s | 9.1 s | 3.2 s | 8.6 s | 6.3–7.1 s |
 
 **156 of 192 in every one of the nine runs, and none failed** — the same count the engine returns
 locally, which is what step 29a's byte-identical merges predicted and this confirms on a different
@@ -4657,7 +4657,7 @@ the label with a great deal of parallel work and now fewer workers to spread it 
 **The five-second p95 is met locally and is not met on any deployed shape measured.** The reason
 is not the network — the wall clock is within a second of the engine's own figure — but that a
 Cloud Run vCPU is roughly half a core of the machine the local figures were taken on: at four
-apiece, 8.6 s against 3.9 s at the 95th percentile and 3.2 s against 1.3 s at the median. What
+apiece, 9.5 s against 3.9 s at the 95th percentile and 3.6 s against 1.3 s at the median. What
 would close it is a faster core or less work on the slowest label, and neither is a deployment
 setting.
 
@@ -4668,7 +4668,7 @@ a service running. So it was measured: a whole pass of the fifty discarded, then
 | | wall median | wall p95 | engine median | engine p95 |
 |---|---|---|---|---|
 | from a fresh instance | 4.2 s | 9.1 s | 3.2 s | 8.6 s |
-| after a discarded pass | 4.5 s | 10.1 s | 3.6 s | 9.5 s |
+| after a discarded pass, and the figure quoted | **4.5 s** | **10.1 s** | **3.6 s** | **9.5 s** |
 
 **Warming is not what the p95 is made of**, and the sequence says so more plainly than the
 summary. Printed in request order, the engine's seconds do not fall away from a slow start; the
@@ -4729,8 +4729,8 @@ about one character in a printed form, and one character is what a recogniser ge
 engine reviews.
 
 **Deployed it is slower, and by a factor rather than a constant.** On Cloud Run at four vCPU,
-three runs of the fifty from a workstation: 4.2 s median and 9.1 s p95 end to end, 3.2 s and 8.6 s
-of that the engine's own. A Cloud Run vCPU is about half a core of the machine the figures above
+warm, three runs of the fifty from a workstation: 4.5 s median and 10.1 s p95 end to end, 3.6 s
+and 9.5 s of that the engine's own. A Cloud Run vCPU is about half a core of the machine the figures above
 were taken on, so the requirement is met there and not on the deployed shape, and the difference
 is the core rather than the network.
 
@@ -4752,8 +4752,8 @@ single-threaded where this one takes 3.4 s.
   do not carry. Step 25a moved it there by settling 0036 against 27 CFR 5.143, which says whisky
   and whiskey are one word.
 - **The 5 s p95 is met on this machine and not on the deployed shape**: 3.9 s locally at four
-  cores against 8.6 s of engine time on Cloud Run at four vCPU, where a vCPU is about half a
-  core. The network is not the difference; the wall clock is within a second of the engine's own
+  cores against 9.5 s of engine time on Cloud Run at four vCPU, warm, where a vCPU is about half
+  a core. The network is not the difference; the wall clock is within a second of the engine's own
   figure.
 - **A wrong value one character away from the filed one is reviewed, not named.**
 - **The corpus cannot price several things** the fifty can: a printed string within a few
