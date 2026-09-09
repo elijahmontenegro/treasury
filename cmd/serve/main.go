@@ -85,16 +85,11 @@ func main() {
 		Limits: limits, Budget: budget,
 	}
 
-	// Outermost first. Everything here refuses before the engine runs,
-	// which is the point: a verification costs a second of every core,
-	// and anything refusable for the price of a header must be refused
-	// there.
-	var h http.Handler = srv.Handler()
-	h = httpapi.NewThrottle(limits.Rate, limits.Burst).Middleware(h)
-	h = budget.Middleware(h)
-	h = httpapi.Secure(h)
-	h = httpapi.Log(log, h)
-	h = httpapi.Recover(log, h)
+	// One assembly, shared with the tests. Writing the chain out here and
+	// letting the tests call Handler directly is what left them blind to
+	// everything the chain does, which is how a wrapper that swallowed
+	// Flush went unnoticed while three documents said the batch streamed.
+	h := httpapi.Service(srv, log, limits, budget)
 
 	s := &http.Server{
 		Addr:              *addr,
@@ -103,6 +98,11 @@ func main() {
 		// A verification may take seconds and the whole point of the
 		// service is that it says so; the write timeout allows for the
 		// slowest label plus the response.
+		//
+		// It does NOT bound a batch, which is minutes long by design and
+		// sets a deadline of its own on the way past. Leaving this to
+		// cover both was finding 2: a batch inside every stated bound
+		// was cut off here, mid-stream, with 200 already sent.
 		WriteTimeout: *timeout + 30*time.Second,
 		IdleTimeout:  120 * time.Second,
 	}

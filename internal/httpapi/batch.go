@@ -81,6 +81,33 @@ func (s *Server) VerifyBatch(w http.ResponseWriter, r *http.Request) {
 	// taken back, so everything that could refuse the whole batch is
 	// decided above this point. A failure after it belongs to one item
 	// and is reported on that item's line.
+	// A batch response is minutes long and the server's write timeout is
+	// set for a single verification, so the stream is given a deadline of
+	// its own before the first line goes out. Without this the response
+	// was cut off mid-stream with the status already sent as 200 -
+	// measured at ninety-five labels against a thirty-five-second
+	// timeout: thirty-three lines returned, sixty-two labels missing, and
+	// nothing in the answer to say so.
+	//
+	// The deadline is rolled forward as each line is written rather than
+	// set once, so a batch of any admitted size finishes while it is
+	// making progress, and one that stalls on a single label still ends.
+	rc := http.NewResponseController(w)
+	extend := func() {
+		if lim.BatchWall <= 0 {
+			// No wall set means no deadline, and a zero time is how the
+			// controller is told that. Adding zero to now would set the
+			// deadline to this instant and kill the stream before its
+			// first line - which is exactly what the three-hundred-label
+			// gate caught, because it builds a Server with no Limits at
+			// all.
+			_ = rc.SetWriteDeadline(time.Time{})
+			return
+		}
+		_ = rc.SetWriteDeadline(time.Now().Add(lim.BatchWall))
+	}
+	extend()
+
 	w.Header().Set("Content-Type", "application/x-ndjson")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(http.StatusOK)
@@ -95,6 +122,7 @@ func (s *Server) VerifyBatch(w http.ResponseWriter, r *http.Request) {
 		if flusher != nil {
 			flusher.Flush()
 		}
+		extend()
 	}
 
 	n := runtime.NumCPU()
@@ -273,7 +301,8 @@ func readClaimsCSV(r *http.Request, maxRows int) ([]claimRow, error) {
 		records = append(records, rec)
 		if maxRows > 0 && len(records) > maxRows {
 			return nil, fmt.Errorf(
-				"The claims file names more than %d labels, which is %w in one batch.",
+				"The claims file names more than %d labels, which is %w in one batch. "+
+					"Send it as several.",
 				maxRows, errTooMuch)
 		}
 	}

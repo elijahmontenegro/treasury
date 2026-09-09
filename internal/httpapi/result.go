@@ -80,17 +80,26 @@ func evidenceOf(e *verify.Evidence, img image.Image) *api.Evidence {
 		}
 		return &s
 	}
-	f64 := func(v float64) *float64 {
-		if v == 0 {
-			return nil
-		}
-		return &v
-	}
+	// A number that is present is sent, including zero. Treating zero as
+	// absent dropped the distance from a hundred and forty-one of the
+	// hundred and seventy-three claims the fifty carry evidence for -
+	// every exact match, which is to say every claim whose evidence is
+	// strongest. The specification promises a distance on every verdict
+	// and a reviewer reading one has no way to tell "they matched
+	// exactly" from "the service did not say".
+	f64 := func(v float64) *float64 { return &v }
 	out := &api.Evidence{
 		Read: str(e.Read), Matched: str(e.Matched),
 		Distance: f64(e.Distance), Radius: f64(e.Radius),
 		Confidence: f64(e.Confidence),
-		Competitor: str(e.Competitor), CompetitorDistance: f64(e.CompDist),
+	}
+	// The competitor is the one place absence is the truth: where no
+	// other value came near, there is no competitor and no distance to
+	// it, and sending a zero there would say the opposite - that
+	// something else matched perfectly.
+	if e.Competitor != "" {
+		out.Competitor = str(e.Competitor)
+		out.CompetitorDistance = f64(e.CompDist)
 	}
 	if e.Parts > 0 {
 		p := e.Parts

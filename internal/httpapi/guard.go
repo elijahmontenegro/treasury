@@ -43,11 +43,30 @@ type Limits struct {
 	Rate  float64
 	Burst float64
 
-	// MaxRows is how many labels one batch may name. The README says a
-	// batch streams so that nothing accumulates with its size; a row is
-	// small, but unbounded is unbounded, and the whole CSV is parsed
-	// before the first label is read.
+	// MaxRows is how many labels one batch may name. It is not chosen
+	// freely: it is BatchWall divided by PerLabel, so the largest batch
+	// the service accepts is one it can also deliver. Three numbers that
+	// did not agree is what finding 2 was - MaxRows allowed a thousand
+	// labels, the server's write timeout allowed ninety seconds, and a
+	// label takes about a second, so a batch inside the row bound was cut
+	// off mid-stream with a 200 already sent and no way for the caller to
+	// tell a truncated answer from a whole one.
 	MaxRows int
+
+	// PerLabel is how long one label of a batch is allowed to take, wall
+	// clock, with the batch's workers running. Measured: the
+	// three-hundred-label gate averages 1.2 s a label locally, and the
+	// deployed service's median verification is 3.6 s across four
+	// workers. Two seconds is headroom over both, and it is what MaxRows
+	// is computed from, so a number measured here moves the bound rather
+	// than being written down twice.
+	PerLabel time.Duration
+
+	// BatchWall is the longest the service will hold a batch response
+	// open. It is the deployment's own limit rather than a preference:
+	// Cloud Run is deployed with a 900-second request timeout and will
+	// cut anything longer whatever this service thinks.
+	BatchWall time.Duration
 
 	// MaxUnzipped is the largest the ZIP's contents may come to, added up
 	// from what the archive's own directory declares, before anything is
@@ -73,10 +92,12 @@ func DefaultLimits() Limits {
 		// Two a second with ten in hand: a reviewer working through a
 		// pile never notices, and a script cannot outrun the engine.
 		Rate: 2, Burst: 10,
-		// A thousand labels is over an hour of work at the measured 1.15 s
-		// each, which is far past what one request should ask for; the
-		// gate step 30's fourth item set is three hundred.
-		MaxRows: 1000,
+		// Fifteen minutes at two seconds a label: 450 rows, which is
+		// above the three hundred the gate sends and below what the
+		// deployment would cut off.
+		PerLabel:  2 * time.Second,
+		BatchWall: 15 * time.Minute,
+		MaxRows:   int((15 * time.Minute) / (2 * time.Second)),
 		// Two gigabytes of contents. The fifty average about 2 MB each,
 		// so this is a thousand labels' worth with room to spare, and it
 		// is a fiftieth of what a hundred-megabyte archive of zeroes

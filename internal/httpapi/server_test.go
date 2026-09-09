@@ -138,9 +138,16 @@ func TestOverHTTPMatchesTheEngine(t *testing.T) {
 				str(g.Evidence.Read), w.Evidence.Read,
 				str(g.Evidence.Matched), w.Evidence.Matched)
 		}
-		if f64(g.Evidence.Distance) != w.Evidence.Distance {
+		got, sent := f64(g.Evidence.Distance)
+		if !sent {
+			t.Errorf("%s: the response carried no distance, and the engine measured %v; "+
+				"an exact match is evidence, not an absent field", w.Claim, w.Evidence.Distance)
+		} else if got != w.Evidence.Distance {
 			t.Errorf("%s: distance %v over HTTP, %v from the engine",
-				w.Claim, f64(g.Evidence.Distance), w.Evidence.Distance)
+				w.Claim, got, w.Evidence.Distance)
+		}
+		if r, sent := f64(g.Evidence.Radius); !sent || r != w.Evidence.Radius {
+			t.Errorf("%s: radius %v/%v over HTTP, %v from the engine", w.Claim, r, sent, w.Evidence.Radius)
 		}
 		if g.Evidence.Crop != nil && len(*g.Evidence.Crop) > 0 {
 			crops++
@@ -188,11 +195,16 @@ func str(p *string) string {
 	return *p
 }
 
-func f64(p *float64) float64 {
+// f64 was the reason nothing saw finding 3. It mapped a missing field
+// back to zero, so a distance the service had dropped compared equal to
+// the zero the engine reported and the gate passed. What a comparison
+// needs here is the difference between "zero" and "not sent", so the
+// caller is told which it got.
+func f64(p *float64) (float64, bool) {
 	if p == nil {
-		return 0
+		return 0, false
 	}
-	return *p
+	return *p, true
 }
 
 func io_ReadAll(r *http.Response) ([]byte, error) {
