@@ -41,13 +41,14 @@ type candidate struct {
 
 // run is a candidate region: one detection, or several joined.
 type run struct {
-	box   image.Rectangle
-	text  string
-	norm  string
-	at    []int    // where each character of norm came from in text
-	nums  []string // the numbers in it, as printed
-	parts int      // how many detections were joined to make it
-	conf  float64
+	box    image.Rectangle
+	text   string
+	norm   string
+	at     []int    // where each character of norm came from in text
+	nums   []string // the numbers in it, as printed
+	parts  int      // how many detections were joined to make it
+	widest int      // the longest single member, in normalized characters
+	conf   float64
 }
 
 // fold maps a letter carrying a diacritic to the letter. A label sets
@@ -272,9 +273,9 @@ func buildRuns(regions []Region, minConf float64) []run {
 		}
 	}
 	var out []run
-	var walk func(at int, box image.Rectangle, text string, conf float64, n int)
-	walk = func(at int, box image.Rectangle, text string, conf float64, n int) {
-		out = append(out, newRun(box, text, conf, n))
+	var walk func(at int, box image.Rectangle, text string, conf float64, n, widest int)
+	walk = func(at int, box image.Rectangle, text string, conf float64, n, widest int) {
+		out = append(out, newRun(box, text, conf, n, widest))
 		if n == maxRun {
 			return
 		}
@@ -284,12 +285,16 @@ func buildRuns(regions []Region, minConf float64) []run {
 			if r.Confidence < c {
 				c = r.Confidence
 			}
-			walk(j, box.Union(r.Box), text+" "+r.Text, c, n+1)
+			w := widest
+			if l := len(normalize(r.Text)); l > w {
+				w = l
+			}
+			walk(j, box.Union(r.Box), text+" "+r.Text, c, n+1, w)
 		}
 	}
 	for i := range order {
 		r := keep[order[i]]
-		walk(i, r.Box, r.Text, r.Confidence, 1)
+		walk(i, r.Box, r.Text, r.Confidence, 1, len(normalize(r.Text)))
 	}
 	return dedupe(out)
 }
@@ -324,9 +329,10 @@ func better(a, b run) bool {
 	return a.box.Dx()*a.box.Dy() < b.box.Dx()*b.box.Dy()
 }
 
-func newRun(box image.Rectangle, text string, conf float64, parts int) run {
+func newRun(box image.Rectangle, text string, conf float64, parts, widest int) run {
 	n, at := normalizeIdx(text)
-	return run{box: box, text: text, norm: n, at: at, nums: numbers(n), parts: parts, conf: conf}
+	return run{box: box, text: text, norm: n, at: at, nums: numbers(n),
+		parts: parts, widest: widest, conf: conf}
 }
 
 // quote gives back the part of a reading a match covered, as printed.
@@ -377,6 +383,32 @@ func (r run) free(at, dir int) bool {
 	_, size := utf8.DecodeRuneInString(r.text[r.at[lo]:])
 	gap := r.text[r.at[lo]+size : r.at[hi]]
 	return strings.ContainsFunc(gap, func(c rune) bool { return !unicode.IsSpace(c) })
+}
+
+// ends says whether the claim begins and finishes where the span does.
+//
+// A delimiter says where a statement ends on the label; it does not say
+// that the claim ends there too. Step 28d searched chained runs for the
+// first time and found the difference at once: label 0028 prints
+// "BOTTLED BY APONA VINEYARDS, VENETA, OR" and the application files
+// "Apona Vineyards, LLC", so the span ending at the comma after
+// VINEYARDS is delimited, is inside the radius, and is missing the
+// claim's last three characters. The engine asserted a company form the
+// label does not print, which is step 12b's first refusal - "a legal
+// suffix the label does not print" - arriving from the other direction.
+//
+// This is the rule step 7a made for numbers and step 20b remade as "a
+// value that is the claim's own figure with digits missing from an end
+// may not be named", stated for names: a name taken from inside a longer
+// reading has to be the whole name. Characters may be wrong within it,
+// which is what the radius is for; they may not be absent from its ends,
+// because then the delimiter is marking the end of something else.
+func ends(claim, span string, cc int) bool {
+	a, b := []rune(claim), []rune(span)
+	if len(a) == 0 || len(b) == 0 {
+		return false
+	}
+	return subCost(a[0], b[0], cc) < 2 && subCost(a[len(a)-1], b[len(b)-1], cc) < 2
 }
 
 // maxFollow bounds how many detections one may be chained to, so a dense
@@ -612,16 +644,41 @@ func nearest(cands []candidate, rs []run, radius float64, cc int, keep func(cand
 				// figure test above is what the loosened form drops, and
 				// nothing else.
 				d, from, to = infixSpan(cd.norm, r.norm, cc)
-			case r.parts == 1 && len(r.norm) > len(cd.norm) &&
-				len(r.norm) <= 3*len(cd.norm)+24:
-				// A name may be taken from inside one detection when
-				// punctuation, a digit or the detection's own edge
-				// delimits it at both ends. Joins are not searched this
-				// way: every claim step 21a found printed whole inside a
-				// longer reading was inside a single detection, and a
-				// join is a construction of this engine rather than a
-				// line the label printed.
-				if id, ifrom, ito := infixSpan(cd.norm, r.norm, cc); id < d && r.bounded(ifrom, ito) {
+			case len(r.norm) > len(cd.norm) && len(r.norm) <= 3*len(cd.norm)+24 &&
+				(r.parts == 1 || len(cd.norm) > r.widest):
+				// A chain is searched only where the claim is longer
+				// than any one of its members, so the chain is
+				// genuinely needed to hold it. Where a claim fits
+				// inside a single detection, the single-detection
+				// search above already finds it, and searching every
+				// chain as well multiplies the work by the number of
+				// runs a dense label builds - step 26a measured 2,590
+				// on one of the fifty.
+				// A name may be taken from inside a reading when
+				// punctuation, a digit or the reading's own edge
+				// delimits it at both ends.
+				//
+				// Step 21b allowed this inside a single detection only,
+				// on the reasoning that "a join is a construction of
+				// this engine rather than a line the label printed".
+				// That was true when it was written and stopped being
+				// true at step 23b, which made a run a chain of
+				// detections each adjacent to the one before it - so a
+				// chain is a printed line the detector cut up, not an
+				// arbitrary pairing, and the reasoning no longer
+				// applies to it. Step 27a found two claims of exactly
+				// that shape: 0050's permittee across two detections
+				// stacked ONE pixel apart at a type height of 27, and
+				// 0033's brand across two stacked eleven apart at 52.
+				//
+				// What does not change is the delimiter test, and that
+				// is what keeps step 16a's shape refused. Chains are
+				// joined with a space, and a space has never been a
+				// delimiter, so extending the search cannot by itself
+				// admit anything: a span still has to end at a mark, a
+				// digit or an edge. TestTheGuard is what says so.
+				if id, ifrom, ito := infixSpan(cd.norm, r.norm, cc); id < d &&
+					r.bounded(ifrom, ito) && ends(cd.norm, r.norm[ifrom:ito], cc) {
 					d, from, to = id, ifrom, ito
 				}
 			}

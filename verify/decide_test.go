@@ -177,3 +177,43 @@ func TestANameIsTakenOnlyWherePunctuationDelimitsIt(t *testing.T) {
 		}
 	}
 }
+
+// TestANameTakenFromInsideAReadingIsTheWholeName pins what step 28d
+// found the moment the boundary rule was allowed to search a chained
+// run. A delimiter says where a statement ends on the label; it does not
+// say the claim ends there too.
+//
+// Label 0028 prints "BOTTLED BY APONA VINEYARDS, VENETA, OR" and the
+// application files "Apona Vineyards, LLC". The span ending at the comma
+// after VINEYARDS is delimited at both ends and sits at 0.115, inside a
+// radius of 0.14, and it is missing the claim's last three characters -
+// so verifying it asserts a company form the label does not print, which
+// is step 12b's first refusal arriving from the other direction.
+func TestANameTakenFromInsideAReadingIsTheWholeName(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	producer := func(text string) Claim {
+		return Claim{Name: "producer_1", Expected: text, Required: true}
+	}
+	cases := []struct {
+		claim, read string
+		want        bool
+	}{
+		// The claim's tail is not printed: the comma delimits the end of
+		// the label's statement, not the end of the name.
+		{"Bottled by Apona Vineyards, LLC", "BOTTLED BY APONA VINEYARDS, VENETA, OR", false},
+		{"Heron Black Company", "HERON BLACK, PORTLAND OR", false},
+		// The whole name is there, with other matter around it. (A
+		// leading "BOTTLED BY " would refuse these for a different
+		// reason and would not test this rule: a space has never been a
+		// delimiter, which step 21b settled and TestANameIsTakenOnly...
+		// pins.)
+		{"APONA VINEYARDS", "APONA VINEYARDS, VENETA, OR", true},
+		{"PASSIONE NATURA", "Bottled by: PASSIONE NATURA, Paglieta (CH), IT", true},
+	}
+	for _, c := range cases {
+		v := e.decide(producer(c.claim), buildRuns(regionsOf(c.read), 0.5))
+		if got := v.Status == Verified; got != c.want {
+			t.Errorf("%q in %q: verified=%v, want %v", c.claim, c.read, got, c.want)
+		}
+	}
+}

@@ -4118,14 +4118,74 @@ timing while the corpus halves were still being measured in another job, for the
 this build. The tell was in the profile — detection and recognition had tripled too, and neither
 can be touched by an edit distance. Stopped, waited for the machine, ran it again.
 
+### Step 28d: the boundary rule on a chained run (2026-09-08)
+
+Step 21b let a name be taken from inside a reading only where that reading was a **single**
+detection, on the reasoning that "a join is a construction of this engine rather than a line the
+label printed". That was true when it was written. Step 23b then made a run a chain of detections
+each adjacent to the one before it, which means a chain **is** a printed line the detector cut
+up, and did not revisit the restriction. Step 27a found two claims of exactly that shape: 0050's
+permittee across two detections stacked one pixel apart at a type height of 27, and 0033's brand
+across two stacked eleven apart at 52.
+
+The restriction is dropped. Every chain's members are adjacent by 23b's test by construction, so
+no further condition is needed. **What does not change is the delimiter test**, and that is what
+keeps step 16a's shape refused: chains are joined with a space, and a space has never been a
+delimiter, so a span still has to end at a mark, a digit or an edge.
+
+**It produced a false assertion immediately, and the rule that answers it is the step's real
+result.** On the first measurement, `producer_1` precision on the fifty fell to 0.94. Label 0028
+prints `BOTTLED BY APONA VINEYARDS, VENETA, OR` and the application files `Apona Vineyards, LLC`.
+Across the chain, the span ending at the comma after VINEYARDS is delimited at both ends and sits
+at 0.115, inside the radius — and it is missing the claim's last three characters. The engine
+asserted a company form the label does not print, which is step 12b's very first refusal, "a
+legal suffix the label does not print", arriving from the other direction.
+
+**So: a name taken from inside a longer reading has to be the whole name.** A delimiter says
+where a *statement* ends on the label; it does not say the claim ends there too. Characters may
+be wrong within the span — that is what the radius is for — but they may not be missing from its
+ends, because then the delimiter is marking the end of something else. This is step 7a's
+completeness rule, which step 20b restated as "a value that is the claim's own figure with digits
+missing from an end may not be named", stated for names at last. It is the **seventh** precision
+rule and `verify/decide_test.go` pins it with 0028's own reading.
+
+| | before 28d | after |
+|---|---|---|
+| the fifty | 155 of 192 | **156** |
+| corpus half A | 1,170 | **1,171** |
+| corpus half B | 1,245 | 1,245 |
+| the fifty, median / p95 (three runs) | 3.2 / 6.5 s | 4.2 / **9.6 s** |
+| precision, all three sets | 1.00 | **1.00** |
+| the guard | green | **green** |
+
+**One claim gained on the fifty, and it is the one step 27a named**: 0050's permittee, read
+`ImPOrTed by: CRaPEViNE DISTRIBUTORS CONCORD` across a chain of three and matched against the
+responsibility spelling — 28c's `G`/`C` discount doing its part in the same verdict. **0033 stayed
+refused**, and correctly: its span is preceded by `by ` and a space is not a delimiter, which is
+21b's rule doing exactly what it was built to do.
+
+**The cost is p95, and it is stated rather than hidden: 6.5 s to 9.6 s, against a requirement of
+5 s that has not been met since step 25a.** Searching every chained run for a span multiplies the
+work by the number of runs a dense label builds, which step 26a measured at 2,590 on one of the
+fifty. Half of that was bought back by searching a chain only where the claim is **longer than
+any one of its members**, so the chain is genuinely needed to hold it: where a claim fits inside a
+single detection the single-detection search already finds it. That took the p95 from 11.4 s to
+9.6 s with recall identical at 156, measured three times each.
+
+**A measurement discipline, enforced now rather than remembered.** Three times in this build a
+latency figure has been taken while a second job had the machine, twice in this amendment alone,
+and each time the tell was the same: detection and recognition had risen too, and neither can be
+touched by a change to the decision. `out/measure.sh` refuses to start a measurement while
+another evaluation is running, and every latency figure above was taken through it.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
-both corpus halves and the fifty**: 2,563 verifications over 550 labels and not one assertion the
+both corpus halves and the fifty**: 2,572 verifications over 550 labels and not one assertion the
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
 
-**The fifty verify 154 of the 192 claims they carry**, against 63 when step 19c first measured
+**The fifty verify 156 of the 192 claims they carry**, against 63 when step 19c first measured
 this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the permittee 0.84,
 its address 0.67, brand 0.55, class 0.43. On the corpus: class 0.89, net contents 0.89, brand
 0.82, alcohol content 0.80, origin 0.66, the permittee 0.27.
