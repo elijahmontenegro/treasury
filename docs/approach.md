@@ -4024,6 +4024,47 @@ on the boundary path. Extending the boundary rule to chained runs changes which 
 may be taken from; it must not change what counts as delimited, and this test is now the thing
 that says so.
 
+### Step 28b: a diagnostic that says which engine wrote it (2026-09-08)
+
+Step 26c scored `out/why24b.jsonl`, a diagnostic written at step 24b, and reported nine names
+refused for want of a delimiter. Eight was the number: step 25a had widened the radius in
+between and recovered 0037's producer address. Step 27a found it. The file was reused rather than
+regenerated, and nothing in the build could have noticed, because a diagnostic was a bare list of
+records that said nothing about where it came from.
+
+**`internal/diag` stamps the provenance and refuses a stale file.** The first record of a
+diagnostic is now a header carrying the build fingerprint, the full identity, and when it ran;
+`cmd/diagcheck` reads it and exits non-zero, naming the file, so a scoring step chained after it
+cannot run on stale input. Two things are checked because they catch different mistakes:
+
+- **The fingerprint**, which covers the commit and the SHA-256 of every model the binary carries,
+  catches a file written by a different version.
+- **The newest Go file in the tree**, which catches what the fingerprint cannot: during an
+  amendment the tree is nearly always modified, and two builds of a modified tree report the same
+  identity, so a file written before the source last changed is refused too.
+
+**Two things this got wrong first, both found by running it rather than by reading it.**
+`cmd/diagcheck` did not import `internal/ocr`, so it carried no model weights, computed a
+different fingerprint from the engine's and refused every file including a fresh one; it now
+imports the reader for that effect alone. And the second test first compared the diagnostic's
+binary against the *checker's* binary, which is the wrong reference — they are different
+programs, built at different moments for reasons that say nothing about the engine. Comparing
+against the source is the test that means what the step wanted.
+
+**The gate: 26c's case is refused.** Run against the file 26c actually scored:
+
+```
+diagcheck: out/why24b.jsonl: no provenance: this file was written before step 28b, so there
+is no way to tell which engine produced it and it may not be scored
+```
+
+And the case the fingerprint alone would have missed — the same commit with the tree modified,
+which is what every measuring run during an amendment looks like — is refused by the source test.
+Both are pinned by `internal/diag`'s tests, which run in CI, together with a third that requires
+a current file to be *accepted*, since a check that refuses everything is useless in the other
+direction. The scorers call the checker rather than trusting a filename, and step 27a's own
+diagnostic is now refused by it, which is correct: it predates this step.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

@@ -67,6 +67,12 @@ jobs:
       # reading their producer lines, so the refusal proved nothing. The
       # test renders the case and also requires the permittee to verify,
       # so it cannot pass vacuously again.
+      # A diagnostic file scored by a later engine than the one that wrote
+      # it is how step 26c reported nine names where eight was the number
+      # (step 28b).
+      - name: stale diagnostics refused
+        run: go test -count=1 ./internal/diag/
+
       - name: the guard
         run: go test -count=1 -timeout 15m -run TestTheGuard -v ./verify/
 

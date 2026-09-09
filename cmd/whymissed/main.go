@@ -14,6 +14,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"treasury/internal/diag"
 	"treasury/ttb"
 	"treasury/verify"
 )
@@ -27,6 +28,17 @@ func main() {
 	}
 	defer eng.Close()
 	enc := json.NewEncoder(os.Stdout)
+	// The first record says which engine wrote this file, so a later step
+	// cannot score it without noticing (step 28b).
+	h, err := diag.Stamp()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if err := enc.Encode(h); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	for _, path := range flag.Args() {
 		if err := one(eng, enc, path); err != nil {
 			fmt.Fprintf(os.Stderr, "%s: %v\n", path, err)
