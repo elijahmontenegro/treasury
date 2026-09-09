@@ -4661,6 +4661,25 @@ apiece, 8.6 s against 3.9 s at the 95th percentile and 3.2 s against 1.3 s at th
 would close it is a faster core or less work on the slowest label, and neither is a deployment
 setting.
 
+**Whether the p95 is a warming number, asked because it should have been asked first.** The runs
+above began on a freshly deployed instance, and nothing in them separated a service settling from
+a service running. So it was measured: a whole pass of the fifty discarded, then three more.
+
+| | wall median | wall p95 | engine median | engine p95 |
+|---|---|---|---|---|
+| from a fresh instance | 4.2 s | 9.1 s | 3.2 s | 8.6 s |
+| after a discarded pass | 4.5 s | 10.1 s | 3.6 s | 9.5 s |
+
+**Warming is not what the p95 is made of**, and the sequence says so more plainly than the
+summary. Printed in request order, the engine's seconds do not fall away from a slow start; the
+slow requests are scattered through it — the 7th, the 26th, the 36th, the 41st — and they are the
+same labels every time: 0007 at 16.8 s, 0036 at 11.9 s, 0026 at 9.2 s. 0026 is the label step 26a
+profiled, where 98 detections build 2,590 runs and deciding takes four fifths of the
+verification. **The p95 over fifty labels is the second-slowest label, so it is a property of two
+or three labels rather than of the instance**, and it moves with which labels are in the set. The
+warm figures are marginally *worse* than the cold ones, which is run-to-run variation over a
+public network and not a finding.
+
 **One deviation from the amendment, with the measurement that decided it.** It named two vCPU;
 both were measured, four is better on every figure, and four is what is live. Request-based
 billing charges twice the rate for a quarter less time, which for a pilot is not a consideration

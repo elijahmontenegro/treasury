@@ -39,7 +39,7 @@ The statutory warning is verified exactly on 13 of the fifty, read but not exact
 
 Latency, measured on the fifty, each figure the median of three runs alone on the machine: locally 1.6 s median and 4.7 s p95 at two cores, 1.3 s and 3.9 s at four.
 
-Deployed at four vCPU, the same fifty measured three times from a workstation over the public internet: **4.2 s median and 9.1 s at the 95th percentile end to end**, of which 3.2 s and 8.6 s are the engine's own time and the rest is the upload and the network; 6.3 to 7.1 s on the first request after an idle period; 156 verified in every run, none failed. A Cloud Run vCPU is roughly half a core of the machine the local figures were taken on, which is the whole of the difference — the wall clock sits within a second of what the service reports spending.
+Deployed at four vCPU, the same fifty measured three times from a workstation over the public internet: **4.2 s median and 9.1 s at the 95th percentile end to end**, of which 3.2 s and 8.6 s are the engine's own time and the rest is the upload and the network; 6.3 to 7.1 s on the first request after an idle period; 156 verified in every run, none failed. A Cloud Run vCPU is roughly half a core of the machine the local figures were taken on, which is the whole of the difference — the wall clock sits within a second of what the service reports spending. Measured again after a full discarded pass, to check the figures were not a service still settling: 4.5 s and 10.1 s, marginally worse rather than better. The tail is two or three particular labels, not instance state; 0026 alone builds 2,590 comparisons.
 
 ## What shipped
 
