@@ -28,6 +28,10 @@ python/
 # what is here is a developer's copy for another platform.
 third_party/
 
+# GoReleaser's own output.
+/dist/
+
 # Prose.
+
 docs/
 *.md

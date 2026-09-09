@@ -1,0 +1,86 @@
+# The release: one container, stamped with the commit it was built from,
+# and a changelog assembled from the commits themselves.
+#
+# What this file does NOT do is build the binary, and the reason is worth
+# stating rather than leaving as a puzzle. The reader calls ONNX Runtime
+# through cgo, so the binary must be linked against that library on the
+# platform it will run on; GoReleaser's usual shape — cross-compile on the
+# host, then wrap the result in a thin image — cannot produce it from a
+# Windows or macOS workstation. So the Dockerfile builds it inside a Linux
+# image, as it has since step 30's second item, and GoReleaser drives that
+# build, passes the identity into it, tags it, and writes the changelog.
+version: 2
+
+project_name: label-verifier
+
+builds:
+  - id: in-the-image
+    skip: true
+
+# The image is built from the repository root by the Dockerfile, which
+# fetches its own pinned ONNX Runtime and compiles with cgo. The two build
+# arguments are the build identity: internal/buildid prefers what the Go
+# tool chain read from .git and falls back to these, which is what happens
+# here because .dockerignore keeps a 116 MB history out of the context.
+dockers_v2:
+  - id: service
+    dockerfile: Dockerfile
+    platforms: [linux/amd64]
+    images:
+      - "{{ .Env.IMAGE }}"
+    tags:
+      - "{{ .Version }}"
+      - "latest"
+    build_args:
+      COMMIT: "{{ .FullCommit }}"
+      COMMIT_TIME: "{{ .CommitDate }}"
+    # GoReleaser builds in a temporary directory holding the Dockerfile and
+    # whatever is named here, not in the repository root, so the context has
+    # to be listed. That is a virtue rather than a nuisance: this is the
+    # whole of what the image is built from, checked against the Dockerfile
+    # and against every go:embed, and it is the same set .dockerignore
+    # arrives at by subtraction.
+    extra_files:
+      - go.mod
+      - go.sum
+      - api
+      - cmd
+      - internal
+      - ttb
+      - verify
+    labels:
+      org.opencontainers.image.title: "{{ .ProjectName }}"
+      org.opencontainers.image.revision: "{{ .FullCommit }}"
+      org.opencontainers.image.created: "{{ .Date }}"
+      org.opencontainers.image.licenses: "Apache-2.0"
+
+# Grouped by what a reader of this project would look for: what the engine
+# decides, what it reads, what the service does, and what was measured. The
+# build's history is one gated step per commit, so the subjects carry the
+# grouping without a convention being imposed on them after the fact.
+changelog:
+  use: git
+  sort: asc
+  groups:
+    - title: The engine
+      regexp: '(?i)^(step|amendment)[^:]*:.*(rule|radius|distance|verdict|refus|precision|claim|alphabet|warning)'
+      order: 0
+    - title: The reader
+      regexp: '(?i)^(step|amendment)[^:]*:.*(detect|recognis|reader|ocr|turned|crop)'
+      order: 1
+    - title: The service
+      regexp: '(?i)(item [1-6]|service|batch|page|container|hardening|README|openapi)'
+      order: 2
+    - title: Measurement and apparatus
+      regexp: '(?i)(measure|latency|determinism|guard|diagnostic|corpus|table|profile)'
+      order: 3
+    - title: Everything else
+      order: 999
+  filters:
+    exclude:
+      - '^Merge '
+
+# No artefact is uploaded anywhere. The container goes to Artifact Registry
+# by the release script, and the changelog is a file to read.
+release:
+  disable: true

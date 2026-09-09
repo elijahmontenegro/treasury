@@ -23,4 +23,8 @@ real2b/
 # The ONNX Runtime shared library is a platform binary, fetched rather than
 # committed: see docs/measurements/README.md, step 19b.
 /third_party/onnxruntime/
+# GoReleaser's output: the changelog and the artefact metadata of a
+# release, rebuilt by `goreleaser release` whenever one is cut.
+/dist/
+
 /third_party/models/
