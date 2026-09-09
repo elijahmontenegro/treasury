@@ -49,6 +49,10 @@ type run struct {
 	parts  int      // how many detections were joined to make it
 	widest int      // the longest single member, in normalized characters
 	conf   float64
+	// hist counts the reading's characters by confusable class, so a
+	// candidate that cannot possibly be within the radius is dropped
+	// before any distance is computed (step 29b).
+	hist [36]uint16
 }
 
 // fold maps a letter carrying a diacritic to the letter. A label sets
@@ -146,6 +150,69 @@ func confusable(a, b rune) bool {
 	return false
 }
 
+// symIdx maps a normalized character to 0..35. Normalization leaves only
+// digits and capitals, so nothing else can appear.
+func symIdx(r rune) int {
+	switch {
+	case r >= '0' && r <= '9':
+		return int(r - '0')
+	case r >= 'A' && r <= 'Z':
+		return int(r-'A') + 10
+	}
+	return -1
+}
+
+// canonIdx folds each confusable pair onto one class, so the histogram
+// below cannot rule out a reading that says 0regon where the claim says
+// Oregon (step 29b).
+var canonIdx [36]uint8
+
+func init() {
+	for i := range canonIdx {
+		canonIdx[i] = uint8(i)
+	}
+	for _, f := range [][2]rune{{'0', 'O'}, {'0', 'D'}, {'0', 'Q'}, {'1', 'I'}, {'1', 'L'},
+		{'C', 'G'}, {'5', 'S'}, {'8', 'B'}, {'2', 'Z'}, {'U', 'V'}} {
+		canonIdx[symIdx(f[1])] = canonIdx[symIdx(f[0])]
+	}
+}
+
+// histogram counts the characters of a normalized string by class.
+func histogram(s string) [36]uint16 {
+	var h [36]uint16
+	for _, r := range s {
+		if i := symIdx(r); i >= 0 {
+			h[canonIdx[i]]++
+		}
+	}
+	return h
+}
+
+// beyond says the claim cannot be within budget half-edits of the reading,
+// whatever alignment is tried, because the reading has too few characters
+// of some class for the claim to draw on (step 29b).
+//
+// It is a lower bound and not a guess: a character of the claim that no
+// character of the reading can supply has to be deleted or substituted
+// against a different class, and either costs a full edit - two
+// half-edits - so twice the shortfall can never exceed the true distance.
+// A candidate it rules out could not have been inside the radius, so no
+// verdict can move. It holds for the whole-run comparison and for a span
+// inside a longer reading alike, since a span draws its characters from
+// the same reading.
+func beyond(claim, read *[36]uint16, budget int) bool {
+	deficit := 0
+	for i := range claim {
+		if claim[i] > read[i] {
+			deficit += int(claim[i] - read[i])
+			if 2*deficit > budget {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // confuseTable answers confusable in one indexed load. Deciding is the
 // engine's slowest stage (step 26a) and this sits in the innermost loop
 // of its edit distance, where a call and a switch cost real time: the
@@ -181,7 +248,19 @@ func subCost(a, b rune, cc int) int {
 // cc is what a confusable substitution costs in halves of an edit: 2 is
 // no discount at all, 1 is the half step 27c measured and step 28c
 // adopted.
-func distance(claim, read string, cc int) float64 {
+func distance(claim, read string, cc int) float64 { return bounded(claim, read, cc, -1) }
+
+// bounded is distance with a ceiling: once every cell of a row is past
+// `budget` half-edits, the answer cannot come back under it, because no
+// step of the rest of an alignment costs less than nothing. The work
+// stops there and a value above the budget is returned. A negative
+// budget means no ceiling.
+//
+// Step 29b added it. The caller's budget is what the radius allows, and
+// a distance already past the radius is one the decision discards, so
+// the exact value was never wanted - which is why this cannot move a
+// verdict.
+func bounded(claim, read string, cc, budget int) float64 {
 	if claim == "" {
 		return 1
 	}
@@ -194,6 +273,7 @@ func distance(claim, read string, cc int) float64 {
 	for i := 1; i <= len(a); i++ {
 		cur[0] = 2 * i
 		x := a[i-1]
+		lowest := prev[0]
 		for j := 1; j <= len(b); j++ {
 			c := prev[j-1]
 			if y := b[j-1]; x != y {
@@ -210,8 +290,14 @@ func distance(claim, read string, cc int) float64 {
 				c = v
 			}
 			cur[j] = c
+			if c < lowest {
+				lowest = c
+			}
 		}
 		prev, cur = cur, prev
+		if budget >= 0 && lowest > budget {
+			return float64(budget+1) / float64(2*len(a))
+		}
 	}
 	return float64(prev[len(b)]) / float64(2*len(a))
 }
@@ -332,7 +418,7 @@ func better(a, b run) bool {
 func newRun(box image.Rectangle, text string, conf float64, parts, widest int) run {
 	n, at := normalizeIdx(text)
 	return run{box: box, text: text, norm: n, at: at, nums: numbers(n),
-		parts: parts, widest: widest, conf: conf}
+		parts: parts, widest: widest, conf: conf, hist: histogram(n)}
 }
 
 // quote gives back the part of a reading a match covered, as printed.
@@ -618,11 +704,19 @@ func nearest(cands []candidate, rs []run, radius float64, cc int, keep func(cand
 		n := float64(len(cd.norm))
 		lo, hi := n*(1-radius), n*(1+radius)
 		hi = math.Inf(1) // the reading may hold another statement too
+		// What the radius allows, in the half-edits the distance counts.
+		budget := int(radius * 2 * n)
+		ch := histogram(cd.norm)
 		for j := range rs {
 			r := &rs[j]
 			// An alignment cannot be inside the radius when the two
 			// strings differ in length by more than the radius allows.
 			if l := float64(len(r.norm)); l < lo || l > hi {
+				continue
+			}
+			// Nor when the reading has too few characters of some class
+			// for the claim to draw on (step 29b).
+			if beyond(&ch, &r.hist, budget) {
 				continue
 			}
 			if cd.num != "" && !holds(r.nums, cd.num) {
@@ -636,7 +730,7 @@ func nearest(cands []candidate, rs []run, radius float64, cc int, keep func(cand
 			// A name has no unit to bound it, which is why "Valley Mill"
 			// inside "Valley Mill Distillery" is indistinguishable from
 			// the brand and is not taken (step 16a).
-			d, from, to := distance(cd.norm, r.norm, cc), 0, len(r.norm)
+			d, from, to := bounded(cd.norm, r.norm, cc, budget), 0, len(r.norm)
 			switch {
 			case cd.form >= 0:
 				// A number, exact or loosened for the margin, is looked

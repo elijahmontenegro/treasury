@@ -4235,12 +4235,67 @@ label is not slow at anything that parallelises: it is slow at deciding a small 
 against a very large number of runs, and there are only seven claims to spread over four cores.
 Parallelism cannot reach it. Step 29b has to make the work itself smaller.
 
+### Step 29b: bounded distance (2026-09-09)
+
+Step 29a found the p95 was not bound by anything parallelism could reach: the slowest label is
+slow at comparing a handful of claims against a very large number of runs, and a handful of
+claims does not spread over four cores. The work itself has to be smaller.
+
+Two cuts, and both are **exact** rather than approximate — a candidate either could not have been
+inside the radius, or its distance is computed as before. That is why no verdict can move, and
+why the identity guard is a check on the implementation rather than on the idea.
+
+- **A candidate is dropped before any distance is computed** when the reading has too few
+  characters of some class for the claim to draw on. A character of the claim that no character
+  of the reading can supply has to be deleted, or substituted against a different class, and
+  either costs a full edit — so twice the shortfall can never exceed the true distance. The
+  classes fold each confusable pair together, so a claim of `Oregon` is not ruled out by a
+  reading of `0regon`; step 28c's set and this one are the same set.
+- **The edit distance stops** once every cell of a row is past what the radius allows. No step of
+  the rest of an alignment costs less than nothing, so a row whose cheapest cell is already over
+  budget cannot come back under it. A distance past the radius is one the decision discards, so
+  the exact value was never wanted.
+
+**Identity: both corpus halves and the fifty, compared claim by claim against step 28d on status,
+reason, observed value, the text read, the spelling matched, the distance to nine decimal places,
+the chain length, the competitor and its distance — 3,814 claims, none different.** The suite is
+green: the guard, determinism, claim-set independence.
+
+## The p95 table
+
+Wall-clock per verification, the engine free to use the cores named, one verification at a time.
+Three runs at each, alone on the machine, the median of the three.
+
+| | 1 core | 2 cores | 4 cores |
+|---|---|---|---|
+| step 28d, serial | 4.2 / **9.6** | — | — |
+| step 29a | 3.2 / **9.9** | 2.4 / **9.1** | 1.9 / **8.3** |
+| step 29b | 2.5 / **6.7** | 1.6 / **4.7** | 1.3 / **3.9** |
+
+Median first, p95 second, in seconds. 156 of 192 verified in every cell.
+
+**The requirement is met at two cores, and it is met with room at four.** The 5 s p95 the build
+has carried since step 3 was last satisfied at step 24a and was given back at 25a for eight
+claims; it has been unmet through five amendments. It is now 4.7 s on two cores and 3.9 s on
+four, with the fifty verifying 156 of 192 and precision 1.00 — the recall and the requirement
+together, which is what the amendment asked for.
+
+**What each step did to the p95 is worth separating.** Parallelism alone (29a) moved it from 9.6
+to 8.3, a seventh, because the tail was never parallel work. Bounding the distance (29b) moved it
+from 8.3 to 3.9, more than half, on the same four cores — and it moved the single-core p95 from
+9.9 to 6.7, which parallelism had not touched at all. The tail was a quantity of comparisons, not
+a shortage of cores.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
 both corpus halves and the fifty**: 2,572 verifications over 550 labels and not one assertion the
 label does not bear out. Where the engine lacks evidence it says REVIEW or NOT_FOUND, and on the
 fifty it correctly reports the absence of **all** the claims the labels do not carry.
+
+**Latency: median 1.3 s and p95 3.9 s on four cores, 4.7 s on two** (step 29b), wall-clock per
+verification with the engine free to use them, one verification at a time. The 5 s p95 the build
+has carried since step 3 is met.
 
 **The fifty verify 156 of the 192 claims they carry**, against 63 when step 19c first measured
 this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the permittee 0.84,
