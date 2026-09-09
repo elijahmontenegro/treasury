@@ -23,6 +23,27 @@ the standards of fill, the printed forms the regulation allows, and the phrases 
 responsibility may begin with. A photograph of anything carrying known text goes through the
 same path.
 
+## What shipped
+
+One binary. It serves an operator's page at `/`, verifies one label at `POST /verify` with the
+evidence crops inline, reports which build is answering at `/health`, and serves the
+specification it was generated from at `/openapi.yaml`. The specification is written by hand and
+the types are generated from it, so a route described and not served fails to compile, and CI
+fails if the two have drifted. It runs distroless and non-root on a read-only filesystem, at
+117 MB, with the reader's weights inside the binary and their SHA-256 in every response. Nothing
+is stored.
+
+**The warning statement, and what step 30a found.** The engine had taken a list of references
+since the beginning and, since step 19a retired the mechanism that read them, never looked at
+one - so for eleven steps it answered every question about the claims and no question about the
+one piece of text it is certain of. It now verifies the statute, and only on an exact match,
+because no radius separates a damaged reading of the true statute from a clean reading of an
+altered one: the corpus's own alteration is four characters in 241 and the recogniser's damage on
+compliant labels is larger than that.
+
+**Deployed latency: not yet measured.** The figures below are local, on this machine, at the core
+counts named. The deployed shape is measured at step 30f and this line will carry it.
+
 **This was not the original design, and the record below says why it changed.** The engine
 built through steps 1 to 18 read a label by cutting the ink into glyphs and learning the
 label's own alphabet from the statutory warning. Step 18a measured the stage everything rested
