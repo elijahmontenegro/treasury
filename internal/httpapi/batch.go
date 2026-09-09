@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"image"
 	"io"
 	"net/http"
 	"path"
@@ -165,7 +164,12 @@ func (s *Server) oneOfBatch(ctx context.Context, row claimRow, images map[string
 		return item
 	}
 	defer rc.Close()
-	img, _, err := image.Decode(rc)
+	img, err := decodeImage(rc, s.Limits.MaxPixels)
+	if errors.Is(err, errTooManyPixels) {
+		e := row.image + " is far larger than any label and was not decoded."
+		item.Error = &e
+		return item
+	}
 	if err != nil {
 		e := row.image + " is not a PNG or a JPEG this service can read."
 		item.Error = &e
@@ -179,7 +183,11 @@ func (s *Server) oneOfBatch(ctx context.Context, row claimRow, images map[string
 	refs, claims := ttb.Inputs(row.app)
 	start := time.Now()
 	res, err := s.Engine.Verify(ctx, img, refs, claims)
-	took := int(time.Since(start).Milliseconds())
+	spent := time.Since(start)
+	if s.Budget != nil {
+		s.Budget.Spend(spent)
+	}
+	took := int(spent.Milliseconds())
 	if err != nil {
 		e := row.image + " could not be verified: " + err.Error()
 		item.Error = &e

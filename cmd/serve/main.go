@@ -32,6 +32,9 @@ func main() {
 	maxBatch := flag.Int64("max-batch", 100<<20, "largest batch accepted, in bytes")
 	timeout := flag.Duration("timeout", 60*time.Second, "how long one verification may take")
 	cores := flag.Int("cores", 0, "cores one verification may use; 0 is every core")
+	rate := flag.Float64("rate", 0, "requests a second per caller; 0 keeps the default")
+	burst := flag.Float64("burst", 10, "requests a caller may make at once")
+	daily := flag.Float64("daily-seconds", 0, "inference seconds a day, all callers; 0 keeps the default")
 	flag.Parse()
 
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -48,11 +51,31 @@ func main() {
 	}
 	defer eng.Close()
 
+	limits := httpapi.DefaultLimits()
+	if *rate > 0 {
+		limits.Rate, limits.Burst = *rate, *burst
+	}
+	if *daily > 0 {
+		limits.DailySeconds = *daily
+	}
+	budget := httpapi.NewBudget(limits.DailySeconds)
+
 	srv := &httpapi.Server{
 		Engine: eng, Doc: api.Spec,
 		MaxImage: *maxImage, MaxBatch: *maxBatch, Timeout: *timeout,
+		Limits: limits, Budget: budget,
 	}
-	h := httpapi.Log(log, srv.Handler())
+
+	// Outermost first. Everything here refuses before the engine runs,
+	// which is the point: a verification costs a second of every core,
+	// and anything refusable for the price of a header must be refused
+	// there.
+	var h http.Handler = srv.Handler()
+	h = httpapi.NewThrottle(limits.Rate, limits.Burst).Middleware(h)
+	h = budget.Middleware(h)
+	h = httpapi.Secure(h)
+	h = httpapi.Log(log, h)
+	h = httpapi.Recover(log, h)
 
 	s := &http.Server{
 		Addr:              *addr,

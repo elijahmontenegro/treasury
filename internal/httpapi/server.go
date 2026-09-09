@@ -48,6 +48,10 @@ type Server struct {
 	// Timeout bounds one verification. It is a context deadline, so it
 	// reaches the engine rather than only the response.
 	Timeout time.Duration
+	// Limits is what the service will accept from a public address.
+	Limits Limits
+	// Budget is the day's inference allowance, shared by every caller.
+	Budget *Budget
 }
 
 var _ api.ServerInterface = (*Server)(nil)
@@ -137,7 +141,13 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusBadRequest, "The claims field was not valid JSON: "+err.Error())
 		return
 	}
-	img, _, err := image.Decode(file)
+	img, err := decodeImage(file, s.Limits.MaxPixels)
+	if errors.Is(err, errTooManyPixels) {
+		fail(w, http.StatusRequestEntityTooLarge,
+			"That image is far larger than any label, and this service will not decode it. "+
+				err.Error()+".")
+		return
+	}
 	if err != nil {
 		fail(w, http.StatusBadRequest, "The image could not be read. Send a PNG or a JPEG.")
 		return
@@ -153,6 +163,9 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	res, err := s.Engine.Verify(ctx, img, refs, claims)
 	took := time.Since(start)
+	if s.Budget != nil {
+		s.Budget.Spend(took)
+	}
 	if err != nil {
 		if ctx.Err() != nil {
 			fail(w, http.StatusGatewayTimeout, "The label took too long to read and the request was stopped.")
