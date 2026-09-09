@@ -4178,6 +4178,63 @@ and each time the tell was the same: detection and recognition had risen too, an
 touched by a change to the decision. `out/measure.sh` refuses to start a measurement while
 another evaluation is running, and every latency figure above was taken through it.
 
+### Step 29a: parallelism inside one verification (2026-09-09)
+
+Latency is redefined for this amendment and the redefinition is the point: **wall-clock per
+verification with the engine free to use every core, one verification at a time.** Every figure
+before this was the engine on one core, which is not the shape anything would be deployed in.
+
+Three changes, and one property over all of them.
+
+- **Crops are recognised across a pool of sessions** rather than one after another. Each session
+  is single-threaded and there is one per core, so the concurrency is across crops rather than
+  inside one: a crop is 48 pixels tall and spreading a single one over every core scales badly
+  where reading several at once does not. A session is taken from the pool, used and put back, so
+  none is ever held by two goroutines and nothing rests on a claim about whether ONNX Runtime
+  tolerates concurrent calls on one. Recognition was 39 per cent of a verification at step 26a.
+- **Claims are decided concurrently**, deciding having been 23 per cent. Deciding one claim reads
+  nothing another writes: the runs are built once and then read only, and the single shared
+  structure is the numeric spelling cache, which is a `sync.Map`.
+- **The turned pass's detection runs beside the upright pass's recognition.** What decides
+  whether to turn is a property of the upright *detections* — a box taller than it is wide — so
+  it is known before a crop has been read. Only the detection moves: which turned boxes are then
+  read depends on which upright *regions* came back, and that is not known until the crops are
+  done. The detection is started speculatively on the boxes and spent only if the exact
+  region-based test agrees, which it can only do when the speculative test already has, since
+  every region's box is a detected box.
+
+**The property: every merge is in a fixed order.** Recognitions are written into a slot per box
+and sorted into reading order as before; verdicts into a slot per claim. Nothing depends on which
+goroutine finished first, so the result is byte-identical to the serial engine rather than merely
+equivalent.
+
+**A fourth change, not in the amendment, with its reason recorded before it.** `Verify` decided
+every claim, ran the turned pass, then decided every claim again over the union. In the mode this
+engine ships in the first of those is thrown away unread: `worthTurning` at `read_turned=1` asks
+only about the shape of a detection and ignores the verdicts. It is now skipped on the labels
+that turn — 34 of the fifty — which is a fifth of a verification on each.
+
+**Identity, which is the gate before any timing.** Both corpus halves and the fifty were re-run
+and compared claim by claim against step 28d, on status, reason, observed value, the text read,
+the spelling matched, the distance to nine decimal places, the chain length and the competitor:
+**3,814 claims, none different.**
+
+| cores | median | p95 |
+|---|---|---|
+| 28d, serial, one core | 4.2 s | 9.6 s |
+| 1 | 3.2 s | 9.9 s |
+| 2 | 2.4 s | 9.1 s |
+| **4** | **1.9 s** | **8.3 s** |
+
+Three runs at each, alone on the machine, the median of the three reported; 156 of 192 verified
+at every setting.
+
+**The median halves and the p95 barely moves, and that is the finding.** Going from one core to
+four takes the median from 3.2 s to 1.9 s, but the p95 only from 9.9 s to 8.3 s. The slowest
+label is not slow at anything that parallelises: it is slow at deciding a small number of claims
+against a very large number of runs, and there are only seven claims to spread over four cores.
+Parallelism cannot reach it. Step 29b has to make the work itself smaller.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

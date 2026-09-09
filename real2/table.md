@@ -1,6 +1,6 @@
 ## The set
 
-50 labels, 0 the reader found nothing on, latency median 4.2s p95 9.4s
+50 labels, 0 the reader found nothing on, latency median 1.8s p95 8.3s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|

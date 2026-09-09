@@ -39,6 +39,12 @@ import (
 
 var tuneSet = flag.String("tune-set", "", "override constants by name, as name=value pairs separated by commas")
 
+// cores is how many one verification may use. Step 29a made a
+// verification parallel inside itself, so latency is now wall-clock per
+// verification with the engine free to use every core, one verification
+// at a time, and this is the lever the p95 curve is measured against.
+var cores = flag.Int("cores", 0, "cores one verification may use; 0 is every core (step 29a)")
+
 func main() {
 	set := flag.String("set", "synth", "directory written by gen set")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
@@ -99,7 +105,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	if limit > 0 && limit < len(labels) {
 		labels = labels[:limit]
 	}
-	eng, err := verify.New(verify.Options{Tune: tuneMap(*tuneSet)})
+	eng, err := verify.New(verify.Options{Tune: tuneMap(*tuneSet), Cores: float64(*cores)})
 	if err != nil {
 		return err
 	}

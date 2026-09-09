@@ -24,7 +24,9 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
+	"sync"
 	"time"
 
 	"treasury/internal/buildid"
@@ -211,6 +213,11 @@ type Options struct {
 	// recogniser, where a claim's nearest candidate fell just outside the
 	// radius. Nonzero is on.
 	SecondOpinion float64
+	// Cores is how many the engine may use for one verification (step
+	// 29a). Zero means every core the machine has. It is not an adopted
+	// constant: it is a property of the machine a verification runs on,
+	// not of the decision, and no verdict may depend on it.
+	Cores float64
 	// ConfusionCost is what a substitution between two characters a
 	// reader confuses by shape costs, as a share of an ordinary edit
 	// (step 28c). 1 charges it in full, which is the behaviour before
@@ -223,6 +230,14 @@ type Options struct {
 // confusionHalfCost is ConfusionCost in halves of an edit, so the
 // distance can stay in integer arithmetic on what step 26a measured as
 // the engine's slowest stage.
+// cores is how many the engine may use, resolved.
+func (o Options) cores() int {
+	if o.Cores >= 1 {
+		return int(o.Cores)
+	}
+	return runtime.NumCPU()
+}
+
 func (o Options) confusionHalfCost() int {
 	c := int(math.Round(o.ConfusionCost * 2))
 	if c < 0 {
@@ -313,6 +328,7 @@ func New(o Options) (*Engine, error) {
 	rp.MaxSide = int(o.MaxSide)
 	rp.BoxThresh = o.BoxThresh
 	rp.Unclip = o.Unclip
+	rp.Cores = o.cores()
 	r, err := ocr.New(rp)
 	if err != nil {
 		return nil, err
@@ -356,12 +372,43 @@ func (e *Engine) Close() {
 
 // Verify reads the image and judges what it read against the claims.
 func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, claims []Claim) (Result, error) {
-	read, t, err := e.reader.ReadTimed(img)
+	// Where the page is going to be offered turned, its detection runs
+	// beside the upright pass's recognition rather than after it (step
+	// 29a). What decides whether to turn, in the mode this engine ships
+	// in, is a property of the upright DETECTIONS - a box taller than it
+	// is wide - and so is known before a single crop has been read.
+	//
+	// Only the detection moves. Which turned boxes are then read depends
+	// on which upright regions came back, since a turned box the upright
+	// pass already covered is not read again, and that is not known
+	// until the upright crops are done. Pulling the detection out and
+	// leaving the rest where it was is what keeps the result identical.
+	var turnedBoxes []image.Rectangle
+	var turnedErr error
+	var turnedWG sync.WaitGroup
+	var turnedStart time.Time
+	start := time.Now()
+	upright, err := e.reader.Detect(img)
 	if err != nil {
 		return Result{}, err
 	}
 	var res Result
-	res.Stages.Detect, res.Stages.Recognise, res.Stages.Boxes = t.Detect, t.Recognise, t.Boxes
+	res.Stages.Detect, res.Stages.Boxes = time.Since(start), len(upright)
+	if e.opt.Turned == 1 && sideOn(upright) {
+		turnedStart = time.Now()
+		turnedWG.Add(1)
+		go func() {
+			defer turnedWG.Done()
+			turnedBoxes, turnedErr = e.reader.DetectTurned(img)
+		}()
+	}
+	start = time.Now()
+	read, err := e.reader.ReadBoxes(img, upright)
+	res.Stages.Recognise = time.Since(start)
+	if err != nil {
+		turnedWG.Wait()
+		return Result{}, err
+	}
 	add := func(rs []ocr.Region) {
 		for _, r := range rs {
 			res.Regions = append(res.Regions, Region{Box: r.Box, Text: r.Text, Confidence: r.Confidence, Rotated: r.Rotated})
@@ -374,21 +421,83 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		res.Stages.Runs += time.Since(start)
 		res.Stages.RunCount = len(rs)
 		start = time.Now()
-		out := make([]Verdict, 0, len(claims))
-		for _, c := range claims {
-			out = append(out, e.decide(c, rs))
+		// Each claim decides into its own slot, so the verdicts come
+		// back in the order they were asked for whatever order they
+		// finished in (step 29a). Deciding one claim reads nothing the
+		// others write: the runs are built once above and are then read
+		// only, and the one shared structure is the numeric spelling
+		// cache, which is a sync.Map.
+		out := make([]Verdict, len(claims))
+		n := e.opt.cores()
+		if n > len(claims) {
+			n = len(claims)
+		}
+		if n <= 1 {
+			for i, c := range claims {
+				out[i] = e.decide(c, rs)
+			}
+		} else {
+			var wg sync.WaitGroup
+			next := make(chan int)
+			for range n {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					for i := range next {
+						out[i] = e.decide(claims[i], rs)
+					}
+				}()
+			}
+			for i := range claims {
+				next <- i
+			}
+			close(next)
+			wg.Wait()
 		}
 		res.Stages.Decide += time.Since(start)
 		return out
 	}
-	res.Claims = decide()
+	// Deciding before the turned pass is only needed where the decision
+	// to turn depends on the verdicts, which is the claim-conditional
+	// mode alone. In the mode this engine ships in, `worthTurning` asks
+	// whether a detection came back taller than it is wide and ignores
+	// the verdicts, so a first pass here would be thrown away unread on
+	// every label that turns - a fifth of a verification on 34 of the
+	// fifty, deciding being 23 per cent of one (step 26a).
+	//
+	// The detection above was started on the DETECTED boxes, and whether
+	// the pass is actually spent is decided on the RECOGNISED regions,
+	// exactly as before: a box that read as nothing is not a region, so
+	// the two can differ, and only the second is the engine's own rule.
+	// Every region's box is a detected box, so whenever the exact test
+	// says yes the speculative one already said yes and the detection is
+	// waiting. The cost of speculating is a turned detection thrown away
+	// on a label whose every tall box read as nothing.
+	turning := e.opt.Turned == 1 && worthTurning(read, nil, 1)
+	if !turning {
+		res.Claims = decide()
+	}
 	// The page is offered to the detector turned a quarter only where the
 	// upright pass left a required claim unread (step 24a). Reading every
 	// label twice cost a second a label for the labels that needed it and
 	// for the labels that did not.
-	if e.opt.Turned > 0 && worthTurning(read, res.Claims, e.opt.Turned) {
+	if turning || (e.opt.Turned > 1 && worthTurning(read, res.Claims, e.opt.Turned)) {
 		start := time.Now()
-		more, err := e.reader.ReadTurned(img, read)
+		var more []ocr.Region
+		var err error
+		if e.opt.Turned == 1 {
+			// The detection is already done, or running.
+			turnedWG.Wait()
+			if !turnedStart.IsZero() {
+				start = turnedStart
+			}
+			err = turnedErr
+			if err == nil {
+				more, err = e.reader.ReadBoxes(img, ocr.Uncovered(turnedBoxes, read))
+			}
+		} else {
+			more, err = e.reader.ReadTurned(img, read)
+		}
 		res.Stages.TurnedPass = time.Since(start)
 		res.Stages.TurnedBoxes = len(more)
 		if err != nil {
@@ -397,6 +506,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		if len(more) > 0 {
 			add(more)
 			sortRegions(res.Regions)
+		}
+		if turning {
+			res.Claims = decide() // the only pass, and over the union
+		} else if len(more) > 0 {
 			res.Claims = decide()
 		}
 	}
@@ -443,6 +556,17 @@ func stamp(res *Result) {
 	for i := range res.Emphasis {
 		res.Emphasis[i].Engine = f
 	}
+}
+
+// sideOn is worthTurning's reading-conditional test taken on the boxes
+// alone, so it can be asked before any crop has been read.
+func sideOn(boxes []image.Rectangle) bool {
+	for _, b := range boxes {
+		if b.Dy() > b.Dx() {
+			return true
+		}
+	}
+	return false
 }
 
 // worthTurning decides whether to spend the second detection pass.

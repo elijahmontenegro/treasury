@@ -66,6 +66,14 @@ type Params struct {
 	// (step 21c); left empty, the embedded models are used.
 	Det, Rec             []byte
 	DetOutput, RecOutput string
+	// Cores is how many the reader may use for one image (step 29a).
+	// The detector runs one image at a time and gets that many threads
+	// inside its own operators; the recogniser runs one crop at a time
+	// per session and gets that many sessions, each single-threaded,
+	// because a crop is 48 pixels tall and spreading one across every
+	// core scales badly where reading several at once does not. Zero
+	// means every core the machine has.
+	Cores int
 }
 
 // Default is what the models were trained to see.
@@ -92,12 +100,28 @@ type Region struct {
 	Rotated    bool
 }
 
-// Reader holds the two sessions. It is safe for concurrent use.
+// Reader holds the sessions. It is safe for concurrent use.
 type Reader struct {
-	p        Params
-	det, rec *ort.DynamicAdvancedSession
-	chars    []string
-	mu       sync.Mutex // ONNX Runtime sessions are not safe to run concurrently
+	p     Params
+	det   *ort.DynamicAdvancedSession
+	chars []string
+	detMu sync.Mutex // one image at a time through the detector
+
+	// recs is a pool: a recognition takes a session, uses it and puts it
+	// back, so at most len(all) crops are read at once and no session is
+	// ever used by two goroutines. Step 29a made recognition concurrent
+	// because step 26a measured it at 39 per cent of a verification, the
+	// largest single stage.
+	recs chan *ort.DynamicAdvancedSession
+	all  []*ort.DynamicAdvancedSession // every session, for Close
+}
+
+// cores is how many the reader may use, resolved.
+func (p Params) cores() int {
+	if p.Cores > 0 {
+		return p.Cores
+	}
+	return runtime.NumCPU()
 }
 
 var (
@@ -155,7 +179,7 @@ func newReader(p Params, withDetector bool) (*Reader, error) {
 		return nil, err
 	}
 	defer opts.Destroy()
-	if err := opts.SetIntraOpNumThreads(runtime.NumCPU()); err != nil {
+	if err := opts.SetIntraOpNumThreads(p.cores()); err != nil {
 		return nil, err
 	}
 	detBytes, detOut := detModel, "sigmoid_0.tmp_0"
@@ -166,6 +190,17 @@ func newReader(p Params, withDetector bool) (*Reader, error) {
 	if len(p.Rec) > 0 {
 		recBytes, recOut = p.Rec, p.RecOutput
 	}
+	// One recogniser session per core, each single-threaded, so the
+	// concurrency is across crops rather than inside one. Both options
+	// objects are kept until the sessions are made.
+	recOpts, err := ort.NewSessionOptions()
+	if err != nil {
+		return nil, err
+	}
+	defer recOpts.Destroy()
+	if err := recOpts.SetIntraOpNumThreads(1); err != nil {
+		return nil, err
+	}
 	var det *ort.DynamicAdvancedSession
 	if withDetector {
 		det, err = ort.NewDynamicAdvancedSessionWithONNXData(detBytes, []string{"x"}, []string{detOut}, opts)
@@ -173,12 +208,22 @@ func newReader(p Params, withDetector bool) (*Reader, error) {
 			return nil, fmt.Errorf("detector: %w", err)
 		}
 	}
-	rec, err := ort.NewDynamicAdvancedSessionWithONNXData(recBytes, []string{"x"}, []string{recOut}, opts)
-	if err != nil {
-		if det != nil {
-			det.Destroy()
+	n := p.cores()
+	recs := make(chan *ort.DynamicAdvancedSession, n)
+	var all []*ort.DynamicAdvancedSession
+	for range n {
+		rec, err := ort.NewDynamicAdvancedSessionWithONNXData(recBytes, []string{"x"}, []string{recOut}, recOpts)
+		if err != nil {
+			if det != nil {
+				det.Destroy()
+			}
+			for _, s := range all {
+				s.Destroy()
+			}
+			return nil, fmt.Errorf("recogniser: %w", err)
 		}
-		return nil, fmt.Errorf("recogniser: %w", err)
+		all = append(all, rec)
+		recs <- rec
 	}
 	// The charset is a blank for the CTC decode, then the dictionary, then
 	// a space: 6625 classes for 6623 lines.
@@ -190,7 +235,7 @@ func newReader(p Params, withDetector bool) (*Reader, error) {
 		chars = chars[:n-1] // the file's trailing newline
 	}
 	chars = append(chars, " ")
-	return &Reader{p: p, det: det, rec: rec, chars: chars}, nil
+	return &Reader{p: p, det: det, recs: recs, all: all, chars: chars}, nil
 }
 
 // Close frees the sessions.
@@ -198,8 +243,8 @@ func (r *Reader) Close() {
 	if r.det != nil {
 		r.det.Destroy()
 	}
-	if r.rec != nil {
-		r.rec.Destroy()
+	for _, s := range r.all {
+		s.Destroy()
 	}
 }
 
@@ -230,25 +275,55 @@ func (r *Reader) ReadTimed(img image.Image) ([]Region, Timing, error) {
 // it: step 24a runs it only where the upright pass left a required claim
 // unread.
 func (r *Reader) ReadTurned(img image.Image, have []Region) ([]Region, error) {
+	turned, err := r.DetectTurned(img)
+	if err != nil {
+		return nil, err
+	}
+	return r.readBoxes(img, Uncovered(turned, have))
+}
+
+// Detect gives the boxes of the image as given, so a caller can ask a
+// question of them before spending the recognition (step 29a).
+func (r *Reader) Detect(img image.Image) ([]image.Rectangle, error) { return r.detect(img) }
+
+// DetectTurned runs the detector on the page turned a quarter and gives
+// back the boxes in the coordinates of the image as given. It is separate
+// from ReadTurned so a caller can spend it beside the upright pass's
+// recognition rather than after it (step 29a): what the turned pass reads
+// depends on which upright regions came back, but where it looks does
+// not, so the detection can be done while the upright crops are still
+// being read.
+func (r *Reader) DetectTurned(img image.Image) ([]image.Rectangle, error) {
 	turned, err := r.detect(turn90(img))
 	if err != nil {
 		return nil, err
 	}
-	seen := make([]image.Rectangle, 0, len(have))
+	h := img.Bounds().Dy()
+	out := make([]image.Rectangle, 0, len(turned))
+	for _, t := range turned {
+		out = append(out, image.Rect(t.Min.Y, h-t.Max.X, t.Max.Y, h-t.Min.X).Add(img.Bounds().Min))
+	}
+	return out, nil
+}
+
+// Uncovered drops the turned boxes the upright pass already read, and the
+// later turned boxes an earlier one covers, in the order given - which is
+// what ReadTurned has always done and is kept exact here so that pulling
+// the detection out changes nothing.
+func Uncovered(turned []image.Rectangle, have []Region) []image.Rectangle {
+	seen := make([]image.Rectangle, 0, len(have)+len(turned))
 	for _, x := range have {
 		seen = append(seen, x.Box)
 	}
-	h := img.Bounds().Dy()
 	var boxes []image.Rectangle
-	for _, t := range turned {
-		b := image.Rect(t.Min.Y, h-t.Max.X, t.Max.Y, h-t.Min.X).Add(img.Bounds().Min)
+	for _, b := range turned {
 		if covered(b, seen) {
 			continue
 		}
 		boxes = append(boxes, b)
 		seen = append(seen, b)
 	}
-	return r.readBoxes(img, boxes)
+	return boxes
 }
 
 // ReadBoxes recognises boxes someone else chose, which is how a second
@@ -259,16 +334,50 @@ func (r *Reader) ReadBoxes(img image.Image, boxes []image.Rectangle) ([]Region, 
 
 // readBoxes recognises every box and returns them in reading order.
 func (r *Reader) readBoxes(img image.Image, boxes []image.Rectangle) ([]Region, error) {
-	out := make([]Region, 0, len(boxes))
-	for _, b := range boxes {
-		text, conf, rot, err := r.recognise(img, b)
-		if err != nil {
-			return nil, err
+	// Every crop is read into its own slot, so what comes out does not
+	// depend on which goroutine finished first (step 29a). The sort
+	// below then puts them in reading order as it always did, and the
+	// result is byte-identical to reading them one after another.
+	got := make([]Region, len(boxes))
+	errs := make([]error, len(boxes))
+	n := r.p.cores()
+	if n > len(boxes) {
+		n = len(boxes)
+	}
+	if n <= 1 {
+		for i, b := range boxes {
+			text, conf, rot, err := r.recognise(img, b)
+			got[i], errs[i] = Region{Box: b, Text: text, Confidence: conf, Rotated: rot}, err
 		}
-		if text == "" {
+	} else {
+		var wg sync.WaitGroup
+		next := make(chan int)
+		for range n {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for i := range next {
+					b := boxes[i]
+					text, conf, rot, err := r.recognise(img, b)
+					got[i], errs[i] = Region{Box: b, Text: text, Confidence: conf, Rotated: rot}, err
+				}
+			}()
+		}
+		for i := range boxes {
+			next <- i
+		}
+		close(next)
+		wg.Wait()
+	}
+	out := make([]Region, 0, len(boxes))
+	for i := range got {
+		if errs[i] != nil {
+			return nil, errs[i]
+		}
+		if got[i].Text == "" {
 			continue
 		}
-		out = append(out, Region{Box: b, Text: text, Confidence: conf, Rotated: rot})
+		out = append(out, got[i])
 	}
 	sort.Slice(out, func(i, j int) bool {
 		if out[i].Box.Min.Y != out[j].Box.Min.Y {
@@ -309,9 +418,9 @@ func (r *Reader) detect(img image.Image) ([]image.Rectangle, error) {
 	}
 	defer in.Destroy()
 	outputs := []ort.Value{nil}
-	r.mu.Lock()
+	r.detMu.Lock()
 	err = r.det.Run([]ort.Value{in}, outputs)
-	r.mu.Unlock()
+	r.detMu.Unlock()
 	if err != nil {
 		return nil, err
 	}
@@ -454,9 +563,12 @@ func (r *Reader) readCrop(img image.Image, box image.Rectangle, turn int) (strin
 	}
 	defer in.Destroy()
 	outputs := []ort.Value{nil}
-	r.mu.Lock()
-	err = r.rec.Run([]ort.Value{in}, outputs)
-	r.mu.Unlock()
+	// Take a session from the pool, use it, put it back. No session is
+	// ever held by two goroutines, so nothing here relies on a claim
+	// about whether ONNX Runtime tolerates concurrent calls on one.
+	rec := <-r.recs
+	err = rec.Run([]ort.Value{in}, outputs)
+	r.recs <- rec
 	if err != nil {
 		return "", 0, err
 	}

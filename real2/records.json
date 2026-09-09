@@ -33,19 +33,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5164248600,
+  "latency": 3758741500,
   "stages": {
-   "detect": 488853700,
-   "recognise": 1304810200,
-   "runs": 2298800,
-   "decide": 3368285900,
+   "detect": 429284200,
+   "recognise": 390751200,
+   "runs": 532300,
+   "decide": 2938173800,
    "boxes": 39,
    "run_count": 257
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PENUMBRA",
     "observed": "PENUMBRA",
@@ -70,14 +70,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
     "observed": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
@@ -102,14 +102,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "200 CONCOURSE BLVD SANTA ROSA CA 95403"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF MEXICO",
     "observed": "PRODUCT OF MEXICO",
@@ -134,7 +134,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "46",
     "observed": "46",
@@ -160,7 +160,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -221,13 +221,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4590425600,
+  "latency": 2080622800,
   "stages": {
-   "detect": 804634100,
-   "recognise": 1164535300,
-   "turned_pass": 1071190500,
-   "runs": 1008600,
-   "decide": 1549057100,
+   "detect": 642175200,
+   "recognise": 319514700,
+   "turned_pass": 807961800,
+   "runs": 545600,
+   "decide": 629940200,
    "boxes": 39,
    "turned_boxes": 5,
    "run_count": 263
@@ -235,7 +235,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BARULLO",
     "observed": "BARULLO",
@@ -260,28 +260,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OZ TRADING GROUP INC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "2806 E NOGAL AVE Hidalgo TX 78557"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -307,7 +307,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -368,13 +368,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3646393200,
+  "latency": 1297596100,
   "stages": {
-   "detect": 545436100,
-   "recognise": 1912370100,
-   "turned_pass": 944434800,
-   "runs": 2486100,
-   "decide": 241666100,
+   "detect": 519882900,
+   "recognise": 423437200,
+   "turned_pass": 701048400,
+   "runs": 0,
+   "decide": 76664800,
    "boxes": 66,
    "turned_boxes": 7,
    "run_count": 96
@@ -382,7 +382,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BARULLO",
     "observed": "BARULLO",
@@ -407,14 +407,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "OZ TRADING GROUP INC",
     "observed": "OZ TRADING GROUP INC",
@@ -439,7 +439,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "2806 E NOGAL AVE Hidalgo TX 78557",
     "observed": "2806 E NOGAL AVE Hidalgo TX 78557",
@@ -464,7 +464,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -490,7 +490,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "475",
     "observed": "475",
@@ -551,13 +551,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4435042900,
+  "latency": 1616089900,
   "stages": {
-   "detect": 389479500,
-   "recognise": 1027960800,
-   "turned_pass": 883868200,
-   "runs": 3084000,
-   "decide": 2130650400,
+   "detect": 324442400,
+   "recognise": 306655200,
+   "turned_pass": 534597000,
+   "runs": 515100,
+   "decide": 756535400,
    "boxes": 48,
    "turned_boxes": 17,
    "run_count": 244
@@ -565,7 +565,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PATRÓN",
     "observed": "PATRÓN",
@@ -590,7 +590,7 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB",
@@ -615,28 +615,28 @@
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BACARDI U.S.A., INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40"
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -697,13 +697,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4602116800,
+  "latency": 1798233900,
   "stages": {
-   "detect": 368526200,
-   "recognise": 1307240600,
-   "turned_pass": 714377300,
-   "runs": 2101600,
-   "decide": 2207344400,
+   "detect": 319022000,
+   "recognise": 324477300,
+   "turned_pass": 488414900,
+   "runs": 1067100,
+   "decide": 989729900,
    "boxes": 49,
    "turned_boxes": 10,
    "run_count": 326
@@ -711,7 +711,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PATRÓN",
     "observed": "PATRÓN",
@@ -736,7 +736,7 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB",
@@ -761,28 +761,28 @@
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BACARDI U.S.A., INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40"
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -843,13 +843,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5774748300,
+  "latency": 1972866000,
   "stages": {
-   "detect": 629774700,
-   "recognise": 2329548700,
-   "turned_pass": 1184311200,
-   "runs": 2459100,
-   "decide": 1627879100,
+   "detect": 526709200,
+   "recognise": 714895900,
+   "turned_pass": 829127800,
+   "runs": 530800,
+   "decide": 616498200,
    "boxes": 105,
    "turned_boxes": 5,
    "run_count": 334
@@ -857,7 +857,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE",
@@ -882,28 +882,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -930,7 +930,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -991,13 +991,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 15014859800,
+  "latency": 12402153100,
   "stages": {
-   "detect": 369415500,
-   "recognise": 1211897600,
-   "turned_pass": 1169444000,
-   "runs": 4496500,
-   "decide": 12259606200,
+   "detect": 297492900,
+   "recognise": 465854000,
+   "turned_pass": 735748200,
+   "runs": 2152700,
+   "decide": 11366759300,
    "boxes": 69,
    "turned_boxes": 18,
    "run_count": 1145
@@ -1005,7 +1005,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "JOHNNY TEJAS",
     "observed": "JOHNNY TEJAS",
@@ -1030,28 +1030,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "RTD Specialties, GORDON BIERSCH BREWING COMPANY"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "357 E TAYLOR ST San Jose CA 95112"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -1078,7 +1078,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -1139,13 +1139,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3595326700,
+  "latency": 1260283100,
   "stages": {
-   "detect": 203157400,
-   "recognise": 1242445800,
-   "turned_pass": 401438500,
-   "runs": 2043900,
-   "decide": 1746241100,
+   "detect": 200555500,
+   "recognise": 371593900,
+   "turned_pass": 410100900,
+   "runs": 0,
+   "decide": 649626700,
    "boxes": 45,
    "turned_boxes": 5,
    "run_count": 200
@@ -1153,7 +1153,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1178,14 +1178,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1210,14 +1210,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "53",
     "observed": "53",
@@ -1243,7 +1243,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1304,19 +1304,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2211614600,
+  "latency": 1334474900,
   "stages": {
-   "detect": 247086300,
-   "recognise": 875523600,
-   "runs": 1508100,
-   "decide": 1087496600,
+   "detect": 216057800,
+   "recognise": 297210800,
+   "runs": 1511000,
+   "decide": 819695300,
    "boxes": 40,
    "run_count": 205
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1341,14 +1341,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1373,14 +1373,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "49",
     "observed": "49",
@@ -1406,7 +1406,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1467,19 +1467,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2212598600,
+  "latency": 1291955400,
   "stages": {
-   "detect": 292494200,
-   "recognise": 1023571800,
-   "runs": 2359100,
-   "decide": 894173500,
+   "detect": 220326400,
+   "recognise": 290828700,
+   "runs": 544900,
+   "decide": 780255400,
    "boxes": 39,
    "run_count": 206
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1504,14 +1504,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1536,14 +1536,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "40",
     "observed": "40",
@@ -1569,7 +1569,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1630,13 +1630,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4422728300,
+  "latency": 1859853700,
   "stages": {
-   "detect": 211706100,
-   "recognise": 1026394800,
-   "turned_pass": 372669800,
-   "runs": 2254100,
-   "decide": 2809703500,
+   "detect": 170981400,
+   "recognise": 367069600,
+   "turned_pass": 405140000,
+   "runs": 561100,
+   "decide": 1283171200,
    "boxes": 39,
    "turned_boxes": 3,
    "run_count": 220
@@ -1644,7 +1644,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1669,28 +1669,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "40",
     "observed": "40",
@@ -1716,7 +1716,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1777,13 +1777,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9449659600,
+  "latency": 6101071300,
   "stages": {
-   "detect": 449537300,
-   "recognise": 1911401900,
-   "turned_pass": 841783000,
-   "runs": 3464100,
-   "decide": 6242944600,
+   "detect": 471888500,
+   "recognise": 657999500,
+   "turned_pass": 832343500,
+   "runs": 3072000,
+   "decide": 4793767300,
    "boxes": 77,
    "turned_boxes": 7,
    "run_count": 1196
@@ -1791,35 +1791,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "FAN ZONE DETROIT"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Ellicottville Brewing Co., S\u0026W COMPANY, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "202 SECOND ST Little Valley NY 14755"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -1845,7 +1845,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "473",
     "observed": "473",
@@ -1906,13 +1906,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5509111700,
+  "latency": 2001240600,
   "stages": {
-   "detect": 724898500,
-   "recognise": 2346512600,
-   "turned_pass": 1133642500,
-   "runs": 2102800,
-   "decide": 1301955300,
+   "detect": 576318800,
+   "recognise": 715001400,
+   "turned_pass": 886955200,
+   "runs": 517000,
+   "decide": 537449600,
    "boxes": 107,
    "turned_boxes": 11,
    "run_count": 320
@@ -1920,35 +1920,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -1975,7 +1975,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2036,13 +2036,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4848352100,
+  "latency": 2004341500,
   "stages": {
-   "detect": 656394900,
-   "recognise": 1803838500,
-   "turned_pass": 947711300,
-   "runs": 2865400,
-   "decide": 1437542000,
+   "detect": 579131700,
+   "recognise": 711632100,
+   "turned_pass": 837244000,
+   "runs": 585600,
+   "decide": 586375500,
    "boxes": 105,
    "turned_boxes": 5,
    "run_count": 362
@@ -2050,35 +2050,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2105,7 +2105,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2166,13 +2166,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4259165200,
+  "latency": 2406216900,
   "stages": {
-   "detect": 332114400,
-   "recognise": 1174612800,
-   "turned_pass": 1367209400,
-   "runs": 7139800,
-   "decide": 1378088800,
+   "detect": 324234100,
+   "recognise": 284016200,
+   "turned_pass": 750841500,
+   "runs": 527800,
+   "decide": 1330613500,
    "boxes": 92,
    "turned_boxes": 55,
    "run_count": 152
@@ -2180,7 +2180,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -2205,28 +2205,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -2252,7 +2252,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2313,13 +2313,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3654931500,
+  "latency": 2214624700,
   "stages": {
-   "detect": 369578500,
-   "recognise": 487989000,
-   "turned_pass": 1257840600,
-   "runs": 2419800,
-   "decide": 1537103600,
+   "detect": 335065800,
+   "recognise": 117385500,
+   "turned_pass": 594260900,
+   "runs": 503300,
+   "decide": 1284794700,
    "boxes": 18,
    "turned_boxes": 11,
    "run_count": 150
@@ -2327,7 +2327,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -2352,28 +2352,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "6.5",
     "observed": "6.5",
@@ -2401,7 +2401,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2462,19 +2462,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 907491400,
+  "latency": 515413000,
   "stages": {
-   "detect": 438630200,
-   "recognise": 357525500,
+   "detect": 320191900,
+   "recognise": 120606700,
    "runs": 0,
-   "decide": 111335700,
+   "decide": 74614400,
    "boxes": 16,
    "run_count": 36
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -2499,28 +2499,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -2546,7 +2546,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2607,13 +2607,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6071425900,
+  "latency": 2343215900,
   "stages": {
-   "detect": 737052800,
-   "recognise": 2486196700,
-   "turned_pass": 1286532800,
-   "runs": 2682600,
-   "decide": 1558961000,
+   "detect": 594114300,
+   "recognise": 1007793400,
+   "turned_pass": 1129500200,
+   "runs": 1641500,
+   "decide": 617959900,
    "boxes": 111,
    "turned_boxes": 7,
    "run_count": 332
@@ -2621,35 +2621,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2675,7 +2675,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "570",
     "observed": "570",
@@ -2736,13 +2736,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6043773300,
+  "latency": 2125908600,
   "stages": {
-   "detect": 697428200,
-   "recognise": 2606285400,
-   "turned_pass": 1203432200,
-   "runs": 1000400,
-   "decide": 1534957200,
+   "detect": 528413300,
+   "recognise": 828573300,
+   "turned_pass": 959778300,
+   "runs": 519600,
+   "decide": 637197400,
    "boxes": 93,
    "turned_boxes": 5,
    "run_count": 325
@@ -2750,35 +2750,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2804,7 +2804,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2865,13 +2865,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5412526700,
+  "latency": 2281418700,
   "stages": {
-   "detect": 657516300,
-   "recognise": 2064588900,
-   "turned_pass": 1052228800,
-   "runs": 2533700,
-   "decide": 1635659000,
+   "detect": 551315300,
+   "recognise": 841702600,
+   "turned_pass": 977899900,
+   "runs": 525500,
+   "decide": 751678000,
    "boxes": 108,
    "turned_boxes": 8,
    "run_count": 382
@@ -2879,35 +2879,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2934,7 +2934,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2995,13 +2995,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6383134100,
+  "latency": 2151679600,
   "stages": {
-   "detect": 746460900,
-   "recognise": 2843134400,
-   "turned_pass": 1295226700,
-   "runs": 1844000,
-   "decide": 1496468100,
+   "detect": 543824300,
+   "recognise": 871164300,
+   "turned_pass": 1015586400,
+   "runs": 522000,
+   "decide": 591746900,
    "boxes": 107,
    "turned_boxes": 11,
    "run_count": 320
@@ -3009,35 +3009,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -3064,7 +3064,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3125,13 +3125,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3560331300,
+  "latency": 1601905100,
   "stages": {
-   "detect": 572142700,
-   "recognise": 1392201100,
-   "turned_pass": 754875800,
-   "runs": 9296400,
-   "decide": 831815300,
+   "detect": 483688100,
+   "recognise": 725760300,
+   "turned_pass": 760193700,
+   "runs": 1540800,
+   "decide": 356482500,
    "boxes": 78,
    "turned_boxes": 6,
    "run_count": 194
@@ -3139,7 +3139,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -3164,28 +3164,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -3213,7 +3213,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3274,13 +3274,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4043568800,
+  "latency": 1677149900,
   "stages": {
-   "detect": 545552800,
-   "recognise": 1744158700,
-   "turned_pass": 699491000,
-   "runs": 2633100,
-   "decide": 1051733200,
+   "detect": 470187000,
+   "recognise": 689972500,
+   "turned_pass": 718390700,
+   "runs": 610700,
+   "decide": 487961500,
    "boxes": 72,
    "turned_boxes": 3,
    "run_count": 202
@@ -3288,7 +3288,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -3313,28 +3313,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -3362,7 +3362,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3423,13 +3423,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4065589300,
+  "latency": 1744219300,
   "stages": {
-   "detect": 485117900,
-   "recognise": 1666529000,
-   "turned_pass": 724932000,
-   "runs": 3040400,
-   "decide": 1185970000,
+   "detect": 463854900,
+   "recognise": 701635000,
+   "turned_pass": 714556200,
+   "runs": 516800,
+   "decide": 565291400,
    "boxes": 73,
    "turned_boxes": 3,
    "run_count": 188
@@ -3437,7 +3437,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -3462,28 +3462,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -3511,7 +3511,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3572,13 +3572,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4487974700,
+  "latency": 1793136900,
   "stages": {
-   "detect": 633209300,
-   "recognise": 2000972900,
-   "turned_pass": 756222400,
-   "runs": 2141900,
-   "decide": 1095428200,
+   "detect": 497711700,
+   "recognise": 702847400,
+   "turned_pass": 748817700,
+   "runs": 505100,
+   "decide": 545097700,
    "boxes": 75,
    "turned_boxes": 5,
    "run_count": 219
@@ -3586,35 +3586,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -3642,7 +3642,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3703,13 +3703,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 16171431700,
+  "latency": 11993832200,
   "stages": {
-   "detect": 125644800,
-   "recognise": 2217898500,
-   "turned_pass": 983010200,
-   "runs": 27302500,
-   "decide": 12817575700,
+   "detect": 89708600,
+   "recognise": 625937200,
+   "turned_pass": 930859000,
+   "runs": 7160900,
+   "decide": 10966103700,
    "boxes": 98,
    "turned_boxes": 26,
    "run_count": 2578
@@ -3717,7 +3717,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "DANCING PANDA",
     "observed": "DANCING PANDA",
@@ -3742,7 +3742,7 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "STRAIGHT BOURBON WHISKY",
     "observed": "STRAIGHT BOURBON WHISKY",
@@ -3767,21 +3767,21 @@
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Dynasty Spirits Brands LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "4865 CALVERT ST Dallas TX 75247"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "50",
     "observed": "50",
@@ -3807,7 +3807,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -3869,13 +3869,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2956675900,
+  "latency": 1528678600,
   "stages": {
-   "detect": 638164500,
-   "recognise": 898942400,
-   "turned_pass": 930621200,
-   "runs": 505500,
-   "decide": 488442300,
+   "detect": 523564600,
+   "recognise": 312772800,
+   "turned_pass": 777050700,
+   "runs": 0,
+   "decide": 228063300,
    "boxes": 30,
    "turned_boxes": 2,
    "run_count": 89
@@ -3883,7 +3883,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "VIÑA SALCEDA LA RELLANILLA",
     "observed": "VIÑA SALCEDA LA RELLANILLA",
@@ -3908,28 +3908,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THINK GLOBAL LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "827 STATE ST STE 28 SANTA BARBARA CA 93101"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF SPAIN",
     "observed": "PRODUCT OF SPAIN",
@@ -3954,7 +3954,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -3980,7 +3980,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4041,13 +4041,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6377228300,
+  "latency": 4674964000,
   "stages": {
-   "detect": 507909900,
-   "recognise": 1122627600,
-   "turned_pass": 1131545300,
-   "runs": 5240600,
-   "decide": 3609904900,
+   "detect": 458566300,
+   "recognise": 427167200,
+   "turned_pass": 830019200,
+   "runs": 1031800,
+   "decide": 3385346700,
    "boxes": 47,
    "turned_boxes": 5,
    "run_count": 486
@@ -4055,7 +4055,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "APONA VINEYARDS",
     "observed": "APONA VINEYARDS",
@@ -4080,14 +4080,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Apona Vineyard, Apona Vineyards, LLC",
@@ -4112,14 +4112,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "25443 FLECK RD Veneta OR 97487"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "13.2",
     "observed": "13.2",
@@ -4145,7 +4145,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4207,13 +4207,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2014999900,
+  "latency": 861320700,
   "stages": {
-   "detect": 190775800,
-   "recognise": 1006609000,
-   "turned_pass": 307961900,
-   "runs": 2012500,
-   "decide": 507640700,
+   "detect": 172056700,
+   "recognise": 437946800,
+   "turned_pass": 493116900,
+   "runs": 0,
+   "decide": 196147100,
    "boxes": 40,
    "turned_boxes": 2,
    "run_count": 107
@@ -4221,7 +4221,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS",
@@ -4246,14 +4246,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -4278,14 +4278,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -4310,7 +4310,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "42",
     "observed": "42",
@@ -4336,7 +4336,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4398,33 +4398,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1381686400,
+  "latency": 748835200,
   "stages": {
-   "detect": 160698400,
-   "recognise": 921055400,
-   "runs": 814200,
-   "decide": 299118400,
+   "detect": 160436900,
+   "recognise": 408793200,
+   "runs": 775400,
+   "decide": 178829700,
    "boxes": 37,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -4449,14 +4449,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -4481,7 +4481,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -4507,7 +4507,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4569,33 +4569,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1553444800,
+  "latency": 764837700,
   "stages": {
-   "detect": 231805900,
-   "recognise": 1061700900,
-   "runs": 6419600,
-   "decide": 253518400,
+   "detect": 169891000,
+   "recognise": 405909700,
+   "runs": 0,
+   "decide": 189037000,
    "boxes": 41,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -4620,14 +4620,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -4652,7 +4652,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -4678,7 +4678,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4740,19 +4740,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1671942400,
+  "latency": 750984000,
   "stages": {
-   "detect": 221479500,
-   "recognise": 1198662500,
-   "runs": 0,
-   "decide": 251800400,
+   "detect": 164878500,
+   "recognise": 404740700,
+   "runs": 536200,
+   "decide": 180828600,
    "boxes": 40,
    "run_count": 95
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS",
@@ -4777,14 +4777,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -4809,14 +4809,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -4841,7 +4841,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -4867,7 +4867,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -4929,19 +4929,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2219814800,
+  "latency": 1314453500,
   "stages": {
-   "detect": 435478300,
-   "recognise": 965566500,
-   "runs": 0,
-   "decide": 818770000,
+   "detect": 354549000,
+   "recognise": 342370500,
+   "runs": 503300,
+   "decide": 617030700,
    "boxes": 25,
    "run_count": 75
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BODEGAS Y VINEDOS VEGA DE YUSO",
@@ -4966,28 +4966,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "CROD TRADING CORP, CROD TRADING CO CORP."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1 KM 28.6 BO. RIO CANAS BLDG Carr #1 Km 28.6 Bo. Rio Canas CAGUAS PR 00725"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "Product of Spain",
     "observed": "Product of Spain",
@@ -5012,7 +5012,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -5038,7 +5038,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5099,34 +5099,34 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2434949900,
+  "latency": 1007926200,
   "stages": {
-   "detect": 421244200,
-   "recognise": 1164458800,
-   "turned_pass": 519261500,
-   "runs": 17004900,
-   "decide": 312980500,
+   "detect": 298871400,
+   "recognise": 421164800,
+   "turned_pass": 427934400,
+   "runs": 0,
+   "decide": 281120400,
    "boxes": 30,
    "run_count": 53
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE CROSSING AT BIG CREEK BREWERY"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MALT BEVERAGES SPECIALITIES - FLAVORED"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "The Crossing at Big Creek Brewery, TCBC Development Company",
     "observed": "The Crossing at Big Creek Brewery, TCBC Development Company",
@@ -5151,14 +5151,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "100 MAGNOLIA WAY Cottonwood AL 36320"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "5.5",
     "observed": "5.5",
@@ -5184,7 +5184,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -5245,13 +5245,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4163743500,
+  "latency": 1744521400,
   "stages": {
-   "detect": 425457200,
-   "recognise": 1234460200,
-   "turned_pass": 835147900,
-   "runs": 521300,
-   "decide": 1668156900,
+   "detect": 364330500,
+   "recognise": 576359700,
+   "turned_pass": 661270800,
+   "runs": 0,
+   "decide": 718920100,
    "boxes": 38,
    "turned_boxes": 3,
    "run_count": 189
@@ -5259,7 +5259,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "MCKELVEY VINEYARDS",
     "observed": "MCKELVEY VINEYARDS",
@@ -5284,28 +5284,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SVP Winery, SVP Winery, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "111 CLARK RD Shandon CA 93461"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "13",
     "observed": "13",
@@ -5331,7 +5331,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5392,19 +5392,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9232344300,
+  "latency": 8326886800,
   "stages": {
-   "detect": 527742400,
-   "recognise": 1527038200,
-   "runs": 2025100,
-   "decide": 7175538600,
+   "detect": 469217900,
+   "recognise": 783837000,
+   "runs": 2160400,
+   "decide": 7071671500,
    "boxes": 59,
    "run_count": 340
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "LEGACY RESERVE",
     "observed": "LEGACY RESERVE",
@@ -5429,7 +5429,7 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BOURBON WHISKY",
     "observed": "BOURBON WHISKY",
@@ -5454,7 +5454,7 @@
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
     "observed": "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
@@ -5479,7 +5479,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "81 E WAYNE ST STE A Franklin IN 46131",
@@ -5504,7 +5504,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "50",
     "observed": "50",
@@ -5530,7 +5530,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5591,13 +5591,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3622171400,
+  "latency": 1454225300,
   "stages": {
-   "detect": 407448100,
-   "recognise": 1277365200,
-   "turned_pass": 640429500,
-   "runs": 718300,
-   "decide": 1296210300,
+   "detect": 393893900,
+   "recognise": 534399000,
+   "turned_pass": 559962400,
+   "runs": 522900,
+   "decide": 499846100,
    "boxes": 36,
    "turned_boxes": 3,
    "run_count": 143
@@ -5605,7 +5605,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "KILIKIA",
     "observed": "KILIKIA",
@@ -5630,7 +5630,7 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BEER",
     "observed": "BEER",
@@ -5655,7 +5655,7 @@
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "IMPORTERS DIRECT WHOLESALE CO., INC.",
     "observed": "IMPORTERS DIRECT WHOLESALE CO., INC.",
@@ -5680,7 +5680,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "1944 GARDENA AVE GLENDALE CA 91204",
     "observed": "1944 GARDENA AVE GLENDALE CA 91204",
@@ -5705,7 +5705,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -5731,7 +5731,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "330",
     "observed": "330",
@@ -5792,33 +5792,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1750360100,
+  "latency": 1036487300,
   "stages": {
-   "detect": 412930200,
-   "recognise": 925191700,
-   "runs": 536600,
-   "decide": 411701600,
+   "detect": 363011200,
+   "recognise": 315383900,
+   "runs": 0,
+   "decide": 358092200,
    "boxes": 25,
    "run_count": 80
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "45TH PARALLEL"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "45TH PARALLEL SPIRITS, LLC",
     "observed": "45TH PARALLEL SPIRITS, LLC",
@@ -5843,14 +5843,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1570 MADISON AVE NEW RICHMOND WI 54017"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "42",
     "observed": "42",
@@ -5878,7 +5878,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5939,13 +5939,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2383286200,
+  "latency": 1506964300,
   "stages": {
-   "detect": 547627500,
-   "recognise": 504184200,
-   "turned_pass": 1060010800,
-   "runs": 0,
-   "decide": 271463700,
+   "detect": 528370600,
+   "recognise": 174963100,
+   "turned_pass": 898374400,
+   "runs": 515100,
+   "decide": 79704200,
    "boxes": 25,
    "turned_boxes": 2,
    "run_count": 109
@@ -5953,7 +5953,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "KOI",
     "observed": "KOI",
@@ -5978,28 +5978,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "LOVEMARK ADVANCED TRADING HOLDING LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "304 E BAKER STREET STE D PLANT CITY FL 33563"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40",
@@ -6024,7 +6024,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "700",
     "observed": "700",
@@ -6085,19 +6085,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1659781400,
+  "latency": 1047435800,
   "stages": {
-   "detect": 741197100,
-   "recognise": 625312700,
-   "runs": 0,
-   "decide": 293271600,
+   "detect": 576544200,
+   "recognise": 272388400,
+   "runs": 519000,
+   "decide": 196983900,
    "boxes": 21,
    "run_count": 59
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "CASTILLO DE MENDOZA",
     "observed": "CASTILLO DE MENDOZA",
@@ -6122,14 +6122,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Atlanta Improvement Company",
@@ -6154,14 +6154,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3134 MARJAN DR Doraville GA 30340"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.1",
     "observed": "14.1",
@@ -6187,7 +6187,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6248,19 +6248,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6614785500,
+  "latency": 5561765100,
   "stages": {
-   "detect": 480979500,
-   "recognise": 1582167100,
-   "runs": 19674400,
-   "decide": 4531964500,
+   "detect": 391010900,
+   "recognise": 662479200,
+   "runs": 1024000,
+   "decide": 4507251000,
    "boxes": 56,
    "run_count": 287
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PEAKY BLINDERS",
     "observed": "PEAKY BLINDERS",
@@ -6285,14 +6285,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "WHISKY SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
     "observed": "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
@@ -6317,14 +6317,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "4263 BUCKEYE RD LANCASTER KY 40444"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "REVIEW",
     "reason": "between:60,10",
     "expected": "60",
@@ -6353,7 +6353,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6414,13 +6414,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5215535400,
+  "latency": 2072284300,
   "stages": {
-   "detect": 310433600,
-   "recognise": 908322700,
-   "turned_pass": 473809100,
-   "runs": 1005600,
-   "decide": 3521964400,
+   "detect": 266140900,
+   "recognise": 297659500,
+   "turned_pass": 373391800,
+   "runs": 519900,
+   "decide": 1432231700,
    "boxes": 29,
    "turned_boxes": 4,
    "run_count": 119
@@ -6428,21 +6428,21 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALPAS VINEYARDS"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "Engelheim Vineyards, Engelheim Vineyards, LLC",
     "observed": "Engelheim Vineyards, Engelheim Vineyards, LLC",
@@ -6467,14 +6467,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "127 LAKEVIEW RD Ellijay GA 30540"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "13",
     "observed": "13",
@@ -6500,7 +6500,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6561,13 +6561,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7149364500,
+  "latency": 3920407600,
   "stages": {
-   "detect": 607679000,
-   "recognise": 1413081200,
-   "turned_pass": 2097217800,
-   "runs": 1407500,
-   "decide": 3029979000,
+   "detect": 505055900,
+   "recognise": 352530000,
+   "turned_pass": 900498000,
+   "runs": 609500,
+   "decide": 2514244200,
    "boxes": 58,
    "turned_boxes": 18,
    "run_count": 352
@@ -6575,21 +6575,21 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TENHEAD"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER GIN"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "Knowlton House Distillery, Mullins Distillery LLC",
     "observed": "Knowlton House Distillery, Mullins Distillery LLC",
@@ -6614,14 +6614,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "204575 COUNTY RD. DB Mosinee WI 54455"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "44",
     "observed": "44",
@@ -6648,7 +6648,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1000"
@@ -6691,13 +6691,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8729254000,
+  "latency": 4050272200,
   "stages": {
-   "detect": 545242200,
-   "recognise": 2303914600,
-   "turned_pass": 878865600,
-   "runs": 7147700,
-   "decide": 4994083900,
+   "detect": 430546400,
+   "recognise": 582503500,
+   "turned_pass": 695817900,
+   "runs": 2800800,
+   "decide": 2921107100,
    "boxes": 36,
    "turned_boxes": 6,
    "run_count": 1054
@@ -6705,42 +6705,42 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "NOTRE DAME WINES"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VINOVAE, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1620 CARNEROS MEADOWS LN STE 103 SONOMA CA 95476"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "SKIPPED",
     "reason": "not_found",
     "expected": "Product of USA"
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -6766,7 +6766,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "50"
@@ -6809,19 +6809,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1396170300,
+  "latency": 771024300,
   "stages": {
-   "detect": 551747100,
-   "recognise": 559544400,
-   "runs": 1000200,
-   "decide": 283878600,
+   "detect": 384576600,
+   "recognise": 162200200,
+   "runs": 0,
+   "decide": 224247500,
    "boxes": 25,
    "run_count": 90
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PASSIONE NATURA",
     "observed": "PASSIONE NATURA",
@@ -6846,28 +6846,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "USA WINE WEST, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF ITALY",
     "observed": "PRODUCT OF ITALY",
@@ -6892,7 +6892,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "12.5",
     "observed": "12.5",
@@ -6918,7 +6918,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6980,19 +6980,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1400071100,
+  "latency": 804609600,
   "stages": {
-   "detect": 476821800,
-   "recognise": 627555800,
-   "runs": 0,
-   "decide": 295693500,
+   "detect": 365853300,
+   "recognise": 191643300,
+   "runs": 505300,
+   "decide": 246607700,
    "boxes": 28,
    "run_count": 86
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PASSIONE NATURA",
     "observed": "PASSIONE NATURA",
@@ -7017,28 +7017,28 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "USA WINE WEST, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF ITALY",
     "observed": "PRODUCT OF ITALY",
@@ -7063,7 +7063,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "12",
     "observed": "12",
@@ -7089,7 +7089,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7151,13 +7151,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4565682100,
+  "latency": 2308559700,
   "stages": {
-   "detect": 456546500,
-   "recognise": 861402700,
-   "turned_pass": 769786100,
-   "runs": 998500,
-   "decide": 2476948300,
+   "detect": 409461200,
+   "recognise": 385344500,
+   "turned_pass": 582387000,
+   "runs": 1005300,
+   "decide": 1315706200,
    "boxes": 41,
    "turned_boxes": 11,
    "run_count": 162
@@ -7165,7 +7165,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "CLOS FOURTET",
     "observed": "CLOS FOURTET",
@@ -7190,14 +7190,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -7222,14 +7222,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -7254,7 +7254,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -7280,7 +7280,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7342,33 +7342,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 1905491600,
+  "latency": 1424653300,
   "stages": {
-   "detect": 443265300,
-   "recognise": 665458300,
-   "runs": 0,
-   "decide": 796768000,
+   "detect": 401523200,
+   "recognise": 285046300,
+   "runs": 517200,
+   "decide": 737566600,
    "boxes": 33,
    "run_count": 93
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "CHATEAU COTE DE BALEAU"
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -7393,14 +7393,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -7425,7 +7425,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -7451,7 +7451,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7513,19 +7513,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 2368686400,
+  "latency": 1623088100,
   "stages": {
-   "detect": 371114200,
-   "recognise": 953181100,
+   "detect": 359738600,
+   "recognise": 314675000,
    "runs": 0,
-   "decide": 1044391100,
+   "decide": 948674500,
    "boxes": 44,
    "run_count": 110
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "CHATEAU LA GAFFELIERE",
     "observed": "CHATEAU LA GAFFELIERE",
@@ -7550,14 +7550,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -7582,14 +7582,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -7614,7 +7614,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -7640,7 +7640,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7702,20 +7702,20 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3324714200,
+  "latency": 1912444800,
   "stages": {
-   "detect": 685889000,
-   "recognise": 1082740900,
-   "turned_pass": 740724100,
-   "runs": 334200,
-   "decide": 815026000,
+   "detect": 508060300,
+   "recognise": 324342700,
+   "turned_pass": 669038900,
+   "runs": 0,
+   "decide": 735345600,
    "boxes": 41,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "CHATEAU RAYMOND-LAFON",
     "observed": "CHATEAU RAYMOND-LAFON",
@@ -7740,14 +7740,14 @@
    },
    {
     "claim": "class",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -7772,14 +7772,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -7804,7 +7804,7 @@
    },
    {
     "claim": "abv",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "13.5",
     "observed": "13.5",
@@ -7830,7 +7830,7 @@
    },
    {
     "claim": "net",
-    "engine": "2e4fc3c8425a",
+    "engine": "fe1452450604",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
