@@ -14,7 +14,7 @@
 // 0.39 of characters, and on 0.25 once the image had been through a camera
 // channel, with fusion the dominant error. Every mechanism above it had
 // been fitted to pieces that are wrong most of the time. It is retired in
-// step 19a, and docs/approach.md keeps its tables in the order they were
+// step 19a, and docs/measurements/README.md keeps its tables in the order they were
 // measured.
 package verify
 

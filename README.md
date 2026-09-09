@@ -104,7 +104,7 @@ A claim is compared to the label's own text, not to a guess about it. The rules 
 the same seven the engine has accumulated under measurement, each one added because a specific
 false assertion made it necessary — a number must be read exactly as a whole run of digits, a name
 taken from inside a longer line must be delimited at both ends and must be the whole name, a
-reading with characters missing may not contradict, and so on. `docs/approach.md` records each
+reading with characters missing may not contradict, and so on. `docs/measurements/README.md` records each
 with the label that forced it.
 
 ## Layout
@@ -117,12 +117,12 @@ api/             the specification, and the code generated from it
 internal/httpapi/  the service and the page
 cmd/serve        the service          cmd/decode  one label
 cmd/eval         the measurement      cmd/whymissed  where a claim was lost
-docs/approach.md every step in the order it was measured
+docs/measurements/README.md every step in the order it was measured
 ```
 
 ## Where the numbers are
 
-`docs/approach.md` carries every table in the order it was measured, including the ones that were
+`docs/measurements/README.md` carries every table in the order it was measured, including the ones that were
 later corrected, and says which. The short version: on fifty real registry labels the engine
 verifies 156 of the 192 claims they carry, with **precision 1.00 across 550 labels and not one
 false assertion**; median 1.3 s and 95th percentile 3.9 s per label on four cores.

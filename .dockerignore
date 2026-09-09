@@ -16,8 +16,6 @@ out/
 # Test data. The synthetic corpus and the real labels are hundreds of
 # megabytes of PNG, and the binary reads neither.
 synth/
-real/
-real2/
 eval/
 testdata/
 

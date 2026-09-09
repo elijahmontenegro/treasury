@@ -14,7 +14,7 @@ import (
 // and bands, borders and rules, a pattern or a photograph, a barcode, and
 // ornament, and the text is composited over all of it. What is here is what
 // the fifty real labels are made of, measured rather than assumed: the
-// shares, greys and contrasts are recorded in docs/approach.md against the
+// shares, greys and contrasts are recorded in docs/measurements/README.md against the
 // measurement each came from.
 type Art struct {
 	Ground    uint8 // the label's own grey

@@ -1,7 +1,7 @@
 # Approach
 
 Live: https://label-verifier-173761965521.us-central1.run.app
-Full measurement record, every table in the order it was measured: [docs/approach.md](docs/approach.md)
+Full measurement record, every table in the order it was measured: [docs/measurements/README.md](docs/measurements/README.md)
 
 ## The approach
 
@@ -58,4 +58,4 @@ Not shipped: **the deployment is behind the repository.** The live URL runs a bu
 
 ## This was not the original design
 
-The engine built through the first eighteen steps read a label by cutting ink into glyphs and learning each label's alphabet from the statutory warning. Measured directly, that stage was correct on 0.39 of characters and on 0.25 through a camera channel, and everything downstream ran on those pieces. It was retired and replaced; every table from every step is kept in `docs/approach.md`, in the order measured, including the numbers that were later corrected and why, because those tables are the evidence for the decision.
+The engine built through the first eighteen steps read a label by cutting ink into glyphs and learning each label's alphabet from the statutory warning. Measured directly, that stage was correct on 0.39 of characters and on 0.25 through a camera channel, and everything downstream ran on those pieces. It was retired and replaced; every table from every step is kept in `docs/measurements/README.md`, in the order measured, including the numbers that were later corrected and why, because those tables are the evidence for the decision.

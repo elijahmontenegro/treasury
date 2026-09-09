@@ -287,9 +287,9 @@ The gate was latency: median 2.7 s and p95 4.1 s against 5.0 and 7.0 (it was 8 t
 
 ### Real labels: ten from the COLA registry (amendment step 4, 2026-09-03)
 
-Ten approvals completed 20 to 26 August 2026 were taken from the TTB public COLA registry, four spirits, three wines, three malt beverages, each from a different permittee, with the brand, class, applicant, and origin from the application form and the alcohol content and net contents transcribed from the label images, which the form does not carry. Front, back, and neck images were stacked into one image (`cmd/stack`); the set is `real/`, with the TTB IDs and source URLs in each truth file. The images are the artwork as submitted, 96 to 300 dpi, clean: no blur, no glare, no compression to speak of.
+Ten approvals completed 20 to 26 August 2026 were taken from the TTB public COLA registry, four spirits, three wines, three malt beverages, each from a different permittee, with the brand, class, applicant, and origin from the application form and the alcohol content and net contents transcribed from the label images, which the form does not carry. Front, back, and neck images were stacked into one image (`cmd/stack`); the set is `eval/real10/`, with the TTB IDs and source URLs in each truth file. The images are the artwork as submitted, 96 to 300 dpi, clean: no blur, no glare, no compression to speak of.
 
-**Step 4 as specified: the engine at the step 3 commit, unchanged, on the ten labels** (`real/table_step4_baseline.md`, `real/records_step4_baseline.json`):
+**Step 4 as specified: the engine at the step 3 commit, unchanged, on the ten labels** (`docs/measurements/table_real10_step4_baseline.md`, `docs/measurements/records_real10_step4_baseline.json`):
 
 10 labels, 9 without an alphabet, latency median 0.3s p95 4.6s
 
@@ -1459,7 +1459,7 @@ Not every low fraction is a wrong block: the four Grapevine labels sit at 0.46 t
 
 Gate, stated before the run: real-label recall split by whether a claim is set in the warning's own face or another, per claim, with a stated finding on how much of the remaining loss is cross-face.
 
-**Method.** The face relation is not in the registry and cannot be taken from the engine's own verdicts without circularity, so it is transcribed by eye from the images. The sample is all forty labels that learn an alphabet — a label without one attempts no claim — and it is the whole population rather than a sample of it, because only eighteen claims verify on the fifty and a subsample would leave the numerator too thin to split. Two of the forty (0030 and 0031) were recorded from their siblings 0029 and 0032, the same series in the same design. The transcription is in `real2/face_relation.json`, one line per claim.
+**Method.** The face relation is not in the registry and cannot be taken from the engine's own verdicts without circularity, so it is transcribed by eye from the images. The sample is all forty labels that learn an alphabet — a label without one attempts no claim — and it is the whole population rather than a sample of it, because only eighteen claims verify on the fifty and a subsample would leave the numerator too thin to split. Two of the forty (0030 and 0031) were recorded from their siblings 0029 and 0032, the same series in the same design. The transcription is in `docs/measurements/face_relation.json`, one line per claim.
 
 Two rules, stated because they decide rows: where a claim is printed more than once, in the warning's face and in another, it is counted in the same-face column, since the engine searches the whole image and reachability is the question; and a claim whose expected string appears nowhere on the label in any form is counted in neither column and reported separately, since it measures the registry rather than the engine.
 
@@ -1759,7 +1759,7 @@ Gate, stated before the run: a sample of the claims that reach the right region 
 
 The warning is set at five to eleven pixels of x-height on these labels, and a sample cut from it and resampled up carries the resampling with it, while a synthesized glyph is drawn at the size it is needed. The alphabet's own type is what the whole method rests on, so this is worth its own step.
 
-**Evidence.** Region and spelled codeword for eight of the sampled claims are in `docs/evidence/decompose`, and the full decomposition, including the nine pairs whose region is not the claim's text, is in `real2/decompose.md` with what each region holds in `real2/decompose_regions.json`.
+**Evidence.** Region and spelled codeword for eight of the sampled claims are in `docs/evidence/decompose`, and the full decomposition, including the nine pairs whose region is not the claim's text, is in `docs/measurements/decompose.md` with what each region holds in `docs/measurements/decompose_regions.json`.
 
 ### Step 14a: the learned alphabet against the font set (2026-09-06)
 
@@ -3152,7 +3152,7 @@ and 0309 still refused by name.
 
 **It stops here, and the largest remaining cause is one the engine cannot address: 23 claims the
 boundary rule refuses, of which 14 are refusals it is right to make.** Not by argument — the
-readings say so, and they are listed in `real2/where_lost_23c.md`:
+readings say so, and they are listed in `docs/measurements/where_lost_23c.md`:
 
 - **Seven brands inside a web address**, `DRINKSUPERLYTESUPERLYTE.COM`, where the claim's letters
   are part of one unbroken token.
@@ -3677,7 +3677,7 @@ pivot: it has held precision, which is not nothing, and it has found no defect s
 The fifty carry 192 claims and verify 154. Fourteen of the 38 left are the refusals step 23c
 listed as correct — seven brands inside a web address, two inside a social handle, four class
 designations inside a longer designation, and 0038's brand opening a longer company name — and
-they are excluded here by name, taken from `real2/where_lost_23c.md` rather than re-derived.
+they are excluded here by name, taken from `docs/measurements/where_lost_23c.md` rather than re-derived.
 These are the other 24, listed before they are grouped.
 
 **Why the order matters.** Every earlier survey of this loss reported buckets, and the bucket

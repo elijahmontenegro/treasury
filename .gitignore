@@ -21,6 +21,6 @@ real2b/
 /decode2
 
 # The ONNX Runtime shared library is a platform binary, fetched rather than
-# committed: see docs/approach.md, step 19b.
+# committed: see docs/measurements/README.md, step 19b.
 /third_party/onnxruntime/
 /third_party/models/
