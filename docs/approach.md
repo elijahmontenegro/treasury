@@ -26,12 +26,39 @@ same path.
 ## What shipped
 
 One binary. It serves an operator's page at `/`, verifies one label at `POST /verify` with the
-evidence crops inline, reports which build is answering at `/health`, and serves the
-specification it was generated from at `/openapi.yaml`. The specification is written by hand and
-the types are generated from it, so a route described and not served fails to compile, and CI
-fails if the two have drifted. It runs distroless and non-root on a read-only filesystem, at
-117 MB, with the reader's weights inside the binary and their SHA-256 in every response. Nothing
-is stored.
+evidence crops inline, verifies many at `POST /verify/batch`, reports which build is answering at
+`/health`, and serves the specification it was generated from at `/openapi.yaml`. The
+specification is written by hand and the types are generated from it, so a route described and not
+served fails to compile, and CI fails if the two have drifted. It runs distroless and non-root on
+a read-only filesystem, at 117 MB, with the reader's weights inside the binary and their SHA-256
+in every response. Nothing is stored.
+
+**A batch streams rather than accumulates.** A CSV of claims and a ZIP of images come back as
+`application/x-ndjson`, one line written as each label finishes. That is not a convenience: at
+three hundred labels a response assembled at the end is several minutes of apparent silence and a
+gigabyte held in memory to be collected, and neither is necessary. Concurrency is bounded to the
+core count, because the engine is already parallel inside one verification and stacking more on
+top of that oversubscribes every core without finishing the batch sooner. Measured: 300 items,
+every one returned, 1.15 s each, and the heap ended lower than it started. Verdicts come back
+without crops — three hundred labels of them would be a response measured in gigabytes — and each
+says whether one exists, which `/verify` will show for that label alone. The page reads that
+stream and fills its table in as the answers arrive, in the CSV's own order.
+
+**What stands between the engine and a public address**, all of it in the same process and all of
+it refusing *before* the engine runs. That ordering is the point: a verification costs a second or
+two of every core, so anything refusable for the price of reading a header must be refused there,
+or one caller sending nonsense as fast as it can is a denial of service against everyone else.
+Body limits before decoding; a pixel cap read from the image's own header, which is the check a
+body limit cannot make, since a 200 kB PNG can declare 60,000 by 60,000 and cost 14 GB to decode;
+a per-IP token bucket keyed on the **last** entry of `X-Forwarded-For`, since a caller can write
+anything into that header and only what the trusted proxy appended is worth reading; a daily
+inference-seconds budget, which is the backstop the per-IP bucket is not, because a hundred
+callers each inside their own limit still cost more machine time than anyone intends to pay for;
+timeouts that cancel into the engine; recovery; and the headers a browser needs to be told.
+
+There is no Redis, no sidecar and no external limiter. The service is one binary, and a dependency
+added to defend it would change what this is more than the defence is worth. The cost is that the
+limits are per instance rather than per deployment, which is stated rather than glossed.
 
 **The warning statement, and what step 30a found.** The engine had taken a list of references
 since the beginning and, since step 19a retired the mechanism that read them, never looked at
