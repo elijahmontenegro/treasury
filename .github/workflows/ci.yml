@@ -59,6 +59,17 @@ jobs:
       - name: adopted constants and overrides
         run: go test -count=1 -run 'TestAdoptedValuesAreLive|TestEveryTunableIsRecorded|TestOverrideReachesTheCode' -v ./verify/
 
+      # The guard against step 16a's false assertion: a label printing
+      # "Produced and Bottled by Valley Mill Company" must not verify a
+      # filed brand of "Valley Mill". Until step 28a this was checked by
+      # naming two corpus labels in each gate, and step 27b found that
+      # check passing for the wrong reason - the reader had stopped
+      # reading their producer lines, so the refusal proved nothing. The
+      # test renders the case and also requires the permittee to verify,
+      # so it cannot pass vacuously again.
+      - name: the guard
+        run: go test -count=1 -timeout 15m -run TestTheGuard -v ./verify/
+
       - name: determinism
         run: go test -count=1 -timeout 40m -run TestDeterminismSample -v ./verify/
 

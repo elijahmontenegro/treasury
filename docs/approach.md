@@ -3969,6 +3969,61 @@ corpus's producer claim is a harder object than the real one and has been since 
 Precision is 1.00 on every claim of both halves of the rebuilt corpus and the fifty: 2,563
 verifications, no false assertion.
 
+### Step 28a: the guard, made real (2026-09-08)
+
+Step 27b found that the check every gate has run since 21b — "0099 and 0309 stay refused, by
+name" — had stopped testing anything. Their brand claims sit at a distance of 0.60 against a
+radius of 0.14, because the reader no longer reads their producer lines at all; the nearest thing
+to `Valley Mill` anywhere on 0099 is `Li`. A refusal on text that was never read proves nothing,
+and would have gone on reporting green through any change to the rule it was guarding.
+
+**`TestTheGuard` constructs the case instead of hoping for it.** For each of the two shapes, a
+label is rendered that prints the responsibility statement verbatim — `Produced and Bottled by
+Valley Mill Company`, and the Heron Black line — under a brand of its own, and the engine is
+asked for two claims:
+
+- the **filed brand**, `Valley Mill`, which must be **refused**, since these words are part of a
+  company's name and verifying them is step 16a's false assertion;
+- the **permittee**, which must be **verified**, since it is the same printed line.
+
+The second assertion is the part that matters. It is what stops this test failing the way the old
+check did: if the reader stops reading the line, the permittee stops verifying and the test
+fails, instead of the brand's refusal passing for free. The test runs in CI as its own step,
+since it is skipped by `-short`.
+
+**The gate, run rather than asserted.** Against the rule as it stands the test passes. Against a
+rule that admits them — a one-line change making a bare space a delimiter, which is the
+loosening that would readmit 16a — it fails, and names both readings:
+
+```
+"Valley Mill" verified against a label printing "Produced and Bottled by Valley Mill
+Company", read "Valley Mill": this is step 16a's false assertion
+"Heron Black" verified against a label printing "Produced and Bottled by Heron Black
+Company", read "Heron Black": this is step 16a's false assertion
+```
+
+**Would any rule adopted since 21b have admitted either? No — and the margin says why not, and
+how thin it is.** Measured on the rendered case with no radius and no rule applied:
+
+| claim | whole run | inside one detection | radius |
+|---|---|---|---|
+| brand `Valley Mill` | **0.80** | **0.00** | 0.14 |
+| permittee | 0.00 | 0.00 | 0.14 |
+
+The brand's own words are present at a distance of **zero** inside the detection. What refuses
+them is the boundary rule and nothing else: the whole-run comparison is at 0.80 and no radius
+this build would adopt comes near it, but the moment a span of that reading may be taken, the
+answer is exact. So none of the rules adopted since 21b could have admitted either, for the
+plain reason that none of them touched the delimiter test — 21d and 24a changed the reader, 23b
+changed which readings are built, 23c put the responsibility phrases on the **permittee** and not
+the brand (the brand claim has exactly one accepted spelling, its own text, which was checked),
+25a widened the radius, which cannot reach 0.80, and 25c and 26a are numeric and verdict-neutral.
+
+**What the number is really saying is a warning for step 28d.** The refusal has no margin at all
+on the boundary path. Extending the boundary rule to chained runs changes which readings a span
+may be taken from; it must not change what counts as delimited, and this test is now the thing
+that says so.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
