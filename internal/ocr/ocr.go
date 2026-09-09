@@ -140,7 +140,16 @@ func LibraryPath() string {
 	if name == "" {
 		name = "libonnxruntime.so"
 	}
-	for _, dir := range []string{"third_party/onnxruntime", "../third_party/onnxruntime", "/usr/lib", "/usr/local/lib"} {
+	// The library lives at the root of the tree. A test runs from its own
+	// package directory, which is one, two or three levels down, so the
+	// walk goes up as far as any package in this repository sits.
+	for _, dir := range []string{
+		"third_party/onnxruntime",
+		"../third_party/onnxruntime",
+		"../../third_party/onnxruntime",
+		"../../../third_party/onnxruntime",
+		"/usr/lib", "/usr/local/lib",
+	} {
 		p := filepath.Join(dir, name)
 		if _, err := os.Stat(p); err == nil {
 			return p

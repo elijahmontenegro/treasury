@@ -4350,6 +4350,53 @@ in CI, where the corpus's evidence would not have.
 
 Claim verdicts are untouched: 3,814 claims compared against step 28d, none different.
 
+### Step 30b: the service (2026-09-09)
+
+`api/openapi.yaml` is written by hand and the code is generated from it, never the other way
+round: the document is what a caller reads and what the service answers to, so it cannot be a
+by-product of the handlers. `oapi-codegen` produces the types and the server interface; the
+handlers are written by hand against that interface, so a route the specification describes and
+`internal/httpapi` does not serve fails to compile rather than 404ing in production.
+
+**`POST /verify`** takes a multipart image and the filed application as JSON, and answers with
+the verdicts, the stage timings, the build identity, and - for every verdict that has evidence -
+**a PNG of the region it rests on**. That last is the point of the response rather than a
+decoration: a reviewer should not have to take the engine's word for what a label says when the
+engine can show them. **`GET /health`** answers with the identity and whether the reader is
+loaded, and returns 503 when it is not, because a service that cannot read is not ready.
+**`GET /openapi.yaml`** serves the document itself.
+
+**Nothing is stored.** There is no database and no temporary file. The image is decoded, verified
+and dropped when the response is written; the multipart form is removed in a deferred call. It is
+held as long as it is only because the evidence crops are cut from it.
+
+**The gate: the sample label over HTTP returns the engine's verdicts byte for byte.**
+`TestOverHTTPMatchesTheEngine` verifies label 0047 twice - once by calling the engine the way the
+CLI does, once through an `httptest` server - and compares every verdict's claim, status,
+expected value, and every piece of evidence's read text, matched spelling and distance. It also
+requires at least one crop and a build identity, since a response without those is not what the
+specification promises. It passes, and runs in CI.
+
+**Staleness is enforced rather than asked for.** `TestGeneratedCodeIsCurrent` regenerates from
+`openapi.yaml` with the same configuration `go generate` uses - read from `cfg.yaml` with only
+its output path redirected, so the two cannot drift - and fails when the result differs from what
+is committed. Checked by running it against a deliberately edited spec, where it fails, and
+against the restored one, where it passes.
+
+**Two things found while building it.**
+
+The generated code first pulled in `kin-openapi`, to embed a parsed copy of the specification,
+and that dependency requires Go 1.25 where this module had been on 1.24 - `go mod tidy` moved the
+language version as a side effect, and `testing.TB` gained a method between the two, which broke
+the determinism test's child harness. The spec is now embedded with `go:embed` as the exact bytes
+written, comments and all, which is a better answer to the same need: what a caller fetches from
+`/openapi.yaml` is the document the binary was generated from, character for character. The
+dependency is gone and the module is back on 1.24.
+
+And `ocr.LibraryPath` searched one directory up for the ONNX Runtime library, which is enough for
+a test in `verify/` and not for one in `internal/httpapi/`. It now walks up as far as any package
+in this repository sits.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

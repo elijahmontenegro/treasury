@@ -67,6 +67,18 @@ jobs:
       # reading their producer lines, so the refusal proved nothing. The
       # test renders the case and also requires the permittee to verify,
       # so it cannot pass vacuously again.
+      # The specification is written by hand and the code is generated
+      # from it; this fails when the spec has been edited and the code
+      # not regenerated, so the contract a caller reads cannot drift from
+      # the types the service answers with (step 30b).
+      - name: openapi generated code is current
+        run: go test -count=1 -run TestGeneratedCodeIsCurrent ./api/
+
+      # The service must return over HTTP exactly what the engine returns
+      # directly (step 30b).
+      - name: service matches the engine
+        run: go test -count=1 -timeout 15m ./internal/httpapi/
+
       # A diagnostic file scored by a later engine than the one that wrote
       # it is how step 26c reported nine names where eight was the number
       # (step 28b).

@@ -1,0 +1,278 @@
+openapi: 3.0.3
+
+info:
+  title: Treasury label verification
+  version: "1"
+  description: |
+    Verifies that a label image carries the claims an application filed, and
+    that it carries the statutory health warning of 27 CFR 16.21.
+
+    The service asserts nothing it cannot evidence. Every verdict carries what
+    was read, the spelling it was compared to, the distance between them and
+    the bound that distance had to be inside, so a reviewer can see why the
+    answer is what it is. Where the evidence does not decide, the verdict says
+    so rather than guessing: REVIEW and NOT_FOUND are answers, not failures.
+
+    Nothing is stored. An uploaded image is held for the length of the request
+    and discarded when the response is written.
+
+servers:
+  - url: /
+
+paths:
+  /openapi.yaml:
+    get:
+      operationId: spec
+      summary: This document
+      responses:
+        "200":
+          description: The specification this service is built from
+          content:
+            application/yaml:
+              schema:
+                type: string
+
+  /health:
+    get:
+      operationId: health
+      summary: Whether the service is ready, and which build it is
+      responses:
+        "200":
+          description: Ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "503":
+          description: Not ready — the reader's models are not loaded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+
+  /verify:
+    post:
+      operationId: verify
+      summary: Verify one label against the claims filed for it
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image, claims]
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The label, as PNG or JPEG
+                claims:
+                  type: string
+                  description: The filed application, as JSON — an Application
+            encoding:
+              image:
+                contentType: image/png, image/jpeg
+      responses:
+        "200":
+          description: The label was read and judged
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Result"
+        "400":
+          description: The request could not be understood
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "413":
+          description: The image is larger than the service accepts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Application:
+      type: object
+      description: What the application filed. Every field is what was filed, not what the label prints.
+      required: [beverage]
+      properties:
+        beverage:
+          type: string
+          enum: [spirits, wine, beer]
+        brand:
+          type: string
+        class:
+          type: string
+          description: The class or type designation
+        producer:
+          type: array
+          items:
+            type: string
+          description: The permittee's name, then its address, one line each
+        origin:
+          type: string
+        abv:
+          type: number
+          format: double
+          description: Alcohol content, percent by volume
+        net_ml:
+          type: number
+          format: double
+          description: Net contents, millilitres
+        aliases:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Other names the application itself states for a claim
+
+    Result:
+      type: object
+      required: [engine, claims, latency_ms]
+      properties:
+        engine:
+          $ref: "#/components/schemas/Identity"
+        latency_ms:
+          type: integer
+          description: Wall clock for this verification
+        stages:
+          $ref: "#/components/schemas/Stages"
+        claims:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+        reference:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+          description: The statutory warning
+        emphasis:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+          description: The warning's header, in capitals and heavier than the body
+        reason:
+          type: string
+          description: Present when the label could not be read at all
+
+    Verdict:
+      type: object
+      required: [claim, status, expected]
+      properties:
+        claim:
+          type: string
+        status:
+          type: string
+          enum: [VERIFIED, REVIEW, MISMATCH, NOT_FOUND, SKIPPED]
+          description: |
+            VERIFIED — the label carries what was filed.
+            MISMATCH — the label carries something else, named in `observed`.
+            REVIEW — read, but not clearly enough to decide.
+            NOT_FOUND — not found on the label.
+            SKIPPED — not required for this beverage.
+        reason:
+          type: string
+        expected:
+          type: string
+        observed:
+          type: string
+        evidence:
+          $ref: "#/components/schemas/Evidence"
+
+    Evidence:
+      type: object
+      description: Why the verdict is what it is.
+      properties:
+        read:
+          type: string
+          description: The text the recogniser read there
+        matched:
+          type: string
+          description: The accepted spelling it was compared to
+        distance:
+          type: number
+          format: double
+          description: How far apart they are, as a share of the claim's length
+        radius:
+          type: number
+          format: double
+          description: What that distance had to be inside
+        confidence:
+          type: number
+          format: double
+          description: The recogniser's own confidence in the reading
+        competitor:
+          type: string
+          description: The nearest reading of a different value
+        competitor_distance:
+          type: number
+          format: double
+        parts:
+          type: integer
+          description: How many detections were joined to make the reading
+        region:
+          $ref: "#/components/schemas/Region"
+        crop:
+          type: string
+          format: byte
+          description: A PNG of the region, so the reviewer sees what the engine saw
+
+    Region:
+      type: object
+      properties:
+        x: { type: integer }
+        y: { type: integer }
+        w: { type: integer }
+        h: { type: integer }
+
+    Stages:
+      type: object
+      description: Where the time went, in milliseconds.
+      properties:
+        detect: { type: integer }
+        recognise: { type: integer }
+        turned_pass: { type: integer }
+        runs: { type: integer }
+        decide: { type: integer }
+        boxes: { type: integer }
+        run_count: { type: integer }
+
+    Identity:
+      type: object
+      description: What produced a verdict. A verdict is worth what its provenance is worth.
+      properties:
+        version: { type: string }
+        commit: { type: string }
+        commit_time: { type: string }
+        modified:
+          type: boolean
+          description: The tree had uncommitted changes when this was built
+        go: { type: string }
+        models:
+          type: object
+          additionalProperties:
+            type: string
+          description: SHA-256 of each model the binary carries, from the bytes it runs
+
+    Health:
+      type: object
+      required: [ready]
+      properties:
+        ready:
+          type: boolean
+        engine:
+          $ref: "#/components/schemas/Identity"
+        detail:
+          type: string
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: What went wrong, in a sentence a person can act on
