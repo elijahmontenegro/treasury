@@ -83,7 +83,9 @@ curl -X POST localhost:8080/verify \
   -F image=@real2/0047.png \
   -F claims=@real2/0047.json
 
-curl -X POST localhost:8080/verify/batch \n  -F claims=@claims.csv \n  -F images=@labels.zip
+curl -X POST localhost:8080/verify/batch \
+  -F claims=@claims.csv \
+  -F images=@labels.zip
 ```
 
 The batch CSV's first row is its column names. One column must be `image`, naming a file inside
