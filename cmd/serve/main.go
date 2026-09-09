@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -33,7 +34,8 @@ func main() {
 	maxImage := flag.Int64("max-image", 10<<20, "largest image accepted, in bytes")
 	maxBatch := flag.Int64("max-batch", 100<<20, "largest batch accepted, in bytes")
 	timeout := flag.Duration("timeout", 60*time.Second, "how long one verification may take")
-	cores := flag.Int("cores", 0, "cores one verification may use; 0 is this process's own share")
+	cores := flag.Int("cores", envInt("CORES", 0),
+		"cores one verification may use; 0 reads this process's own share, which some hosts do not publish")
 	rate := flag.Float64("rate", 0, "requests a second per caller; 0 keeps the default")
 	burst := flag.Float64("burst", 10, "requests a caller may make at once")
 	daily := flag.Float64("daily-seconds", 0, "inference seconds a day, all callers; 0 keeps the default")
@@ -42,7 +44,15 @@ func main() {
 	// The Go scheduler sizes itself from the affinity mask, which inside a
 	// container is the node's cores rather than this container's quota, so
 	// it is told the quota. The engine's pool reads the same number.
-	have := cpu.Available()
+	// Under Docker and Kubernetes the quota is a cgroup limit and
+	// cpu.Available reads it. Cloud Run does not publish one: a service
+	// deployed at two vCPU reports four cores and no cgroup ceiling, so
+	// the pool would be twice its allocation and spend the difference
+	// contending. Where the host will not say, CORES is how it is told.
+	have := *cores
+	if have < 1 {
+		have = cpu.Available()
+	}
 	runtime.GOMAXPROCS(have)
 
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -114,6 +124,16 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Fprintln(os.Stderr, "stopped")
+}
+
+// envInt is envOr for a count. A value that is not a number is ignored
+// rather than fatal: a mistyped environment variable should not stop a
+// service that has a working default.
+func envInt(k string, def int) int {
+	if n, err := strconv.Atoi(os.Getenv(k)); err == nil && n > 0 {
+		return n
+	}
+	return def
 }
 
 func envOr(k, def string) string {
