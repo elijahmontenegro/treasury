@@ -119,7 +119,7 @@ func newestSource(root string) (time.Time, string, error) {
 		}
 		if d.IsDir() {
 			switch d.Name() {
-			case "out", ".git", "synth", "real2", "third_party", "testdata":
+			case "out", ".git", "synth", "eval", "third_party", "testdata":
 				return filepath.SkipDir
 			}
 			return nil

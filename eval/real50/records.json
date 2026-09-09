@@ -1,0 +1,647 @@
+[
+ {
+  "label": "0001",
+  "printed": {
+   "family": "spirits",
+   "brand": "PENUMBRA",
+   "class": "MEZCAL FB",
+   "producer": [
+    "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
+    "200 CONCOURSE BLVD SANTA ROSA CA 95403"
+   ],
+   "origin": "PRODUCT OF MEXICO",
+   "abv": 46,
+   "abv_text": "46% ALC/VOL (92 Proof)",
+   "net_ml": 750,
+   "net_text": "750 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "origin": "=",
+    "producer_1": "=",
+    "producer_2": "SANTA ROSA, CALIFORNIA 95403"
+   },
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
+  },
+  "augmented": false,
+  "latency": 5295142200,
+  "stages": {
+   "detect": 929781000,
+   "recognise": 566703500,
+   "runs": 4243900,
+   "decide": 3791901400,
+   "boxes": 39,
+   "run_count": 257
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "PENUMBRA",
+    "observed": "PENUMBRA",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 712,
+       "Y": 1835
+      },
+      "Max": {
+       "X": 1236,
+       "Y": 1925
+      }
+     },
+     "read": "PENUMBRA",
+     "matched": "PENUMBRA",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9706462323665619,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "class",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "MEZCAL FB"
+   },
+   {
+    "claim": "producer_1",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
+    "observed": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1098,
+       "Y": 2451
+      },
+      "Max": {
+       "X": 1292,
+       "Y": 2520
+      }
+     },
+     "read": "IMPORTED BYFOLEY FAMILY WINES AND",
+     "matched": "Imported by Foley Family Wines, Inc.",
+     "distance": 0.06896551724137931,
+     "radius": 0.14,
+     "confidence": 0.9768663011491299,
+     "parts": 2
+    }
+   },
+   {
+    "claim": "producer_2",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "200 CONCOURSE BLVD SANTA ROSA CA 95403"
+   },
+   {
+    "claim": "origin",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "PRODUCT OF MEXICO",
+    "observed": "PRODUCT OF MEXICO",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 984,
+       "Y": 2866
+      },
+      "Max": {
+       "X": 1308,
+       "Y": 2902
+      }
+     },
+     "read": "PRODUCTOFMEXICO",
+     "matched": "PRODUCT OF MEXICO",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9726238399744034,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "abv",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "46",
+    "observed": "46",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 522,
+       "Y": 1387
+      },
+      "Max": {
+       "X": 1443,
+       "Y": 1561
+      }
+     },
+     "read": "46% ALC/VOL (",
+     "matched": "46% Alc./Vol.",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.955569377169013,
+     "reading": "46",
+     "parts": 3
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "750",
+    "observed": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 626,
+       "Y": 2679
+      },
+      "Max": {
+       "X": 1308,
+       "Y": 2902
+      }
+     },
+     "read": "750 ML",
+     "matched": "750 mL",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.7671917860324566,
+     "reading": "750",
+     "parts": 4
+    }
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 626,
+       "Y": 2594
+      },
+      "Max": {
+       "X": 1309,
+       "Y": 2902
+      }
+     },
+     "read": "GVERNMETWAING:(I ACODINGTOHEURGENGENEALWMEND NTDRIAEVAGURIGECA TODRIVAATHIAH NOM 0818X LOT: 4 PRODUCTOFMEXICO 750 M",
+     "matched": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+     "distance": 0.6616379310344828,
+     "radius": 0,
+     "confidence": 0.7671917860324566,
+     "parts": 6,
+     "agreement": 0.8235294117647058,
+     "coverage": 0.3620689655172414
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "reference_emphasis",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING:"
+   }
+  ]
+ },
+ {
+  "label": "0002",
+  "printed": {
+   "family": "spirits",
+   "brand": "BARULLO",
+   "class": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
+   "producer": [
+    "OZ TRADING GROUP INC",
+    "2806 E NOGAL AVE Hidalgo TX 78557"
+   ],
+   "origin": "",
+   "abv": 5,
+   "abv_text": "Alc. 5% by vol.",
+   "net_ml": 750,
+   "net_text": "Net Cont. 750 ml",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "=",
+    "producer_2": "="
+   },
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
+  },
+  "augmented": false,
+  "latency": 5000501900,
+  "stages": {
+   "detect": 2198859700,
+   "recognise": 617931500,
+   "turned_pass": 2064048000,
+   "runs": 999100,
+   "decide": 731250000,
+   "boxes": 39,
+   "turned_boxes": 5,
+   "run_count": 263
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "BARULLO",
+    "observed": "BARULLO",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1797,
+       "Y": 529
+      },
+      "Max": {
+       "X": 2216,
+       "Y": 669
+      }
+     },
+     "read": "BARULLO",
+     "matched": "BARULLO",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9761378765106201,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "class",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
+   },
+   {
+    "claim": "producer_1",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "OZ TRADING GROUP INC"
+   },
+   {
+    "claim": "producer_2",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "2806 E NOGAL AVE Hidalgo TX 78557"
+   },
+   {
+    "claim": "abv",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "5",
+    "observed": "5",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 770,
+       "Y": 2204
+      },
+      "Max": {
+       "X": 938,
+       "Y": 2242
+      }
+     },
+     "read": "Alc. 5% by vol.",
+     "matched": "ALC. 5% BY VOL.",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.9968243996302287,
+     "reading": "5",
+     "parts": 1
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "750",
+    "observed": "750",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1980,
+       "Y": 1325
+      },
+      "Max": {
+       "X": 2071,
+       "Y": 1358
+      }
+     },
+     "read": "750 ml",
+     "matched": "750 mL",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.9656863297734942,
+     "reading": "750",
+     "parts": 1
+    }
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference",
+    "engine": "0116141f523b",
+    "status": "REVIEW",
+    "reason": "warning_read_imperfectly",
+    "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1769,
+       "Y": 761
+      },
+      "Max": {
+       "X": 2326,
+       "Y": 1101
+      }
+     },
+     "read": "1) According  to  the women should not drink during pregnancy because of the risk birth defects. (2) Consumption alcoholic beverages impairs your ability to drive a car or machinery, and may cause health PRO",
+     "matched": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+     "distance": 0.2801724137931034,
+     "radius": 0,
+     "confidence": 0.9285712838172913,
+     "parts": 11,
+     "agreement": 1,
+     "coverage": 0.7198275862068966
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "reference_emphasis",
+    "engine": "0116141f523b",
+    "status": "REVIEW",
+    "reason": "heading not read",
+    "expected": "GOVERNMENT WARNING:",
+    "observed": "1) According  to  the wo",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1769,
+       "Y": 761
+      },
+      "Max": {
+       "X": 2326,
+       "Y": 1101
+      }
+     },
+     "read": "",
+     "matched": "GOVERNMENT WARNING:",
+     "distance": 0,
+     "radius": 0,
+     "confidence": 0
+    }
+   }
+  ]
+ },
+ {
+  "label": "0003",
+  "printed": {
+   "family": "spirits",
+   "brand": "BARULLO",
+   "class": "OTHER SPECIALTIES \u0026 PROPRIETARIES",
+   "producer": [
+    "OZ TRADING GROUP INC",
+    "2806 E NOGAL AVE Hidalgo TX 78557"
+   ],
+   "origin": "",
+   "abv": 5,
+   "abv_text": "Alc. 5% by vol.",
+   "net_ml": 475,
+   "net_text": "Net Cont. 475 ml",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": "",
+   "carried": {
+    "abv": "=",
+    "brand": "=",
+    "class": "",
+    "net": "=",
+    "producer_1": "=",
+    "producer_2": "="
+   },
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
+  },
+  "augmented": false,
+  "latency": 4792200500,
+  "stages": {
+   "detect": 2738115500,
+   "recognise": 299109100,
+   "turned_pass": 2012393100,
+   "runs": 568800,
+   "decide": 40116700,
+   "boxes": 66,
+   "turned_boxes": 7,
+   "run_count": 96
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "BARULLO",
+    "observed": "BARULLO",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 2468,
+       "Y": 649
+      },
+      "Max": {
+       "X": 3206,
+       "Y": 905
+      }
+     },
+     "read": "BARULLO",
+     "matched": "BARULLO",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9936360887118748,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "class",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
+   },
+   {
+    "claim": "producer_1",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "OZ TRADING GROUP INC",
+    "observed": "OZ TRADING GROUP INC",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 3434,
+       "Y": 955
+      },
+      "Max": {
+       "X": 3493,
+       "Y": 1741
+      }
+     },
+     "read": "Imported by: OZ Trading Group Inc.",
+     "matched": "Imported by OZ TRADING GROUP INC",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9869113597604964,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "producer_2",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "2806 E NOGAL AVE Hidalgo TX 78557",
+    "observed": "2806 E NOGAL AVE Hidalgo TX 78557",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 3426,
+       "Y": 201
+      },
+      "Max": {
+       "X": 3497,
+       "Y": 992
+      }
+     },
+     "read": "2806 E. Nogal Ave. Hidalgo, TX 78557",
+     "matched": "2806 E NOGAL AVE Hidalgo TX 78557",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9899161602999713,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "abv",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "5",
+    "observed": "5",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 800,
+       "Y": 2221
+      },
+      "Max": {
+       "X": 991,
+       "Y": 2266
+      }
+     },
+     "read": "Alc. 5% by vol.",
+     "matched": "ALC. 5% BY VOL.",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.974378440529108,
+     "reading": "5",
+     "parts": 1
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "475",
+    "observed": "475",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 800,
+       "Y": 2221
+      },
+      "Max": {
+       "X": 1210,
+       "Y": 2266
+      }
+     },
+     "read": "475 ml",
+     "matched": "475 mL",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.9623954333364964,
+     "reading": "475",
+     "parts": 2
+    }
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 766,
+       "Y": 2221
+      },
+      "Max": {
+       "X": 1219,
+       "Y": 2316
+      }
+     },
+     "read": "Alc. 5% by vol. LICOR CON TEQUILA",
+     "matched": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+     "distance": 0.915948275862069,
+     "radius": 0,
+     "confidence": 0.9515648379045374,
+     "parts": 2,
+     "agreement": 0.875,
+     "coverage": 0.09051724137931035
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "reference_emphasis",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING:"
+   }
+  ]
+ }
+]

@@ -1,7 +1,7 @@
 // Command read prints what the scene-text reader finds in each image, with
 // the time it took (amendment step 19b).
 //
-//	read real2/*.png > out/read.jsonl
+//	read eval/real50/*.png > out/read.jsonl
 package main
 
 import (

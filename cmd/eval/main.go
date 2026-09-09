@@ -46,14 +46,14 @@ var tuneSet = flag.String("tune-set", "", "override constants by name, as name=v
 var cores = flag.Int("cores", 0, "cores one verification may use; 0 is every core (step 29a)")
 
 func main() {
-	set := flag.String("set", "synth", "directory written by gen set")
+	set := flag.String("set", "synth", "the set to evaluate: a directory, or a name under eval/")
 	encoders := flag.String("encoders", "dual", "comma-separated glyph encoders to compare")
 	workers := flag.Int("workers", runtime.NumCPU(), "parallel verifications")
 	tune := flag.Bool("tune", false, "sweep radii and tie margin on half A of the records, report on half B")
 	limit := flag.Int("n", 0, "evaluate only the first n labels")
 	half := flag.String("half", "", "evaluate only half A (even labels) or B (odd labels)")
 	flag.Parse()
-	if err := run(*set, strings.Split(*encoders, ","), *workers, *tune, *limit, *half); err != nil {
+	if err := run(setDir(*set), strings.Split(*encoders, ","), *workers, *tune, *limit, *half); err != nil {
 		fmt.Fprintln(os.Stderr, "eval:", err)
 		os.Exit(1)
 	}
@@ -120,6 +120,25 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 	out.WriteString(table(records))
 	fmt.Print(out.String())
 	return os.WriteFile(filepath.Join(dir, "table.md"), []byte(out.String()), 0o644)
+}
+
+// setDir resolves what -set names. A path that exists is taken as given,
+// so `-set synth` and `-set some/other/dir` keep working; a bare name is
+// otherwise looked for under eval/, so `-set real50` finds the fifty real
+// labels where they now live.
+func setDir(name string) string {
+	if _, err := os.Stat(name); err == nil {
+		return name
+	}
+	if under := filepath.Join("eval", name); dirExists(under) {
+		return under
+	}
+	return name
+}
+
+func dirExists(p string) bool {
+	fi, err := os.Stat(p)
+	return err == nil && fi.IsDir()
 }
 
 // checkLeak returns the families of a set that may not appear in an

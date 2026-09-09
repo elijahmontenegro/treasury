@@ -50,7 +50,7 @@ label is read, a row per label with its claims openable underneath.
 **One label from the command line**
 
 ```sh
-go run ./cmd/decode -ttb real2/0047.json real2/0047.png
+go run ./cmd/decode -ttb eval/real50/0047.json eval/real50/0047.png
 ```
 
 **In a container**
@@ -80,8 +80,8 @@ the document at `/openapi.yaml`.
 
 ```sh
 curl -X POST localhost:8080/verify \
-  -F image=@real2/0047.png \
-  -F claims=@real2/0047.json
+  -F image=@eval/real50/0047.png \
+  -F claims=@eval/real50/0047.json
 
 curl -X POST localhost:8080/verify/batch \
   -F claims=@claims.csv \

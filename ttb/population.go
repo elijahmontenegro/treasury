@@ -5,7 +5,7 @@ import "image"
 // What the population is made of.
 //
 // Every number here was measured on the fifty real label approvals in
-// real2/, not chosen. The generator draws from these rather than from
+// eval/real50/, not chosen. The generator draws from these rather than from
 // assumption, and each field records what measured it. The measurement is
 // `separate -stats` over the fifty, aggregated in out/population.jsonl;
 // the conventions are the transcription recorded per label in the truth

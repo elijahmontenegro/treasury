@@ -1,0 +1,441 @@
+[
+ {
+  "label": "0001",
+  "printed": {
+   "family": "spirits",
+   "brand": "MR. \u0026 MRS.",
+   "class": "RYE WHISKEY",
+   "producer": [
+    "BOTTLED BY MMBC",
+    "HARRODSBURG, KY 40330"
+   ],
+   "origin": "",
+   "abv": 64,
+   "abv_text": "64 % ALC/VOL",
+   "net_ml": 750,
+   "net_text": "750 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
+  },
+  "augmented": false,
+  "latency": 2478367100,
+  "stages": {
+   "detect": 1130405400,
+   "recognise": 492768300,
+   "turned_pass": 1317679900,
+   "runs": 0,
+   "decide": 28684700,
+   "boxes": 32,
+   "turned_boxes": 6,
+   "run_count": 106
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "MR. \u0026 MRS.",
+    "observed": "MR. \u0026 MRS.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 789,
+       "Y": 542
+      },
+      "Max": {
+       "X": 1191,
+       "Y": 631
+      }
+     },
+     "read": "MR. \u0026 MRS.",
+     "matched": "MR. \u0026 MRS.",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9460764169692993,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "class",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "RYE WHISKEY",
+    "observed": "RYE WHISKEY",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 840,
+       "Y": 122
+      },
+      "Max": {
+       "X": 1191,
+       "Y": 217
+      }
+     },
+     "read": "RYE WHISKEY",
+     "matched": "RYE WHISKEY",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.7997756515230451,
+     "parts": 3
+    }
+   },
+   {
+    "claim": "producer_1",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "BOTTLED BY MMBC",
+    "observed": "BOTTLED BY MMBC",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 291,
+       "Y": 250
+      },
+      "Max": {
+       "X": 472,
+       "Y": 274
+      }
+     },
+     "read": "BOTTLEDBYMMBC",
+     "matched": "BOTTLED BY MMBC",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9890623826246995,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "producer_2",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "HARRODSBURG, KY 40330",
+    "observed": "HARRODSBURG, KY 40330",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 257,
+       "Y": 272
+      },
+      "Max": {
+       "X": 505,
+       "Y": 300
+      }
+     },
+     "read": "HARR0DSBURG. KY 40330",
+     "matched": "HARRODSBURG, KY 40330",
+     "distance": 0.027777777777777776,
+     "radius": 0.14,
+     "confidence": 0.9410874786831084,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "abv",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "64",
+    "observed": "64",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 840,
+       "Y": 122
+      },
+      "Max": {
+       "X": 1191,
+       "Y": 217
+      }
+     },
+     "read": "PROOF 128",
+     "matched": "PROOF 128",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.7997756515230451,
+     "reading": "64",
+     "parts": 4
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "not_found",
+    "expected": "750"
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 1471,
+       "Y": 221
+      },
+      "Max": {
+       "X": 1716,
+       "Y": 706
+      }
+     },
+     "read": "ARN MR.6 MRS. BOURBON COMPANY This single barrel was hand selected by Liquor Barn and in partnership with Mr.  Mrs. Bourbon Company. Fill DateDec 11,2018 LotNumber18L06RY1C Barrel Numbe",
+     "matched": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+     "distance": 0.7413793103448276,
+     "radius": 0,
+     "confidence": 0.7862108826637269,
+     "parts": 13,
+     "agreement": 0.48026315789473684,
+     "coverage": 0.3146551724137931
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "reference_emphasis",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING:"
+   }
+  ]
+ },
+ {
+  "label": "0002",
+  "printed": {
+   "family": "spirits",
+   "brand": "Breckenridge",
+   "class": "Bourbon Whiskeys",
+   "producer": [
+    "Produced by Breckenridge Distillery,",
+    "Breckenridge, Colorado USA"
+   ],
+   "origin": "",
+   "abv": 43,
+   "abv_text": "43% ALC/VOL (86 PROOF)",
+   "net_ml": 50,
+   "net_text": "50 ML",
+   "error": "",
+   "body_face": "",
+   "heavy_face": "",
+   "brand_face": "",
+   "warning_caps": false,
+   "inverted": false,
+   "vertical_warning": false,
+   "crowded": false
+  },
+  "augmented": false,
+  "latency": 1901197300,
+  "stages": {
+   "detect": 371784900,
+   "recognise": 171535300,
+   "turned_pass": 1506579500,
+   "runs": 0,
+   "decide": 22832900,
+   "boxes": 20,
+   "turned_boxes": 5,
+   "run_count": 54
+  },
+  "claims": [
+   {
+    "claim": "brand",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "Breckenridge",
+    "observed": "Breckenridge",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 288,
+       "Y": 662
+      },
+      "Max": {
+       "X": 534,
+       "Y": 683
+      }
+     },
+     "read": "BRECKENRIDGE,",
+     "matched": "Breckenridge",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9768328592181206,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "class",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "Bourbon Whiskeys",
+    "observed": "Bourbon Whiskeys",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 772,
+       "Y": 390
+      },
+      "Max": {
+       "X": 1114,
+       "Y": 428
+      }
+     },
+     "read": "BOURBONWHISKEYS",
+     "matched": "Bourbon Whiskeys",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9970268368721008,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "producer_1",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "Produced by Breckenridge Distillery,",
+    "observed": "Produced by Breckenridge Distillery,",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 248,
+       "Y": 641
+      },
+      "Max": {
+       "X": 570,
+       "Y": 683
+      }
+     },
+     "read": "PRODUCEDBYBRECKENRIDGEDISTILLERY, BRECKENRIDGE,COLORADOUSA",
+     "matched": "Produced by Breckenridge Distillery, Breckenridge, Colorado USA",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9768328592181206,
+     "parts": 2
+    }
+   },
+   {
+    "claim": "producer_2",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "Breckenridge, Colorado USA",
+    "observed": "Breckenridge, Colorado USA",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 288,
+       "Y": 662
+      },
+      "Max": {
+       "X": 534,
+       "Y": 683
+      }
+     },
+     "read": "BRECKENRIDGE,COLORADOUSA",
+     "matched": "Breckenridge, Colorado USA",
+     "distance": 0,
+     "radius": 0.14,
+     "confidence": 0.9768328592181206,
+     "parts": 1
+    }
+   },
+   {
+    "claim": "abv",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "43",
+    "observed": "43",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 808,
+       "Y": 653
+      },
+      "Max": {
+       "X": 1060,
+       "Y": 672
+      }
+     },
+     "read": "43% ALC/V0L (",
+     "matched": "43% Alc./Vol.",
+     "distance": 0.0625,
+     "radius": 0.12,
+     "confidence": 0.9214612662792205,
+     "reading": "43",
+     "parts": 1
+    }
+   },
+   {
+    "claim": "net",
+    "engine": "0116141f523b",
+    "status": "VERIFIED",
+    "expected": "50",
+    "observed": "50",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 808,
+       "Y": 653
+      },
+      "Max": {
+       "X": 1060,
+       "Y": 672
+      }
+     },
+     "read": "50 ML",
+     "matched": "50 mL",
+     "distance": 0,
+     "radius": 0.12,
+     "confidence": 0.9214612662792205,
+     "reading": "50",
+     "parts": 1
+    }
+   }
+  ],
+  "reference": [
+   {
+    "claim": "reference",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+    "evidence": {
+     "region": {
+      "Min": {
+       "X": 668,
+       "Y": 98
+      },
+      "Max": {
+       "X": 1267,
+       "Y": 668
+      }
+     },
+     "read": "GVEREOGEMI BEVRAGER BEVREPMCMEA Br heckeniage Bentofraigtt BOURBONWHISKEYS",
+     "matched": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
+     "distance": 0.7974137931034483,
+     "radius": 0,
+     "confidence": 0.5771761482412164,
+     "parts": 7,
+     "agreement": 0.7205882352941176,
+     "coverage": 0.21120689655172414
+    }
+   }
+  ],
+  "emphasis": [
+   {
+    "claim": "reference_emphasis",
+    "engine": "0116141f523b",
+    "status": "NOT_FOUND",
+    "reason": "warning_not_read",
+    "expected": "GOVERNMENT WARNING:"
+   }
+  ]
+ }
+]

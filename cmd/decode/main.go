@@ -1,7 +1,7 @@
 // Command decode verifies one image against an application and prints the
 // verdicts.
 //
-//	decode -ttb real2/0047.json real2/0047.png
+//	decode -ttb eval/real50/0047.json eval/real50/0047.png
 //	decode -version
 //
 // It is the CLI over the engine: the image goes in as uploaded, the reader

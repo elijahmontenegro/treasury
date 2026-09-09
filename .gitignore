@@ -10,9 +10,15 @@ python/encoder/model*.pt
 python/encoder/.venv/
 __pycache__/
 python/encoder/data*/
+
+# A second batch of fifty registry labels, assembled around step 10 and never
+# adopted as the population: 63 MB on disk, no code or document refers to it,
+# and its own table reports 24 of 50 without an alphabet, which dates it to
+# the engine step 19a retired. It is ignored rather than committed because
+# adding it is a decision about what the evaluation data is, not a tidy-up.
+real2b/
 /decode
 /decode2
-real2b/
 
 # The ONNX Runtime shared library is a platform binary, fetched rather than
 # committed: see docs/approach.md, step 19b.

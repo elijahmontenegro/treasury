@@ -25,10 +25,10 @@ import (
 // three hundred distinct labels being in the tree.
 func batchOf(t *testing.T, n int) (csv []byte, zipped []byte, names []string) {
 	t.Helper()
-	dir := filepath.Join("..", "..", "real2")
+	dir := filepath.Join("..", "..", "eval", "real50")
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		t.Skip("real2 is not in the tree")
+		t.Skip("eval/real50 is not in the tree")
 	}
 	var pngs []string
 	for _, e := range entries {
@@ -37,7 +37,7 @@ func batchOf(t *testing.T, n int) (csv []byte, zipped []byte, names []string) {
 		}
 	}
 	if len(pngs) == 0 {
-		t.Skip("no labels in real2")
+		t.Skip("no labels in eval/real50")
 	}
 
 	var zbuf bytes.Buffer
