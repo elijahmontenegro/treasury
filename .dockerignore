@@ -1,11 +1,35 @@
-# Everything the image does not need. The corpus and the real labels are
-# test data measured in gigabytes of PNG; the models are embedded in the
-# binary and come from the source tree, not from here.
+# The image is built from the Go source and the assets embedded in it, and
+# from nothing else. Checked against the Dockerfile, which copies go.mod and
+# go.sum and then the tree, and against every go:embed in the repository:
+# api/openapi.yaml, internal/fontset/partition.json, internal/httpapi/page.html,
+# internal/ocr/models/, internal/render/fonts/. All of those live under source
+# directories, so none of what follows is needed to build.
+
+# History. 116 MB, and the commit is passed to the build as an argument
+# instead (see internal/buildid).
 .git
+.github
+
+# Built and generated output, and the measurement scripts.
 out/
+
+# Test data. The synthetic corpus and the real labels are hundreds of
+# megabytes of PNG, and the binary reads neither.
 synth/
+real/
 real2/
+eval/
+testdata/
+
+# The retired training environments. 1.4 GB on disk, none of it tracked, and
+# nothing the binary carries comes from here since step 19a deleted the
+# models these built.
+python/
+
+# The ONNX Runtime library. The Dockerfile fetches the Linux build itself;
+# what is here is a developer's copy for another platform.
 third_party/
+
+# Prose.
 docs/
 *.md
-!go.mod
