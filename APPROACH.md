@@ -39,7 +39,7 @@ The statutory warning is verified exactly on 13 of the fifty, read but not exact
 
 Latency, measured on the fifty, each figure the median of three runs alone on the machine: locally 1.6 s median and 4.7 s p95 at two cores, 1.3 s and 3.9 s at four.
 
-Deployed, measured over the same fifty in one run from a workstation over the public internet: **5.0 s median, 10.7 s at the 95th percentile**, 7.6 s on the first request after an idle period, none failed. Two things are in that figure besides the engine, and both are stated rather than netted out: the label itself is uploaded each time, and the live service is an **older build than this repository** — it reports no commit, its page has no batch panel and its specification has no batch route. It is one run, not three. The local figures above are the ones the engine's own work should be judged on; this one says what a caller on the far side of a network currently experiences.
+Deployed at four vCPU, the same fifty measured three times from a workstation over the public internet: **4.2 s median and 9.1 s at the 95th percentile end to end**, of which 3.2 s and 8.6 s are the engine's own time and the rest is the upload and the network; 6.3 to 7.1 s on the first request after an idle period; 156 verified in every run, none failed. A Cloud Run vCPU is roughly half a core of the machine the local figures were taken on, which is the whole of the difference — the wall clock sits within a second of what the service reports spending.
 
 ## What shipped
 
@@ -52,7 +52,7 @@ Single-label verification with evidence crops; batch verification, taking a CSV 
 - The header-weight measure cannot separate bold from regular at warning type sizes on photographs; it reviews with the ratio shown. On the fifty, whose headers the regulation requires to be bold, the ratio runs from 0.69 to 1.79.
 - The synthetic corpus reads its own warning on only 21 of 250 labels, because that warning is the smallest type it sets; so the corpus cannot test the warning check, and unit tests feed the readings directly instead.
 - Rate limits and the daily budget are per instance, not per deployment, because they are held in process rather than in a shared store.
-- The five-second p95 target is met locally at two cores and with room at four. It is not met on the deployed shape as it stands: 10.7 s at the 95th percentile, on an older build, over a network, from a single run.
+- The five-second p95 target is met locally at two cores and with room at four, and is **not** met on the deployed shape: 8.6 s of engine time at four vCPU. A Cloud Run vCPU is about half a core of the machine the local figures come from, so closing it needs a faster core or less work on the slowest label, not a deployment setting.
 
 ## This was not the original design
 

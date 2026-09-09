@@ -206,8 +206,11 @@ because no radius separates a damaged reading of the true statute from a clean r
 altered one: the corpus's own alteration is four characters in 241 and the recogniser's damage on
 compliant labels is larger than that.
 
-**Deployed latency: not yet measured.** The figures below are local, on this machine, at the core
-counts named. The deployed shape is measured at step 30f and this line will carry it.
+**Deployed, it is slower, and step 30f says by how much.** The figures below are local, on this
+machine, at the core counts named. On Cloud Run at four vCPU the same fifty measure 4.2 s median
+and 9.1 s at the 95th percentile end to end, of which 3.2 s and 8.6 s are the engine and the rest
+is the network and the upload. A Cloud Run vCPU is roughly half a core of the machine below, so
+the five-second requirement is met there and not here.
 
 **This was not the original design, and the record below says why it changed.** The engine
 built through steps 1 to 18 read a label by cutting the ink into glyphs and learning the
@@ -4617,7 +4620,64 @@ serving one request at a time is a pilot shape, and it is what makes the two col
 comparable. A request every five minutes keeps the instance resident, so a reviewer meets a warm
 service rather than a model load.
 
-@MEASUREMENT@
+**The measurement: three runs of the fifty against the live URL, from a workstation over the
+public internet, each figure the median of the three.** Two clocks are kept, because they answer
+different questions. The wall clock is what a caller experiences — the image goes up, the
+verification runs, the answer comes back with its crops. The engine's own figure is what the
+service spent deciding, and the difference between them is the network and the upload, which no
+work on the engine touches.
+
+| | wall median | wall p95 | engine median | engine p95 | first request |
+|---|---|---|---|---|---|
+| local, two cores | — | — | 1.6 s | **4.7 s** | — |
+| local, four cores | — | — | 1.3 s | **3.9 s** | — |
+| deployed, 2 vCPU, pool sized from `NumCPU` | 5.6 s | 10.5 s | 4.6 s | 9.8 s | 7.3–9.0 s |
+| deployed, 2 vCPU, pool told its allocation | 5.0 s | 11.3 s | 3.9 s | 10.7 s | 7.2–8.1 s |
+| deployed, 4 vCPU, pool told its allocation | **4.2 s** | **9.1 s** | **3.2 s** | **8.6 s** | 6.3–7.1 s |
+
+**156 of 192 in every one of the nine runs, and none failed** — the same count the engine returns
+locally, which is what step 29a's byte-identical merges predicted and this confirms on a different
+machine at a different core count.
+
+**A container is not told how much processor it has, and the two hosts lie about it differently.**
+Go 1.24 derives `runtime.NumCPU` from the scheduling affinity mask, so a container with a CPU
+*quota* rather than a smaller mask starts a worker per core the *node* has, and they contend over
+a fraction of that. Under Docker the quota is a cgroup limit and can be read: `internal/cpu` reads
+it, and on the released image under `--cpus=2` that took a label from 4,299 ms to 2,786 ms, a
+third of the time back. **Cloud Run publishes no cgroup ceiling and reports exactly twice the
+cores it allocates** — four at two vCPU, eight at four — so there is nothing to correct against
+and the allocation has to be told to it, which `CORES` does. The startup line prints both numbers
+so they can be seen to disagree.
+
+Telling it moved the two figures in opposite directions, which is worth stating rather than
+averaging away: at two vCPU the engine's median went 4.6 s to 3.9 s and its p95 went 9.8 s to
+10.7 s. The median is the ordinary label, where fewer workers means less contention; the p95 is
+the label with a great deal of parallel work and now fewer workers to spread it over.
+
+**The five-second p95 is met locally and is not met on any deployed shape measured.** The reason
+is not the network — the wall clock is within a second of the engine's own figure — but that a
+Cloud Run vCPU is roughly half a core of the machine the local figures were taken on: at four
+apiece, 8.6 s against 3.9 s at the 95th percentile and 3.2 s against 1.3 s at the median. What
+would close it is a faster core or less work on the slowest label, and neither is a deployment
+setting.
+
+**One deviation from the amendment, with the measurement that decided it.** It named two vCPU;
+both were measured, four is better on every figure, and four is what is live. Request-based
+billing charges twice the rate for a quarter less time, which for a pilot is not a consideration
+worth the worse number.
+
+**What is live**, from `/health`:
+
+```json
+{"engine": {"commit": "4a992848486be1d9b052f44f7eb4c6051359ffd1",
+            "commit_time": "2026-09-09T11:11:29Z", "go": "go1.24.13", "modified": false,
+            "models": {"ocr-detector.onnx":    "d2a7720d45a5...42f49da9",
+                       "ocr-recogniser.onnx":  "48fc40f24f6d...5483683b"}},
+ "ready": true}
+```
+
+That commit is the tag `v1.0.0`, and `modified` is false, so the weights answering a request are
+the weights in that tree and the two model hashes say which.
 
 ## What the numbers say
 
@@ -4635,7 +4695,9 @@ this engine. By claim: net contents 0.94, origin 0.93, alcohol content 0.92, the
 its address 0.67, brand 0.55, class 0.43. On the corpus: class 0.89, net contents 0.89, brand
 0.82, alcohol content 0.80, origin 0.66, the permittee 0.27.
 
-**Where the remaining loss is** (step 23c): of the 47, fourteen are refusals the engine makes on
+**Where the remaining loss was last broken down by cause** (step 23c, when 47 claims were
+unverified against 36 now; the eleven closed since went at steps 25a, 28c and 28d): of the 47,
+fourteen are refusals the engine makes on
 purpose — a brand inside a web address or a social handle, a class designation inside a longer
 one, a brand that is the opening of a longer company name — seven are single-character
 recogniser errors against a radius ceiling that cannot move, five are printed forms the
@@ -4647,13 +4709,15 @@ the 10 values the corpus prints wrongly on purpose. The other five differ from t
 about one character in a printed form, and one character is what a recogniser gets wrong, so the
 engine reviews.
 
-**A verification is about three and a half seconds' work**: median 3.4 s a label on the fifty
-single-threaded against 21.0 s for the retired engine. **The 95th percentile is 6.6 s and the
-requirement this build has carried since step 3 is 5 s, so it is not met.** Step 26a priced it:
-dropping the second detection pass brings the p95 to 4.6 s and costs three claims, and the
-radius, which looked like the culprit, costs seven claims for nothing. Every latency figure from
-step 26a on is the median of three runs, because a single run of one configuration varies by
-about a fifth.
+**Deployed it is slower, and by a factor rather than a constant.** On Cloud Run at four vCPU,
+three runs of the fifty from a workstation: 4.2 s median and 9.1 s p95 end to end, 3.2 s and 8.6 s
+of that the engine's own. A Cloud Run vCPU is about half a core of the machine the figures above
+were taken on, so the requirement is met there and not on the deployed shape, and the difference
+is the core rather than the network.
+
+Every latency figure from step 26a on is the median of three runs, because a single run of one
+configuration varies by about a fifth. For scale: the retired engine took 21.0 s a label
+single-threaded where this one takes 3.4 s.
 
 ## Limits, stated
 
@@ -4668,14 +4732,16 @@ about a fifth.
 - **The free-text radius is 0.14 and its ceiling is 0.158**, set by the nearest claim the fifty
   do not carry. Step 25a moved it there by settling 0036 against 27 CFR 5.143, which says whisky
   and whiskey are one word.
-- **The 5 s p95 requirement is not met**, at 6.6 s. The radius is what breached it and eight
-  claims are what it bought; returning the radius returns the latency.
+- **The 5 s p95 is met on this machine and not on the deployed shape**: 3.9 s locally at four
+  cores against 8.6 s of engine time on Cloud Run at four vCPU, where a vCPU is about half a
+  core. The network is not the difference; the wall clock is within a second of the engine's own
+  figure.
 - **A wrong value one character away from the filed one is reviewed, not named.**
 - **The corpus cannot price several things** the fifty can: a printed string within a few
   characters of a claim the label does not carry; the statutory statement of responsibility,
   whose phrase its generator files as part of the permittee's name; statements printed on one
   line; and a printed line arriving as two detections. It has moved for none of the last five
-  steps while the fifty moved from 63 to 144.
+  steps while the fifty moved from 63 to 156.
 - **The engine verifies text, not layout, and step 24b measured why it has to.** Of the three
   features that could say where a claim belongs - size against the tallest text, height down the
   panel, distance from the warning - none separates the nine names refused for want of a
