@@ -40,7 +40,8 @@ go test -short ./...
 go run ./cmd/serve            # http://localhost:8080
 ```
 
-Open it and you get one screen: pick a label, type what the application filed, press the button.
+Open it and you get one screen, with two panels. **One label**: pick it, type what the
+application filed, press the button.
 Results come back as a row per claim — what it is in plain words, the verdict as a word, what was
 filed, what the label appears to say, and a picture of where on the label that came from.
 
@@ -71,6 +72,7 @@ the document at `/openapi.yaml`.
 |---|---|
 | `GET /` | the operator's page |
 | `POST /verify` | multipart: `image` (PNG or JPEG) and `claims` (JSON). Verdicts, evidence, crops, timings, build identity |
+| `POST /verify/batch` | multipart: `claims` (CSV) and `images` (ZIP). `application/x-ndjson`, one line per label as it finishes |
 | `GET /health` | readiness and which build is answering, with the model hashes |
 | `GET /openapi.yaml` | the specification |
 

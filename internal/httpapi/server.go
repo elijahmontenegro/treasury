@@ -38,6 +38,13 @@ type Server struct {
 	// MaxImage is the largest image body accepted, in bytes. It is
 	// applied before anything is decoded.
 	MaxImage int64
+	// MaxBatch is the largest batch body accepted, in bytes.
+	MaxBatch int64
+	// BatchWorkers is how many labels of a batch are read at once. Zero
+	// is the core count. The engine is already parallel inside one
+	// verification, so more than this oversubscribes every core and makes
+	// each label slower without finishing the batch sooner.
+	BatchWorkers int
 	// Timeout bounds one verification. It is a context deadline, so it
 	// reaches the engine rather than only the response.
 	Timeout time.Duration

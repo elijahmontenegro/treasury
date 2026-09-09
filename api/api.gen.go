@@ -52,6 +52,23 @@ type Application struct {
 // ApplicationBeverage defines model for Application.Beverage.
 type ApplicationBeverage string
 
+// BatchItem One label's answer, written as soon as it is known.
+type BatchItem struct {
+	Claims   *[]Verdict `json:"claims,omitempty"`
+	Emphasis *[]Verdict `json:"emphasis,omitempty"`
+
+	// Error Present when this one label could not be read; the rest continue
+	Error *string `json:"error,omitempty"`
+
+	// Image The file named by the CSV row
+	Image     string     `json:"image"`
+	LatencyMs *int       `json:"latency_ms,omitempty"`
+	Reference *[]Verdict `json:"reference,omitempty"`
+
+	// Row Which row of the CSV this was, counting the header as 0
+	Row *int `json:"row,omitempty"`
+}
+
 // Error defines model for Error.
 type Error struct {
 	// Error What went wrong, in a sentence a person can act on
@@ -72,6 +89,10 @@ type Evidence struct {
 
 	// Distance How far apart they are, as a share of the claim's length
 	Distance *float64 `json:"distance,omitempty"`
+
+	// HasCrop In a batch, whether a crop exists for this verdict. The crop
+	// itself is not sent; ask `/verify` for that one label to see it.
+	HasCrop *bool `json:"has_crop,omitempty"`
 
 	// Matched The accepted spelling it was compared to
 	Matched *string `json:"matched,omitempty"`
@@ -186,8 +207,20 @@ type VerifyMultipartBody struct {
 	Image openapi_types.File `json:"image"`
 }
 
+// VerifyBatchMultipartBody defines parameters for VerifyBatch.
+type VerifyBatchMultipartBody struct {
+	// Claims CSV, one row per label
+	Claims openapi_types.File `json:"claims"`
+
+	// Images ZIP of the labels the CSV names
+	Images openapi_types.File `json:"images"`
+}
+
 // VerifyMultipartRequestBody defines body for Verify for multipart/form-data ContentType.
 type VerifyMultipartRequestBody VerifyMultipartBody
+
+// VerifyBatchMultipartRequestBody defines body for VerifyBatch for multipart/form-data ContentType.
+type VerifyBatchMultipartRequestBody VerifyBatchMultipartBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -203,6 +236,9 @@ type ServerInterface interface {
 	// Verify one label against the claims filed for it
 	// (POST /verify)
 	Verify(w http.ResponseWriter, r *http.Request)
+	// Verify many labels at once
+	// (POST /verify/batch)
+	VerifyBatch(w http.ResponseWriter, r *http.Request)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -261,6 +297,20 @@ func (siw *ServerInterfaceWrapper) Verify(w http.ResponseWriter, r *http.Request
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.Verify(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// VerifyBatch operation middleware
+func (siw *ServerInterfaceWrapper) VerifyBatch(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.VerifyBatch(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -394,6 +444,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc("GET "+options.BaseURL+"/health", wrapper.Health)
 	m.HandleFunc("GET "+options.BaseURL+"/openapi.yaml", wrapper.Spec)
 	m.HandleFunc("POST "+options.BaseURL+"/verify", wrapper.Verify)
+	m.HandleFunc("POST "+options.BaseURL+"/verify/batch", wrapper.VerifyBatch)
 
 	return m
 }

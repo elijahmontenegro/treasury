@@ -29,6 +29,7 @@ import (
 func main() {
 	addr := flag.String("addr", envOr("ADDR", ":"+envOr("PORT", "8080")), "address to listen on")
 	maxImage := flag.Int64("max-image", 10<<20, "largest image accepted, in bytes")
+	maxBatch := flag.Int64("max-batch", 100<<20, "largest batch accepted, in bytes")
 	timeout := flag.Duration("timeout", 60*time.Second, "how long one verification may take")
 	cores := flag.Int("cores", 0, "cores one verification may use; 0 is every core")
 	flag.Parse()
@@ -49,7 +50,7 @@ func main() {
 
 	srv := &httpapi.Server{
 		Engine: eng, Doc: api.Spec,
-		MaxImage: *maxImage, Timeout: *timeout,
+		MaxImage: *maxImage, MaxBatch: *maxBatch, Timeout: *timeout,
 	}
 	h := httpapi.Log(log, srv.Handler())
 

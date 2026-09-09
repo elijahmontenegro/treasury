@@ -64,6 +64,20 @@
   .foot code { font-size: .95em; }
   .count { margin: 1rem 0; font-weight: 600; }
   .count span { font-weight: 400; color: var(--quiet); }
+  .tabs { display: flex; gap: .4rem; margin-bottom: 1.25rem; }
+  .tab {
+    background: #fff; color: var(--quiet); border: 1px solid var(--line);
+    padding: .45rem 1rem; font-size: .9rem; font-weight: 600; border-radius: 8px;
+  }
+  .tab:hover { background: #f2f4f7; }
+  .tab.on { background: #1b2735; border-color: #1b2735; color: #fff; }
+  .note code { background: #f2f4f7; padding: .08rem .3rem; border-radius: 4px; font-size: .88em; }
+  tr.item { cursor: pointer; }
+  tr.item:hover td { background: #f7f9fb; }
+  tr.detail td { background: #fafbfc; padding: 0; }
+  tr.detail table { min-width: 0; }
+  .open { color: var(--quiet); font-size: .8rem; }
+  .bar { display: flex; gap: .35rem; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -72,7 +86,12 @@
   <h1>Label check</h1>
   <p class="sub">Does this label carry what the application filed?</p>
 
-  <form id="form" class="form">
+  <div class="tabs">
+    <button type="button" class="tab on" data-panel="one">One label</button>
+    <button type="button" class="tab" data-panel="many">Many labels</button>
+  </div>
+
+  <form id="form" class="form panel" data-panel="one">
     <fieldset>
       <legend>The label</legend>
       <div class="row">
@@ -104,6 +123,30 @@
     </fieldset>
 
     <button id="go" type="submit">Check this label</button>
+  </form>
+
+  <form id="batchForm" class="form panel" data-panel="many" hidden>
+    <fieldset>
+      <legend>The labels and their claims</legend>
+      <div class="grid">
+        <div>
+          <label for="csv">Claims (CSV)</label>
+          <input type="file" id="csv" accept=".csv,text/csv">
+        </div>
+        <div>
+          <label for="zip">Labels (ZIP)</label>
+          <input type="file" id="zip" accept=".zip,application/zip">
+        </div>
+      </div>
+      <p class="note">
+        The CSV needs a first row of column names. One column must be
+        <code>image</code>, naming a file inside the ZIP; the others may be
+        <code>beverage</code>, <code>brand</code>, <code>class</code>,
+        <code>producer</code>, <code>address</code>, <code>origin</code>,
+        <code>abv</code> and <code>net_ml</code>.
+      </p>
+    </fieldset>
+    <button id="goBatch" type="submit">Check these labels</button>
   </form>
 
   <div id="say"></div>
@@ -235,6 +278,130 @@ document.getElementById("form").addEventListener("submit", async ev => {
     button.disabled = false;
   }
 });
+
+// The two panels: one label, or many.
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t === tab));
+    document.querySelectorAll(".panel").forEach(p =>
+      p.hidden = p.dataset.panel !== tab.dataset.panel);
+    message("", "");
+    out.innerHTML = "";
+  });
+});
+
+// A batch answers one line of JSON per label as it finishes, so the table
+// fills in as the work is done rather than appearing at the end. That is
+// the whole reason the service streams: three hundred labels take minutes,
+// and a reviewer should be able to watch rather than wonder.
+document.getElementById("batchForm").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const csv = document.getElementById("csv").files[0];
+  const zip = document.getElementById("zip").files[0];
+  if (!csv || !zip) { message("err", "Choose both a CSV of claims and a ZIP of labels."); return; }
+
+  const body = new FormData();
+  body.append("claims", csv);
+  body.append("images", zip);
+
+  const button = document.getElementById("goBatch");
+  button.disabled = true;
+  const items = [];
+  out.innerHTML = "";
+  message("busy", "Reading the labels. Results appear as each one finishes.");
+  try {
+    const resp = await fetch("verify/batch", { method: "POST", body });
+    if (!resp.ok) {
+      const data = await resp.json().catch(() => null);
+      message("err", (data && data.error) || "The labels could not be checked.");
+      return;
+    }
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let cut;
+      while ((cut = buf.indexOf(String.fromCharCode(10))) >= 0) {
+        const line = buf.slice(0, cut).trim();
+        buf = buf.slice(cut + 1);
+        if (!line) continue;
+        try { items.push(JSON.parse(line)); } catch (e) { continue; }
+        showBatch(items);
+        message("busy", items.length + " of the batch read so far.");
+      }
+    }
+    message("", "");
+    showBatch(items);
+  } catch (err) {
+    message("err", "Could not reach the service. Check that it is running, and try again.");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+function countOf(item) {
+  const all = [].concat(item.claims || [], item.reference || [], item.emphasis || []);
+  return {
+    all: all.length,
+    ok: all.filter(v => v.status === "VERIFIED").length,
+    look: all.filter(v => v.status === "REVIEW" || v.status === "MISMATCH").length,
+    rows: all,
+  };
+}
+
+function showBatch(items) {
+  let ok = 0, look = 0, failed = 0;
+  // The service answers as each label finishes, which is the point of the
+  // stream; the table shows them in the order of the CSV, which is the
+  // order the reviewer's own list is in.
+  const inOrder = items.slice().sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
+  const body = inOrder.map((item, i) => {
+    if (item.error) {
+      failed++;
+      return `<tr class="item"><td class="what">${esc(item.image)}</td>
+        <td><span class="tag v-mismatch">Could not read</span></td>
+        <td colspan="3"><span class="said">${esc(item.error)}</span></td></tr>`;
+    }
+    const c = countOf(item);
+    ok += c.ok; look += c.look;
+    const bar = c.rows.map(v => {
+      const [word, cls] = WORDS[v.status] || [v.status, "v-notfound"];
+      return `<span class="tag ${cls}" title="${esc(NAMES[v.claim] || v.claim)}: ${esc(word)}">${
+        esc((NAMES[v.claim] || v.claim).split(" ")[0])}</span>`;
+    }).join(" ");
+    return `<tr class="item" data-i="${i}">
+        <td class="what">${esc(item.image)}</td>
+        <td>${c.ok} of ${c.all}</td>
+        <td colspan="2"><div class="bar">${bar}</div></td>
+        <td><span class="open">Click to open</span></td>
+      </tr>
+      <tr class="detail" data-detail="${i}" hidden><td colspan="5">
+        <table><colgroup><col class="c-what"><col class="c-result"><col class="c-filed">
+        <col class="c-says"><col class="c-where"></colgroup><tbody>${rowsOf(c.rows)}</tbody></table>
+      </td></tr>`;
+  }).join("");
+
+  out.innerHTML = `
+    <p class="count">${inOrder.length} label${inOrder.length === 1 ? "" : "s"} read.
+      <span>${ok} claims verified, ${look} needing a look${
+        failed ? ", " + failed + " could not be read" : ""}.</span></p>
+    <div class="scroll"><table>
+      <colgroup><col class="c-what"><col class="c-result"><col class="c-filed">
+      <col class="c-says"><col class="c-where"></colgroup>
+      <thead><tr><th>Label</th><th>Verified</th><th colspan="2">Each claim</th><th></th></tr></thead>
+      <tbody>${body}</tbody>
+    </table></div>`;
+
+  out.querySelectorAll("tr.item[data-i]").forEach(tr => {
+    tr.addEventListener("click", () => {
+      const d = out.querySelector(`tr.detail[data-detail="${tr.dataset.i}"]`);
+      if (d) d.hidden = !d.hidden;
+    });
+  });
+}
 
 fetch("health").then(r => r.json()).then(h => {
   const e = h.engine || {};

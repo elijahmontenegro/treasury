@@ -108,6 +108,61 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /verify/batch:
+    post:
+      operationId: verifyBatch
+      summary: Verify many labels at once
+      description: |
+        Takes a CSV of claims and a ZIP of images and answers
+        `application/x-ndjson`: one JSON object per line, written as each
+        item finishes rather than assembled into one document at the end, so
+        a caller sees progress and nothing is held in memory to be collected.
+
+        The CSV's first row is its header. One column must be `image` and
+        must name a file inside the ZIP; the rest are the fields of an
+        Application - `beverage`, `brand`, `class`, `producer`, `address`,
+        `origin`, `abv`, `net_ml`.
+
+        Verdicts come back without evidence crops, since a batch of three
+        hundred would be a response measured in gigabytes; each verdict says
+        whether evidence exists, and the item can be sent to `/verify` on
+        its own to see it.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [claims, images]
+              properties:
+                claims:
+                  type: string
+                  format: binary
+                  description: CSV, one row per label
+                images:
+                  type: string
+                  format: binary
+                  description: ZIP of the labels the CSV names
+      responses:
+        "200":
+          description: One line per item, as it completes
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: "#/components/schemas/BatchItem"
+        "400":
+          description: The request could not be understood
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "413":
+          description: The batch is larger than the service accepts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Application:
@@ -230,6 +285,11 @@ components:
         parts:
           type: integer
           description: How many detections were joined to make the reading
+        has_crop:
+          type: boolean
+          description: |
+            In a batch, whether a crop exists for this verdict. The crop
+            itself is not sent; ask `/verify` for that one label to see it.
         region:
           $ref: "#/components/schemas/Region"
         crop:
@@ -284,6 +344,35 @@ components:
           $ref: "#/components/schemas/Identity"
         detail:
           type: string
+
+    BatchItem:
+      type: object
+      description: One label's answer, written as soon as it is known.
+      required: [image]
+      properties:
+        image:
+          type: string
+          description: The file named by the CSV row
+        row:
+          type: integer
+          description: Which row of the CSV this was, counting the header as 0
+        latency_ms:
+          type: integer
+        claims:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+        reference:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+        emphasis:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verdict"
+        error:
+          type: string
+          description: Present when this one label could not be read; the rest continue
 
     Error:
       type: object
