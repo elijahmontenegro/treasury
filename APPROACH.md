@@ -30,7 +30,8 @@ The statutory health warning (27 CFR 16.21) is verified on an exact match only, 
 - The statutory warning text is taken from 27 CFR 16.21 verbatim; alcohol content and net contents formats, standards of fill, and the phrases a statement of responsibility may begin with are taken from 27 CFR parts 4, 5, and 7, with citations in `ttb/`.
 - A filed value and a printed value are the same claim across punctuation, spacing, diacritics, the whisky/whiskey spelling the regulation permits, and the permittee's two filed names. They are not the same across a dropped legal suffix, an abbreviation expansion, or a reordered name.
 - Images are what an agent would upload: a scan or a reasonably frontal photograph. Rotated and inverted text is detected; heavy glare and steep angles degrade reading and the engine refuses rather than guesses.
-- Nothing is stored. An uploaded image lives as long as the request that carried it.
+- Nothing is stored. An uploaded image lives as long as the request that carried it, and a
+  cancelled or timed-out request stops the work rather than holding the instance to completion.
 - No external service is called. Their network blocks outbound traffic; the vendor pilot they described failed on exactly that, and this design depends on nothing outside the binary.
 
 ## Results, on fifty real labels from the public COLA registry
@@ -54,6 +55,7 @@ Single-label verification with evidence crops; batch verification, taking a CSV 
 - The header-weight measure cannot separate bold from regular at warning type sizes on photographs; it reviews with the ratio shown. On the fifty, whose headers the regulation requires to be bold, the ratio runs from 0.69 to 1.79.
 - The synthetic corpus reads its own warning on only 21 of 250 labels, because that warning is the smallest type it sets; so the corpus cannot test the warning check, and unit tests feed the readings directly instead.
 - Rate limits and the daily budget are per instance, not per deployment, because they are held in process rather than in a shared store.
+- A cancelled verification stops at the next crop or claim, not immediately: a model's inference cannot be interrupted once it has started, so a request abandoned mid-crop costs that crop and no more.
 - The five-second p95 target is met locally at two cores and with room at four, and is **not** met on the deployed shape: 9.5 s of engine time at four vCPU. A Cloud Run vCPU is about half a core of the machine the local figures come from, so closing it needs a faster core or less work on the slowest label, not a deployment setting.
 
 ## This was not the original design

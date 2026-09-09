@@ -33,19 +33,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9934498400,
+  "latency": 12791098100,
   "stages": {
-   "detect": 4059409100,
-   "recognise": 432718000,
-   "runs": 1504800,
-   "decide": 5432292800,
+   "detect": 5668852000,
+   "recognise": 815198300,
+   "runs": 4057500,
+   "decide": 6299991100,
    "boxes": 39,
    "run_count": 257
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PENUMBRA",
     "observed": "PENUMBRA",
@@ -70,14 +70,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
     "observed": "FOLEY FAMILY WINES, Foley Family Wines, Inc.",
@@ -102,14 +102,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "200 CONCOURSE BLVD SANTA ROSA CA 95403"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF MEXICO",
     "observed": "PRODUCT OF MEXICO",
@@ -134,7 +134,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "46",
     "observed": "46",
@@ -160,7 +160,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -188,7 +188,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -217,7 +217,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -257,13 +257,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 15618270100,
+  "latency": 11825852800,
   "stages": {
-   "detect": 5299382000,
-   "recognise": 630733400,
-   "turned_pass": 6137615000,
-   "runs": 1504700,
-   "decide": 4147356500,
+   "detect": 4553971500,
+   "recognise": 959033000,
+   "turned_pass": 6161936500,
+   "runs": 0,
+   "decide": 1044527100,
    "boxes": 39,
    "turned_boxes": 5,
    "run_count": 263
@@ -271,7 +271,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BARULLO",
     "observed": "BARULLO",
@@ -296,28 +296,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OZ TRADING GROUP INC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "2806 E NOGAL AVE Hidalgo TX 78557"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -343,7 +343,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -371,7 +371,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -400,7 +400,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "heading not read",
     "expected": "GOVERNMENT WARNING:",
@@ -458,13 +458,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12809699800,
+  "latency": 10434573900,
   "stages": {
-   "detect": 6387813900,
-   "recognise": 400906600,
-   "turned_pass": 6345046100,
-   "runs": 0,
-   "decide": 75851100,
+   "detect": 4805940900,
+   "recognise": 1323238500,
+   "turned_pass": 5432599400,
+   "runs": 113887400,
+   "decide": 81141600,
    "boxes": 66,
    "turned_boxes": 7,
    "run_count": 96
@@ -472,7 +472,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BARULLO",
     "observed": "BARULLO",
@@ -497,14 +497,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "OZ TRADING GROUP INC",
     "observed": "OZ TRADING GROUP INC",
@@ -529,7 +529,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "2806 E NOGAL AVE Hidalgo TX 78557",
     "observed": "2806 E NOGAL AVE Hidalgo TX 78557",
@@ -554,7 +554,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -580,7 +580,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "475",
     "observed": "475",
@@ -608,7 +608,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -637,7 +637,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -677,13 +677,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9841343100,
+  "latency": 9876237300,
   "stages": {
-   "detect": 1890320700,
-   "recognise": 337300100,
-   "turned_pass": 6287792800,
-   "runs": 5015800,
-   "decide": 1622936600,
+   "detect": 2181555500,
+   "recognise": 860085200,
+   "turned_pass": 5315104300,
+   "runs": 1000900,
+   "decide": 2360030000,
    "boxes": 48,
    "turned_boxes": 17,
    "run_count": 244
@@ -691,7 +691,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PATRÓN",
     "observed": "PATRÓN",
@@ -716,7 +716,7 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB",
@@ -741,28 +741,28 @@
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BACARDI U.S.A., INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40"
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -790,7 +790,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -819,7 +819,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -876,13 +876,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12005803400,
+  "latency": 9981507400,
   "stages": {
-   "detect": 2349901500,
-   "recognise": 796595100,
-   "turned_pass": 6532251000,
-   "runs": 2004700,
-   "decide": 3002463800,
+   "detect": 1573101100,
+   "recognise": 351499200,
+   "turned_pass": 5872660700,
+   "runs": 1001500,
+   "decide": 2512821200,
    "boxes": 49,
    "turned_boxes": 10,
    "run_count": 326
@@ -890,7 +890,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PATRÓN",
     "observed": "PATRÓN",
@@ -915,7 +915,7 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB",
@@ -940,28 +940,28 @@
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BACARDI U.S.A., INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3011 PONCE DE LEON BLVD STE 900 CORAL GABLES FL 33134"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40"
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -989,7 +989,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -1018,7 +1018,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -1075,13 +1075,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 11376489800,
+  "latency": 10074470500,
   "stages": {
-   "detect": 3248104100,
-   "recognise": 948746900,
-   "turned_pass": 6748596300,
-   "runs": 999800,
-   "decide": 1352003600,
+   "detect": 3165773400,
+   "recognise": 410812300,
+   "turned_pass": 5390751300,
+   "runs": 1000000,
+   "decide": 1485009800,
    "boxes": 105,
    "turned_boxes": 5,
    "run_count": 334
@@ -1089,7 +1089,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE",
@@ -1114,28 +1114,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -1162,7 +1162,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -1190,7 +1190,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -1218,7 +1218,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -1275,13 +1275,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 43209385200,
+  "latency": 44419536700,
   "stages": {
-   "detect": 1353348600,
-   "recognise": 351270300,
-   "turned_pass": 6478707000,
-   "runs": 4522200,
-   "decide": 35328027000,
+   "detect": 1089653800,
+   "recognise": 853570800,
+   "turned_pass": 5853273200,
+   "runs": 3510100,
+   "decide": 37428137000,
    "boxes": 69,
    "turned_boxes": 18,
    "run_count": 1145
@@ -1289,7 +1289,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "JOHNNY TEJAS",
     "observed": "JOHNNY TEJAS",
@@ -1314,28 +1314,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "RTD Specialties, GORDON BIERSCH BREWING COMPANY"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "357 E TAYLOR ST San Jose CA 95112"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -1362,7 +1362,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -1390,7 +1390,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -1419,7 +1419,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -1477,13 +1477,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7224171600,
+  "latency": 5962602600,
   "stages": {
-   "detect": 590013600,
-   "recognise": 318589000,
-   "turned_pass": 5431302400,
-   "runs": 998800,
-   "decide": 1134876800,
+   "detect": 453010100,
+   "recognise": 280445800,
+   "turned_pass": 3378229300,
+   "runs": 0,
+   "decide": 2084578800,
    "boxes": 45,
    "turned_boxes": 5,
    "run_count": 200
@@ -1491,7 +1491,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1516,14 +1516,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1548,14 +1548,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "53",
     "observed": "53",
@@ -1581,7 +1581,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1609,7 +1609,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -1637,7 +1637,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -1695,19 +1695,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9607039400,
+  "latency": 6017524600,
   "stages": {
-   "detect": 4753289000,
-   "recognise": 1062410800,
-   "runs": 973200,
-   "decide": 3783340200,
+   "detect": 2657307700,
+   "recognise": 1231853800,
+   "runs": 1958200,
+   "decide": 2116817900,
    "boxes": 40,
    "run_count": 205
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1732,14 +1732,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1764,14 +1764,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "49",
     "observed": "49",
@@ -1797,7 +1797,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -1825,7 +1825,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -1854,7 +1854,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -1912,19 +1912,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 7818603800,
+  "latency": 3774368600,
   "stages": {
-   "detect": 3313995600,
-   "recognise": 1405080900,
-   "runs": 1000900,
-   "decide": 3088367100,
+   "detect": 1129301200,
+   "recognise": 231923800,
+   "runs": 0,
+   "decide": 2404592900,
    "boxes": 39,
    "run_count": 206
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -1949,14 +1949,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC",
@@ -1981,14 +1981,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "40",
     "observed": "40",
@@ -2014,7 +2014,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -2042,7 +2042,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -2071,7 +2071,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -2129,13 +2129,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10732717800,
+  "latency": 8561239600,
   "stages": {
-   "detect": 3374235200,
-   "recognise": 596849900,
-   "turned_pass": 3224235700,
-   "runs": 2081800,
-   "decide": 4120581400,
+   "detect": 2153102100,
+   "recognise": 540541800,
+   "turned_pass": 2325704000,
+   "runs": 1004500,
+   "decide": 4059085900,
    "boxes": 39,
    "turned_boxes": 3,
    "run_count": 220
@@ -2143,7 +2143,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BRAHMAN",
     "observed": "BRAHMAN",
@@ -2168,28 +2168,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TEQUILA FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Cinco Agaves Imports LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1565 MENDOCINO DR CONDO 163 Chula Vista CA 91911"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "40",
     "observed": "40",
@@ -2215,7 +2215,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -2243,7 +2243,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -2272,7 +2272,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -2330,13 +2330,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13487833700,
+  "latency": 10051123500,
   "stages": {
-   "detect": 3267337500,
-   "recognise": 910825400,
-   "turned_pass": 4875801600,
-   "runs": 2635000,
-   "decide": 5338059000,
+   "detect": 1693935400,
+   "recognise": 1464683900,
+   "turned_pass": 2472103100,
+   "runs": 4015300,
+   "decide": 5738503000,
    "boxes": 77,
    "turned_boxes": 7,
    "run_count": 1196
@@ -2344,35 +2344,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "FAN ZONE DETROIT"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Ellicottville Brewing Co., S\u0026W COMPANY, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "202 SECOND ST Little Valley NY 14755"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -2398,7 +2398,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "473",
     "observed": "473",
@@ -2426,7 +2426,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -2455,7 +2455,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -2495,13 +2495,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9724336700,
+  "latency": 8503353200,
   "stages": {
-   "detect": 3578330900,
-   "recognise": 1497144700,
-   "turned_pass": 5571147000,
-   "runs": 1000300,
-   "decide": 490416200,
+   "detect": 2255607000,
+   "recognise": 985975700,
+   "turned_pass": 5250474200,
+   "runs": 974300,
+   "decide": 942055400,
    "boxes": 107,
    "turned_boxes": 11,
    "run_count": 320
@@ -2509,35 +2509,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2564,7 +2564,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2592,7 +2592,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -2620,7 +2620,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -2677,13 +2677,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 15247913400,
+  "latency": 10289908100,
   "stages": {
-   "detect": 4957261400,
-   "recognise": 1290424200,
-   "turned_pass": 6783814600,
-   "runs": 999800,
-   "decide": 2032650400,
+   "detect": 4491303200,
+   "recognise": 913310900,
+   "turned_pass": 4487953100,
+   "runs": 999700,
+   "decide": 1231462300,
    "boxes": 105,
    "turned_boxes": 5,
    "run_count": 362
@@ -2691,35 +2691,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE LION BREWERY, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1001 SATHERS DR Pittston PA 18640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -2746,7 +2746,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2774,7 +2774,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -2802,7 +2802,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -2859,13 +2859,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 17400848500,
+  "latency": 12324190700,
   "stages": {
-   "detect": 4122781200,
-   "recognise": 852182500,
-   "turned_pass": 6837050100,
-   "runs": 74660300,
-   "decide": 6358733600,
+   "detect": 2427439600,
+   "recognise": 680076800,
+   "turned_pass": 4564099600,
+   "runs": 1999400,
+   "decide": 5323641200,
    "boxes": 92,
    "turned_boxes": 55,
    "run_count": 152
@@ -2873,7 +2873,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -2898,28 +2898,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -2945,7 +2945,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -2973,7 +2973,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -3002,7 +3002,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -3060,13 +3060,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13668235100,
+  "latency": 9615759100,
   "stages": {
-   "detect": 1010225200,
-   "recognise": 901202400,
-   "turned_pass": 5559397800,
-   "runs": 0,
-   "decide": 7091082000,
+   "detect": 2899098100,
+   "recognise": 169673900,
+   "turned_pass": 3936260300,
+   "runs": 1285500,
+   "decide": 2768910900,
    "boxes": 18,
    "turned_boxes": 11,
    "run_count": 150
@@ -3074,7 +3074,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -3099,28 +3099,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "6.5",
     "observed": "6.5",
@@ -3148,7 +3148,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3176,7 +3176,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -3205,7 +3205,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -3263,19 +3263,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4121683300,
+  "latency": 3709565100,
   "stages": {
-   "detect": 3812824300,
-   "recognise": 172014300,
+   "detect": 3106249000,
+   "recognise": 275630900,
    "runs": 0,
-   "decide": 135612300,
+   "decide": 326684100,
    "boxes": 16,
    "run_count": 36
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "WASATCH BREWERY",
     "observed": "WASATCH BREWERY",
@@ -3300,28 +3300,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Monster Brewing Company LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "5910 COMSTOCK PARK DR NW Comstock Park MI 49321"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -3347,7 +3347,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3375,7 +3375,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -3404,7 +3404,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -3444,13 +3444,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14837472300,
+  "latency": 8567917900,
   "stages": {
-   "detect": 5547353900,
-   "recognise": 1944693500,
-   "turned_pass": 7502237300,
-   "runs": 1006400,
-   "decide": 1760480200,
+   "detect": 3150366300,
+   "recognise": 494705600,
+   "turned_pass": 4189054200,
+   "runs": 1643200,
+   "decide": 1127968000,
    "boxes": 111,
    "turned_boxes": 7,
    "run_count": 332
@@ -3458,35 +3458,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -3512,7 +3512,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "570",
     "observed": "570",
@@ -3540,7 +3540,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -3569,7 +3569,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -3626,13 +3626,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12376073800,
+  "latency": 7689936900,
   "stages": {
-   "detect": 5881468800,
-   "recognise": 1278023600,
-   "turned_pass": 5073841500,
-   "runs": 1974700,
-   "decide": 1346206100,
+   "detect": 2857493500,
+   "recognise": 1415741400,
+   "turned_pass": 3992062100,
+   "runs": 999100,
+   "decide": 812741500,
    "boxes": 93,
    "turned_boxes": 5,
    "run_count": 325
@@ -3640,35 +3640,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -3694,7 +3694,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3722,7 +3722,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -3751,7 +3751,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -3808,13 +3808,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13637655000,
+  "latency": 13446767500,
   "stages": {
-   "detect": 6839746400,
-   "recognise": 1106098200,
-   "turned_pass": 5603929900,
-   "runs": 2064600,
-   "decide": 1164856100,
+   "detect": 3299270300,
+   "recognise": 1687334500,
+   "turned_pass": 7848407200,
+   "runs": 56160000,
+   "decide": 2200637300,
    "boxes": 108,
    "turned_boxes": 8,
    "run_count": 382
@@ -3822,35 +3822,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -3877,7 +3877,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -3905,7 +3905,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -3933,7 +3933,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -3990,13 +3990,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12695059700,
+  "latency": 12648096900,
   "stages": {
-   "detect": 5442570500,
-   "recognise": 2143579400,
-   "turned_pass": 6088918500,
-   "runs": 1047600,
-   "decide": 1139751600,
+   "detect": 3819414300,
+   "recognise": 731852200,
+   "turned_pass": 6864194000,
+   "runs": 1000200,
+   "decide": 1935853000,
    "boxes": 107,
    "turned_boxes": 11,
    "run_count": 320
@@ -4004,35 +4004,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SUPER LYTE"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Prime Beverage Group, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1858 KANNAPOLIS PKWY Kannapolis NC 28027"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -4059,7 +4059,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -4087,7 +4087,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -4115,7 +4115,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -4172,13 +4172,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10322662700,
+  "latency": 10705248300,
   "stages": {
-   "detect": 3162297300,
-   "recognise": 1199337600,
-   "turned_pass": 5601030400,
+   "detect": 4929782300,
+   "recognise": 411943300,
+   "turned_pass": 5195854800,
    "runs": 0,
-   "decide": 1545288900,
+   "decide": 569229400,
    "boxes": 78,
    "turned_boxes": 6,
    "run_count": 194
@@ -4186,7 +4186,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -4211,28 +4211,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -4260,7 +4260,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -4288,7 +4288,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -4317,7 +4317,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -4375,13 +4375,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10000170000,
+  "latency": 10152083100,
   "stages": {
-   "detect": 3683209000,
-   "recognise": 607397900,
-   "turned_pass": 5396188700,
+   "detect": 3889875500,
+   "recognise": 633682200,
+   "turned_pass": 5536317200,
    "runs": 0,
-   "decide": 909338000,
+   "decide": 714150400,
    "boxes": 72,
    "turned_boxes": 3,
    "run_count": 202
@@ -4389,7 +4389,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -4414,28 +4414,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -4463,7 +4463,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -4491,7 +4491,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -4520,7 +4520,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENTWARNING:(",
@@ -4577,13 +4577,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10454681300,
+  "latency": 9606227300,
   "stages": {
-   "detect": 5523257900,
-   "recognise": 818329300,
-   "turned_pass": 3862114000,
+   "detect": 3836380200,
+   "recognise": 1939498800,
+   "turned_pass": 5216782200,
    "runs": 0,
-   "decide": 921114000,
+   "decide": 538451200,
    "boxes": 73,
    "turned_boxes": 3,
    "run_count": 188
@@ -4591,7 +4591,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW",
@@ -4616,28 +4616,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -4665,7 +4665,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -4693,7 +4693,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -4722,7 +4722,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -4780,13 +4780,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 11410137800,
+  "latency": 10567310100,
   "stages": {
-   "detect": 4465255700,
-   "recognise": 1134925900,
-   "turned_pass": 5675586400,
+   "detect": 4904927300,
+   "recognise": 1197124600,
+   "turned_pass": 4145622200,
    "runs": 0,
-   "decide": 1254764200,
+   "decide": 817427500,
    "boxes": 75,
    "turned_boxes": 5,
    "run_count": 219
@@ -4794,35 +4794,35 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OWL'S BREW"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Zumbiel Beverage Services, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1611 AIR PARK DR Farmington MO 63640"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5",
     "observed": "5",
@@ -4850,7 +4850,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -4878,7 +4878,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -4907,7 +4907,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENTWARNING:(",
@@ -4964,13 +4964,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 20900766500,
+  "latency": 25898038000,
   "stages": {
-   "detect": 3599622300,
-   "recognise": 949064000,
-   "turned_pass": 2127882400,
-   "runs": 232478900,
-   "decide": 14905859500,
+   "detect": 3449899500,
+   "recognise": 607695700,
+   "turned_pass": 4268370300,
+   "runs": 13729100,
+   "decide": 17962092900,
    "boxes": 98,
    "turned_boxes": 26,
    "run_count": 2578
@@ -4978,7 +4978,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "DANCING PANDA",
     "observed": "DANCING PANDA",
@@ -5003,7 +5003,7 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "STRAIGHT BOURBON WHISKY",
     "observed": "STRAIGHT BOURBON WHISKY",
@@ -5028,21 +5028,21 @@
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Dynasty Spirits Brands LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "4865 CALVERT ST Dallas TX 75247"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "50",
     "observed": "50",
@@ -5068,7 +5068,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5096,7 +5096,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -5125,7 +5125,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -5166,13 +5166,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9752475800,
+  "latency": 8658919100,
   "stages": {
-   "detect": 4061192000,
-   "recognise": 407033700,
-   "turned_pass": 5058195200,
-   "runs": 0,
-   "decide": 312633700,
+   "detect": 3633771400,
+   "recognise": 676720000,
+   "turned_pass": 4756753500,
+   "runs": 14469900,
+   "decide": 213301200,
    "boxes": 30,
    "turned_boxes": 2,
    "run_count": 89
@@ -5180,7 +5180,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "VIÑA SALCEDA LA RELLANILLA",
     "observed": "VIÑA SALCEDA LA RELLANILLA",
@@ -5205,28 +5205,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THINK GLOBAL LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "827 STATE ST STE 28 SANTA BARBARA CA 93101"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF SPAIN",
     "observed": "PRODUCT OF SPAIN",
@@ -5251,7 +5251,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -5277,7 +5277,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5305,7 +5305,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -5334,7 +5334,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENTWARNING:(",
@@ -5391,13 +5391,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14606259400,
+  "latency": 11308851100,
   "stages": {
-   "detect": 4982988800,
-   "recognise": 682236100,
-   "turned_pass": 4900650500,
-   "runs": 2511200,
-   "decide": 4699894200,
+   "detect": 3219092900,
+   "recognise": 1007145600,
+   "turned_pass": 3519250600,
+   "runs": 2015200,
+   "decide": 4564494000,
    "boxes": 47,
    "turned_boxes": 5,
    "run_count": 486
@@ -5405,7 +5405,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "APONA VINEYARDS",
     "observed": "APONA VINEYARDS",
@@ -5430,14 +5430,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Apona Vineyard, Apona Vineyards, LLC",
@@ -5462,14 +5462,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "25443 FLECK RD Veneta OR 97487"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "13.2",
     "observed": "13.2",
@@ -5495,7 +5495,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5523,7 +5523,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -5552,7 +5552,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -5593,13 +5593,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 6759385300,
+  "latency": 5745797100,
   "stages": {
-   "detect": 2929149400,
-   "recognise": 789685900,
-   "turned_pass": 3681791100,
-   "runs": 1005500,
-   "decide": 141422900,
+   "detect": 2386789500,
+   "recognise": 354977100,
+   "turned_pass": 2985977400,
+   "runs": 1005300,
+   "decide": 367491700,
    "boxes": 40,
    "turned_boxes": 2,
    "run_count": 107
@@ -5607,7 +5607,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS",
@@ -5632,14 +5632,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -5664,14 +5664,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -5696,7 +5696,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "42",
     "observed": "42",
@@ -5722,7 +5722,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5750,7 +5750,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -5778,7 +5778,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -5837,33 +5837,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4113529400,
+  "latency": 1395283100,
   "stages": {
-   "detect": 3357266500,
-   "recognise": 257855200,
-   "runs": 1001100,
-   "decide": 491881800,
+   "detect": 539889900,
+   "recognise": 395466300,
+   "runs": 2998700,
+   "decide": 448419300,
    "boxes": 37,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -5888,14 +5888,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -5920,7 +5920,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -5946,7 +5946,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -5974,7 +5974,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -6002,7 +6002,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -6061,33 +6061,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4944001600,
+  "latency": 3495141200,
   "stages": {
-   "detect": 3534557300,
-   "recognise": 943377500,
-   "runs": 2564600,
-   "decide": 456984300,
+   "detect": 2595010400,
+   "recognise": 340044800,
+   "runs": 0,
+   "decide": 552900600,
    "boxes": 41,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -6112,14 +6112,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -6144,7 +6144,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -6170,7 +6170,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6198,7 +6198,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -6226,7 +6226,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -6285,19 +6285,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 4289338700,
+  "latency": 3734687300,
   "stages": {
-   "detect": 3320551100,
-   "recognise": 419285300,
-   "runs": 0,
-   "decide": 544003200,
+   "detect": 2645856800,
+   "recognise": 713831200,
+   "runs": 999900,
+   "decide": 367375600,
    "boxes": 40,
    "run_count": 95
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "20 SURCOS",
@@ -6322,14 +6322,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MEZCAL FB"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MEX-CAL, INC.",
     "observed": "MEX-CAL, INC.",
@@ -6354,14 +6354,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "979 O ST STE B FIREBAUGH CA 93622"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MADE IN MEXICO",
     "observed": "MADE IN MEXICO",
@@ -6386,7 +6386,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "45",
     "observed": "45",
@@ -6412,7 +6412,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6440,7 +6440,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -6468,7 +6468,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -6527,19 +6527,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5123338500,
+  "latency": 3239394500,
   "stages": {
-   "detect": 3476608600,
-   "recognise": 314187100,
+   "detect": 1372909900,
+   "recognise": 256100800,
    "runs": 0,
-   "decide": 1309512400,
+   "decide": 1591843900,
    "boxes": 25,
    "run_count": 75
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "BODEGAS Y VINEDOS VEGA DE YUSO",
@@ -6564,28 +6564,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "CROD TRADING CORP, CROD TRADING CO CORP."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1 KM 28.6 BO. RIO CANAS BLDG Carr #1 Km 28.6 Bo. Rio Canas CAGUAS PR 00725"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "Product of Spain",
     "observed": "Product of Spain",
@@ -6610,7 +6610,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -6636,7 +6636,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -6664,7 +6664,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -6693,7 +6693,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -6750,34 +6750,34 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8810786800,
+  "latency": 8027520000,
   "stages": {
-   "detect": 2664774000,
-   "recognise": 981891000,
-   "turned_pass": 5393165600,
-   "runs": 506200,
-   "decide": 751341500,
+   "detect": 2513594900,
+   "recognise": 788490700,
+   "turned_pass": 3514361600,
+   "runs": 0,
+   "decide": 1998557500,
    "boxes": 30,
    "run_count": 53
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "THE CROSSING AT BIG CREEK BREWERY"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "MALT BEVERAGES SPECIALITIES - FLAVORED"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "The Crossing at Big Creek Brewery, TCBC Development Company",
     "observed": "The Crossing at Big Creek Brewery, TCBC Development Company",
@@ -6802,14 +6802,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "100 MAGNOLIA WAY Cottonwood AL 36320"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "5.5",
     "observed": "5.5",
@@ -6835,7 +6835,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "355",
     "observed": "355",
@@ -6863,7 +6863,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -6892,7 +6892,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -6932,13 +6932,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 10084764800,
+  "latency": 7386741600,
   "stages": {
-   "detect": 4356109100,
-   "recognise": 612866900,
-   "turned_pass": 4557283900,
-   "runs": 4064800,
-   "decide": 1140742900,
+   "detect": 1234044100,
+   "recognise": 391578500,
+   "turned_pass": 3337993100,
+   "runs": 1505700,
+   "decide": 2750552300,
    "boxes": 38,
    "turned_boxes": 3,
    "run_count": 189
@@ -6946,7 +6946,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "MCKELVEY VINEYARDS",
     "observed": "MCKELVEY VINEYARDS",
@@ -6971,28 +6971,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "SVP Winery, SVP Winery, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "111 CLARK RD Shandon CA 93461"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "13",
     "observed": "13",
@@ -7018,7 +7018,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7046,7 +7046,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -7074,7 +7074,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -7132,19 +7132,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 20732234900,
+  "latency": 21847704300,
   "stages": {
-   "detect": 4428563100,
-   "recognise": 671237500,
-   "runs": 3181900,
-   "decide": 15621229800,
+   "detect": 3253646200,
+   "recognise": 1124047100,
+   "runs": 998200,
+   "decide": 17464162100,
    "boxes": 59,
    "run_count": 340
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "LEGACY RESERVE",
     "observed": "LEGACY RESERVE",
@@ -7169,7 +7169,7 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BOURBON WHISKY",
     "observed": "BOURBON WHISKY",
@@ -7194,7 +7194,7 @@
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
     "observed": "Haberdasher Artisan Distillery, Bemis Distillers, LLC",
@@ -7219,7 +7219,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "81 E WAYNE ST STE A Franklin IN 46131",
@@ -7244,7 +7244,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "50",
     "observed": "50",
@@ -7270,7 +7270,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7298,7 +7298,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -7326,7 +7326,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -7383,13 +7383,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 9108272400,
+  "latency": 8189917100,
   "stages": {
-   "detect": 4572677300,
-   "recognise": 588926300,
-   "turned_pass": 3429990200,
-   "runs": 998300,
-   "decide": 1088086900,
+   "detect": 3273067900,
+   "recognise": 521419000,
+   "turned_pass": 2442103800,
+   "runs": 1504100,
+   "decide": 2420151600,
    "boxes": 36,
    "turned_boxes": 3,
    "run_count": 143
@@ -7397,7 +7397,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "KILIKIA",
     "observed": "KILIKIA",
@@ -7422,7 +7422,7 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BEER",
     "observed": "BEER",
@@ -7447,7 +7447,7 @@
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "IMPORTERS DIRECT WHOLESALE CO., INC.",
     "observed": "IMPORTERS DIRECT WHOLESALE CO., INC.",
@@ -7472,7 +7472,7 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "1944 GARDENA AVE GLENDALE CA 91204",
     "observed": "1944 GARDENA AVE GLENDALE CA 91204",
@@ -7497,7 +7497,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "4.5",
     "observed": "4.5",
@@ -7523,7 +7523,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "330",
     "observed": "330",
@@ -7551,7 +7551,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -7580,7 +7580,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -7638,33 +7638,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5530289400,
+  "latency": 5821488100,
   "stages": {
-   "detect": 4897044200,
-   "recognise": 263221900,
+   "detect": 3137318800,
+   "recognise": 1399532300,
    "runs": 0,
-   "decide": 363502200,
+   "decide": 1278637200,
    "boxes": 25,
    "run_count": 80
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "45TH PARALLEL"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER SPECIALTIES \u0026 PROPRIETARIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "45TH PARALLEL SPIRITS, LLC",
     "observed": "45TH PARALLEL SPIRITS, LLC",
@@ -7689,14 +7689,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1570 MADISON AVE NEW RICHMOND WI 54017"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "42",
     "observed": "42",
@@ -7724,7 +7724,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -7752,7 +7752,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -7781,7 +7781,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING:(",
@@ -7838,13 +7838,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 12616026900,
+  "latency": 8452256700,
   "stages": {
-   "detect": 5121892800,
-   "recognise": 615607600,
-   "turned_pass": 7440116900,
+   "detect": 2272224000,
+   "recognise": 850718600,
+   "turned_pass": 6095846600,
    "runs": 0,
-   "decide": 53012000,
+   "decide": 77156200,
    "boxes": 25,
    "turned_boxes": 2,
    "run_count": 109
@@ -7852,7 +7852,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "KOI",
     "observed": "KOI",
@@ -7877,28 +7877,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VODKA SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "LOVEMARK ADVANCED TRADING HOLDING LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "304 E BAKER STREET STE D PLANT CITY FL 33563"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "40",
@@ -7923,7 +7923,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "700",
     "observed": "700",
@@ -7951,7 +7951,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -7980,7 +7980,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -8020,19 +8020,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5035462600,
+  "latency": 4357161500,
   "stages": {
-   "detect": 4319896500,
-   "recognise": 250800700,
-   "runs": 1006500,
-   "decide": 461750600,
+   "detect": 2907203700,
+   "recognise": 1038352300,
+   "runs": 1592500,
+   "decide": 407509600,
    "boxes": 21,
    "run_count": 59
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "CASTILLO DE MENDOZA",
     "observed": "CASTILLO DE MENDOZA",
@@ -8057,14 +8057,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "Atlanta Improvement Company",
@@ -8089,14 +8089,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3134 MARJAN DR Doraville GA 30340"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.1",
     "observed": "14.1",
@@ -8122,7 +8122,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -8150,7 +8150,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -8179,7 +8179,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -8219,19 +8219,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 15931902700,
+  "latency": 12887070400,
   "stages": {
-   "detect": 4583785300,
-   "recognise": 417209100,
-   "runs": 3552800,
-   "decide": 10921021400,
+   "detect": 953003600,
+   "recognise": 488033500,
+   "runs": 2529700,
+   "decide": 11439486200,
    "boxes": 56,
    "run_count": 287
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PEAKY BLINDERS",
     "observed": "PEAKY BLINDERS",
@@ -8256,14 +8256,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "WHISKY SPECIALTIES"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
     "observed": "BLUEGRASS BOTTLING, Bluegrass Bottling LLC",
@@ -8288,14 +8288,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "4263 BUCKEYE RD LANCASTER KY 40444"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "between:60,10",
     "expected": "60",
@@ -8324,7 +8324,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -8352,7 +8352,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -8381,7 +8381,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -8439,13 +8439,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 13663549500,
+  "latency": 11496174100,
   "stages": {
-   "detect": 4438213100,
-   "recognise": 669191100,
-   "turned_pass": 4766389700,
-   "runs": 510200,
-   "decide": 4451222500,
+   "detect": 2360765500,
+   "recognise": 555346500,
+   "turned_pass": 3664733400,
+   "runs": 1000100,
+   "decide": 5460654700,
    "boxes": 29,
    "turned_boxes": 4,
    "run_count": 119
@@ -8453,21 +8453,21 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "ALPAS VINEYARDS"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "Engelheim Vineyards, Engelheim Vineyards, LLC",
     "observed": "Engelheim Vineyards, Engelheim Vineyards, LLC",
@@ -8492,14 +8492,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "127 LAKEVIEW RD Ellijay GA 30540"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "13",
     "observed": "13",
@@ -8525,7 +8525,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -8553,7 +8553,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -8582,7 +8582,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "GOVERNMENT WARNING: (",
@@ -8639,13 +8639,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14176299900,
+  "latency": 12319171200,
   "stages": {
-   "detect": 3994874100,
-   "recognise": 309235900,
-   "turned_pass": 4983527900,
-   "runs": 2162300,
-   "decide": 5184246700,
+   "detect": 2077420200,
+   "recognise": 506666000,
+   "turned_pass": 4093138300,
+   "runs": 0,
+   "decide": 6142334900,
    "boxes": 58,
    "turned_boxes": 18,
    "run_count": 352
@@ -8653,21 +8653,21 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TENHEAD"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "OTHER GIN"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "Knowlton House Distillery, Mullins Distillery LLC",
     "observed": "Knowlton House Distillery, Mullins Distillery LLC",
@@ -8692,14 +8692,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "204575 COUNTY RD. DB Mosinee WI 54455"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "44",
     "observed": "44",
@@ -8726,7 +8726,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1000"
@@ -8735,7 +8735,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
     "evidence": {
@@ -8763,7 +8763,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "header_weight_uncertain",
     "expected": "GOVERNMENT WARNING:",
@@ -8822,13 +8822,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 14512005500,
+  "latency": 11398246300,
   "stages": {
-   "detect": 4448881100,
-   "recognise": 479005000,
-   "turned_pass": 5218886300,
-   "runs": 10604900,
-   "decide": 4821612600,
+   "detect": 2916687000,
+   "recognise": 932926200,
+   "turned_pass": 3189718300,
+   "runs": 9519200,
+   "decide": 5268679000,
    "boxes": 36,
    "turned_boxes": 6,
    "run_count": 1054
@@ -8836,42 +8836,42 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "NOTRE DAME WINES"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "VINOVAE, INC."
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "1620 CARNEROS MEADOWS LN STE 103 SONOMA CA 95476"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "SKIPPED",
     "reason": "not_found",
     "expected": "Product of USA"
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -8897,7 +8897,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "50"
@@ -8906,7 +8906,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -8935,7 +8935,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "WARNING:  (1) GOVERNMENT",
@@ -8993,19 +8993,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5074242600,
+  "latency": 4565149500,
   "stages": {
-   "detect": 4581555900,
-   "recognise": 184889600,
+   "detect": 3332965400,
+   "recognise": 644441800,
    "runs": 0,
-   "decide": 304928100,
+   "decide": 587237600,
    "boxes": 25,
    "run_count": 90
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PASSIONE NATURA",
     "observed": "PASSIONE NATURA",
@@ -9030,28 +9030,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "USA WINE WEST, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF ITALY",
     "observed": "PRODUCT OF ITALY",
@@ -9076,7 +9076,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "12.5",
     "observed": "12.5",
@@ -9102,7 +9102,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -9130,7 +9130,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -9159,7 +9159,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -9200,19 +9200,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5590512800,
+  "latency": 4237136400,
   "stages": {
-   "detect": 4624110900,
-   "recognise": 256435000,
+   "detect": 2645799800,
+   "recognise": 1023452500,
    "runs": 0,
-   "decide": 707322900,
+   "decide": 566177400,
    "boxes": 28,
    "run_count": 86
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PASSIONE NATURA",
     "observed": "PASSIONE NATURA",
@@ -9237,28 +9237,28 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "USA WINE WEST, LLC"
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "3030 BRIDGEWAY SUITE 127 SAUSALITO CA 94965"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF ITALY",
     "observed": "PRODUCT OF ITALY",
@@ -9283,7 +9283,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "12",
     "observed": "12",
@@ -9309,7 +9309,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -9337,7 +9337,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -9366,7 +9366,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "warning_not_read",
     "expected": "GOVERNMENT WARNING:"
@@ -9407,13 +9407,13 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 8155215400,
+  "latency": 5591972400,
   "stages": {
-   "detect": 3658722900,
-   "recognise": 943113200,
-   "turned_pass": 3036332700,
-   "runs": 1515600,
-   "decide": 1224471100,
+   "detect": 2933272300,
+   "recognise": 456588300,
+   "turned_pass": 1465664900,
+   "runs": 0,
+   "decide": 1182691900,
    "boxes": 41,
    "turned_boxes": 11,
    "run_count": 162
@@ -9421,7 +9421,7 @@
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "CLOS FOURTET",
     "observed": "CLOS FOURTET",
@@ -9446,14 +9446,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -9478,14 +9478,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -9510,7 +9510,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -9536,7 +9536,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -9564,7 +9564,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -9593,7 +9593,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "COVERMENT WARNINC: (1)",
@@ -9651,33 +9651,33 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5632718400,
+  "latency": 3573563500,
   "stages": {
-   "detect": 3549496100,
-   "recognise": 360621500,
-   "runs": 999400,
-   "decide": 1709847800,
+   "detect": 1954364400,
+   "recognise": 310492100,
+   "runs": 514400,
+   "decide": 1300660400,
    "boxes": 33,
    "run_count": 93
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "CHATEAU COTE DE BALEAU"
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -9702,14 +9702,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -9734,7 +9734,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -9760,7 +9760,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -9788,7 +9788,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -9817,7 +9817,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "COVERMENT WARNINC: (1)",
@@ -9875,19 +9875,19 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 5681935800,
+  "latency": 2274837600,
   "stages": {
-   "detect": 2861348700,
-   "recognise": 598110900,
-   "runs": 999300,
-   "decide": 2207274000,
+   "detect": 835699900,
+   "recognise": 250636500,
+   "runs": 559400,
+   "decide": 1182118500,
    "boxes": 44,
    "run_count": 110
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "CHATEAU LA GAFFELIERE",
     "observed": "CHATEAU LA GAFFELIERE",
@@ -9912,14 +9912,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "DESSERT /PORT/SHERRY/(COOKING) WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -9944,14 +9944,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -9976,7 +9976,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "14.5",
     "observed": "14.5",
@@ -10002,7 +10002,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -10030,7 +10030,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -10059,7 +10059,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "COVERMENT WARNINC: (1)",
@@ -10117,20 +10117,20 @@
    "crowded": false
   },
   "augmented": false,
-  "latency": 3487331100,
+  "latency": 2413459900,
   "stages": {
-   "detect": 1958958500,
-   "recognise": 315227100,
-   "turned_pass": 1103158100,
-   "runs": 527800,
-   "decide": 419999100,
+   "detect": 869475300,
+   "recognise": 267327600,
+   "turned_pass": 1139479600,
+   "runs": 528000,
+   "decide": 398737900,
    "boxes": 41,
    "run_count": 94
   },
   "claims": [
    {
     "claim": "brand",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "CHATEAU RAYMOND-LAFON",
     "observed": "CHATEAU RAYMOND-LAFON",
@@ -10155,14 +10155,14 @@
    },
    {
     "claim": "class",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "TABLE WHITE WINE"
    },
    {
     "claim": "producer_1",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
     "observed": "GRAPEVINE DISTRIBUTORS, GRAPEVINE OF NORTH CAROLINA, INC.",
@@ -10187,14 +10187,14 @@
    },
    {
     "claim": "producer_2",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "NOT_FOUND",
     "reason": "not_found",
     "expected": "980 DERITA RD STE D - UNIT 1 CONCORD NC 28027"
    },
    {
     "claim": "origin",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "PRODUCT OF FRANCE",
     "observed": "PRODUCT OF FRANCE",
@@ -10219,7 +10219,7 @@
    },
    {
     "claim": "abv",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "13.5",
     "observed": "13.5",
@@ -10245,7 +10245,7 @@
    },
    {
     "claim": "net",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "750",
     "observed": "750",
@@ -10273,7 +10273,7 @@
   "reference": [
    {
     "claim": "reference",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "REVIEW",
     "reason": "warning_read_imperfectly",
     "expected": "GOVERNMENT WARNING: (1) According to the Surgeon General, women should not drink alcoholic beverages during pregnancy because of the risk of birth defects. (2) Consumption of alcoholic beverages impairs your ability to drive a car or operate machinery, and may cause health problems.",
@@ -10302,7 +10302,7 @@
   "emphasis": [
    {
     "claim": "reference_emphasis",
-    "engine": "6a1eb26fcf34",
+    "engine": "70557b184a4b",
     "status": "VERIFIED",
     "expected": "GOVERNMENT WARNING:",
     "observed": "COVERMENT WARNINC: (1",

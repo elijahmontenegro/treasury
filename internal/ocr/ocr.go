@@ -15,6 +15,7 @@
 package ocr
 
 import (
+	"context"
 	_ "embed"
 	"fmt"
 	"image"
@@ -258,13 +259,13 @@ func (r *Reader) Close() {
 }
 
 // Read finds the text in an image and reads it.
-func (r *Reader) Read(img image.Image) ([]Region, error) {
-	out, _, err := r.ReadTimed(img)
+func (r *Reader) Read(ctx context.Context, img image.Image) ([]Region, error) {
+	out, _, err := r.ReadTimed(ctx, img)
 	return out, err
 }
 
 // ReadTimed is Read with the time each stage took.
-func (r *Reader) ReadTimed(img image.Image) ([]Region, Timing, error) {
+func (r *Reader) ReadTimed(ctx context.Context, img image.Image) ([]Region, Timing, error) {
 	start := time.Now()
 	boxes, err := r.detect(img)
 	if err != nil {
@@ -272,7 +273,7 @@ func (r *Reader) ReadTimed(img image.Image) ([]Region, Timing, error) {
 	}
 	t := Timing{Detect: time.Since(start), Boxes: len(boxes)}
 	start = time.Now()
-	out, err := r.readBoxes(img, boxes)
+	out, err := r.readBoxes(ctx, img, boxes)
 	t.Recognise = time.Since(start)
 	return out, t, err
 }
@@ -283,17 +284,22 @@ func (r *Reader) ReadTimed(img image.Image) ([]Region, Timing, error) {
 // separate from Read so that a caller can spend it on the labels that need
 // it: step 24a runs it only where the upright pass left a required claim
 // unread.
-func (r *Reader) ReadTurned(img image.Image, have []Region) ([]Region, error) {
-	turned, err := r.DetectTurned(img)
+func (r *Reader) ReadTurned(ctx context.Context, img image.Image, have []Region) ([]Region, error) {
+	turned, err := r.DetectTurned(ctx, img)
 	if err != nil {
 		return nil, err
 	}
-	return r.readBoxes(img, Uncovered(turned, have))
+	return r.readBoxes(ctx, img, Uncovered(turned, have))
 }
 
 // Detect gives the boxes of the image as given, so a caller can ask a
 // question of them before spending the recognition (step 29a).
-func (r *Reader) Detect(img image.Image) ([]image.Rectangle, error) { return r.detect(img) }
+func (r *Reader) Detect(ctx context.Context, img image.Image) ([]image.Rectangle, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	return r.detect(img)
+}
 
 // DetectTurned runs the detector on the page turned a quarter and gives
 // back the boxes in the coordinates of the image as given. It is separate
@@ -302,7 +308,10 @@ func (r *Reader) Detect(img image.Image) ([]image.Rectangle, error) { return r.d
 // depends on which upright regions came back, but where it looks does
 // not, so the detection can be done while the upright crops are still
 // being read.
-func (r *Reader) DetectTurned(img image.Image) ([]image.Rectangle, error) {
+func (r *Reader) DetectTurned(ctx context.Context, img image.Image) ([]image.Rectangle, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	turned, err := r.detect(turn90(img))
 	if err != nil {
 		return nil, err
@@ -337,12 +346,12 @@ func Uncovered(turned []image.Rectangle, have []Region) []image.Rectangle {
 
 // ReadBoxes recognises boxes someone else chose, which is how a second
 // opinion is taken on one reading without detecting the page again.
-func (r *Reader) ReadBoxes(img image.Image, boxes []image.Rectangle) ([]Region, error) {
-	return r.readBoxes(img, boxes)
+func (r *Reader) ReadBoxes(ctx context.Context, img image.Image, boxes []image.Rectangle) ([]Region, error) {
+	return r.readBoxes(ctx, img, boxes)
 }
 
 // readBoxes recognises every box and returns them in reading order.
-func (r *Reader) readBoxes(img image.Image, boxes []image.Rectangle) ([]Region, error) {
+func (r *Reader) readBoxes(ctx context.Context, img image.Image, boxes []image.Rectangle) ([]Region, error) {
 	// Every crop is read into its own slot, so what comes out does not
 	// depend on which goroutine finished first (step 29a). The sort
 	// below then puts them in reading order as it always did, and the
@@ -353,8 +362,17 @@ func (r *Reader) readBoxes(img image.Image, boxes []image.Rectangle) ([]Region, 
 	if n > len(boxes) {
 		n = len(boxes)
 	}
+	// A crop is the unit of cancellation, because it is the smallest
+	// thing that can be given up: a session's Run cannot be interrupted
+	// once it has started, so the check sits between crops and a crop
+	// already running is finished rather than abandoned. That also keeps
+	// the pool whole - a session is borrowed and returned inside
+	// recognise, and nothing here can leave with one.
 	if n <= 1 {
 		for i, b := range boxes {
+			if err := ctx.Err(); err != nil {
+				return nil, err
+			}
 			text, conf, rot, err := r.recognise(img, b)
 			got[i], errs[i] = Region{Box: b, Text: text, Confidence: conf, Rotated: rot}, err
 		}
@@ -366,12 +384,20 @@ func (r *Reader) readBoxes(img image.Image, boxes []image.Rectangle) ([]Region, 
 			go func() {
 				defer wg.Done()
 				for i := range next {
+					if err := ctx.Err(); err != nil {
+						errs[i] = err
+						continue
+					}
 					b := boxes[i]
 					text, conf, rot, err := r.recognise(img, b)
 					got[i], errs[i] = Region{Box: b, Text: text, Confidence: conf, Rotated: rot}, err
 				}
 			}()
 		}
+		// Every index is still handed out, so every worker drains and
+		// the WaitGroup closes; the cancelled ones record the error and
+		// do no work. Stopping the hand-out early would be faster and
+		// would risk a worker blocked on a send that no one will read.
 		for i := range boxes {
 			next <- i
 		}

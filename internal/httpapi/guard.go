@@ -43,6 +43,19 @@ type Limits struct {
 	Rate  float64
 	Burst float64
 
+	// MaxRows is how many labels one batch may name. The README says a
+	// batch streams so that nothing accumulates with its size; a row is
+	// small, but unbounded is unbounded, and the whole CSV is parsed
+	// before the first label is read.
+	MaxRows int
+
+	// MaxUnzipped is the largest the ZIP's contents may come to, added up
+	// from what the archive's own directory declares, before anything is
+	// decompressed. It is the same shape of check as MaxPixels: the body
+	// limit sees the compressed size, and a hundred megabytes of ZIP can
+	// declare a hundred gigabytes of contents.
+	MaxUnzipped int64
+
 	// DailySeconds is how much inference the service will do in a day,
 	// across all callers. Past it every verification answers 503 until
 	// the day turns. It is the backstop the per-IP bucket is not: a
@@ -60,6 +73,15 @@ func DefaultLimits() Limits {
 		// Two a second with ten in hand: a reviewer working through a
 		// pile never notices, and a script cannot outrun the engine.
 		Rate: 2, Burst: 10,
+		// A thousand labels is over an hour of work at the measured 1.15 s
+		// each, which is far past what one request should ask for; the
+		// gate step 30's fourth item set is three hundred.
+		MaxRows: 1000,
+		// Two gigabytes of contents. The fifty average about 2 MB each,
+		// so this is a thousand labels' worth with room to spare, and it
+		// is a fiftieth of what a hundred-megabyte archive of zeroes
+		// would expand to.
+		MaxUnzipped: 2 << 30,
 		// Eight core-hours a day.
 		DailySeconds: 8 * 3600,
 	}

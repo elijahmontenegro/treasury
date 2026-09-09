@@ -14,10 +14,14 @@ on:
   push:
   pull_request:
 
-# Set for every job. Where it is set, a test that cannot build a reader
-# fails instead of skipping. It exists because the opposite happened: from
-# step 19b the runner had no ONNX Runtime library, the tests that needed
-# one skipped, and CI reported success on a suite that had read nothing.
+# Set for every job. Where it is set, a test that cannot get what it needs
+# fails instead of skipping - the reader, and equally the evaluation
+# labels, since the service gate and the three-hundred-label gate both read
+# the fifty out of the tree and both used to skip when it was missing.
+#
+# It exists because the opposite happened: from step 19b the runner had no
+# ONNX Runtime library, the tests that needed one skipped, and CI reported
+# success on a suite that had read nothing.
 env:
   TREASURY_REQUIRE_READER: 1
 

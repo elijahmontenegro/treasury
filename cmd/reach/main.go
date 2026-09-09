@@ -6,6 +6,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -121,7 +122,7 @@ func one(rs []reader, enc *json.Encoder, path string) error {
 		if x.turn {
 			in = turn90(img)
 		}
-		read, err := x.r.Read(in)
+		read, err := x.r.Read(context.Background(), in)
 		if err != nil {
 			return err
 		}

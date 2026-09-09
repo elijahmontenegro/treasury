@@ -28,7 +28,8 @@ func batchOf(t *testing.T, n int) (csv []byte, zipped []byte, names []string) {
 	dir := filepath.Join("..", "..", "eval", "real50")
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		t.Skip("eval/real50 is not in the tree")
+		needData(t, "eval/real50 is not in the tree")
+		return nil, nil, nil
 	}
 	var pngs []string
 	for _, e := range entries {
@@ -37,7 +38,8 @@ func batchOf(t *testing.T, n int) (csv []byte, zipped []byte, names []string) {
 		}
 	}
 	if len(pngs) == 0 {
-		t.Skip("no labels in eval/real50")
+		needData(t, "no labels in eval/real50")
+		return nil, nil, nil
 	}
 
 	var zbuf bytes.Buffer

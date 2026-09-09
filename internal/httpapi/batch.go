@@ -2,7 +2,6 @@ package httpapi
 
 import (
 	"archive/zip"
-	"bytes"
 	"context"
 	"encoding/csv"
 	"encoding/json"
@@ -63,17 +62,20 @@ func (s *Server) VerifyBatch(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	rows, err := readClaimsCSV(r)
+	// Both bounds are refused here, before a single label is read, which
+	// is where guard.go refuses everything else and for the same reason:
+	// a batch is the cheapest way to ask this service for hours of work.
+	lim := s.Limits
+	rows, err := readClaimsCSV(r, lim.MaxRows)
 	if err != nil {
-		fail(w, http.StatusBadRequest, err.Error())
+		fail(w, statusFor(err), err.Error())
 		return
 	}
-	images, closeZip, err := openImagesZip(r)
+	images, err := openImagesZip(r, lim.MaxUnzipped)
 	if err != nil {
-		fail(w, http.StatusBadRequest, err.Error())
+		fail(w, statusFor(err), err.Error())
 		return
 	}
-	defer closeZip()
 
 	// Once the first line is written the status is 200 and cannot be
 	// taken back, so everything that could refuse the whole batch is
@@ -129,6 +131,19 @@ func (s *Server) VerifyBatch(w http.ResponseWriter, r *http.Request) {
 	}
 	close(next)
 	wg.Wait()
+}
+
+// errTooMuch marks a refusal that is about size rather than shape, so
+// the status says which. A caller who sent something unreadable and a
+// caller who should send two batches instead of one have different
+// problems, and a 400 tells the second one nothing useful.
+var errTooMuch = errors.New("more than this service accepts")
+
+func statusFor(err error) int {
+	if errors.Is(err, errTooMuch) {
+		return http.StatusRequestEntityTooLarge
+	}
+	return http.StatusBadRequest
 }
 
 // batchWorkers is how many labels are read at once.
@@ -228,7 +243,7 @@ func markCrops(out *[]api.Verdict, from []verify.Verdict) {
 
 // readClaimsCSV reads the CSV of claims, and says plainly what is wrong
 // with it when something is.
-func readClaimsCSV(r *http.Request) ([]claimRow, error) {
+func readClaimsCSV(r *http.Request, maxRows int) ([]claimRow, error) {
 	f, _, err := r.FormFile("claims")
 	if err != nil {
 		return nil, errors.New("No claims were sent. Attach a CSV as the 'claims' field.")
@@ -236,15 +251,37 @@ func readClaimsCSV(r *http.Request) ([]claimRow, error) {
 	defer f.Close()
 	cr := csv.NewReader(f)
 	cr.FieldsPerRecord = -1
-	records, err := cr.ReadAll()
+	// Read record by record rather than ReadAll, so a file naming a
+	// million labels is refused after reading a thousand and one of them
+	// rather than after holding all million.
+	header, err := cr.Read()
+	if err == io.EOF {
+		return nil, errors.New("The claims file is empty.")
+	}
 	if err != nil {
 		return nil, errors.New("The claims file is not valid CSV: " + err.Error())
 	}
-	if len(records) < 2 {
+	var records [][]string
+	for {
+		rec, err := cr.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, errors.New("The claims file is not valid CSV: " + err.Error())
+		}
+		records = append(records, rec)
+		if maxRows > 0 && len(records) > maxRows {
+			return nil, fmt.Errorf(
+				"The claims file names more than %d labels, which is %w in one batch.",
+				maxRows, errTooMuch)
+		}
+	}
+	if len(records) == 0 {
 		return nil, errors.New("The claims file has a header row and nothing else.")
 	}
 	head := map[string]int{}
-	for i, name := range records[0] {
+	for i, name := range header {
 		head[strings.ToLower(strings.TrimSpace(name))] = i
 	}
 	if _, ok := head["image"]; !ok {
@@ -258,7 +295,7 @@ func readClaimsCSV(r *http.Request) ([]claimRow, error) {
 		return strings.TrimSpace(rec[i])
 	}
 	var out []claimRow
-	for n, rec := range records[1:] {
+	for n, rec := range records {
 		name := at(rec, "image")
 		if name == "" {
 			continue // a blank line at the end of a spreadsheet is not an error
@@ -291,29 +328,52 @@ func readClaimsCSV(r *http.Request) ([]claimRow, error) {
 // openImagesZip indexes the ZIP by file name, folded to lower case and
 // stripped of directories, so a CSV that says `0047.png` finds
 // `labels/0047.PNG`.
-func openImagesZip(r *http.Request) (map[string]*zip.File, func(), error) {
+//
+// It does not read the archive. `zip.NewReader` wants an io.ReaderAt and
+// a size, and a multipart file is already both: under the form's memory
+// limit it is a buffer, and over it a file on disk that this request's
+// own deferred RemoveAll deletes. So what is held is the archive's
+// directory - names, offsets, declared sizes - and one entry's bytes at a
+// time, when its row is being read. Reading it all in was the defect: a
+// hundred-megabyte batch was a hundred megabytes resident for the whole
+// request, and the README said the opposite.
+//
+// The declared contents are added up first. That is the ZIP's version of
+// the pixel cap: the body limit sees only what came down the wire, and an
+// archive of zeroes compresses about a thousand to one.
+func openImagesZip(r *http.Request, maxUnzipped int64) (map[string]*zip.File, error) {
 	f, header, err := r.FormFile("images")
 	if err != nil {
-		return nil, func() {}, errors.New("No images were sent. Attach a ZIP as the 'images' field.")
+		return nil, errors.New("No images were sent. Attach a ZIP as the 'images' field.")
 	}
-	raw, err := io.ReadAll(f)
-	f.Close()
-	if err != nil {
-		return nil, func() {}, errors.New("The images file could not be read.")
+	size := header.Size
+	if size <= 0 {
+		f.Close()
+		return nil, errors.New(header.Filename + " is empty.")
 	}
-	zr, err := zip.NewReader(bytes.NewReader(raw), int64(len(raw)))
+	zr, err := zip.NewReader(f, size)
 	if err != nil {
-		return nil, func() {}, errors.New(header.Filename + " is not a ZIP this service can read.")
+		f.Close()
+		return nil, errors.New(header.Filename + " is not a ZIP this service can read.")
 	}
 	out := map[string]*zip.File{}
+	var declared int64
 	for _, zf := range zr.File {
 		if zf.FileInfo().IsDir() {
 			continue
 		}
+		declared += int64(zf.UncompressedSize64)
+		if maxUnzipped > 0 && declared > maxUnzipped {
+			f.Close()
+			return nil, fmt.Errorf(
+				"The ZIP says its contents come to more than %d MB, which is %w.",
+				maxUnzipped>>20, errTooMuch)
+		}
 		out[strings.ToLower(path.Base(zf.Name))] = zf
 	}
 	if len(out) == 0 {
-		return nil, func() {}, errors.New("The ZIP holds no files.")
+		f.Close()
+		return nil, errors.New("The ZIP holds no files.")
 	}
-	return out, func() {}, nil
+	return out, nil
 }

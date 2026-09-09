@@ -130,6 +130,7 @@ shows the numbers that survived is not showing its reasoning.
 - [Step 30a: the warning statement, and what it can honestly say (2026-09-09)](#step-30a-the-warning-statement-and-what-it-can-honestly-say-2026-09-09) — the engine had verified nothing about the warning; it now matches the statute exactly or refuses, and reports the header's weight rather than asserting it.
 - [Step 30b: the service (2026-09-09)](#step-30b-the-service-2026-09-09) — the sample label over HTTP returns the engine's verdicts byte for byte.
 - [Step 30f: the release, and the deployed shape (2026-09-09)](#step-30f-the-release-and-the-deployed-shape-2026-09-09) — the container released and deployed, and the same fifty measured over the public internet against the local figures.
+- [The seventh apparatus defect: CI could not load the reader (2026-09-09)](#the-seventh-apparatus-defect-ci-could-not-load-the-reader-2026-09-09) — CI could not load the reader from step 19b to 91184ef, so the gates above ran locally and not in CI, and the service tests skipped rather than failed.
 
 **Where it ends**
 
@@ -2087,7 +2088,7 @@ Precision is 1.00 on every claim of both sets, before and after. The refit moves
 
 Gate, stated before the run: the tests exist, pass, and the first fails when a constant is put back to the value the code carried before 14d.
 
-**Why the apparatus needed a test.** Four defects have now been found in the measurement path rather than in the engine: a metric that priced a false assertion as a miss (8a), an evaluation set sharing font families with the models' training (8a), a sweep whose overrides never reached the options they named and so reported every constant insensitive (10c), and constants recorded as adopted that were never written into the binary (found at 14d, four amendments after they were recorded). Three of the four were caught by noticing something odd in a number. That is not a method.
+**Why the apparatus needed a test.** (Seven by the end: this section names four, step 26a's stage timings broke the determinism digest, step 28b found a diagnostic scored against a newer engine, and the largest is recorded after step 30f — CI could not load the reader for forty-two consecutive runs.) Four defects have now been found in the measurement path rather than in the engine: a metric that priced a false assertion as a miss (8a), an evaluation set sharing font families with the models' training (8a), a sweep whose overrides never reached the options they named and so reported every constant insensitive (10c), and constants recorded as adopted that were never written into the binary (found at 14d, four amendments after they were recorded). Three of the four were caught by noticing something odd in a number. That is not a method.
 
 **One list, checked against the engine.** `verify.Adopted` records every constant this build has adopted: the name the sweep knows it by, the value, the step that adopted it, and the field or variable that carries it. `TestAdoptedValuesAreLive` reads the live value out of the engine's own options and out of the packages the rest live in, and requires each to equal what is recorded. `TestEveryTunableIsRecorded` keeps the two lists together: a constant the sweep can set is one the build can adopt, so it must appear in the list at whatever value it stands.
 
@@ -4697,6 +4698,42 @@ worth the worse number.
 
 That commit is the tag `v1.0.0`, and `modified` is false, so the weights answering a request are
 the weights in that tree and the two model hashes say which.
+
+### The seventh apparatus defect: CI could not load the reader (2026-09-09)
+
+**From step 19b to `91184ef` — two days and forty-two consecutive runs — the workflow was red, and
+nobody looked.** The cause is one line. Step 19b replaced the reading engine with two ONNX models
+loaded through a shared library, and the workflow was never told to fetch it. `verify.New` failed
+on the runner, `TestOverrideReachesTheCode` failed with it, and GitHub then **skipped every step
+after it**: the guard, determinism, claim-set independence, and the service. Every one of those is
+described above as running in CI. Since the pivot, none of them had.
+
+They were all run locally at each gate and were green, which is why the failure went unnoticed for
+so long and is not an excuse. The point of a gate in CI is that it runs when nobody is watching,
+and what this build had instead was a gate that ran only when someone remembered.
+
+**What was underneath the red is the worse half.** The tests in `internal/httpapi` called
+`t.Skipf` when they could not build an engine, so on the same runner they skipped and the package
+reported `ok` in 0.533 s. Had the `verify` test skipped rather than failed, **the whole suite
+would have passed having read nothing** — a green build attesting to an engine that never ran.
+That is the same shape as step 28a's vacuous guard and step 30e's two vacuous subtests, at the
+scale of the whole suite.
+
+**The fix is both halves.** The runner is given the library — the same pinned ONNX Runtime the
+Dockerfile installs, cached by version, then asserted by building an actual reader, because
+`LibraryPath` falls back to a bare name for the system loader and cannot report failure on its
+own, and because a runtime older than 1.24 loads and then refuses the binding's API version. And
+a missing input is a failure rather than a skip wherever `TREASURY_REQUIRE_READER` is set, which
+is every job: first for the reader, and then, when the same shape was found again with data as the
+input, for the evaluation labels the service gate and the batch gate read out of the tree.
+
+**The lesson, which is the fifth time this build has learnt a version of it.** A measurement that
+cannot fail is not a measurement. 10c's sweep reported every constant insensitive because its
+overrides reached nothing; 26c scored a file written by an older engine; 28a's guard passed
+because the labels it named had stopped being read; 30e's hardening subtests passed because no
+engine was loaded behind them. Each time the tell was the same — something that could only report
+success. Here it was a suite that skipped, and the check now added is the same one every time:
+make the apparatus fail on demand, and watch it fail, before believing it when it passes.
 
 ## What the numbers say
 

@@ -5,6 +5,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -96,9 +97,9 @@ func main() {
 			continue
 		}
 		start := time.Now()
-		regions, err := r.Read(img)
+		regions, err := r.Read(context.Background(), img)
 		if err == nil && turned && sideOn(regions) {
-			more, terr := r.ReadTurned(img, regions)
+			more, terr := r.ReadTurned(context.Background(), img, regions)
 			if terr != nil {
 				err = terr
 			} else {

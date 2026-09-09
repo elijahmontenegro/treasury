@@ -25,7 +25,7 @@ func labelPath(t *testing.T, ext string) string {
 	t.Helper()
 	p := filepath.Join("..", "..", "eval", "real50", sample+ext)
 	if _, err := os.Stat(p); err != nil {
-		t.Skipf("%s is not in the tree", p)
+		needData(t, p+" is not in the tree")
 	}
 	return p
 }

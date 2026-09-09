@@ -74,12 +74,12 @@ type Diagnosis struct {
 // Diagnose reads the image once and reports, for every claim, both the
 // verdict and the probes above.
 func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference, claims []Claim) ([]Region, []Diagnosis, Frame, error) {
-	read, err := e.reader.Read(img)
+	read, err := e.reader.Read(ctx, img)
 	if err != nil {
 		return nil, nil, Frame{}, err
 	}
 	if e.opt.Turned > 0 {
-		more, err := e.reader.ReadTurned(img, read)
+		more, err := e.reader.ReadTurned(ctx, img, read)
 		if err != nil {
 			return nil, nil, Frame{}, err
 		}

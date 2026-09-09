@@ -20,6 +20,8 @@ package verify
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"image"
 	"math"
 	"os"
@@ -352,9 +354,16 @@ func New(o Options) (*Engine, error) {
 		// 2.7 s to 7.8 s and the p95 from 5.0 s to 17.6 s. Setting
 		// second_opinion to 2 loads it, for anyone who wants that trade.
 		if o.SecondOpinion >= 2 {
-			if b, err := os.ReadFile(secondRecogniser); err == nil {
-				sp.Rec, sp.RecOutput = b, "softmax_2.tmp_0"
+			p := secondRecogniserPath()
+			if p == "" {
+				return nil, errors.New("second_opinion 2 asks for the server recogniser and it is not " +
+					"in third_party/models; fetch it or set TREASURY_SECOND_MODEL")
 			}
+			b, err := os.ReadFile(p)
+			if err != nil {
+				return nil, fmt.Errorf("the server recogniser at %s could not be read: %w", p, err)
+			}
+			sp.Rec, sp.RecOutput = b, "softmax_2.tmp_0"
 		}
 		if s, err := ocr.NewRecogniser(sp); err == nil {
 			e.second = s
@@ -367,7 +376,38 @@ func New(o Options) (*Engine, error) {
 // fetched rather than committed, like the runtime library, and its absence
 // is not an error: without it the second opinion is the same model reading
 // a taller crop, which is most of what it buys.
-var secondRecogniser = filepath.Join("third_party", "models", "rec_server.onnx")
+//
+// The path is explicit, because the relative one was not: it resolved
+// against the working directory, so the same binary loaded the model when
+// run from the root of the tree and silently did not when run from
+// anywhere else, and which weights answered a request depended on where
+// the process had been started. TREASURY_SECOND_MODEL names the file;
+// otherwise it is looked for beside the repository, the same walk
+// ocr.LibraryPath does for the runtime library and for the same reason -
+// a test runs from its own package directory. What is found is reported
+// by the identity, so a verdict says which weights produced it.
+func secondRecogniserPath() string {
+	if p := os.Getenv("TREASURY_SECOND_MODEL"); p != "" {
+		return p
+	}
+	const name = "rec_server.onnx"
+	for _, dir := range []string{
+		filepath.Join("third_party", "models"),
+		filepath.Join("..", "third_party", "models"),
+		filepath.Join("..", "..", "third_party", "models"),
+		filepath.Join("..", "..", "..", "third_party", "models"),
+	} {
+		p := filepath.Join(dir, name)
+		if _, err := os.Stat(p); err == nil {
+			abs, err := filepath.Abs(p)
+			if err == nil {
+				return abs
+			}
+			return p
+		}
+	}
+	return ""
+}
 
 // Close frees the reader's sessions.
 func (e *Engine) Close() {
@@ -380,6 +420,23 @@ func (e *Engine) Close() {
 }
 
 // Verify reads the image and judges what it read against the claims.
+//
+// A cancelled or timed-out context stops the work and returns an error.
+// What that leaves behind, since a caller is entitled to know:
+//
+//   - No partial result escapes. Verify returns either a whole Result or
+//     an error, never a Result with some claims decided and the rest at
+//     their zero value.
+//   - Every reader session returns to the pool. A session is borrowed and
+//     put back inside one recognition, and cancellation is checked
+//     between crops rather than during one, so no goroutine can leave
+//     holding one and the pool is whole for the next request.
+//   - The granularity is one crop and one claim. An ONNX Run cannot be
+//     interrupted once it has started, so a cancellation lands at the
+//     next boundary, not immediately; a request abandoned mid-crop costs
+//     that crop and no more.
+//   - Nothing is written anywhere. The image, the readings and the
+//     verdicts are this call's own memory and go when it returns.
 func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, claims []Claim) (Result, error) {
 	// Where the page is going to be offered turned, its detection runs
 	// beside the upright pass's recognition rather than after it (step
@@ -396,8 +453,16 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	var turnedErr error
 	var turnedWG sync.WaitGroup
 	var turnedStart time.Time
+	// The context is honoured at the boundaries where work can still be
+	// given up: here, between the upright and turned passes, before the
+	// second opinion, and between crops and between claims. What a
+	// cancelled verification leaves behind is stated in Verify's own
+	// comment above.
+	if err := ctx.Err(); err != nil {
+		return Result{}, err
+	}
 	start := time.Now()
-	upright, err := e.reader.Detect(img)
+	upright, err := e.reader.Detect(ctx, img)
 	if err != nil {
 		return Result{}, err
 	}
@@ -408,11 +473,11 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		turnedWG.Add(1)
 		go func() {
 			defer turnedWG.Done()
-			turnedBoxes, turnedErr = e.reader.DetectTurned(img)
+			turnedBoxes, turnedErr = e.reader.DetectTurned(ctx, img)
 		}()
 	}
 	start = time.Now()
-	read, err := e.reader.ReadBoxes(img, upright)
+	read, err := e.reader.ReadBoxes(ctx, img, upright)
 	res.Stages.Recognise = time.Since(start)
 	if err != nil {
 		turnedWG.Wait()
@@ -443,6 +508,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 		}
 		if n <= 1 {
 			for i, c := range claims {
+				if ctx.Err() != nil {
+					break
+				}
 				out[i] = e.decide(c, rs)
 			}
 		} else {
@@ -453,6 +521,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 				go func() {
 					defer wg.Done()
 					for i := range next {
+						if ctx.Err() != nil {
+							continue
+						}
 						out[i] = e.decide(claims[i], rs)
 					}
 				}()
@@ -502,10 +573,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			}
 			err = turnedErr
 			if err == nil {
-				more, err = e.reader.ReadBoxes(img, ocr.Uncovered(turnedBoxes, read))
+				more, err = e.reader.ReadBoxes(ctx, img, ocr.Uncovered(turnedBoxes, read))
 			}
 		} else {
-			more, err = e.reader.ReadTurned(img, read)
+			more, err = e.reader.ReadTurned(ctx, img, read)
 		}
 		res.Stages.TurnedPass = time.Since(start)
 		res.Stages.TurnedBoxes = len(more)
@@ -530,10 +601,10 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	// Only the reading changes; every rule applies to the second as to
 	// the first, and a claim is verified only if the new reading brings
 	// it inside the radius on its own merits.
-	if e.second != nil {
+	if e.second != nil && ctx.Err() == nil {
 		if boxes := nearMisses(res.Claims); len(boxes) > 0 {
 			start := time.Now()
-			again, err := e.second.ReadBoxes(img, boxes)
+			again, err := e.second.ReadBoxes(ctx, img, boxes)
 			res.Stages.SecondPass = time.Since(start)
 			res.Stages.SecondBoxes = len(boxes)
 			if err != nil {
@@ -548,6 +619,17 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 	}
 	if len(res.Regions) == 0 {
 		res.Reason = "no_text"
+	}
+	// The last word on cancellation, and the one that makes the rest of
+	// it safe: a cancelled verification returns an error and never a
+	// Result. Without this, a context cancelled inside the claim loop
+	// would leave the claims it never reached at their zero value and
+	// this would return them as verdicts, which is a false answer rather
+	// than a slow one. Every earlier check turns cancellation into an
+	// error on the spot; this one catches the paths that carry on with
+	// less work done rather than stopping.
+	if err := ctx.Err(); err != nil {
+		return Result{}, err
 	}
 	stamp(&res)
 	return res, nil

@@ -121,7 +121,11 @@ curl -X POST localhost:8080/verify/batch \
 The batch CSV's first row is its column names. One column must be `image`, naming a file inside
 the ZIP; the rest may be `beverage`, `brand`, `class`, `producer`, `address`, `origin`, `abv` and
 `net_ml`. Answers stream — a line is written as each label finishes rather than the whole batch
-being assembled at the end, so a caller sees progress and nothing accumulates in memory. Verdicts
+being assembled at the end, so a caller sees progress and nothing accumulates with the size of the
+batch: the archive is read where the multipart form put it rather than into memory, and what is
+held is its directory and the one entry a worker is reading. A batch may name at most a thousand
+labels, and an archive that declares more than two gigabytes of contents is refused before
+anything is unpacked, both before the engine runs. Verdicts
 come back without crops, since three hundred labels of them would be a response measured in
 gigabytes; each says whether one exists, and `/verify` will show it for that label alone.
 
