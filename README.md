@@ -89,6 +89,11 @@ docker buildx imagetools create \
   ghcr.io/elijahmontenegro/treasury:1.0.1
 ```
 
+`deploy/artifact-cleanup.json` is the retention policy in force on that registry: tagged images
+are kept, so is anything a tagged index references, so are the five most recent versions, and
+untagged ones older than thirty days go. It is in the tree rather than only in a console, so what
+deletes an image is something you can read.
+
 ## Endpoints
 
 The contract is [`api/openapi.yaml`](api/openapi.yaml), written by hand; the types and the server
@@ -154,6 +159,7 @@ eval/real10/       the ten step 4 started with, kept because its tables are in t
 testdata/          one synthetic label and an augmented copy, for the tests
 docs/measurements/ every table in the order it was measured, and the analyses behind them
 docs/evidence/     crops the record points at, where a sentence needed a picture
+deploy/            the registry retention policy, which is configuration and belongs in the tree
 ```
 
 `eval/real50` and `eval/real10` hold each label's image, the claims its application filed, and a
