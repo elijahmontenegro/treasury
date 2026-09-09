@@ -59,14 +59,35 @@ go run ./cmd/decode -ttb eval/real50/0047.json eval/real50/0047.png
 
 **In a container**
 
+Every `v*` tag publishes one, built by the same Dockerfile:
+
+```sh
+docker run --read-only -p 8080:8080 ghcr.io/elijahmontenegro/treasury:latest
+```
+
+Distroless, non-root, read-only filesystem, 117 MB. It listens on `PORT`, and `/health` reports
+the commit it was built from and the SHA-256 of each model inside it, so what is running can
+always be traced to a tag.
+
+To build it yourself, which is what the release does:
+
 ```sh
 docker build -t treasury \
   --build-arg COMMIT=$(git rev-parse HEAD) \
   --build-arg COMMIT_TIME=$(git show -s --format=%cI HEAD) .
-docker run --read-only -p 8080:8080 treasury
 ```
 
-Distroless, non-root, read-only filesystem, 117 MB. It listens on `PORT`.
+**Two registries, and why.** The release publishes to GHCR, under this repository, so the artefact
+sits beside the code. The deployed service pulls from Artifact Registry, because Cloud Run will
+not pull from GHCR, and pushing to Artifact Registry from the release workflow would mean putting
+a Google credential in a workflow that already holds a token which can publish. Deploys are
+manual, so the copy is too — one command, and the layers are the ones GHCR already has:
+
+```sh
+docker buildx imagetools create \
+  --tag us-central1-docker.pkg.dev/PROJECT/cloud-run-source-deploy/label-verifier:1.0.1 \
+  ghcr.io/elijahmontenegro/treasury:1.0.1
+```
 
 ## Endpoints
 

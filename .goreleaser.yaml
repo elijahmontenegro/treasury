@@ -27,8 +27,13 @@ dockers_v2:
   - id: service
     dockerfile: Dockerfile
     platforms: [linux/amd64]
+    # GHCR, under this repository, so the artefact a reader can pull is
+    # beside the code they read. The deployed service pulls from Artifact
+    # Registry instead, and why is in the README: Cloud Run will not pull
+    # from GHCR, and pushing there from CI would need a Google credential
+    # in this workflow, which is the one thing this arrangement avoids.
     images:
-      - "{{ .Env.IMAGE }}"
+      - "ghcr.io/elijahmontenegro/treasury"
     tags:
       - "{{ .Version }}"
       - "latest"
@@ -87,7 +92,11 @@ changelog:
     exclude:
       - '^Merge '
 
-# No artefact is uploaded anywhere. The container goes to Artifact Registry
-# when the release runs, and the changelog is a file to read.
+# The GitHub Release carries the changelog and nothing else: there are no
+# binaries to attach, because the binary is inside the image and cannot be
+# built anywhere but in it.
 release:
-  disable: true
+  draft: false
+  prerelease: auto
+  mode: replace
+  name_template: "{{ .Tag }}"

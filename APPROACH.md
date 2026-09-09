@@ -21,7 +21,9 @@ The statutory health warning (27 CFR 16.21) is verified on an exact match only, 
 - PP-OCRv4 detection (DBNet) and recognition (CRNN), Apache-2.0, as ONNX models embedded in the binary; ONNX Runtime 1.24 or later via `onnxruntime_go` (the binding asks for API version 24, and older runtimes refuse).
 - Hand-written OpenAPI specification; server types generated from it with `oapi-codegen`, handlers by hand; CI fails if spec and code drift.
 - A synthetic label generator whose parameters were measured from fifty real COLA registry labels (fonts, conventions, artwork, contrast, crowding), used for tuning with font families and labels held out.
-- Distroless, non-root container on Cloud Run.
+- Distroless, non-root container, published to GHCR by every `v*` tag
+  (`ghcr.io/elijahmontenegro/treasury`) and deployed on Cloud Run. The release is automatic and
+  the deploy is not: nothing in CI holds a credential to the hosting project.
 
 ## Assumptions
 

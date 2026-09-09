@@ -17,7 +17,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-go@v5
+    - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
       with:
         go-version: '1.24'
         cache: true
@@ -25,7 +25,7 @@ runs:
     # Cached by version, so the 200 MB archive is fetched once and not on
     # every push.
     - id: cache
-      uses: actions/cache@v4
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       with:
         path: third_party/onnxruntime
         key: onnxruntime-linux-x64-${{ inputs.ort-version }}
