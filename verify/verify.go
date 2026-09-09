@@ -138,6 +138,12 @@ type Evidence struct {
 	// on a single detection, and the doc has described runs as chains
 	// since step 23b without the evidence saying which a verdict used.
 	Parts int `json:"parts,omitempty"`
+	// Agreement is how much of what was read the reference accounts for,
+	// and Coverage how much of the reference was read (step 30a). They
+	// separate a warning the reader mangled from a warning the label
+	// altered, which a single distance cannot.
+	Agreement float64 `json:"agreement,omitempty"`
+	Coverage  float64 `json:"coverage,omitempty"`
 }
 
 // Verdict is the answer for one claim.
@@ -513,6 +519,9 @@ func (e *Engine) Verify(ctx context.Context, img image.Image, refs []Reference, 
 			res.Claims = decide()
 		}
 	}
+	// The statutory warning and its header, which step 19a's pivot left
+	// unanswered: `refs` had been taken and never read since then.
+	res.Reference, res.Emphasis = e.verifyReferences(refs, res.Regions, img)
 	// A claim whose nearest reading fell just outside the radius gets one
 	// box read again, taller and with the larger recogniser (step 25b).
 	// Only the reading changes; every rule applies to the second as to

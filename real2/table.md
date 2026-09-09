@@ -1,6 +1,6 @@
 ## The set
 
-50 labels, 0 the reader found nothing on, latency median 1.6s p95 4.7s
+50 labels, 0 the reader found nothing on, latency median 10.5s p95 23.1s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|
@@ -13,8 +13,8 @@
 | net | 50 | 1.00 | 0.96 | 0.00 | 0/0 | 0 |
 | brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
 
-Reference rows: compliant labels with every row verified 0/50 (50 reviewed, 0 failed); wording and title-case errors caught 0/0.
-Emphasis: correct on 0/0 labels (compliant headers verified and regular-weight headers caught).
+Reference rows: compliant labels with every row verified 13/50 (37 reviewed, 0 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 20/50 labels (compliant headers verified and regular-weight headers caught).
 
 Convention coverage (free-text recall over brand, class, producer, origin):
 

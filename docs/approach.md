@@ -4286,6 +4286,70 @@ from 8.3 to 3.9, more than half, on the same four cores — and it moved the sin
 9.9 to 6.7, which parallelism had not touched at all. The tail was a quantity of comparisons, not
 a shortage of cores.
 
+### Step 30a: the warning statement, and what it can honestly say (2026-09-09)
+
+**The measurement first, and it is the finding: the engine verified nothing about the warning at
+all.** `Verify` has taken a `[]Reference` since the beginning and, since step 19a retired the
+mechanism that read it, never looked at it. From 19a to here the engine answered every question
+it was asked about the claims and no question about the one piece of text it is certain of.
+
+So step 30a builds it, and four things it found while building it are worth more than the code.
+
+**A reference is not a claim.** A claim is short, printed once, and allowed several accepted
+spellings; the statute is 241 characters, quoted rather than paraphrased, and comes back as five
+to eleven detections. So the text is matched over a chain grown along the same adjacency relation
+step 23b built for claims, but grown greedily rather than enumerated — eleven detections deep the
+enumeration is millions of runs — and the chain may not revisit a detection, which it did on two
+of half B's labels, reading `OPERATE MACHINERY AND MAY CAUSE HEALTH PROBLEMS` twice.
+
+**No radius separates an altered warning from a badly read one, and that is measured.** The
+corpus alters the statute on purpose, and one of its alterations is `women should not drink` to
+`women should **never** drink`: four characters in 241, which measures **0.026**. The fifty are
+approved labels whose warnings are compliant by construction, and the recogniser's own damage on
+them measures **0.000 to 0.034** — `WMENSHOULNOTDINK` for `WOMEN SHOULD NOT DRINK`. The ranges
+overlap. A threshold between them would be fitted to the one corpus label that happens to sit
+above it, which is the objection step 23c raised against a radius between 0.071 and 0.077.
+
+**So the engine verifies what it read exactly and reviews what it read imperfectly, and says
+which.** An earlier draft of this step asserted `wording_differs` on ten of the fifty — every one
+of them the statute, read with characters dropped — and, once agreement was measured instead,
+on two more that were this engine's own chain revisiting a line. Both are gone. A reviewer
+reading `WMENSHOULNOTDINK` beside the statute can see in a moment what no threshold here could
+decide.
+
+**Capitals are in the text; weight is in the pixels; and only one of them can be trusted.**
+Capitals need no separate detection — the case is read off the header inside the reference's own
+match — which matters because on four labels in five the detector returns the header and the
+first words of the body as one box. Weight is a ratio between the header's strokes and the
+body's on the same label, twice the ink's area over its perimeter, normalised by text height. On
+the fifty, whose headers the regulation requires to be bold, that ratio runs **0.69 to 1.79** and
+seventeen labels sit under any threshold that twenty others clear. Either those headers are not
+bold, which their approvals say they are, or the measure cannot tell bold from regular through a
+photograph at eight to fourteen pixels of type. The second is far likelier, so a header that does
+not measure heavier is **reported with its ratio and not called a violation**.
+
+| | the fifty | half A | half B |
+|---|---|---|---|
+| warning verified, exact | **13** | 3 | 1 |
+| warning read, not exactly | 26 | 18 | 18 |
+| warning not read | 11 | 229 | 231 |
+| header verified in capitals and heavier | **20** | 9 | 4 |
+| header weight uncertain, reported | 17 | 13 | 13 |
+| **false assertions** | **0** | **0** | **0** |
+
+**The corpus cannot test this and the table says why**: it never reads its own warning on 229 of
+250 labels. Its warning is the smallest type it sets — every other size is a multiple of it — and
+at the population's measured 0.0038 to 0.0106 of the longer side that is six to seventeen pixels
+before the channel touches it. So the corpus's altered wording and title-case headers are refused
+because nothing was read, which is a refusal that tests nothing.
+
+**What tests them is `verify/reference_test.go`**, which feeds the readings directly: the statute
+exactly, the statute lower-cased, the corpus's own `should never drink` alteration read perfectly,
+a fragment, and a title-case header. Verified, verified, reviewed, not found, refused. Those run
+in CI, where the corpus's evidence would not have.
+
+Claim verdicts are untouched: 3,814 claims compared against step 28d, none different.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of
