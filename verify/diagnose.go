@@ -107,6 +107,7 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference
 		norms[i] = normalize(kept[ix].Text)
 	}
 
+	cc := e.opt.confusionHalfCost()
 	var out []Diagnosis
 	for _, c := range claims {
 		d := Diagnosis{Claim: c.Name, Numeric: c.Numeric != nil, Run: 1, Box: 1, Seq: 1, Pair: 1}
@@ -123,12 +124,12 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference
 				continue
 			}
 			for j := range rs {
-				if x := distance(cd.norm, rs[j].norm); x < d.Run {
+				if x := distance(cd.norm, rs[j].norm, cc); x < d.Run {
 					d.Run, d.RunText = x, rs[j].text
 				}
 			}
 			for j := range norms {
-				x, from, to := infixSpan(cd.norm, norms[j])
+				x, from, to := infixSpan(cd.norm, norms[j], cc)
 				if x < d.Box {
 					d.Box, d.BoxText, d.BoxRect = x, texts[j], kept[order[j]].Box
 					d.BoxLetter = (from > 0 && isLetter(rune(norms[j][from-1]))) ||
@@ -141,7 +142,7 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference
 					if a == b {
 						continue
 					}
-					if x := infix(cd.norm, norms[a]+norms[b]); x < d.Pair {
+					if x := infix(cd.norm, norms[a]+norms[b], cc); x < d.Pair {
 						d.Pair, d.PairA, d.PairB = x, texts[a], texts[b]
 						d.PairBoxA, d.PairBoxB = kept[order[a]].Box, kept[order[b]].Box
 						d.PairStep = b - a
@@ -158,7 +159,7 @@ func (e *Engine) Diagnose(ctx context.Context, img image.Image, refs []Reference
 				joined := ""
 				for b := a; b < len(norms) && len(joined) < limit; b++ {
 					joined += norms[b]
-					if x := infix(cd.norm, joined); x < d.Seq {
+					if x := infix(cd.norm, joined, cc); x < d.Seq {
 						d.Seq, d.SeqLen = x, b-a+1
 						d.SeqText = strings.Join(texts[a:b+1], " ")
 					}
@@ -213,7 +214,9 @@ func frameOf(kept []Region, refs []Reference) Frame {
 			if len(n) < 8 {
 				continue
 			}
-			if infix(n, want) <= 0.25 {
+			// The block is located by matching the statute, where a
+			// shape confusion is neither here nor there; charge in full.
+			if infix(n, want, 2) <= 0.25 {
 				f.Ref = f.Ref.Union(r.Box)
 				f.RefN++
 			}
@@ -227,8 +230,8 @@ func frameOf(kept []Region, refs []Reference) Frame {
 // nothing. It answers "is the claim's text in there somewhere", which is a
 // different question from the one the engine asks, and is used only to
 // diagnose.
-func infix(claim, read string) float64 {
-	d, _, _ := infixSpan(claim, read)
+func infix(claim, read string, cc int) float64 {
+	d, _, _ := infixSpan(claim, read, cc)
 	return d
 }
 
@@ -236,7 +239,12 @@ func isLetter(r rune) bool { return r >= 'A' && r <= 'Z' }
 
 // infixSpan is infix with the span it matched, so a caller can ask what
 // sits on either side of it.
-func infixSpan(claim, read string) (float64, int, int) {
+//
+// cc is the confusion cost in halves of an edit, as in distance: the two
+// have to charge the same, or the whole-run path and the inside-a-
+// detection path would disagree about how far apart the same two strings
+// are, and which one a claim went down would change its distance.
+func infixSpan(claim, read string, cc int) (float64, int, int) {
 	if claim == "" {
 		return 1, 0, 0
 	}
@@ -249,16 +257,21 @@ func infixSpan(claim, read string) (float64, int, int) {
 		pfrom[j] = j
 	}
 	for i := 1; i <= len(a); i++ {
-		cur[0], cfrom[0] = i, 0
+		cur[0], cfrom[0] = 2*i, 0
+		x := a[i-1]
 		for j := 1; j <= len(b); j++ {
 			c, f := prev[j-1], pfrom[j-1]
-			if a[i-1] != b[j-1] {
-				c++
+			if y := b[j-1]; x != y {
+				if x < 128 && y < 128 && confuseTable[x][y] {
+					c += cc
+				} else {
+					c += 2
+				}
 			}
-			if v := prev[j] + 1; v < c {
+			if v := prev[j] + 2; v < c {
 				c, f = v, pfrom[j]
 			}
-			if v := cur[j-1] + 1; v < c {
+			if v := cur[j-1] + 2; v < c {
 				c, f = v, cfrom[j-1]
 			}
 			cur[j], cfrom[j] = c, f
@@ -272,7 +285,7 @@ func infixSpan(claim, read string) (float64, int, int) {
 			best, to = v, j
 		}
 	}
-	return float64(best) / float64(len(a)), pfrom[to], to
+	return float64(best) / float64(2*len(a)), pfrom[to], to
 }
 
 // Reach reports how near a claim's own text comes to being read at all:
@@ -293,7 +306,10 @@ func Reach(c Claim, read []ocr.Region) (float64, string) {
 			continue
 		}
 		for i := range rs {
-			d, from, to := infixSpan(cd.norm, rs[i].norm)
+			// Reach asks how near the claim's text comes to being read
+			// at all, which is a question about the reader; a confusion
+			// discount would answer a different one, so charge in full.
+			d, from, to := infixSpan(cd.norm, rs[i].norm, 2)
 			if d < best {
 				best, where = d, rs[i].quote(from, to)
 			}

@@ -110,10 +110,77 @@ func normalizeIdx(s string) (string, []int) {
 	return b.String(), idx
 }
 
+// confusable says whether two characters are ones a reader confuses
+// because their printed forms are near-identical.
+//
+// The set is a property of the alphabet and not of any label, which is
+// the whole of its justification. Step 27c derived the residual damage
+// from the engine's own evidence and found two of these in it - an O
+// returned as a 0 in "12 FL. 0Z.", a G as a C in "CRaPEViNE" - and also
+// found three that are NOT of this kind: an E read as an A, a Y as a P,
+// an L as an S, all from stylised display type on two labels. Those are
+// a recogniser failing, not two shapes that look alike, and they are
+// deliberately absent: a set fitted to the labels it is scored on is
+// fitted to the report set, which is the objection step 23c raised
+// against choosing a radius between 0.071 and 0.077.
+//
+// Both orders are covered by the caller, which tries the pair each way.
+func confusable(a, b rune) bool {
+	switch {
+	case a == 'O' && b == '0', a == 'D' && b == '0', a == 'Q' && b == '0':
+		return true
+	case a == 'I' && b == '1', a == 'L' && b == '1':
+		return true
+	case a == 'G' && b == 'C':
+		return true
+	case a == 'S' && b == '5':
+		return true
+	case a == 'B' && b == '8':
+		return true
+	case a == 'Z' && b == '2':
+		return true
+	case a == 'U' && b == 'V':
+		return true
+	}
+	return false
+}
+
+// confuseTable answers confusable in one indexed load. Deciding is the
+// engine's slowest stage (step 26a) and this sits in the innermost loop
+// of its edit distance, where a call and a switch cost real time: the
+// first version of step 28c took the fifty's median from 3.4 s to 5.3 s
+// and its p95 from 6.6 s to 18.0 s, all of it here.
+var confuseTable [128][128]bool
+
+func init() {
+	for a := rune(0); a < 128; a++ {
+		for b := rune(0); b < 128; b++ {
+			confuseTable[a][b] = confusable(a, b) || confusable(b, a)
+		}
+	}
+}
+
+// subCost is what replacing a with b costs, in halves of an edit, so that
+// the arithmetic stays in integers. A confusion costs `cc`, anything else
+// a full 2. Callers in a hot loop inline this rather than call it.
+func subCost(a, b rune, cc int) int {
+	if a == b {
+		return 0
+	}
+	if a < 128 && b < 128 && confuseTable[a][b] {
+		return cc
+	}
+	return 2
+}
+
 // distance is the edit distance between two normalized strings as a share
 // of the claim's own length, so a wrong character costs the same fraction
 // of a short name as of a long one.
-func distance(claim, read string) float64 {
+//
+// cc is what a confusable substitution costs in halves of an edit: 2 is
+// no discount at all, 1 is the half step 27c measured and step 28c
+// adopted.
+func distance(claim, read string, cc int) float64 {
 	if claim == "" {
 		return 1
 	}
@@ -121,26 +188,31 @@ func distance(claim, read string) float64 {
 	prev := make([]int, len(b)+1)
 	cur := make([]int, len(b)+1)
 	for j := range prev {
-		prev[j] = j
+		prev[j] = 2 * j
 	}
 	for i := 1; i <= len(a); i++ {
-		cur[0] = i
+		cur[0] = 2 * i
+		x := a[i-1]
 		for j := 1; j <= len(b); j++ {
 			c := prev[j-1]
-			if a[i-1] != b[j-1] {
-				c++
+			if y := b[j-1]; x != y {
+				if x < 128 && y < 128 && confuseTable[x][y] {
+					c += cc
+				} else {
+					c += 2
+				}
 			}
-			if v := prev[j] + 1; v < c {
+			if v := prev[j] + 2; v < c {
 				c = v
 			}
-			if v := cur[j-1] + 1; v < c {
+			if v := cur[j-1] + 2; v < c {
 				c = v
 			}
 			cur[j] = c
 		}
 		prev, cur = cur, prev
 	}
-	return float64(prev[len(b)]) / float64(len(a))
+	return float64(prev[len(b)]) / float64(2*len(a))
 }
 
 // numbers is every maximal run of digits, with its decimal separator, in
@@ -504,7 +576,7 @@ type scored struct {
 }
 
 // nearest finds the closest run to any candidate the filter admits.
-func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) bool) *scored {
+func nearest(cands []candidate, rs []run, radius float64, cc int, keep func(candidate) bool) *scored {
 	var best *scored
 	for i := range cands {
 		cd := &cands[i]
@@ -532,14 +604,14 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 			// A name has no unit to bound it, which is why "Valley Mill"
 			// inside "Valley Mill Distillery" is indistinguishable from
 			// the brand and is not taken (step 16a).
-			d, from, to := distance(cd.norm, r.norm), 0, len(r.norm)
+			d, from, to := distance(cd.norm, r.norm, cc), 0, len(r.norm)
 			switch {
 			case cd.form >= 0:
 				// A number, exact or loosened for the margin, is looked
 				// for inside the reading: its unit delimits it. The
 				// figure test above is what the loosened form drops, and
 				// nothing else.
-				d, from, to = infixSpan(cd.norm, r.norm)
+				d, from, to = infixSpan(cd.norm, r.norm, cc)
 			case r.parts == 1 && len(r.norm) > len(cd.norm) &&
 				len(r.norm) <= 3*len(cd.norm)+24:
 				// A name may be taken from inside one detection when
@@ -549,7 +621,7 @@ func nearest(cands []candidate, rs []run, radius float64, keep func(candidate) b
 				// longer reading was inside a single detection, and a
 				// join is a construction of this engine rather than a
 				// line the label printed.
-				if id, ifrom, ito := infixSpan(cd.norm, r.norm); id < d && r.bounded(ifrom, ito) {
+				if id, ifrom, ito := infixSpan(cd.norm, r.norm, cc); id < d && r.bounded(ifrom, ito) {
 					d, from, to = id, ifrom, ito
 				}
 			}
@@ -617,9 +689,10 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 	// evidence that the reading is ambiguous rather than decisive. Keeping
 	// the two apart is what stops "(10 Proof)" read as "(101Proof)" from
 	// being asserted as a hundred and one proof.
-	exact := nearest(cands, rs, radius, func(cd candidate) bool { return cd.claimed })
-	own := nearest(loosen(cands), rs, radius+e.opt.TieMargin, func(cd candidate) bool { return cd.claimed })
-	other := nearest(cands, rs, radius, func(cd candidate) bool { return !cd.claimed })
+	cc := e.opt.confusionHalfCost()
+	exact := nearest(cands, rs, radius, cc, func(cd candidate) bool { return cd.claimed })
+	own := nearest(loosen(cands), rs, radius+e.opt.TieMargin, cc, func(cd candidate) bool { return cd.claimed })
+	other := nearest(cands, rs, radius, cc, func(cd candidate) bool { return !cd.claimed })
 	// nothingDecided names the nearest reading within twice the radius,
 	// so that a claim the engine could not decide still says what it
 	// looked at, and so that step 25b knows which one box to read again.
@@ -630,7 +703,7 @@ func (e *Engine) decide(c Claim, rs []run) Verdict {
 		// nothing more to search for.
 		near := own
 		if near == nil {
-			near = nearest(cands, rs, 2*radius, func(cd candidate) bool { return cd.claimed })
+			near = nearest(cands, rs, 2*radius, cc, func(cd candidate) bool { return cd.claimed })
 		}
 		if near != nil && near.dist <= 2*radius {
 			v.Evidence = &Evidence{

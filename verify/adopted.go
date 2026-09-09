@@ -42,10 +42,11 @@ var Adopted = []Constant{
 	{"read_unclip", 1.6, "20c", "Options.Unclip"},
 	{"read_turned", 1, "21d, made conditional at 24a", "Options.Turned"},
 	{"second_opinion", 0, "25b, measured and not adopted", "Options.SecondOpinion"},
+	{"confusion_cost", 0.5, "27c measured, 28c adopted", "Options.ConfusionCost"},
 }
 
 // TuneNames is every constant a sweep may set.
-var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence", "read_max_side", "read_box_thresh", "read_unclip", "read_turned", "second_opinion"}
+var TuneNames = []string{"radius", "numeric_radius", "tie", "min_confidence", "read_max_side", "read_box_thresh", "read_unclip", "read_turned", "second_opinion", "confusion_cost"}
 
 // applyOptions writes the overrides a sweep asked for.
 func applyOptions(o Options) Options {
@@ -67,6 +68,7 @@ func applyOptions(o Options) Options {
 	set("read_unclip", func(v float64) { o.Unclip = v })
 	set("read_turned", func(v float64) { o.Turned = v })
 	set("second_opinion", func(v float64) { o.SecondOpinion = v })
+	set("confusion_cost", func(v float64) { o.ConfusionCost = v })
 	return o
 }
 
@@ -97,6 +99,8 @@ func liveIn(c Constant, o Options) (float64, error) {
 		return o.Turned, nil
 	case "Options.SecondOpinion":
 		return o.SecondOpinion, nil
+	case "Options.ConfusionCost":
+		return o.ConfusionCost, nil
 	}
 	return 0, fmt.Errorf("no live value known for %q", c.Where)
 }

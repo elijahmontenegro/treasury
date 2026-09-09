@@ -4065,6 +4065,59 @@ a current file to be *accepted*, since a check that refuses everything is useles
 direction. The scorers call the checker rather than trusting a filename, and step 27a's own
 diagnostic is now refused by it, which is correct: it predates this step.
 
+### Step 28c: the confusion-aware distance adopted (2026-09-08)
+
+Step 27c measured it and did not adopt it, because that step's gate was the confusion set and the
+measurement. It is adopted here: a substitution between two characters a reader confuses **by
+shape** costs half an ordinary edit, in both the whole-run distance and the inside-a-detection
+one, since the two paths must charge the same or the same pair of strings would be a different
+distance apart depending on which path a claim went down.
+
+The set is the shape-confusable one, defined a priori: `O`/`0`, `D`/`0`, `Q`/`0`, `I`/`1`,
+`L`/`1`, `G`/`C`, `S`/`5`, `B`/`8`, `Z`/`2`, `U`/`V`. The three the residual also showed — `E`
+read as `A`, `Y` as `P`, `L` as `S`, all from stylised display type on two labels — stay out:
+they are a recogniser failing, not two shapes that look alike, and a set fitted to the labels it
+is scored on is fitted to the report set. `confusion_cost` is in `verify.Adopted` at 0.5, so
+15a's tests cover it.
+
+| | before | after |
+|---|---|---|
+| the fifty | 154 of 192 | **155** |
+| corpus half A | 1,169 | **1,170** |
+| corpus half B | 1,240 | **1,245** |
+| the fifty, median / p95 (three runs) | 3.4 / 6.6 s | 3.2 / 6.5 s |
+| precision, all three sets | 1.00 | **1.00** |
+
+**Seven claims gained, none lost, and every one is exactly a confusion in the set:**
+
+| set | claim | read | the spelling |
+|---|---|---|---|
+| the fifty | 0034 net | `12 FL. 0Z. *` | `12 FL OZ` |
+| half A | 0140 alcohol | `40% A1c./Vol.` | `40% Alc./Vol.` |
+| half B | 0147, 0211, 0423 alcohol | `12%A1c./Vol.`, `49.5% A1c./Vo1.` | `12% Alc./Vol.` |
+| half B | 0227 brand | `STAR R CATE ANCHOR` | `STAR GATE ANCHOR` |
+| half B | 0231 permittee's address | `PorHand, :0regon 97209` | `Portland, Oregon 97209` |
+
+Nothing accidental came with them: no claim the labels do not carry was admitted anywhere, and
+**2,570 verifications over 550 labels carry no false assertion**. The guard of step 28a stays
+green, which matters here because a discount is a loosening: the two shapes it protects are
+refused by the delimiter test rather than by distance, so a cheaper substitution cannot reach
+them, and the test says so rather than the reasoning.
+
+**A cost that had to be found by measuring rather than by thinking.** The first version called a
+function with a switch for every cell of the edit distance, which is the innermost loop of what
+step 26a measured as the engine's slowest stage. It took the fifty's median from 3.4 s to
+**5.3 s** and its p95 from 6.6 s to **18.0 s** — a threefold cost for one claim. Replacing the
+switch with a 128 by 128 table built once, and inlining the lookup in both loops, gives back all
+of it: 3.2 s and 6.5 s over three runs, against 3.4 and 6.6 before the step. The two builds
+verify identically, checked rather than assumed — 155 of 192 either way.
+
+**A measurement I had to throw away.** Between those two, one three-run timing read 7.0 s and
+15.9 s and I nearly reported it as the cost of the rule. It was contention: I had started the
+timing while the corpus halves were still being measured in another job, for the third time in
+this build. The tell was in the profile — detection and recognition had tripled too, and neither
+can be touched by an edit distance. Stopped, waited for the machine, ran it again.
+
 ## What the numbers say
 
 **Precision is the number that matters for a compliance tool, and it is 1.00 on every claim of

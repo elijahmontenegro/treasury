@@ -21,6 +21,7 @@ package verify
 import (
 	"context"
 	"image"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -210,8 +211,27 @@ type Options struct {
 	// recogniser, where a claim's nearest candidate fell just outside the
 	// radius. Nonzero is on.
 	SecondOpinion float64
+	// ConfusionCost is what a substitution between two characters a
+	// reader confuses by shape costs, as a share of an ordinary edit
+	// (step 28c). 1 charges it in full, which is the behaviour before
+	// this step; 0.5 is the value step 27c measured.
+	ConfusionCost float64
 	// Tune overrides an adopted constant by name, for a sweep.
 	Tune map[string]float64
+}
+
+// confusionHalfCost is ConfusionCost in halves of an edit, so the
+// distance can stay in integer arithmetic on what step 26a measured as
+// the engine's slowest stage.
+func (o Options) confusionHalfCost() int {
+	c := int(math.Round(o.ConfusionCost * 2))
+	if c < 0 {
+		c = 0
+	}
+	if c > 2 {
+		c = 2
+	}
+	return c
 }
 
 func (o Options) withDefaults() Options {
@@ -233,6 +253,21 @@ func (o Options) withDefaults() Options {
 	}
 	if o.MinConfidence == 0 {
 		o.MinConfidence = 0.5
+	}
+	if o.ConfusionCost == 0 {
+		// 27c measured the shape-confusable set at half cost: five
+		// carried claims admitted across the fifty and both halves and
+		// not one the labels do not carry, with the measurement complete
+		// at that cost by arithmetic - the evidence window is twice the
+		// radius, and a half-cost re-score is at least half the
+		// original, so nothing outside the window could have been
+		// admitted. Zero would break that argument and is also the wrong
+		// rule, since it says O and 0 are the same character; it is
+		// unreachable through the sweep for that reason, zero meaning
+		// unset here as it does for every other option. Setting the
+		// tunable to 1 charges a confusion in full, which is the
+		// behaviour before this step and is how it was measured.
+		o.ConfusionCost = 0.5
 	}
 	if o.BoxThresh == 0 {
 		o.BoxThresh = 0.3
