@@ -1,20 +1,20 @@
 ## The set
 
-3 labels, 0 the reader found nothing on, latency median 5.0s p95 5.3s
+50 labels, 0 the reader found nothing on, latency median 10.3s p95 20.7s
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|
-| brand | 3 | 1.00 | 1.00 | 0.00 | 0/0 | 0 |
-| class | 3 | 0.00 | 0.00 | 0.00 | 0/0 | 3 |
-| producer_1 | 3 | 1.00 | 0.67 | 0.00 | 0/0 | 0 |
-| producer_2 | 3 | 1.00 | 0.50 | 0.00 | 0/0 | 1 |
-| origin | 1 | 1.00 | 1.00 | 0.00 | 0/0 | 0 |
-| abv | 3 | 1.00 | 1.00 | 0.00 | 0/0 | 0 |
-| net | 3 | 1.00 | 1.00 | 0.00 | 0/0 | 0 |
+| brand | 50 | 1.00 | 0.55 | 0.00 | 0/0 | 1 |
+| class | 50 | 1.00 | 0.43 | 0.00 | 0/0 | 43 |
+| producer_1 | 50 | 1.00 | 0.89 | 0.00 | 0/0 | 31 |
+| producer_2 | 50 | 1.00 | 0.67 | 0.00 | 0/0 | 47 |
+| origin | 14 | 1.00 | 0.93 | 0.00 | 0/0 | 0 |
+| abv | 50 | 1.00 | 0.92 | 0.02 | 0/0 | 0 |
+| net | 50 | 1.00 | 0.96 | 0.00 | 0/0 | 0 |
 | brand (display face) | 0 | 0.00 | 0.00 | 0.00 | | |
 
-Reference rows: compliant labels with every row verified 0/3 (3 reviewed, 0 failed); wording and title-case errors caught 0/0.
-Emphasis: correct on 0/3 labels (compliant headers verified and regular-weight headers caught).
+Reference rows: compliant labels with every row verified 13/50 (37 reviewed, 0 failed); wording and title-case errors caught 0/0.
+Emphasis: correct on 21/50 labels (compliant headers verified and regular-weight headers caught).
 
 Convention coverage (free-text recall over brand, class, producer, origin):
 
@@ -24,5 +24,5 @@ Convention coverage (free-text recall over brand, class, producer, origin):
 | light on dark | 0 | 0 | 0.00 |
 | vertical warning | 0 | 0 | 0.00 |
 | crowded warning | 0 | 0 | 0.00 |
-| none of these | 3 | 0 | 0.78 |
+| none of these | 50 | 0 | 0.67 |
 

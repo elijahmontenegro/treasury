@@ -17,11 +17,12 @@ builds:
   - id: in-the-image
     skip: true
 
-# The image is built from the repository root by the Dockerfile, which
-# fetches its own pinned ONNX Runtime and compiles with cgo. The two build
-# arguments are the build identity: internal/buildid prefers what the Go
-# tool chain read from .git and falls back to these, which is what happens
-# here because .dockerignore keeps a 116 MB history out of the context.
+# The image is built by the Dockerfile, which fetches its own pinned ONNX
+# Runtime and compiles with cgo. The two build arguments are the build
+# identity: internal/buildid prefers what the Go tool chain read from .git
+# and falls back to these, which is what happens here, because
+# .dockerignore keeps a 116 MB history out of a context that needs two
+# strings from it.
 dockers_v2:
   - id: service
     dockerfile: Dockerfile
@@ -54,25 +55,31 @@ dockers_v2:
       org.opencontainers.image.created: "{{ .Date }}"
       org.opencontainers.image.licenses: "Apache-2.0"
 
-# Grouped by what a reader of this project would look for: what the engine
-# decides, what it reads, what the service does, and what was measured. The
-# build's history is one gated step per commit, so the subjects carry the
-# grouping without a convention being imposed on them after the fact.
+# Grouped by what a reader of this project would look for: what reads the
+# label, what decides, what serves it, and what was measured. The history
+# is one gated step per commit, so the subjects already carry the grouping
+# and none has to be imposed on them after the fact.
+#
+# The patterns were checked against the subjects rather than guessed at: a
+# first set left 38 of 87 commits ungrouped, among them the digit
+# classifier and the numeric read, and they were widened until what falls
+# through is what genuinely belongs nowhere. Groups are tried in order and
+# the first match wins, so the narrower ones come first.
 changelog:
   use: git
   sort: asc
   groups:
-    - title: The engine
-      regexp: '(?i)^(step|amendment)[^:]*:.*(rule|radius|distance|verdict|refus|precision|claim|alphabet|warning)'
+    - title: The service around it
+      regexp: '(?i)(item [1-6]|30[b-g]|service|batch|openapi|readme|container|distroless|hardening|goreleaser|the page|deploy)'
       order: 0
     - title: The reader
-      regexp: '(?i)^(step|amendment)[^:]*:.*(detect|recognis|reader|ocr|turned|crop)'
+      regexp: '(?i)(read|detect|recognis|ocr|glyph|preprocess|segment|separat|encoder|classifier|orientation|region|dot merging|merged pair|crop)'
       order: 1
-    - title: The service
-      regexp: '(?i)(item [1-6]|service|batch|page|container|hardening|README|openapi)'
+    - title: The decision
+      regexp: '(?i)(rule|radius|distance|verdict|refus|precision|claim|alphabet|warning|numeric|number|delimit|chain|spell|decode|enumerat|form gap|harvest|cache key|variant|emphasis|reference)'
       order: 2
-    - title: Measurement and apparatus
-      regexp: '(?i)(measure|latency|determinism|guard|diagnostic|corpus|table|profile)'
+    - title: Measurement, apparatus and speed
+      regexp: '(?i)(measure|latency|p95|parallel|bounded|determinism|guard|diagnostic|corpus|table|profile|gate|bench|apparatus|transfer|score|lost|judged|partition|eval|record|ceiling|tuning|the loop|font|one at a time)'
       order: 3
     - title: Everything else
       order: 999
@@ -81,6 +88,6 @@ changelog:
       - '^Merge '
 
 # No artefact is uploaded anywhere. The container goes to Artifact Registry
-# by the release script, and the changelog is a file to read.
+# when the release runs, and the changelog is a file to read.
 release:
   disable: true

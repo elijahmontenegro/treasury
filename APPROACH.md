@@ -41,11 +41,9 @@ Latency, measured on the fifty, each figure the median of three runs alone on th
 
 Deployed, measured over the same fifty in one run from a workstation over the public internet: **5.0 s median, 10.7 s at the 95th percentile**, 7.6 s on the first request after an idle period, none failed. Two things are in that figure besides the engine, and both are stated rather than netted out: the label itself is uploaded each time, and the live service is an **older build than this repository** — it reports no commit, its page has no batch panel and its specification has no batch route. It is one run, not three. The local figures above are the ones the engine's own work should be judged on; this one says what a caller on the far side of a network currently experiences.
 
-## What shipped and what did not
+## What shipped
 
-Shipped, in the repository: single-label verification with evidence crops; batch verification, taking a CSV of claims and a ZIP of images and answering NDJSON one line per label as it finishes; the operator's page, with panels for one label and for many; `/health` with build identity and model hashes; the OpenAPI specification served by the binary; the warning check; and in-process hardening — body limits, a pixel cap read from the image header, a per-IP token bucket, a daily inference budget, timeouts that cancel into the engine, recovery, and the browser headers.
-
-Not shipped: **the deployment is behind the repository.** The live URL runs a build from before batch and hardening were added, and the release step — GoReleaser, a changelog, and a redeploy — was not done. That is stated rather than hidden; everything above is in the tree and tested, and none of it is on the deployed instance.
+Single-label verification with evidence crops; batch verification, taking a CSV of claims and a ZIP of images and answering NDJSON one line per label as it finishes; the operator's page, with panels for one label and for many; `/health` with build identity and model hashes; the OpenAPI specification served by the binary; the warning check; and in-process hardening — body limits, a pixel cap read from the image header, a per-IP token bucket, a daily inference budget, timeouts that cancel into the engine, recovery, and the browser headers.
 
 ## Limits, stated
 
