@@ -1,0 +1,11 @@
+# Everything the image does not need. The corpus and the real labels are
+# test data measured in gigabytes of PNG; the models are embedded in the
+# binary and come from the source tree, not from here.
+.git
+out/
+synth/
+real2/
+third_party/
+docs/
+*.md
+!go.mod

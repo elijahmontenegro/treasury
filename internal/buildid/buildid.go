@@ -23,6 +23,18 @@ import (
 // when a release is cut; otherwise the commit identifies the build.
 var Version = "dev"
 
+// Commit and CommitTime are a fallback for a build whose context has no
+// .git directory to read, which is what a container build is: the
+// repository is 116 MB of history and shipping it to the daemon on every
+// build to stamp two strings is not a trade worth making. They are set
+// with -ldflags "-X treasury/internal/buildid.Commit=..." and are used
+// only where the Go tool chain's own build information carries no
+// revision, so a normal build cannot disagree with itself.
+var (
+	Commit     string
+	CommitTime string
+)
+
 // Identity is what produced a verdict.
 type Identity struct {
 	Version    string            `json:"version"`
@@ -66,6 +78,14 @@ func Get() Identity {
 					id.Modified = s.Value == "true"
 				}
 			}
+		}
+		// Only where the tool chain gave nothing, so a build that can
+		// read its own history is never overridden by a flag.
+		if id.Commit == "unknown" && Commit != "" {
+			id.Commit = Commit
+		}
+		if id.CommitTime == "" && CommitTime != "" {
+			id.CommitTime = CommitTime
 		}
 		mu.Lock()
 		for name, sum := range models {

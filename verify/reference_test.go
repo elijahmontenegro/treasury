@@ -93,7 +93,7 @@ func TestATitleCaseHeaderIsRefused(t *testing.T) {
 		// No image, so weight cannot be measured: what is under test is
 		// the case, and a header whose case is right gets as far as
 		// saying the weight could not be seen.
-		v := e.verifyEmphasis(ref, ref.Emphasis[0], run, nil)
+		v := e.verifyEmphasis(ref, ref.Emphasis[0], run, linesOf(c.read, 7), nil)
 		if v.Status != c.want || v.Reason != c.reason {
 			t.Errorf("%s: %s/%s, want %s/%s", c.name, v.Status, v.Reason, c.want, c.reason)
 		}
@@ -112,5 +112,97 @@ func TestAWarningNeverReadIsNotAWarningAltered(t *testing.T) {
 		if v.Status == Mismatch {
 			t.Errorf("%q was called a mismatch on the statute", read)
 		}
+	}
+}
+
+// headerApart puts GOVERNMENT and WARNING: in two detections of their
+// own, spaced right across the top of the panel, with the body of the
+// statute stacked beneath. It is the shape a detector returns on most
+// real labels, and the shape the header search in emphasis.go exists for.
+func headerApart(head1, head2, body string) []Region {
+	out := []Region{
+		{Box: image.Rect(10, 0, 130, 16), Text: head1, Confidence: 0.9},
+		// Far to the right: the gap between the two words says nothing
+		// about whether they are one heading, which is why the search
+		// joins them whatever it is.
+		{Box: image.Rect(420, 0, 520, 16), Text: head2, Confidence: 0.9},
+	}
+	for _, r := range linesOf(body, 7) {
+		b := r.Box
+		out = append(out, Region{
+			Box:        image.Rect(b.Min.X, b.Min.Y+30, b.Max.X, b.Max.Y+30),
+			Text:       r.Text,
+			Confidence: r.Confidence,
+		})
+	}
+	return out
+}
+
+// TestTheHeaderIsFoundAsSeparateWords covers the second of step 30a's two
+// fixes: GOVERNMENT and WARNING are fixed words, so they are looked for
+// by name in the band above the body rather than reconstructed from an
+// alignment that never reaches them.
+func TestTheHeaderIsFoundAsSeparateWords(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	ref := Reference{Text: statute, Emphasis: []Span{{Start: 0, End: 19}}}
+	body := statute[19:]
+	cases := []struct {
+		name, one, two string
+		want           Status
+		reason         string
+	}{
+		// Capitals, spaced apart: found, and the weight is what is left
+		// to say, which needs an image.
+		{"apart and in capitals", "GOVERNMENT", "WARNING:", Review, "weight_not_measurable"},
+		// The recogniser's own damage does not stop them being found.
+		{"apart and damaged", "COVERNMENT", "WARNINC:", Review, "weight_not_measurable"},
+		// Title case is still refused, and this is the case that matters:
+		// before the fix the header was not found at all here, so nothing
+		// was said about it.
+		{"apart and title case", "Government", "Warning:", Mismatch, "header_not_capitals"},
+	}
+	for _, c := range cases {
+		regions := headerApart(c.one, c.two, body)
+		_, run := e.verifyReferenceText(ref, regions)
+		if run == nil {
+			t.Errorf("%s: the body of the statute was not found", c.name)
+			continue
+		}
+		v := e.verifyEmphasis(ref, ref.Emphasis[0], run, regions, nil)
+		if v.Status != c.want || v.Reason != c.reason {
+			t.Errorf("%s: %s/%s, want %s/%s", c.name, v.Status, v.Reason, c.want, c.reason)
+		}
+		// What is reported is what was printed, spaces and case intact,
+		// so the page can show a reviewer the words rather than a
+		// normalized run of letters.
+		if v.Observed != c.one+" "+c.two {
+			t.Errorf("%s: reported %q, want %q", c.name, v.Observed, c.one+" "+c.two)
+		}
+	}
+}
+
+// TestAHeadingNotReadIsNeverAbsent covers the first of step 30a's two
+// fixes. Where the body of the statute is found and the heading is not
+// read, the verdict is a review: NOT_FOUND asserts that the label does
+// not carry the heading, and a failed read beside a found body
+// establishes no such thing.
+func TestAHeadingNotReadIsNeverAbsent(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	ref := Reference{Text: statute, Emphasis: []Span{{Start: 0, End: 19}}}
+	// The body, with nothing above it that reads as the heading.
+	regions := linesOf(statute[19:], 7)
+	v, run := e.verifyReferenceText(ref, regions)
+	if run == nil {
+		t.Fatal("the body of the statute was not found")
+	}
+	if v.Status == NotFound {
+		t.Fatalf("the body itself was not found: %s", v.Reason)
+	}
+	w := e.verifyEmphasis(ref, ref.Emphasis[0], run, regions, nil)
+	if w.Status == NotFound {
+		t.Errorf("the heading was reported absent (%s) beside a body that was found", w.Reason)
+	}
+	if w.Status != Review || w.Reason != "heading not read" {
+		t.Errorf("%s/%s, want REVIEW/heading not read", w.Status, w.Reason)
 	}
 }

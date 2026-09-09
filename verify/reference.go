@@ -102,7 +102,7 @@ func (e *Engine) verifyReferences(refs []Reference, regions []Region, img image.
 		for j, span := range ref.Emphasis {
 			var w Verdict
 			if found {
-				w = e.verifyEmphasis(ref, span, run, img)
+				w = e.verifyEmphasis(ref, span, run, kept, img)
 			} else {
 				w = Verdict{Status: NotFound, Reason: "warning_not_read",
 					Expected: spanText(ref, span)}
@@ -243,14 +243,24 @@ func (e *Engine) verifyReferenceText(ref Reference, kept []Region) (Verdict, *re
 			conf = m.Confidence
 		}
 	}
+	// The normalized span is what the distance and the agreement are
+	// measured on; what is REPORTED is the text as printed, with its
+	// spaces and its case, because a reviewer comparing a reading to the
+	// statute needs the words. Reporting the normalized form put 240
+	// unbroken letters on the page, which nobody can read against
+	// anything.
 	quote := best.norm
 	if best.from < best.to && best.to < len(best.at) {
 		quote = best.norm[best.from:best.to]
 	}
+	read := best.quote(best.from, best.to)
+	if read == "" {
+		read = best.text
+	}
 	agreement, coverage := agree(quote, want)
 	_ = referenceRadius
 	v.Evidence = &Evidence{
-		Region: box, Read: quote, Matched: want,
+		Region: box, Read: read, Matched: ref.Text,
 		Distance: best.dist, Radius: referenceRadius, Confidence: conf,
 		Parts: len(best.members), Agreement: agreement, Coverage: coverage,
 	}

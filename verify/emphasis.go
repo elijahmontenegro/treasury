@@ -2,6 +2,8 @@ package verify
 
 import (
 	"image"
+	"sort"
+	"strings"
 	"unicode"
 )
 
@@ -34,7 +36,7 @@ const emphasisContrast = 1.15
 
 // verifyEmphasis judges one span of a reference: that it is printed in
 // capitals, and that its strokes are heavier than the body's.
-func (e *Engine) verifyEmphasis(ref Reference, span Span, run *refRun, img image.Image) Verdict {
+func (e *Engine) verifyEmphasis(ref Reference, span Span, run *refRun, kept []Region, img image.Image) Verdict {
 	rs := []rune(ref.Text)
 	if span.Start < 0 || span.End > len(rs) || span.Start >= span.End {
 		return Verdict{Status: Skipped, Reason: "no_span"}
@@ -51,9 +53,18 @@ func (e *Engine) verifyEmphasis(ref Reference, span Span, run *refRun, img image
 	from := run.from
 	to := min(from+n, len(run.norm))
 	read := run.quote(from, to)
+	// The header may not be inside the reference's own chain at all: a
+	// detector often returns "GOVERNMENT" and "WARNING:" as two boxes,
+	// set apart across the top of the block, and a chain built along the
+	// body's own lines does not pick them up. They are fixed words, so
+	// they can be looked for directly - which is what step 30a's fix
+	// asks for, and what it needed: without it the heading of a warning
+	// whose body was found reported as unread.
+	if head := findHeader(want, kept, run, e.opt.confusionHalfCost()); head != nil {
+		return e.judgeHeader(v, want, head, img)
+	}
 	if read == "" {
-		v.Reason = "header_not_read"
-		return v
+		return notRead(v, run)
 	}
 	v.Observed = read
 	// The span is taken from where the reference's own match puts the
@@ -64,8 +75,7 @@ func (e *Engine) verifyEmphasis(ref Reference, span Span, run *refRun, img image
 	// "According Surgeon C". So the span has to look like the header
 	// before anything is said about it, case aside.
 	if infix(normalize(want), normalize(read), e.opt.confusionHalfCost()) > 0.35 {
-		v.Reason = "header_not_read"
-		return v
+		return notRead(v, run)
 	}
 	if !isUpper(read) {
 		v.Status, v.Reason = Mismatch, "header_not_capitals"
@@ -100,6 +110,23 @@ func (e *Engine) verifyEmphasis(ref Reference, span Span, run *refRun, img image
 		// with its ratio for a person to look at, and is not called a
 		// violation.
 		v.Status, v.Reason = Review, "header_weight_uncertain"
+	}
+	return v
+}
+
+// notRead is the verdict where the body of the statute was found and the
+// header was not read from it.
+//
+// It is a REVIEW and never a NOT_FOUND, and the difference is the whole
+// point: NOT_FOUND asserts that the label does not carry the heading,
+// and a failed read beside a found body establishes no such thing. The
+// statute is there; something was printed at the front of it; the reader
+// could not make it out. That is a thing for a person to look at, not a
+// finding against the label.
+func notRead(v Verdict, run *refRun) Verdict {
+	v.Status, v.Reason = Review, "heading not read"
+	if run != nil && len(run.members) > 0 {
+		v.Evidence = &Evidence{Region: boxOf(run.members), Matched: v.Expected}
 	}
 	return v
 }
@@ -258,4 +285,143 @@ func inkOf(img image.Image, box image.Rectangle) (area, perim, height float64) {
 		}
 	}
 	return area, perim, float64(h)
+}
+
+// headerFound is where the header's words were read, when they were read
+// as detections of their own rather than as part of the body's chain.
+type headerFound struct {
+	boxes []image.Rectangle
+	body  []image.Rectangle // the statute's own lines, for the ratio
+	read  string            // as printed, spaces and case intact
+}
+
+// findHeader looks for the header's words as separate detections above
+// the body of the statute.
+//
+// GOVERNMENT and WARNING are fixed words - the regulation prescribes
+// them - so they are searched for by name rather than reconstructed from
+// an alignment. They are joined for the capitals test WHATEVER the
+// horizontal gap between them, because a header set across the top of a
+// panel may be spaced right out and the gap says nothing about whether
+// it is one heading. What does say so is the band: both must sit above
+// the body's first line and within a few of its heights of it, so a
+// stray "WARNING" elsewhere on the label is not taken for this one.
+func findHeader(want string, kept []Region, run *refRun, cc int) *headerFound {
+	if run == nil || len(run.members) == 0 || len(kept) == 0 {
+		return nil
+	}
+	body := run.members[0].Box
+	for _, m := range run.members {
+		if m.Box.Min.Y < body.Min.Y {
+			body = m.Box
+		}
+	}
+	// The band above the body's first line: as far up as a few lines of
+	// it, and no further.
+	h := body.Dy()
+	if h <= 0 {
+		return nil
+	}
+	top := body.Min.Y - 6*h
+	var found []Region
+	for _, word := range headerWords(want) {
+		best, bestD := -1, 0.34
+		for i, r := range kept {
+			b := r.Box
+			// Above the body's first line, in the band, and not the body
+			// line itself.
+			if b.Min.Y >= body.Max.Y || b.Max.Y < top {
+				continue
+			}
+			if b.Min.Y >= body.Min.Y && b.Max.Y <= body.Max.Y && b.Min.X >= body.Min.X {
+				continue
+			}
+			if d := distance(word, normalize(r.Text), cc); d < bestD {
+				best, bestD = i, d
+			}
+		}
+		if best < 0 {
+			return nil
+		}
+		found = append(found, kept[best])
+	}
+	if len(found) == 0 {
+		return nil
+	}
+	// In printed order, which for a heading on one line is left to right.
+	sort.SliceStable(found, func(a, b int) bool {
+		if found[a].Box.Min.Y != found[b].Box.Min.Y {
+			return found[a].Box.Min.Y < found[b].Box.Min.Y
+		}
+		return found[a].Box.Min.X < found[b].Box.Min.X
+	})
+	out := &headerFound{}
+	for _, m := range run.members {
+		out.body = append(out.body, m.Box)
+	}
+	var parts []string
+	for _, r := range found {
+		out.boxes = append(out.boxes, r.Box)
+		parts = append(parts, strings.TrimSpace(r.Text))
+	}
+	out.read = strings.Join(parts, " ")
+	return out
+}
+
+// headerWords is the fixed words of the header, normalized. The colon and
+// any spacing are not among them: what the regulation fixes is the words.
+func headerWords(want string) []string {
+	var out []string
+	for _, w := range strings.Fields(want) {
+		if n := normalize(w); n != "" {
+			out = append(out, n)
+		}
+	}
+	return out
+}
+
+// judgeHeader decides on a header read as detections of its own.
+func (e *Engine) judgeHeader(v Verdict, want string, head *headerFound, img image.Image) Verdict {
+	v.Observed = head.read
+	if !isUpper(head.read) {
+		v.Status, v.Reason = Mismatch, "header_not_capitals"
+		v.Evidence = &Evidence{Region: boxUnion(head.boxes), Read: head.read, Matched: want}
+		return v
+	}
+	// Both boxes carry the header, so both are measured for the weight.
+	v.Evidence = &Evidence{Region: boxUnion(head.boxes), Read: head.read, Matched: want}
+	if img == nil {
+		v.Status, v.Reason = Review, "weight_not_measurable"
+		return v
+	}
+	hs, hok := strokeWidth(img, head.boxes)
+	bs, bok := strokeWidth(img, e.bodyBoxes(head))
+	if !hok || !bok || bs <= 0 {
+		v.Status, v.Reason = Review, "weight_not_measurable"
+		return v
+	}
+	ratio := hs / bs
+	v.Evidence.Distance, v.Evidence.Radius = ratio, emphasisContrast
+	if ratio >= emphasisContrast {
+		v.Status, v.Reason = Verified, ""
+	} else {
+		v.Status, v.Reason = Review, "header_weight_uncertain"
+	}
+	return v
+}
+
+// bodyBoxes is what the header is compared against: the lines of the
+// statute itself, which the caller stashed on the engine's behalf.
+func (e *Engine) bodyBoxes(head *headerFound) []image.Rectangle { return head.body }
+
+// boxUnion is the rectangle covering them all.
+func boxUnion(bs []image.Rectangle) image.Rectangle {
+	if len(bs) == 0 {
+		return image.Rectangle{}
+	}
+	out := bs[0]
+	for _, b := range bs[1:] {
+		out = out.Union(b)
+	}
+	return out
 }
