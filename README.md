@@ -1,5 +1,9 @@
 # Label verification
 
+**Live:** https://label-verifier-173761965521.us-central1.run.app ·
+**Approach, tools, assumptions, limits:** [APPROACH.md](APPROACH.md) ·
+**Full measurement record:** [docs/measurements/README.md](docs/measurements/README.md)
+
 Checks whether a drinks label carries what its application filed, and whether it carries the
 statutory health warning of 27 CFR 16.21.
 
@@ -109,16 +113,41 @@ with the label that forced it.
 
 ## Layout
 
+The code:
+
 ```
-verify/          the decision: distance, margin, refusal, evidence
-internal/ocr/    the reader: PP-OCRv4 detection and recognition, embedded, run on the CPU
-ttb/             the domain: what the regulation says, and nothing about mechanism
-api/             the specification, and the code generated from it
+verify/            the decision: distance, margin, refusal, evidence
+internal/ocr/      the reader: PP-OCRv4 detection and recognition, embedded, run on the CPU
+ttb/               the domain: what the regulation says, and nothing about mechanism
+api/               the specification, and the code generated from it
 internal/httpapi/  the service and the page
-cmd/serve        the service          cmd/decode  one label
-cmd/eval         the measurement      cmd/whymissed  where a claim was lost
-docs/measurements/README.md every step in the order it was measured
+cmd/serve          the service          cmd/decode     one label
+cmd/eval           the measurement      cmd/whymissed  where a claim was lost
 ```
+
+The evidence:
+
+```
+eval/real50/       fifty real COLA registry labels, their filed claims and what they print
+eval/real10/       the ten step 4 started with, kept because its tables are in the record
+testdata/          one synthetic label and an augmented copy, for the tests
+docs/measurements/ every table in the order it was measured, and the analyses behind them
+docs/evidence/     crops the record points at, where a sentence needed a picture
+```
+
+`eval/real50` and `eval/real10` hold each label's image, the claims its application filed, and a
+transcription of what the label actually prints, which is what recall is scored against. The
+synthetic corpus the tables also report is generated rather than stored, and is not in the
+repository. The reported tables were made with the system's own font families, from which the
+evaluation half is held out:
+
+```sh
+go run ./cmd/gen set -n 500 -seed 1 -fontdir /path/to/fonts   # writes synth/
+```
+
+Not here, and named because the record refers to them: `python/digits` and `python/encoder`
+trained the digit classifier and the glyph encoder of the retired engine, and were deleted with it
+at step 19a.
 
 ## Where the numbers are
 
