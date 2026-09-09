@@ -121,6 +121,13 @@ jobs:
       - name: the guard
         run: go test -count=1 -timeout 25m -run TestTheGuard -v ./verify/
 
+      # A timeout has to reach the engine, or a caller who hangs up holds
+      # the only instance to completion. The test skips under -short, so
+      # without naming it here nothing would run it — which is the defect
+      # this whole file was just fixed for.
+      - name: a timeout cancels into the engine
+        run: go test -count=1 -timeout 25m -run TestACancelledVerificationStops -v ./verify/
+
   determinism:
     name: determinism
     runs-on: ubuntu-latest
