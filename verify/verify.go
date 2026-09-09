@@ -24,12 +24,12 @@ import (
 	"math"
 	"os"
 	"path/filepath"
-	"runtime"
 	"sort"
 	"sync"
 	"time"
 
 	"treasury/internal/buildid"
+	"treasury/internal/cpu"
 	"treasury/internal/ocr"
 )
 
@@ -241,7 +241,10 @@ func (o Options) cores() int {
 	if o.Cores >= 1 {
 		return int(o.Cores)
 	}
-	return runtime.NumCPU()
+	// Not runtime.NumCPU: inside a container that reports the node's
+	// cores rather than this process's share of them, and a pool sized
+	// from it spends a third of its time contending. See internal/cpu.
+	return cpu.Available()
 }
 
 func (o Options) confusionHalfCost() int {

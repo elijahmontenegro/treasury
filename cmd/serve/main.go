@@ -17,11 +17,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
 	"treasury/api"
 	"treasury/internal/buildid"
+	"treasury/internal/cpu"
 	"treasury/internal/httpapi"
 	"treasury/verify"
 )
@@ -31,15 +33,22 @@ func main() {
 	maxImage := flag.Int64("max-image", 10<<20, "largest image accepted, in bytes")
 	maxBatch := flag.Int64("max-batch", 100<<20, "largest batch accepted, in bytes")
 	timeout := flag.Duration("timeout", 60*time.Second, "how long one verification may take")
-	cores := flag.Int("cores", 0, "cores one verification may use; 0 is every core")
+	cores := flag.Int("cores", 0, "cores one verification may use; 0 is this process's own share")
 	rate := flag.Float64("rate", 0, "requests a second per caller; 0 keeps the default")
 	burst := flag.Float64("burst", 10, "requests a caller may make at once")
 	daily := flag.Float64("daily-seconds", 0, "inference seconds a day, all callers; 0 keeps the default")
 	flag.Parse()
 
+	// The Go scheduler sizes itself from the affinity mask, which inside a
+	// container is the node's cores rather than this container's quota, so
+	// it is told the quota. The engine's pool reads the same number.
+	have := cpu.Available()
+	runtime.GOMAXPROCS(have)
+
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	id := buildid.Get()
-	log.Info("starting", "commit", id.Commit, "modified", id.Modified, "go", id.Go)
+	log.Info("starting", "commit", id.Commit, "modified", id.Modified, "go", id.Go,
+		"cores", have, "cores_reported", runtime.NumCPU())
 
 	eng, err := verify.New(verify.Options{Cores: float64(*cores)})
 	if err != nil {
