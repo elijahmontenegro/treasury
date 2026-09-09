@@ -44,6 +44,8 @@ Open it and you get one screen, with two panels. **One label**: pick it, type wh
 application filed, press the button.
 Results come back as a row per claim — what it is in plain words, the verdict as a word, what was
 filed, what the label appears to say, and a picture of where on the label that came from.
+**Many labels**: a CSV of claims and a ZIP of images, answered as a table that fills in as each
+label is read, a row per label with its claims openable underneath.
 
 **One label from the command line**
 
@@ -80,7 +82,16 @@ the document at `/openapi.yaml`.
 curl -X POST localhost:8080/verify \
   -F image=@real2/0047.png \
   -F claims=@real2/0047.json
+
+curl -X POST localhost:8080/verify/batch \n  -F claims=@claims.csv \n  -F images=@labels.zip
 ```
+
+The batch CSV's first row is its column names. One column must be `image`, naming a file inside
+the ZIP; the rest may be `beverage`, `brand`, `class`, `producer`, `address`, `origin`, `abv` and
+`net_ml`. Answers stream — a line is written as each label finishes rather than the whole batch
+being assembled at the end, so a caller sees progress and nothing accumulates in memory. Verdicts
+come back without crops, since three hundred labels of them would be a response measured in
+gigabytes; each says whether one exists, and `/verify` will show it for that label alone.
 
 ## What it verifies
 
