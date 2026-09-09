@@ -1,26 +1,36 @@
 name: ci
 
-# Every push and every pull request. A green build means three things about
-# the engine: it is deterministic, it says which weights produced a verdict,
-# and it cannot be evaluated on a face its models trained on.
+# Every push and every pull request. A green build means the engine is
+# deterministic, says which weights produced a verdict, cannot be evaluated
+# on a face its models trained on, and — since the reader is now the thing
+# being tested — that it actually read a label to say any of it.
+#
+# The jobs run in parallel because the long ones are long: the determinism
+# sample is two hundred verifications and the batch gate is three hundred,
+# and a runner has two cores. Splitting them also keeps a failure legible,
+# which one job of fifteen steps did not.
 
 on:
   push:
   pull_request:
 
+# Set for every job. Where it is set, a test that cannot build a reader
+# fails instead of skipping. It exists because the opposite happened: from
+# step 19b the runner had no ONNX Runtime library, the tests that needed
+# one skipped, and CI reported success on a suite that had read nothing.
+env:
+  TREASURY_REQUIRE_READER: 1
+
 jobs:
   build:
+    name: build, apparatus, and the short suite
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # the identity carries the commit
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24'
-          cache: true
+      - uses: ./.github/actions/toolchain
 
       - name: vet
         run: go vet ./...
@@ -43,10 +53,10 @@ jobs:
             echo "two builds of one commit report different identities:"; echo "$a"; echo "$b"; exit 1
           fi
 
-      # The suite, without the long determinism sample, which runs on its own
-      # below so that its failure is legible.
+      # The suite without the long tests, which have jobs of their own so
+      # that their failure is legible and their time is spent in parallel.
       - name: test
-        run: go test -short -timeout 25m ./...
+        run: go test -short -timeout 30m ./...
 
       # The leak check and the identity are tests, so they run above too;
       # named here because they are the gate, not an implementation detail.
@@ -59,25 +69,12 @@ jobs:
       - name: adopted constants and overrides
         run: go test -count=1 -run 'TestAdoptedValuesAreLive|TestEveryTunableIsRecorded|TestOverrideReachesTheCode' -v ./verify/
 
-      # The guard against step 16a's false assertion: a label printing
-      # "Produced and Bottled by Valley Mill Company" must not verify a
-      # filed brand of "Valley Mill". Until step 28a this was checked by
-      # naming two corpus labels in each gate, and step 27b found that
-      # check passing for the wrong reason - the reader had stopped
-      # reading their producer lines, so the refusal proved nothing. The
-      # test renders the case and also requires the permittee to verify,
-      # so it cannot pass vacuously again.
-      # The specification is written by hand and the code is generated
-      # from it; this fails when the spec has been edited and the code
-      # not regenerated, so the contract a caller reads cannot drift from
-      # the types the service answers with (step 30b).
+      # The specification is written by hand and the code is generated from
+      # it; this fails when the spec has been edited and the code not
+      # regenerated, so the contract a caller reads cannot drift from the
+      # types the service answers with (step 30b).
       - name: openapi generated code is current
         run: go test -count=1 -run TestGeneratedCodeIsCurrent ./api/
-
-      # The service must return over HTTP exactly what the engine returns
-      # directly (step 30b).
-      - name: service matches the engine
-        run: go test -count=1 -timeout 15m ./internal/httpapi/
 
       # A diagnostic file scored by a later engine than the one that wrote
       # it is how step 26c reported nine names where eight was the number
@@ -85,13 +82,61 @@ jobs:
       - name: stale diagnostics refused
         run: go test -count=1 ./internal/diag/
 
+  service:
+    name: the service, and the batch gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/toolchain
+
+      # Without -short, so this is the whole of it: the service returning
+      # over HTTP exactly what the engine returns directly (step 30b), the
+      # hardening refusing an oversized body, a non-image, a decompression
+      # bomb and a burst before the engine runs (step 30e), and the batch
+      # gate — three hundred labels, every one returned, memory flat.
+      - name: service, hardening, and three hundred labels
+        run: go test -count=1 -timeout 55m ./internal/httpapi/
+
+  guard:
+    name: the guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/toolchain
+
+      # The guard against step 16a's false assertion: a label printing
+      # "Produced and Bottled by Valley Mill Company" must not verify a
+      # filed brand of "Valley Mill". Until step 28a this was checked by
+      # naming two corpus labels in each gate, and step 27b found that
+      # check passing for the wrong reason — the reader had stopped reading
+      # their producer lines, so the refusal proved nothing. The test
+      # renders the case and also requires the permittee to verify, so it
+      # cannot pass vacuously again.
       - name: the guard
-        run: go test -count=1 -timeout 15m -run TestTheGuard -v ./verify/
+        run: go test -count=1 -timeout 25m -run TestTheGuard -v ./verify/
+
+  determinism:
+    name: determinism
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/toolchain
 
       - name: determinism
-        run: go test -count=1 -timeout 40m -run TestDeterminismSample -v ./verify/
+        run: go test -count=1 -timeout 85m -run TestDeterminismSample -v ./verify/
+
+  independence:
+    name: claim-set independence
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/toolchain
 
       # Repeating one input cannot catch a verdict that depends on which
       # other claims were in the run; this varies the input (step 13a).
       - name: claim-set independence
-        run: go test -count=1 -timeout 40m -run TestClaimSetIndependence -v ./verify/
+        run: go test -count=1 -timeout 55m -run TestClaimSetIndependence -v ./verify/

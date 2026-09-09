@@ -1,0 +1,53 @@
+name: toolchain
+description: >
+  Go, and the ONNX Runtime library the reader loads. A runner without the
+  library cannot read a label, and a suite that cannot read a label proves
+  nothing about an engine whose whole job is reading labels.
+
+inputs:
+  ort-version:
+    description: >
+      The ONNX Runtime release to fetch. Pinned, and pinned to the same
+      version the Dockerfile installs, so CI exercises the runtime the
+      container ships. It must be at least 1.24: the Go binding asks for
+      API version 24 and older runtimes refuse.
+    required: false
+    default: '1.27.1'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache: true
+
+    # Cached by version, so the 200 MB archive is fetched once and not on
+    # every push.
+    - id: cache
+      uses: actions/cache@v4
+      with:
+        path: third_party/onnxruntime
+        key: onnxruntime-linux-x64-${{ inputs.ort-version }}
+
+    - if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        v='${{ inputs.ort-version }}'
+        url="https://github.com/microsoft/onnxruntime/releases/download/v${v}/onnxruntime-linux-x64-${v}.tgz"
+        curl -fsSL "$url" -o /tmp/ort.tgz
+        tar -xzf /tmp/ort.tgz -C /tmp
+        mkdir -p third_party/onnxruntime
+        cp /tmp/onnxruntime-linux-x64-${v}/lib/libonnxruntime.so* third_party/onnxruntime/
+        rm -rf /tmp/ort.tgz /tmp/onnxruntime-linux-x64-${v}
+
+    # Not a formality. ocr.LibraryPath walks up from the package a test
+    # runs in to find third_party/onnxruntime; if that ever stops working,
+    # every test that needs a reader starts skipping and the suite goes
+    # green while proving nothing. This fails loudly instead.
+    - shell: bash
+      run: |
+        set -euo pipefail
+        ls -l third_party/onnxruntime/
+        go run ./cmd/read -library

@@ -35,7 +35,28 @@ func sideOn(rs []ocr.Region) bool {
 }
 
 func main() {
+	library := flag.Bool("library", false,
+		"print where the ONNX Runtime library was found, and fail if it was not")
 	flag.Parse()
+	if *library {
+		// CI asserts this before running anything: a runner without the
+		// library cannot read a label, and every test that needs a
+		// reader would quietly skip while the suite went green.
+		//
+		// LibraryPath falls back to a bare name for the system loader to
+		// resolve, so it cannot report failure on its own; a reader is
+		// actually built, which is the only thing that proves the
+		// runtime loads and that its API version is one the binding can
+		// use. 1.20.1 answered this with a refusal, at step 30's item 2.
+		r, err := ocr.New(ocr.Default())
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "no usable ONNX Runtime at", ocr.LibraryPath()+":", err)
+			os.Exit(1)
+		}
+		r.Close()
+		fmt.Println(ocr.LibraryPath())
+		return
+	}
 	// Read the way the engine reads. `ocr.Default` is still the 960 px
 	// cap and the single upright pass of step 19b, and the engine has
 	// detected at 1600 with a second pass on the turned page since 20c

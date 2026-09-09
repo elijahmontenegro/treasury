@@ -113,7 +113,7 @@ func TestNothingReachesTheEngineThatShouldNot(t *testing.T) {
 	t.Run("a decompression bomb", func(t *testing.T) {
 		eng, err := verify.New(verify.Options{})
 		if err != nil {
-			t.Skipf("the reader is not available here: %v", err)
+			needReader(t, err)
 		}
 		defer eng.Close()
 		srv := &httpapi.Server{Engine: eng, MaxImage: 10 << 20, Limits: httpapi.DefaultLimits()}
@@ -194,7 +194,7 @@ func TestNothingReachesTheEngineThatShouldNot(t *testing.T) {
 func TestANonImageIsRefused(t *testing.T) {
 	eng, err := verify.New(verify.Options{})
 	if err != nil {
-		t.Skipf("the reader is not available here: %v", err)
+		needReader(t, err)
 	}
 	defer eng.Close()
 	srv := &httpapi.Server{Engine: eng, MaxImage: 10 << 20, Limits: httpapi.DefaultLimits()}

@@ -100,7 +100,7 @@ func TestBatchCompletesEveryItem(t *testing.T) {
 	}
 	eng, err := verify.New(verify.Options{})
 	if err != nil {
-		t.Skipf("the reader is not available here: %v", err)
+		needReader(t, err)
 	}
 	defer eng.Close()
 

@@ -1,8 +1,8 @@
 # Label verification
 
-**Live:** https://label-verifier-173761965521.us-central1.run.app ·
-**Approach, tools, assumptions, limits:** [APPROACH.md](APPROACH.md) ·
-**Full measurement record:** [docs/measurements/README.md](docs/measurements/README.md)
+- Live service: https://label-verifier-173761965521.us-central1.run.app
+- What was built, and the assumptions and limits: [APPROACH.md](APPROACH.md)
+- Every measurement, in the order it was made: [docs/measurements/README.md](docs/measurements/README.md)
 
 Checks whether a drinks label carries what its application filed, and whether it carries the
 statutory health warning of 27 CFR 16.21.
