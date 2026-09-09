@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label check</title>
+<style>
+  :root {
+    --ink: #14161a; --quiet: #5b6472; --line: #d9dde4; --bg: #fbfcfd;
+    --good: #0a6b3d; --bad: #a3231f; --look: #8a5a00; --none: #5b6472;
+    --goodbg: #eaf6f0; --badbg: #fdecec; --lookbg: #fdf5e3; --nonebg: #f2f4f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 78rem; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+  .form { max-width: 56rem; }
+  h1 { font-size: 1.5rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  .sub { color: var(--quiet); margin: 0 0 2rem; }
+  fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; margin: 0 0 1.25rem; background: #fff; }
+  legend { padding: 0 .5rem; font-weight: 600; font-size: .95rem; }
+  label { display: block; font-size: .875rem; color: var(--quiet); margin-bottom: .3rem; }
+  input, select {
+    width: 100%; padding: .55rem .65rem; font: inherit; font-size: .95rem;
+    border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--ink);
+  }
+  input:focus, select:focus { outline: 2px solid #2563eb; outline-offset: 1px; border-color: #2563eb; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .9rem 1.1rem; }
+  .row { margin-bottom: .9rem; }
+  button {
+    font: inherit; font-weight: 600; padding: .7rem 1.5rem; border-radius: 8px;
+    border: 1px solid #1b2735; background: #1b2735; color: #fff; cursor: pointer;
+  }
+  button:hover { background: #29394d; }
+  button[disabled] { opacity: .55; cursor: default; }
+  .note { color: var(--quiet); font-size: .875rem; margin-top: .5rem; }
+  .msg { padding: .85rem 1rem; border-radius: 8px; margin: 1rem 0; border: 1px solid; }
+  .msg.err { background: var(--badbg); border-color: #f0bcbc; color: var(--bad); }
+  .msg.busy { background: var(--nonebg); border-color: var(--line); color: var(--quiet); }
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 54rem; }
+  th, td { text-align: left; padding: .7rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); background: #f7f9fb; }
+  col.c-what { width: 9rem; } col.c-result { width: 11rem; }
+  col.c-filed { width: 15rem; } col.c-says { width: auto; } col.c-where { width: 15rem; }
+  td.what { font-weight: 600; }
+  td.filed { font-size: .9rem; overflow-wrap: anywhere; }
+  .tag { display: inline-block; padding: .2rem .55rem; border-radius: 999px; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+  .v-verified { background: var(--goodbg); color: var(--good); }
+  .v-mismatch { background: var(--badbg); color: var(--bad); }
+  .v-review   { background: var(--lookbg); color: var(--look); }
+  .v-notfound, .v-skipped { background: var(--nonebg); color: var(--none); }
+  .said { color: var(--quiet); font-size: .9rem; }
+  .said code {
+    display: inline-block; background: #f2f4f7; padding: .12rem .35rem; border-radius: 4px;
+    font-size: .85em; overflow-wrap: anywhere;
+  }
+  .hint { display: block; color: var(--quiet); font-size: .8rem; margin-top: .3rem; }
+  img.crop { max-width: 100%; max-height: 5rem; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+  .foot { margin-top: 2.5rem; color: var(--quiet); font-size: .8rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .foot code { font-size: .95em; }
+  .count { margin: 1rem 0; font-weight: 600; }
+  .count span { font-weight: 400; color: var(--quiet); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Label check</h1>
+  <p class="sub">Does this label carry what the application filed?</p>
+
+  <form id="form" class="form">
+    <fieldset>
+      <legend>The label</legend>
+      <div class="row">
+        <label for="image">Picture of the label (PNG or JPEG)</label>
+        <input type="file" id="image" accept="image/png,image/jpeg" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>What the application filed</legend>
+      <div class="grid">
+        <div>
+          <label for="beverage">Kind of drink</label>
+          <select id="beverage">
+            <option value="spirits">Spirits</option>
+            <option value="wine">Wine</option>
+            <option value="beer">Beer</option>
+          </select>
+        </div>
+        <div><label for="brand">Brand name</label><input id="brand" placeholder="PENUMBRA"></div>
+        <div><label for="class">Class or type</label><input id="class" placeholder="VODKA"></div>
+        <div><label for="producer">Who bottled it</label><input id="producer" placeholder="Valley Mill Company"></div>
+        <div><label for="address">Their address</label><input id="address" placeholder="Portland, Oregon 97209"></div>
+        <div><label for="origin">Where it is from</label><input id="origin" placeholder="PRODUCT OF USA"></div>
+        <div><label for="abv">Alcohol, percent by volume</label><input id="abv" type="number" step="0.1" placeholder="40"></div>
+        <div><label for="net">Net contents, millilitres</label><input id="net" type="number" step="1" placeholder="750"></div>
+      </div>
+      <p class="note">Leave a field empty if the application did not file it. It will not be checked.</p>
+    </fieldset>
+
+    <button id="go" type="submit">Check this label</button>
+  </form>
+
+  <div id="say"></div>
+  <div id="out"></div>
+
+  <div class="foot">
+    <div id="build"></div>
+    <div>The picture is read and thrown away. Nothing is kept.</div>
+  </div>
+</div>
+
+<script>
+// Words a reviewer uses, rather than the ones the engine uses.
+const WORDS = {
+  VERIFIED:  ["Verified",      "v-verified", "The label carries what was filed."],
+  MISMATCH:  ["Does not match","v-mismatch", "The label carries something else."],
+  REVIEW:    ["Needs a look",  "v-review",   "Read, but not clearly enough to decide."],
+  NOT_FOUND: ["Not found",     "v-notfound", "Not found on the label."],
+  SKIPPED:   ["Not required",  "v-skipped",  "Not required for this kind of drink."],
+};
+
+const NAMES = {
+  brand: "Brand name", class: "Class or type",
+  producer_1: "Who bottled it", producer_2: "Their address",
+  origin: "Where it is from", abv: "Alcohol content", net: "Net contents",
+  reference: "Health warning", reference_emphasis: "Warning heading",
+};
+
+const say = document.getElementById("say");
+const out = document.getElementById("out");
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// A warning statement read from a label is 240 characters with no spaces
+// left in it. Shown whole it makes one row taller than the screen, so it
+// is cut with a mark that says it was cut.
+function shorten(s, n) {
+  s = String(s ?? "");
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
+
+function message(kind, text) {
+  say.innerHTML = text ? `<div class="msg ${kind}">${esc(text)}</div>` : "";
+}
+
+function rowsOf(verdicts) {
+  return (verdicts || []).map(v => {
+    const [word, cls, hint] = WORDS[v.status] || [v.status, "v-notfound", ""];
+    const e = v.evidence || {};
+    let said = "";
+    if (e.read) {
+      said = `<div class="said">The label appears to say <code>${esc(shorten(e.read, 150))}</code></div>`;
+    } else if (v.observed) {
+      said = `<div class="said">${esc(v.observed)}</div>`;
+    }
+    const crop = e.crop
+      ? `<img class="crop" alt="the part of the label this rests on" src="data:image/png;base64,${e.crop}">`
+      : "";
+    return `<tr>
+      <td class="what">${esc(NAMES[v.claim] || v.claim)}</td>
+      <td><span class="tag ${cls}">${esc(word)}</span><span class="hint">${esc(hint)}</span></td>
+      <td class="filed">${esc(shorten(v.expected, 90)) || "&mdash;"}</td>
+      <td>${said || '<span class="said">&mdash;</span>'}</td>
+      <td>${crop}</td>
+    </tr>`;
+  }).join("");
+}
+
+function show(result) {
+  const all = [].concat(result.claims || [], result.reference || [], result.emphasis || []);
+  const ok = all.filter(v => v.status === "VERIFIED").length;
+  const look = all.filter(v => v.status === "REVIEW" || v.status === "MISMATCH").length;
+  const needs = look === 1 ? "1 needs a look." : look + " need a look.";
+  out.innerHTML = `
+    <p class="count">${ok} of ${all.length} verified.
+      <span>${look ? needs : "Nothing needs a second look."}
+      Read in ${(result.latency_ms / 1000).toFixed(1)} seconds.</span></p>
+    <div class="scroll"><table>
+      <colgroup>
+        <col class="c-what"><col class="c-result"><col class="c-filed">
+        <col class="c-says"><col class="c-where">
+      </colgroup>
+      <thead><tr>
+        <th>What</th><th>Result</th><th>What was filed</th>
+        <th>What the label says</th><th>Where</th>
+      </tr></thead>
+      <tbody>${rowsOf(all)}</tbody>
+    </table></div>`;
+}
+
+document.getElementById("form").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const file = document.getElementById("image").files[0];
+  if (!file) { message("err", "Choose a picture of the label first."); return; }
+
+  const val = id => document.getElementById(id).value.trim();
+  const app = { beverage: val("beverage") };
+  for (const [id, key] of [["brand","brand"],["class","class"],["origin","origin"]]) {
+    if (val(id)) app[key] = val(id);
+  }
+  const producer = [val("producer"), val("address")].filter(Boolean);
+  if (producer.length) app.producer = producer;
+  if (val("abv")) app.abv = Number(val("abv"));
+  if (val("net")) app.net_ml = Number(val("net"));
+
+  const body = new FormData();
+  body.append("image", file);
+  body.append("claims", JSON.stringify(app));
+
+  const button = document.getElementById("go");
+  button.disabled = true;
+  out.innerHTML = "";
+  message("busy", "Reading the label. This takes a few seconds.");
+  try {
+    const resp = await fetch("verify", { method: "POST", body });
+    const data = await resp.json().catch(() => null);
+    if (!resp.ok) {
+      message("err", (data && data.error) || "The label could not be checked. Try again.");
+      return;
+    }
+    message("", "");
+    show(data);
+  } catch (err) {
+    message("err", "Could not reach the service. Check that it is running, and try again.");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+fetch("health").then(r => r.json()).then(h => {
+  const e = h.engine || {};
+  const commit = (e.commit || "").slice(0, 12);
+  document.getElementById("build").textContent =
+    "Engine " + (commit || "unknown") + (e.modified ? " (with uncommitted changes)" : "");
+}).catch(() => {});
+</script>
+</body>
+</html>

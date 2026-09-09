@@ -200,3 +200,36 @@ func io_ReadAll(r *http.Response) ([]byte, error) {
 	_, err := b.ReadFrom(r.Body)
 	return b.Bytes(), err
 }
+
+// TestThePageIsServed keeps the operator's screen from silently becoming
+// a 404: it is served by the same binary, from an embedded file, so that
+// it works wherever the service does.
+func TestThePageIsServed(t *testing.T) {
+	srv := &httpapi.Server{}
+	ts := httptest.NewServer(srv.Handler())
+	defer ts.Close()
+	resp, err := http.Get(ts.URL + "/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status %d for the page", resp.StatusCode)
+	}
+	if ct := resp.Header.Get("Content-Type"); ct != "text/html; charset=utf-8" {
+		t.Errorf("content type %q", ct)
+	}
+	b, _ := io_ReadAll(resp)
+	// No external asset may be referenced: the page has to work where the
+	// service does, which may be somewhere that cannot reach a CDN.
+	for _, bad := range []string{"http://", "https://", "//cdn", "src=\"//"} {
+		if bytes.Contains(b, []byte(bad)) {
+			t.Errorf("the page references something outside the binary: %q", bad)
+		}
+	}
+	for _, want := range []string{"Check this label", "Brand name", "Net contents"} {
+		if !bytes.Contains(b, []byte(want)) {
+			t.Errorf("the page does not offer %q", want)
+		}
+	}
+}

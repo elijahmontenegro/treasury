@@ -191,6 +191,9 @@ type VerifyMultipartRequestBody VerifyMultipartBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
+	// The operator's page
+	// (GET /)
+	Page(w http.ResponseWriter, r *http.Request)
 	// Whether the service is ready, and which build it is
 	// (GET /health)
 	Health(w http.ResponseWriter, r *http.Request)
@@ -210,6 +213,20 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
+
+// Page operation middleware
+func (siw *ServerInterfaceWrapper) Page(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.Page(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
 
 // Health operation middleware
 func (siw *ServerInterfaceWrapper) Health(w http.ResponseWriter, r *http.Request) {
@@ -373,6 +390,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 		ErrorHandlerFunc:   options.ErrorHandlerFunc,
 	}
 
+	m.HandleFunc("GET "+options.BaseURL+"/", wrapper.Page)
 	m.HandleFunc("GET "+options.BaseURL+"/health", wrapper.Health)
 	m.HandleFunc("GET "+options.BaseURL+"/openapi.yaml", wrapper.Spec)
 	m.HandleFunc("POST "+options.BaseURL+"/verify", wrapper.Verify)

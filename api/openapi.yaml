@@ -20,6 +20,22 @@ servers:
   - url: /
 
 paths:
+  /:
+    get:
+      operationId: page
+      summary: The operator's page
+      description: |
+        One screen for a reviewer: pick a label, enter what the application
+        filed, and see what the label carries. Served by the same binary, with
+        no external assets, so it works wherever the service does.
+      responses:
+        "200":
+          description: The page
+          content:
+            text/html:
+              schema:
+                type: string
+
   /openapi.yaml:
     get:
       operationId: spec
