@@ -28,14 +28,23 @@ const (
 	VERIFIED VerdictStatus = "VERIFIED"
 )
 
-// Application What the application filed. Every field is what was filed, not what the label prints.
+// Application What the application filed. Every field is what was filed, not what
+// the label prints.
+//
+// All of it is optional. The statutory health warning is the same text
+// on every label and mandatory on all of them, so it is checked from
+// the image alone and an empty application is a valid request — for
+// the warning and its heading, which is the check made most often.
+// What a filed claim does need is `beverage`, because which claims the
+// regulation requires and which printed forms it allows both depend on
+// it.
 type Application struct {
 	// Abv Alcohol content, percent by volume
 	Abv *float64 `json:"abv,omitempty"`
 
 	// Aliases Other names the application itself states for a claim
 	Aliases  *map[string][]string `json:"aliases,omitempty"`
-	Beverage ApplicationBeverage  `json:"beverage"`
+	Beverage *ApplicationBeverage `json:"beverage,omitempty"`
 	Brand    *string              `json:"brand,omitempty"`
 
 	// Class The class or type designation

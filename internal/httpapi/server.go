@@ -142,13 +142,11 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusBadRequest, "The claims field was not valid JSON: "+err.Error())
 		return
 	}
-	// An application that asks nothing is refused here, where everything
-	// else that can be refused for the price of reading a header is
-	// refused. It used to be answered: 200, an empty claims array, and a
-	// full verification's worth of every core spent on a request that had
-	// nothing to check. The specification has said `beverage` is required
-	// since it was written; nothing enforced it.
-	if why := nothingAsked(app); why != "" {
+	// Refused here, where everything else that can be refused for the
+	// price of reading a header is refused. What is refused is a request
+	// that cannot be answered - not one that asks only about the warning,
+	// which is most of them.
+	if why := whyNotVerifiable(app); why != "" {
 		fail(w, http.StatusBadRequest, why)
 		return
 	}
@@ -188,28 +186,50 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, resultOf(res, took, img))
 }
 
-// nothingAsked says why an application cannot be verified, or nothing if
-// it can. Two ways of asking nothing: no beverage, which the
-// specification requires because the regulation's claims differ by it,
-// and no claim at all, which is a question with no subject.
-func nothingAsked(a api.Application) string {
-	switch strings.ToLower(strings.TrimSpace(string(a.Beverage))) {
-	case "spirits", "wine", "beer":
-	case "":
-		return "The application does not say what the beverage is. " +
-			"Set 'beverage' to spirits, wine or beer."
-	default:
-		return "The application says the beverage is " + string(a.Beverage) +
+// beverageOf reads the beverage, which is optional: an application that
+// files no claims needs none, since the warning is checked either way.
+func beverageOf(a api.Application) string {
+	if a.Beverage == nil {
+		return ""
+	}
+	return string(*a.Beverage)
+}
+
+// whyNotVerifiable says why a request cannot be answered, or nothing if
+// it can.
+//
+// An application that files no claims is NOT one of those, and getting
+// that wrong made this service refuse the commonest thing anyone would
+// ask it. The statutory warning is the same text on every label and is
+// mandatory on all of them, so whether a label carries it, exactly, in
+// bold capitals, is answerable from the image alone - no application, no
+// form, nothing filled in. That is the check an agent makes most often,
+// and it was answered until a refusal written here decided a request with
+// no claims had "nothing to check".
+//
+// What a filed claim does need is the beverage, because which claims the
+// regulation requires and which printed forms it allows both depend on
+// it: an alcohol content is written differently on a wine and a spirit.
+// So the beverage is required when there is something to apply it to, and
+// not otherwise.
+func whyNotVerifiable(a api.Application) string {
+	bev := strings.ToLower(strings.TrimSpace(beverageOf(a)))
+	known := bev == "spirits" || bev == "wine" || bev == "beer"
+	if bev != "" && !known {
+		return "The application says the beverage is " + beverageOf(a) +
 			", and this service knows spirits, wine and beer."
 	}
 	filed := func(p *string) bool { return p != nil && strings.TrimSpace(*p) != "" }
-	if filed(a.Brand) || filed(a.Class) || filed(a.Origin) ||
-		(a.Producer != nil && len(*a.Producer) > 0) ||
-		a.Abv != nil || a.NetMl != nil {
-		return ""
+	if !filed(a.Brand) && !filed(a.Class) && !filed(a.Origin) &&
+		(a.Producer == nil || len(*a.Producer) == 0) &&
+		a.Abv == nil && a.NetMl == nil {
+		return "" // the warning is checked, and it needs no application
 	}
-	return "The application files no claims to check. " +
-		"Send at least one of brand, class, producer, origin, abv or net_ml."
+	if !known {
+		return "The application files claims and does not say what the beverage is. " +
+			"Set 'beverage' to spirits, wine or beer, since what a label must say depends on it."
+	}
+	return ""
 }
 
 // expectedOf turns the filed application as it arrives over the wire into
@@ -217,7 +237,7 @@ func nothingAsked(a api.Application) string {
 // is defaulted or inferred here, because a claim the caller did not file
 // is not a claim this service may invent.
 func expectedOf(a api.Application) ttb.Expected {
-	e := ttb.Expected{Beverage: string(a.Beverage)}
+	e := ttb.Expected{Beverage: beverageOf(a)}
 	if a.Brand != nil {
 		e.Brand = *a.Brand
 	}

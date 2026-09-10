@@ -158,16 +158,16 @@ func TestAServerWithNoLimitsStillGuards(t *testing.T) {
 	}
 }
 
-// TestAnApplicationThatAsksNothingIsRefused is finding 7. An empty
-// application used to be answered with 200, an empty claims array and a
-// full verification's worth of every core — against the whole argument of
-// guard.go, which is that anything refusable for the price of reading a
-// header must be refused there.
+// TestALabelWithNoApplicationIsStillChecked is the commonest thing anyone
+// would ask this service, and for a day it was refused.
 //
-// A real engine again, so a refusal cannot come from its absence, and the
-// last case is the one that keeps this honest: an application that does
-// ask something must still get through.
-func TestAnApplicationThatAsksNothingIsRefused(t *testing.T) {
+// The statutory warning is the same text on every label and mandatory on
+// all of them, so whether one carries it — exactly, in bold capitals — is
+// answerable from the image alone. No application, no form, nothing
+// filled in. A refusal written to stop an empty request wasting a
+// verification decided that a request with no claims had nothing to
+// check, which was wrong: it had the check an agent makes most often.
+func TestALabelWithNoApplicationIsStillChecked(t *testing.T) {
 	if testing.Short() {
 		t.Skip("long: loads the reader")
 	}
@@ -184,16 +184,48 @@ func TestAnApplicationThatAsksNothingIsRefused(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, c := range []struct {
-		name, claims string
-		want         int
-		says         string
-	}{
-		{"nothing at all", `{}`, http.StatusBadRequest, "beverage"},
-		{"a beverage and no claims", `{"beverage":"wine"}`, http.StatusBadRequest, "no claims"},
-		{"a beverage this service does not know", `{"beverage":"mead","brand":"X"}`,
-			http.StatusBadRequest, "mead"},
-		{"one claim, which is enough", `{"beverage":"wine","brand":"X"}`, http.StatusOK, ""},
+	answered := func(t *testing.T, claims string) api.Result {
+		t.Helper()
+		ct, body := multipartBody(t, "image", "label.png", img,
+			map[string]string{"claims": claims})
+		resp, err := http.Post(ts.URL+"/verify", ct, body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode != http.StatusOK {
+			var e api.Error
+			json.NewDecoder(resp.Body).Decode(&e)
+			t.Fatalf("status %d for %s: %q", resp.StatusCode, claims, e.Error)
+		}
+		var out api.Result
+		if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
+			t.Fatal(err)
+		}
+		return out
+	}
+
+	// An empty form. The warning and its heading must come back, because
+	// that is the whole of what was asked and it is answerable.
+	for _, claims := range []string{`{}`, `{"beverage":"wine"}`, `{"beverage":""}`} {
+		t.Run("nothing filed: "+claims, func(t *testing.T) {
+			out := answered(t, claims)
+			if out.Reference == nil || len(*out.Reference) == 0 {
+				t.Error("no verdict on the statutory warning, which needs no application")
+			}
+			if out.Emphasis == nil || len(*out.Emphasis) == 0 {
+				t.Error("no verdict on the warning's heading")
+			}
+		})
+	}
+
+	// And the two that genuinely cannot be answered. A claim needs a
+	// beverage, because what a label must say depends on it; and a
+	// beverage this service does not know is a mistake worth naming
+	// rather than ignoring.
+	for _, c := range []struct{ name, claims, says string }{
+		{"a claim with no beverage", `{"brand":"X"}`, "beverage"},
+		{"a beverage this service does not know", `{"beverage":"mead","brand":"X"}`, "mead"},
 	} {
 		t.Run(c.name, func(t *testing.T) {
 			ct, body := multipartBody(t, "image", "label.png", img,
@@ -203,16 +235,13 @@ func TestAnApplicationThatAsksNothingIsRefused(t *testing.T) {
 				t.Fatal(err)
 			}
 			defer resp.Body.Close()
-			if resp.StatusCode != c.want {
-				t.Fatalf("status %d for %s, want %d", resp.StatusCode, c.claims, c.want)
-			}
-			if c.says == "" {
-				return
+			if resp.StatusCode != http.StatusBadRequest {
+				t.Fatalf("status %d for %s, want 400", resp.StatusCode, c.claims)
 			}
 			var e api.Error
 			json.NewDecoder(resp.Body).Decode(&e)
 			if !strings.Contains(strings.ToLower(e.Error), c.says) {
-				t.Errorf("the refusal does not say what is missing: %q", e.Error)
+				t.Errorf("the refusal does not say what is wrong: %q", e.Error)
 			}
 		})
 	}
