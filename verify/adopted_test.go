@@ -72,6 +72,19 @@ func TestOverrideReachesTheCode(t *testing.T) {
 		if c.Value == math.Trunc(c.Value) {
 			probe = 7
 		}
+		// A probe has to be a setting the engine can actually run at, and
+		// second_opinion is the one constant where an arbitrary whole
+		// number is not. Mode 2 asks for the 90 MB server recogniser,
+		// which is fetched rather than committed, and asking for it
+		// without having it is now an error rather than a silent fall
+		// back to the shipped model - which is the point of that change,
+		// and which turned this probe into a test that passed only on a
+		// machine that happened to have the file. CI does not, and said
+		// so. Mode 1 is a real setting, is not the default, and needs no
+		// file.
+		if c.Name == "second_opinion" {
+			probe = 1
+		}
 		tune := map[string]float64{c.Name: probe}
 		// For the constants that live in the engine's options the path
 		// under test is the engine's own: New applies the overrides, and
