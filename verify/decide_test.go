@@ -217,3 +217,72 @@ func TestANameTakenFromInsideAReadingIsTheWholeName(t *testing.T) {
 		}
 	}
 }
+
+// TestASpanIsCutOnRuneBoundaries covers finding 4, which no test could
+// have caught because the population it was found on is all ASCII once
+// the accents are folded.
+//
+// Every index into a normalized string in this package is a rune
+// position: normalizeIdx counts one per character it keeps, and infixSpan
+// runs its alignment over []rune. The strings were sliced as bytes. That
+// is correct exactly while the text is ASCII — and normalize keeps any
+// letter or digit, while the recogniser answers from six and a half
+// thousand classes, most of them Chinese.
+//
+// The reading here puts a multi-byte character before the claim, which is
+// what makes a rune index and a byte index disagree. The claim must still
+// be refused for the reason it is refused for — an ordinary word abuts
+// it, so nothing delimits its end — rather than admitted or refused by
+// accident on a span that was never the right span.
+func TestASpanIsCutOnRuneBoundaries(t *testing.T) {
+	e := &Engine{opt: Options{}.withDefaults()}
+	claim := Claim{Name: "brand", Expected: "VALLEY MILL", Required: true}
+
+	for _, c := range []struct {
+		name, read string
+		want       Status
+	}{
+		// The shape step 16a's guard exists for: the filed words inside a
+		// longer company name, with a letter either side and no mark.
+		{"plain", "PRODUCED AND BOTTLED BY VALLEY MILL COMPANY", NotFound},
+		// The same, with characters ahead of it that are two and three
+		// bytes each. Every rune index into the reading is now a
+		// different number from the byte index, and the answer must not
+		// move.
+		{"behind a multi-byte reading", "ŁÓDŹ 東京 PRODUCED AND BOTTLED BY VALLEY MILL COMPANY", NotFound},
+		// And the admitting side, so this is not simply refusing
+		// everything: delimited by a comma, behind the same characters.
+		{"delimited, behind a multi-byte reading", "ŁÓDŹ 東京 BOTTLED BY: VALLEY MILL, OREGON", Verified},
+	} {
+		rs := buildRuns([]Region{{Box: image.Rect(0, 0, 400, 20), Text: c.read, Confidence: 0.9}}, 0.5)
+		v := e.decide(claim, rs)
+		if v.Status != c.want {
+			read := ""
+			if v.Evidence != nil {
+				read = v.Evidence.Read
+			}
+			t.Errorf("%s: %s (%s) on %q, want %s; matched %q",
+				c.name, v.Status, v.Reason, c.read, c.want, read)
+		}
+	}
+
+	// The other index this fixes is the character BESIDE a span, which is
+	// what decides whether a digit delimits it. A digit does; a letter
+	// does not. Read as a byte from behind a multi-byte character it is
+	// neither, being the middle of a rune, so the answer moved with
+	// nothing in the label changing.
+	digitClaim := Claim{Name: "class", Expected: "PRODUCT OF MEXICO", Required: true}
+	for _, c := range []struct {
+		name, read string
+		want       Status
+	}{
+		{"a digit beside the span", "4 PRODUCTOFMEXICO 750 ML", Verified},
+		{"the same, behind a multi-byte reading", "東京 4 PRODUCTOFMEXICO 750 ML", Verified},
+	} {
+		rs := buildRuns([]Region{{Box: image.Rect(0, 0, 400, 20), Text: c.read, Confidence: 0.9}}, 0.5)
+		v := e.decide(digitClaim, rs)
+		if v.Status != c.want {
+			t.Errorf("%s: %s (%s) on %q, want %s", c.name, v.Status, v.Reason, c.read, c.want)
+		}
+	}
+}

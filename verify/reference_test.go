@@ -107,11 +107,42 @@ func TestATitleCaseHeaderIsRefused(t *testing.T) {
 func TestAWarningNeverReadIsNotAWarningAltered(t *testing.T) {
 	e := &Engine{opt: Options{}.withDefaults()}
 	ref := Reference{Text: statute}
-	for _, read := range []string{"OF BIRTH", "KEPREI", "PROOF 750 ML"} {
-		v, _ := e.verifyReferenceText(ref, linesOf(read, 7))
-		if v.Status == Mismatch {
-			t.Errorf("%q was called a mismatch on the statute", read)
+	// The verdict is named, not merely ruled out. Asking only that a
+	// fragment is not a MISMATCH let the coverage rule be deleted
+	// altogether and still pass, because what a fragment falls through to
+	// then is REVIEW, which is not a mismatch either - checked, it did.
+	//
+	// REVIEW and NOT_FOUND are different answers and step 30a is what the
+	// difference is: REVIEW says the warning was read and not exactly,
+	// NOT_FOUND says it was not read. The fifty's table divides on it -
+	// thirteen exact, twenty-six read imperfectly, eleven not read - so a
+	// test that treats them as interchangeable is not testing the rule
+	// the table rests on.
+	// Both routes to absence are named, because they are different
+	// findings and the strict form of this test is what showed there were
+	// two: a fragment that aligns somewhere in the statute is found and
+	// covers too little of it, and one that aligns nowhere is not found at
+	// all. Either is NOT_FOUND, and neither is REVIEW.
+	for _, c := range []struct{ read, reason string }{
+		{"OF BIRTH", "warning_not_read"}, // aligns; coverage 0.030
+		{"KEPREI", "warning_not_read"},   // aligns; coverage 0.026
+		{"PROOF 750 ML", "not_found"},    // aligns nowhere at all
+	} {
+		v, _ := e.verifyReferenceText(ref, linesOf(c.read, 7))
+		if v.Status != NotFound || v.Reason != c.reason {
+			t.Errorf("%q gave %s/%q, want NOT_FOUND/%s: "+
+				"too little of the statute was read to say anything about it",
+				c.read, v.Status, v.Reason, c.reason)
 		}
+	}
+	// And the other side of the same rule, so it is not simply refusing
+	// everything: a statute read whole but imperfectly is REVIEW, which
+	// is the twenty-six.
+	damaged := strings.Replace(statute, "GOVERNMENT", "COVERNMENT", 1)
+	v, _ := e.verifyReferenceText(ref, linesOf(damaged, 7))
+	if v.Status != Review {
+		t.Errorf("a statute read whole with one character wrong gave %s/%q, want REVIEW",
+			v.Status, v.Reason)
 	}
 }
 

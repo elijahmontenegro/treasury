@@ -65,7 +65,7 @@ func (s *Server) VerifyBatch(w http.ResponseWriter, r *http.Request) {
 	// Both bounds are refused here, before a single label is read, which
 	// is where guard.go refuses everything else and for the same reason:
 	// a batch is the cheapest way to ask this service for hours of work.
-	lim := s.Limits
+	lim := s.limits()
 	rows, err := readClaimsCSV(r, lim.MaxRows)
 	if err != nil {
 		fail(w, statusFor(err), err.Error())
@@ -207,7 +207,7 @@ func (s *Server) oneOfBatch(ctx context.Context, row claimRow, images map[string
 		return item
 	}
 	defer rc.Close()
-	img, err := decodeImage(rc, s.Limits.MaxPixels)
+	img, err := decodeImage(rc, s.limits().MaxPixels)
 	if errors.Is(err, errTooManyPixels) {
 		e := row.image + " is far larger than any label and was not decoded."
 		item.Error = &e

@@ -108,7 +108,14 @@ func TestBatchCompletesEveryItem(t *testing.T) {
 
 	const n = 300
 	csvBytes, zipBytes, names := batchOf(t, n)
-	srv := &httpapi.Server{Engine: eng, MaxBatch: 400 << 20}
+	// The shipped limits, said out loud. This gate used to build a Server
+	// with none, so the measurement everyone quotes ran against a
+	// configuration the service never ships - no pixel cap, no row bound,
+	// no unzipped bound. Only MaxBatch is raised, and deliberately: three
+	// hundred labels is more than one request would carry in production,
+	// and what is under test here is the streaming and the memory, not
+	// the body limit.
+	srv := &httpapi.Server{Engine: eng, MaxBatch: 400 << 20, Limits: httpapi.DefaultLimits()}
 	ts := httptest.NewServer(srv.Handler())
 	defer ts.Close()
 

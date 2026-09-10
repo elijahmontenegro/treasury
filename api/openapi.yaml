@@ -102,7 +102,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         "413":
-          description: The image is larger than the service accepts
+          description: |
+            The image is larger than the service accepts, by its body size
+            or by the dimensions its own header declares — a small file may
+            declare an enormous image, and that is refused before it is
+            decoded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: |
+            Too many requests from this caller. The service holds a token
+            bucket per caller because a verification costs a second or two
+            of every core it has; `Retry-After` says how long to wait.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: |
+            The service failed to answer. A verification that errors and a
+            panic anywhere inside both arrive here; nothing is stored
+            either way.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: |
+            The service will not read this now: either the reader's models
+            are not loaded, or the day's inference budget is spent, which
+            the message distinguishes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "504":
+          description: |
+            The verification took longer than the service allows and was
+            stopped. The work is cancelled rather than left running.
           content:
             application/json:
               schema:
@@ -127,6 +166,13 @@ paths:
         hundred would be a response measured in gigabytes; each verdict says
         whether evidence exists, and the item can be sent to `/verify` on
         its own to see it.
+
+        A batch is bounded by what can be delivered rather than by a number
+        chosen freely: the row limit is the time a batch may hold a
+        connection divided by the time a label takes. A batch over it is
+        refused with 413 before anything is read, which is the alternative
+        to admitting it and cutting the answer off part way with a 200
+        already sent.
       requestBody:
         required: true
         content:
@@ -157,7 +203,47 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
         "413":
-          description: The batch is larger than the service accepts
+          description: |
+            More than the service accepts: the body, the number of rows, or
+            the size the ZIP's own directory says its contents come to. The
+            row bound is what can be delivered inside the time a batch is
+            allowed to hold a connection, so a batch that is admitted is
+            one that will be finished.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: |
+            Too many requests from this caller. The service holds a token
+            bucket per caller because a verification costs a second or two
+            of every core it has; `Retry-After` says how long to wait.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: |
+            The service failed to answer. A verification that errors and a
+            panic anywhere inside both arrive here; nothing is stored
+            either way.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: |
+            The service will not read this now: either the reader's models
+            are not loaded, or the day's inference budget is spent, which
+            the message distinguishes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "504":
+          description: |
+            The verification took longer than the service allows and was
+            stopped. The work is cancelled rather than left running.
           content:
             application/json:
               schema:

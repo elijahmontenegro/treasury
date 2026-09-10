@@ -86,8 +86,20 @@ func multipartBody(t *testing.T, field, name string, content []byte, extra map[s
 func TestNothingReachesTheEngineThatShouldNot(t *testing.T) {
 	claims := `{"beverage":"wine","brand":"X"}`
 
+	// A real engine, and 413 exactly. This subtest used to build a Server
+	// with no engine and accept "413 or 503", so the handler's own
+	// not-ready answer satisfied it and the whole thing passed with the
+	// body limit deleted - checked, it did. The two subtests below it had
+	// the same fault and were fixed at step 30e; this one was left, which
+	// is why it is worth saying that a guard against vacuity has to be
+	// applied to every case rather than to the ones that come to mind.
 	t.Run("a body larger than the limit", func(t *testing.T) {
-		srv := &httpapi.Server{Engine: nil, MaxImage: 1 << 20, Limits: httpapi.DefaultLimits()}
+		eng, err := verify.New(verify.Options{})
+		if err != nil {
+			needReader(t, err)
+		}
+		defer eng.Close()
+		srv := &httpapi.Server{Engine: eng, MaxImage: 1 << 20, Limits: httpapi.DefaultLimits()}
 		ts := httptest.NewServer(srv.Handler())
 		defer ts.Close()
 		ct, body := multipartBody(t, "image", "big.png", make([]byte, 3<<20),
@@ -97,10 +109,22 @@ func TestNothingReachesTheEngineThatShouldNot(t *testing.T) {
 			t.Fatal(err)
 		}
 		defer resp.Body.Close()
-		// Refused for its size, not merely for the engine being absent.
-		if resp.StatusCode != http.StatusRequestEntityTooLarge &&
-			resp.StatusCode != http.StatusServiceUnavailable {
-			t.Errorf("status %d for an oversized body", resp.StatusCode)
+		if resp.StatusCode != http.StatusRequestEntityTooLarge {
+			t.Fatalf("status %d for a 3 MB body against a 1 MB limit, want 413", resp.StatusCode)
+		}
+		var e api.Error
+		json.NewDecoder(resp.Body).Decode(&e)
+		// Which of the two size checks answered matters, and only one of
+		// them is worth having. The body limit refuses while reading and
+		// stops; the header-size check that follows it refuses after the
+		// whole upload has been taken in, which for a body of any size is
+		// the cost this layer exists to avoid. They word their refusals
+		// differently, so the message says which fired - and with the
+		// body limit deleted this test now fails instead of being caught
+		// by the second check and passing anyway, which it did.
+		if !strings.Contains(e.Error, "larger than this service accepts") {
+			t.Errorf("the body was taken in whole and refused afterwards, "+
+				"rather than refused while being read: %q", e.Error)
 		}
 	})
 
@@ -200,8 +224,12 @@ func TestANonImageIsRefused(t *testing.T) {
 	srv := &httpapi.Server{Engine: eng, MaxImage: 10 << 20, Limits: httpapi.DefaultLimits()}
 	ts := httptest.NewServer(srv.Handler())
 	defer ts.Close()
+	// A claim as well as a beverage, so what is under test is the file
+	// and not the application: an application that asks nothing is
+	// refused before the image is looked at, which is cheaper and is the
+	// right order, but it would answer this request instead.
 	ct, body := multipartBody(t, "image", "notes.txt", []byte("this is not an image"),
-		map[string]string{"claims": `{"beverage":"wine"}`})
+		map[string]string{"claims": `{"beverage":"wine","brand":"X"}`})
 	resp, err := http.Post(ts.URL+"/verify", ct, body)
 	if err != nil {
 		t.Fatal(err)

@@ -117,7 +117,7 @@ func run(dir string, encoders []string, workers int, tune bool, limit int, half 
 		return err
 	}
 	var out strings.Builder
-	out.WriteString(table(records))
+	out.WriteString(table(records, workers))
 	fmt.Print(out.String())
 	return os.WriteFile(filepath.Join(dir, "table.md"), []byte(out.String()), 0o644)
 }
@@ -408,7 +408,7 @@ func crossFaceAndConventions(recs []Record) string {
 	return b.String()
 }
 
-func table(recs []Record) string {
+func table(recs []Record, workers int) string {
 	claims := []string{"brand", "class", "producer_1", "producer_2", "origin", "abv", "net"}
 	tallies := map[string]*tally{}
 	for _, c := range claims {
@@ -498,7 +498,19 @@ func table(recs []Record) string {
 	}
 	var b strings.Builder
 	title := "## The set"
-	fmt.Fprintf(&b, "%s\n\n%d labels, %d the reader found nothing on, latency median %.1fs p95 %.1fs\n\n", title, len(recs), noRead, pct(0.5), pct(0.95))
+	// How it was run, because the latency means different things
+	// depending. One label at a time with every core is the timing
+	// this build reports; several at once is the recall guard, where
+	// the labels contend and the figure is not comparable to anything.
+	// A table that did not say which is how one reading 10.3 s, where
+	// the engine measures 1.3 s, came to sit in the record.
+	how := fmt.Sprintf("%d workers, which is the recall guard and not a timing", workers)
+	if workers == 1 {
+		how = "one label at a time, which is the timing"
+	}
+	fmt.Fprintf(&b, "%s\n\n%d labels, %d the reader found nothing on, "+
+		"latency median %.1fs p95 %.1fs, run %s\n\n",
+		title, len(recs), noRead, pct(0.5), pct(0.95), how)
 	b.WriteString("| claim | n | precision | recall | review | mismatch found | not found on missing |\n|---|---|---|---|---|---|---|\n")
 	for _, c := range claims {
 		t := tallies[c]

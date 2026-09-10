@@ -1,6 +1,6 @@
 ## The set
 
-50 labels, 0 the reader found nothing on, latency median 10.3s p95 20.7s
+50 labels, 0 the reader found nothing on, latency median 1.3s p95 4.0s, run one label at a time, which is the timing
 
 | claim | n | precision | recall | review | mismatch found | not found on missing |
 |---|---|---|---|---|---|---|

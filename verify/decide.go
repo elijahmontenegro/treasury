@@ -41,9 +41,19 @@ type candidate struct {
 
 // run is a candidate region: one detection, or several joined.
 type run struct {
-	box    image.Rectangle
-	text   string
-	norm   string
+	box  image.Rectangle
+	text string
+	norm string
+	// nr is norm by rune. Every index into a normalized string in this
+	// package is a rune position - normalizeIdx counts one per character
+	// it keeps, infixSpan runs its alignment over []rune - and norm is a
+	// string, so indexing it with one of them is only correct while the
+	// text is ASCII. normalize keeps ANY letter or digit, and the
+	// recogniser can return characters from six and a half thousand
+	// classes, so it is not always. Holding the runes is cheaper than
+	// converting inside the candidate loop and removes the mistake rather
+	// than documenting it.
+	nr     []rune
 	at     []int    // where each character of norm came from in text
 	nums   []string // the numbers in it, as printed
 	parts  int      // how many detections were joined to make it
@@ -417,7 +427,7 @@ func better(a, b run) bool {
 
 func newRun(box image.Rectangle, text string, conf float64, parts, widest int) run {
 	n, at := normalizeIdx(text)
-	return run{box: box, text: text, norm: n, at: at, nums: numbers(n),
+	return run{box: box, text: text, norm: n, nr: []rune(n), at: at, nums: numbers(n),
 		parts: parts, widest: widest, conf: conf, hist: histogram(n)}
 }
 
@@ -450,10 +460,10 @@ func (r run) free(at, dir int) bool {
 	if dir < 0 {
 		next = at - 1
 	}
-	if next < 0 || next >= len(r.norm) {
+	if next < 0 || next >= len(r.nr) {
 		return true // the edge of the detection
 	}
-	if c := r.norm[next]; c >= '0' && c <= '9' {
+	if c := r.nr[next]; c >= '0' && c <= '9' {
 		return true // a figure is a different statement
 	}
 	// Anything normalization dropped between the two characters is
@@ -772,7 +782,7 @@ func nearest(cands []candidate, rs []run, radius float64, cc int, keep func(cand
 				// admit anything: a span still has to end at a mark, a
 				// digit or an edge. TestTheGuard is what says so.
 				if id, ifrom, ito := infixSpan(cd.norm, r.norm, cc); id < d &&
-					r.bounded(ifrom, ito) && ends(cd.norm, r.norm[ifrom:ito], cc) {
+					r.bounded(ifrom, ito) && ends(cd.norm, string(r.nr[ifrom:ito]), cc) {
 					d, from, to = id, ifrom, ito
 				}
 			}

@@ -146,6 +146,7 @@ type refRun struct {
 	members  []Region
 	text     string // the chain's reading as printed
 	norm     string
+	nr       []rune // norm by rune; see run.nr in decide.go
 	at       []int
 	from, to int
 	dist     float64
@@ -155,7 +156,10 @@ type refRun struct {
 // as printed rather than as normalised, so the case the recogniser read
 // survives - which is what the capitals test needs.
 func (r *refRun) quote(from, to int) string {
-	if from < 0 || to > len(r.norm) || from >= to || to >= len(r.at) {
+	// Bounded in runes, which is what from and to are. Comparing them to
+	// len(norm) was comparing a rune count to a byte count: wider than it
+	// should be, and right only while the text is ASCII.
+	if from < 0 || from >= to || to >= len(r.at) {
 		return ""
 	}
 	return strings.TrimSpace(r.text[r.at[from]:r.at[to]])
@@ -229,7 +233,8 @@ func (e *Engine) verifyReferenceText(ref Reference, kept []Region) (Verdict, *re
 		n, idx := normalizeIdx(text)
 		d, from, to := infixSpan(want, n, cc)
 		if best == nil || d < best.dist {
-			best = &refRun{members: members, text: text, norm: n, at: idx, from: from, to: to, dist: d}
+			best = &refRun{members: members, text: text, norm: n, nr: []rune(n),
+				at: idx, from: from, to: to, dist: d}
 		}
 	}
 	if best == nil {
@@ -250,15 +255,14 @@ func (e *Engine) verifyReferenceText(ref Reference, kept []Region) (Verdict, *re
 	// unbroken letters on the page, which nobody can read against
 	// anything.
 	quote := best.norm
-	if best.from < best.to && best.to < len(best.at) {
-		quote = best.norm[best.from:best.to]
+	if best.from < best.to && best.to <= len(best.nr) {
+		quote = string(best.nr[best.from:best.to])
 	}
 	read := best.quote(best.from, best.to)
 	if read == "" {
 		read = best.text
 	}
 	agreement, coverage := agree(quote, want)
-	_ = referenceRadius
 	v.Evidence = &Evidence{
 		Region: box, Read: read, Matched: ref.Text,
 		Distance: best.dist, Radius: referenceRadius, Confidence: conf,

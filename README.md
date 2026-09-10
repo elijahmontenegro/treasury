@@ -185,6 +185,6 @@ at step 19a.
 `docs/measurements/README.md` carries every table in the order it was measured, including the ones that were
 later corrected, and says which. The short version: on fifty real registry labels the engine
 verifies 156 of the 192 claims they carry, with **precision 1.00 across 550 labels and not one
-false assertion**; median 1.3 s and 95th percentile 3.9 s per label on four cores, and 4.2 s
-and 10.1 s end to end against the deployed service, where a vCPU is about half a core of the
-machine those local figures come from.
+false assertion**; median 1.3 s and 95th percentile 3.9 s per label on four cores, and 4.5 s
+and 10.1 s end to end against the deployed service, warm, where a vCPU is about half a core of
+the machine those local figures come from.

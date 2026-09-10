@@ -22,6 +22,7 @@ import (
 	_ "image/jpeg"
 	"image/png"
 	"net/http"
+	"strings"
 	"time"
 
 	"treasury/api"
@@ -141,7 +142,17 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusBadRequest, "The claims field was not valid JSON: "+err.Error())
 		return
 	}
-	img, err := decodeImage(file, s.Limits.MaxPixels)
+	// An application that asks nothing is refused here, where everything
+	// else that can be refused for the price of reading a header is
+	// refused. It used to be answered: 200, an empty claims array, and a
+	// full verification's worth of every core spent on a request that had
+	// nothing to check. The specification has said `beverage` is required
+	// since it was written; nothing enforced it.
+	if why := nothingAsked(app); why != "" {
+		fail(w, http.StatusBadRequest, why)
+		return
+	}
+	img, err := decodeImage(file, s.limits().MaxPixels)
 	if errors.Is(err, errTooManyPixels) {
 		fail(w, http.StatusRequestEntityTooLarge,
 			"That image is far larger than any label, and this service will not decode it. "+
@@ -175,6 +186,30 @@ func (s *Server) Verify(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, resultOf(res, took, img))
+}
+
+// nothingAsked says why an application cannot be verified, or nothing if
+// it can. Two ways of asking nothing: no beverage, which the
+// specification requires because the regulation's claims differ by it,
+// and no claim at all, which is a question with no subject.
+func nothingAsked(a api.Application) string {
+	switch strings.ToLower(strings.TrimSpace(string(a.Beverage))) {
+	case "spirits", "wine", "beer":
+	case "":
+		return "The application does not say what the beverage is. " +
+			"Set 'beverage' to spirits, wine or beer."
+	default:
+		return "The application says the beverage is " + string(a.Beverage) +
+			", and this service knows spirits, wine and beer."
+	}
+	filed := func(p *string) bool { return p != nil && strings.TrimSpace(*p) != "" }
+	if filed(a.Brand) || filed(a.Class) || filed(a.Origin) ||
+		(a.Producer != nil && len(*a.Producer) > 0) ||
+		a.Abv != nil || a.NetMl != nil {
+		return ""
+	}
+	return "The application files no claims to check. " +
+		"Send at least one of brand, class, producer, origin, abv or net_ml."
 }
 
 // expectedOf turns the filed application as it arrives over the wire into

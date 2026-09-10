@@ -108,6 +108,41 @@ func DefaultLimits() Limits {
 	}
 }
 
+// limits is what the server actually runs with: what it was given, with
+// anything unset filled from the defaults.
+//
+// A zero Limits used to mean no pixel cap, no row bound and no unzipped
+// bound - a guard that failed OPEN, which is the wrong direction for
+// every field here. It was reachable too: the three-hundred-label gate
+// built its Server without any, so the measurement everyone quotes ran
+// against a configuration the service never ships.
+//
+// Only the fields the Server itself consults are filled. Rate, Burst and
+// DailySeconds belong to the middleware, where zero means "off" on
+// purpose and a test is entitled to say so.
+func (s *Server) limits() Limits {
+	d := DefaultLimits()
+	l := s.Limits
+	if l.MaxPixels <= 0 {
+		l.MaxPixels = d.MaxPixels
+	}
+	if l.MaxUnzipped <= 0 {
+		l.MaxUnzipped = d.MaxUnzipped
+	}
+	if l.PerLabel <= 0 {
+		l.PerLabel = d.PerLabel
+	}
+	if l.BatchWall <= 0 {
+		l.BatchWall = d.BatchWall
+	}
+	if l.MaxRows <= 0 {
+		// Derived, so a caller who sets one of the two it comes from gets
+		// a row bound that agrees with them rather than the default's.
+		l.MaxRows = int(l.BatchWall / l.PerLabel)
+	}
+	return l
+}
+
 // Recover turns a panic into a 500 and a log line, so one request that
 // finds a bug does not take the process down with every other request in
 // flight.

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 
@@ -118,4 +119,101 @@ func TestABatchIsBounded(t *testing.T) {
 			t.Errorf("the line does not say the entry is not an image: %v", item.Error)
 		}
 	})
+}
+
+// TestAServerWithNoLimitsStillGuards is the other half of finding 12. A
+// Limits left at its zero value used to mean no pixel cap at all, so the
+// guard failed open — and that was not hypothetical, it was what the
+// three-hundred-label gate ran with.
+func TestAServerWithNoLimitsStillGuards(t *testing.T) {
+	if testing.Short() {
+		t.Skip("long: loads the reader")
+	}
+	eng, err := verify.New(verify.Options{})
+	if err != nil {
+		needReader(t, err)
+	}
+	defer eng.Close()
+
+	// No Limits at all, which is the case under test.
+	srv := &httpapi.Server{Engine: eng, MaxImage: 10 << 20}
+	ts := httptest.NewServer(srv.Handler())
+	defer ts.Close()
+
+	ct, body := multipartBody(t, "image", "bomb.png", bomb(t),
+		map[string]string{"claims": `{"beverage":"wine","brand":"X"}`})
+	resp, err := http.Post(ts.URL+"/verify", ct, body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusRequestEntityTooLarge {
+		t.Fatalf("status %d for a 60,000 by 60,000 image against a Server with no Limits, want 413: "+
+			"an unset limit must fall back to the default, not to none", resp.StatusCode)
+	}
+	var e api.Error
+	json.NewDecoder(resp.Body).Decode(&e)
+	if !strings.Contains(e.Error, "60000 by 60000") {
+		t.Errorf("the refusal does not name the dimensions it read: %q", e.Error)
+	}
+}
+
+// TestAnApplicationThatAsksNothingIsRefused is finding 7. An empty
+// application used to be answered with 200, an empty claims array and a
+// full verification's worth of every core — against the whole argument of
+// guard.go, which is that anything refusable for the price of reading a
+// header must be refused there.
+//
+// A real engine again, so a refusal cannot come from its absence, and the
+// last case is the one that keeps this honest: an application that does
+// ask something must still get through.
+func TestAnApplicationThatAsksNothingIsRefused(t *testing.T) {
+	if testing.Short() {
+		t.Skip("long: loads the reader")
+	}
+	eng, err := verify.New(verify.Options{})
+	if err != nil {
+		needReader(t, err)
+	}
+	defer eng.Close()
+	srv := &httpapi.Server{Engine: eng, MaxImage: 10 << 20, Limits: httpapi.DefaultLimits()}
+	ts := httptest.NewServer(srv.Handler())
+	defer ts.Close()
+
+	img, err := os.ReadFile(labelPath(t, ".png"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, c := range []struct {
+		name, claims string
+		want         int
+		says         string
+	}{
+		{"nothing at all", `{}`, http.StatusBadRequest, "beverage"},
+		{"a beverage and no claims", `{"beverage":"wine"}`, http.StatusBadRequest, "no claims"},
+		{"a beverage this service does not know", `{"beverage":"mead","brand":"X"}`,
+			http.StatusBadRequest, "mead"},
+		{"one claim, which is enough", `{"beverage":"wine","brand":"X"}`, http.StatusOK, ""},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			ct, body := multipartBody(t, "image", "label.png", img,
+				map[string]string{"claims": c.claims})
+			resp, err := http.Post(ts.URL+"/verify", ct, body)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer resp.Body.Close()
+			if resp.StatusCode != c.want {
+				t.Fatalf("status %d for %s, want %d", resp.StatusCode, c.claims, c.want)
+			}
+			if c.says == "" {
+				return
+			}
+			var e api.Error
+			json.NewDecoder(resp.Body).Decode(&e)
+			if !strings.Contains(strings.ToLower(e.Error), c.says) {
+				t.Errorf("the refusal does not say what is missing: %q", e.Error)
+			}
+		})
+	}
 }
